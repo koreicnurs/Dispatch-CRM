@@ -7,18 +7,19 @@ const router = express.Router();
 router.post('/', async (req, res) => {
   const {title, mc, dot, fedid, description} = req.body;
 
-  if (!title || !mc || !dot || !fedid) {
-    return res.status(400).send({error: 'Data not valid'});
-  }
-
   const carrierData = {title, mc, dot, fedid, description};
 
   try {
+    if (!title || !mc || !dot || !fedid) {
+      return res.status(400).send({error: 'Data not valid'});
+    }
+
     const carrier = new Carrier(carrierData);
     await carrier.save();
     res.send(carrier);
+
   } catch (e) {
-    res.status(400).send({error: e.errors});
+    res.send(e);
   }
 });
 

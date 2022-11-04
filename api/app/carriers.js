@@ -5,21 +5,17 @@ const Carrier = require('../models/Carrier');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
-  const {title, mc, dot, fedid, description} = req.body;
-
-  const carrierData = {title, mc, dot, fedid, description};
-
   try {
-    if (!title || !mc || !dot || !fedid) {
-      return res.status(400).send({error: 'Data not valid'});
-    }
+    const {title, mc, dot, fedid, description} = req.body;
+    const carrierData = {title, mc, dot, fedid, description};
 
     const carrier = new Carrier(carrierData);
     await carrier.save();
+
     res.send(carrier);
 
   } catch (e) {
-    res.send(e);
+    res.status(400).send(e);
   }
 });
 

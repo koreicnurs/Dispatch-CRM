@@ -1,34 +1,19 @@
 import React from 'react';
-import {Drawer, Grid, IconButton, List, ListItemButton, ListItemText, styled} from "@mui/material";
-import {Link} from "react-router-dom";
-import logo from "../../../assets/logo.svg";
-import {Close} from "@mui/icons-material";
 import {useDispatch, useSelector} from "react-redux";
+import {Drawer, Grid, IconButton, styled, Typography} from "@mui/material";
+import {Close} from "@mui/icons-material";
+import {DRAWER_WIDTH} from "../../../constants";
+import DrawerContent from "./DrawerContent";
 import {handleDrawer} from "../../../store/actions/drawerActions";
+import Logo from "../Logo/Logo";
 
-const drawerWidth = 200;
 const DrawerHeader = styled('div')(({theme}) => ({
     display: 'flex',
     alignItems: 'center',
-    padding: theme.spacing(1, 1),
+    padding: theme.spacing(1,2),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
-}));
-
-const StyledList = styled(List)(({theme}) => ({
-    color: theme.palette.primary.main,
-    '& .MuiListItemButton-root': {
-        paddingLeft: 50,
-    },
-    '&& .Mui-selected, && .Mui-selected:hover': {
-        backgroundColor: theme.palette.primary.main,
-        color: 'white',
-    },
-    '& .MuiListItemButton-root:hover': {
-        backgroundColor: theme.palette.primary.light,
-        color: 'white',
-    },
 }));
 
 const AppDrawer = () => {
@@ -39,19 +24,13 @@ const AppDrawer = () => {
         dispatch(handleDrawer(false));
     };
 
-    const menuItems = ['Trips', 'Carriers', 'Drivers', 'Sign Out'];
-    const [selectedIndex, setSelectedIndex] = React.useState(0);
-    const handleListItemClick = (index) => {
-        setSelectedIndex(index);
-    };
-
     return (
         <Drawer
             sx={{
-                width: drawerWidth,
+                width: DRAWER_WIDTH,
                 flexShrink: 0,
                 '& .MuiDrawer-paper': {
-                    width: drawerWidth,
+                    width: DRAWER_WIDTH,
                     boxSizing: 'border-box',
                     border: 0
                 },
@@ -60,12 +39,10 @@ const AppDrawer = () => {
             anchor="left"
             open={open}
         >
-            <DrawerHeader>
+            <DrawerHeader sx={{height: 120}}>
                 <Grid container justifyContent={"space-between"}>
                     <Grid item>
-                        <Link to="/">
-                            <img src={logo} className="Supreme Dispatch" alt="logo"/>
-                        </Link>
+                        <Logo/>
                     </Grid>
                     <Grid item>
                         <IconButton onClick={handleDrawerClose}>
@@ -75,17 +52,11 @@ const AppDrawer = () => {
                 </Grid>
             </DrawerHeader>
 
-            <StyledList>
-                {menuItems.map((text, index) => (
-                    <ListItemButton key={text}
-                                    component={Link} to={text.toLowerCase().replaceAll(' ', '')}
-                                    selected={selectedIndex === index}
-                                    onClick={() => handleListItemClick(index)}
-                    >
-                        <ListItemText primaryTypographyProps={{fontWeight: '700'}} primary={text}/>
-                    </ListItemButton>
-                ))}
-            </StyledList>
+            <Typography sx={{ fontWeight: '900', textAlign: 'center', p: 2}}>
+                Turan Express Inc
+            </Typography>
+
+            <DrawerContent/>
 
         </Drawer>
     );

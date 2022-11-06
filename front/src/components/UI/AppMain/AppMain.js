@@ -1,8 +1,8 @@
 import React from 'react';
-import {Box, styled, Toolbar} from "@mui/material";
+import {styled} from "@mui/material";
 import {useSelector} from "react-redux";
+import {DRAWER_WIDTH} from "../../../constants";
 
-const drawerWidth = 200;
 const Main = styled('main', {shouldForwardProp: (prop) => prop !== 'open'})(
     ({theme, open}) => ({
         flexGrow: 1,
@@ -11,7 +11,7 @@ const Main = styled('main', {shouldForwardProp: (prop) => prop !== 'open'})(
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
-        marginLeft: `-${drawerWidth}px`,
+        marginLeft: `-${DRAWER_WIDTH}px`,
         ...(open && {
             transition: theme.transitions.create('margin', {
                 easing: theme.transitions.easing.easeOut,
@@ -26,12 +26,8 @@ const AppMain = ({children}) => {
     const open = useSelector(state => state.drawer.drawerOpen);
 
     return (
-
-        <Main open={open}>
-            <Box component="main" sx={{flexGrow: 1, paddingTop: 4}}>
-                <Toolbar/>
-                {children}
-            </Box>
+        <Main open={open} sx={{flexGrow: 1, marginTop: '120px'}}>
+            {children}
         </Main>
     );
 };

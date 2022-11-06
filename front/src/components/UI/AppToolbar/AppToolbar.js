@@ -1,13 +1,12 @@
 import React from 'react';
+import {useDispatch, useSelector} from "react-redux";
 import {Grid, IconButton, styled, Toolbar} from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
-import {Link} from "react-router-dom";
-import logo from "../../../assets/logo.svg";
 import {DragHandle} from "@mui/icons-material";
+import Logo from "../Logo/Logo";
 import {handleDrawer} from "../../../store/actions/drawerActions";
-import {useDispatch, useSelector} from "react-redux";
+import {DRAWER_WIDTH} from "../../../constants";
 
-const drawerWidth = 200;
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
 })(({theme, open}) => ({
@@ -16,8 +15,8 @@ const AppBar = styled(MuiAppBar, {
         duration: theme.transitions.duration.leavingScreen,
     }),
     ...(open && {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: `${drawerWidth}px`,
+        width: `calc(100% - ${DRAWER_WIDTH}px)`,
+        marginLeft: `${DRAWER_WIDTH}px`,
         transition: theme.transitions.create(['margin', 'width'], {
             easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen,
@@ -34,13 +33,11 @@ const AppToolbar = () => {
     };
 
     return (
-        <AppBar position="fixed" open={open} color="transparent" elevation={0}>
+        <AppBar position="fixed" open={open} color="transparent" elevation={0} sx={{height: 120}}>
             <Toolbar>
                 <Grid container sx={{mr: 2, paddingTop: 1, ...(open && {display: 'none'})}}>
                     <Grid item>
-                        <Link to="/">
-                            <img src={logo} className="Supreme Dispatch" alt="logo"/>
-                        </Link>
+                        <Logo/>
                     </Grid>
                     <Grid item>
                         <IconButton

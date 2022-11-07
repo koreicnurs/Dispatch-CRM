@@ -2,9 +2,11 @@ const express = require('express');
 
 const Carrier = require('../models/Carrier');
 
+const auth = require('../middleware/auth');
+
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   try {
     const {title, mc, dot, fedid, description} = req.body;
     const carrierData = {title, mc, dot, fedid, description};
@@ -19,7 +21,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
     const carriers = await Carrier.find();
     res.send(carriers);

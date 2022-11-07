@@ -6,6 +6,8 @@ import {DragHandle} from "@mui/icons-material";
 import Logo from "../Logo/Logo";
 import {handleDrawer} from "../../../store/actions/drawerActions";
 import {DRAWER_WIDTH} from "../../../constants";
+import 'react-toastify/dist/ReactToastify.css';
+import {ToastContainer} from "react-toastify";
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -34,6 +36,7 @@ const AppToolbar = () => {
 
     return (
         <AppBar position="fixed" open={open} color="transparent" elevation={0} sx={{height: 120}}>
+            <ToastContainer/>
             <Toolbar>
                 <Grid container sx={{mr: 2, paddingTop: 1, ...(open && {display: 'none'})}}>
                     <Grid item>

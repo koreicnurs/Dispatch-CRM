@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 
 const Logo = () => {
     return (
-        <Link to="/">
+        <Link to="/trips">
             <img src={logo} className="Supreme Dispatch" alt="logo"/>
         </Link>
     );

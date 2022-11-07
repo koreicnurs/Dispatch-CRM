@@ -1,6 +1,8 @@
 import React from 'react';
 import {List, ListItemButton, ListItemText, styled} from "@mui/material";
 import {Link} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {logoutRequest} from "../../../store/actions/usersActions";
 
 const StyledList = styled(List)(({theme}) => ({
     color: theme.palette.primary.main,
@@ -18,10 +20,15 @@ const StyledList = styled(List)(({theme}) => ({
 }));
 
 const DrawerContent = () => {
-    const menuItems = ['Trips', 'Carriers', 'Drivers', 'Sign Out'];
+    const dispatch = useDispatch();
+
+    const menuItems = ['Trips', 'Carriers', 'Drivers'];
     const [selectedIndex, setSelectedIndex] = React.useState(0);
     const handleListItemClick = (index) => {
         setSelectedIndex(index);
+        if (index === menuItems.length){
+            dispatch(logoutRequest());
+        }
     };
 
     return (
@@ -35,6 +42,13 @@ const DrawerContent = () => {
                     <ListItemText primaryTypographyProps={{fontWeight: '700'}} primary={text}/>
                 </ListItemButton>
             ))}
+            <ListItemButton
+                            component={Link} to="/login"
+                            selected={selectedIndex === menuItems.length}
+                            onClick={() => handleListItemClick(menuItems.length)}
+            >
+                <ListItemText primaryTypographyProps={{fontWeight: '700'}} primary='Sign Out'/>
+            </ListItemButton>
         </StyledList>
     );
 };

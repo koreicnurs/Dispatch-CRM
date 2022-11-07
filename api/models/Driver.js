@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
+const idValidator = require('mongoose-id-validator');
 
 const Schema = mongoose.Schema;
 
@@ -14,6 +15,25 @@ const validatePhoneNumber = value => {
   
   if (!pattern.test(value)) return false;
 };
+
+const DescriptionSchema = new Schema({
+  address: {
+    type: String,
+    required: true,
+  },
+  DOB: {
+    type: String,
+    required: true,
+  },
+  info: {
+    type: String,
+    required: true,
+  },
+  reference: {
+    type: String,
+    required: true,
+  },
+});
 
 const DriverSchema = new Schema({
   email: {
@@ -47,19 +67,11 @@ const DriverSchema = new Schema({
     required: true,
     enum: ['in transit', 'upcoming', 'off/home', 'n/a', 'sleep', 'ready', 'in tr/upc'],
   },
-  description: {
-    type: Map,
-    of: new Schema({
-      address: String,
-      DOB: String,
-      info: String,
-      reference: String,
-    }),
-    required: true,
-  },
+  description: DescriptionSchema,
 });
 
 DriverSchema.plugin(uniqueValidator, { message: 'Error, expected {PATH} to be unique.' });
+DriverSchema.plugin(idValidator, {message : 'Bad ID value for {PATH}',});
 
 const Driver = mongoose.model('Driver', DriverSchema);
 module.exports = Driver;

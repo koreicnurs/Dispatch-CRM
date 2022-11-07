@@ -4,7 +4,7 @@ import {Grid} from "@mui/material";
 
 const useStyles = makeStyles()(theme => ({
   headerTitle: {
-    width: "96px",
+    width: "150px",
     height: "14px",
     paddingLeft: "30px",
     fontSize: "14px",

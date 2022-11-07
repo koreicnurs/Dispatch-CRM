@@ -5,33 +5,28 @@ import {Container, Grid} from "@mui/material";
 import {makeStyles} from "tss-react/mui";
 import AddButton from "../../components/UI/AddButton/AddButton";
 import TitleItem from "../../components/TitleItem/TitleItem";
+import CarrierItem from "../../components/CarrierItem/CarrierItem";
 
 const useStyles = makeStyles()(theme => ({
   innerContainer: {
     background: '#D9D9D9',
     height: "100vh"
-  },
-  headerTitle: {
-    width: "96px",
-    height: "14px",
-    paddingLeft: "30px"
   }
 }));
 
 const Carriers = () => {
   const {classes} = useStyles();
   const dispatch = useDispatch();
-  const carriers = useSelector(state => state.carriers);
+  const carriers = useSelector(state => state.carriers.carriers);
 
   useEffect(() => {
     dispatch(fetchCarriersRequest());
   }, [dispatch]);
   return (
-    <Container maxWidth="xl" className={classes.innerContainer} >
+    <Container maxWidth="xl" className={classes.innerContainer}>
       <Grid
         container
         direction='column'
-        spacing={2}
       >
         <AddButton newItem='newCarrier'/>
 
@@ -39,12 +34,20 @@ const Carriers = () => {
           item
           container
           spacing={2}
+          marginBottom="16px"
+          marginLeft="-24px"
         >
           <TitleItem title="Company"/>
           <TitleItem title="MC"/>
           <TitleItem title="DOT"/>
           <TitleItem title="FED-ID"/>
         </Grid>
+
+        {carriers.length !== 0 &&
+          carriers.map(carrier => (
+            <CarrierItem key={carrier._id} carrier={carrier}/>
+          ))
+        }
       </Grid>
 
     </Container>

@@ -24,7 +24,6 @@ const CarrierItem = ({carrier}) => {
       spacing={2}
       className={classes.row}
       marginTop="5px"
-      marginLeft="-24px"
     >
       {Object.keys(carrier).map((key) => {
         if (key !== "_id" && key !== "description" && key !== "__v") {

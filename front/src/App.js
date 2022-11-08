@@ -4,6 +4,7 @@ import Layout from "./components/UI/Layout/Layout";
 import Login from "./containers/Login/Login";
 import Trips from "./containers/Trips/Trips";
 import Carriers from "./containers/Carriers/Carriers";
+import newCarrier from "./containers/NewCarrier/NewCarrier";
 
 const ProtectedRoute = ({isAllowed, redirectTo, ...props}) => {
     return isAllowed ?
@@ -35,6 +36,12 @@ const App = () => {
                   redirectTo="/login"
                   path="/carriers"
                   component={Carriers}
+                />
+                <ProtectedRoute
+                  isAllowed={user}
+                  redirectTo="/login"
+                  path="/newCarrier"
+                  component={newCarrier}
                 />
                 <Route path="/login" component={Login}/>
             </Switch>

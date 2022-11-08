@@ -1,6 +1,5 @@
 import React from 'react';
 import add from '../../../assets/addButton.svg';
-import {Link} from "react-router-dom";
 import {makeStyles} from "tss-react/mui";
 import {Grid} from "@mui/material";
 
@@ -12,14 +11,12 @@ const useStyles = makeStyles()(theme => ({
   }
 }));
 
-const AddButton = ({newItem}) => {
+const AddButton = ({click}) => {
   const {classes} = useStyles();
 
   return (
-    <Grid item>
-      <Link to={newItem}>
-        <img src={add} className={classes.add} alt="add"/>
-      </Link>
+    <Grid item onClick={click}>
+      <img src={add} className={classes.add} alt="add"/>
     </Grid>
 
   );

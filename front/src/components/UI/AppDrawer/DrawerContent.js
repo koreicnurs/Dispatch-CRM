@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {List, ListItemButton, ListItemText, styled} from "@mui/material";
 import {Link} from "react-router-dom";
 import {useDispatch} from "react-redux";
@@ -21,12 +21,12 @@ const StyledList = styled(List)(({theme}) => ({
 
 const DrawerContent = () => {
     const dispatch = useDispatch();
-    console.log(window.location.pathname);
 
-    const menuItems = [
+    const menuItems = useMemo(() => [
         {title:'Trips', route:  '/trips'},
         {title: 'Carriers', route: '/carriers'},
-        {title: 'Drivers', route: '/drivers'}];
+        {title: 'Drivers', route: '/drivers'}
+    ], [])
 
     const [selectedIndex, setSelectedIndex] = React.useState(0);
 
@@ -34,7 +34,7 @@ const DrawerContent = () => {
         const path = window.location.pathname;
         const index = menuItems.findIndex(text => text.route === path);
         setSelectedIndex(index);
-    }, []);
+    }, [dispatch, menuItems]);
 
     const handleListItemClick = (index) => {
         setSelectedIndex(index);

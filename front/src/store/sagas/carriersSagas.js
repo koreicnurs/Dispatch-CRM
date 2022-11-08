@@ -8,7 +8,6 @@ import {
   fetchCarriersSuccess
 } from "../actions/carriersActions";
 import {addNotification} from "../actions/notifierActions";
-import {historyPush} from "../actions/historyActions";
 
 export function* fetchCarriers() {
   try {
@@ -25,7 +24,8 @@ export function* createCarrier({payload: carrierData}) {
     yield axiosApi.post('carriers', carrierData);
     yield put(createCarrierSuccess());
     yield put(addNotification({message: 'Carrier created!', variant: 'success'}));
-    yield put(historyPush('/carriers'));
+    const response = yield axiosApi('/carriers');
+    yield put(fetchCarriersSuccess(response.data));
   } catch (e) {
     yield put(createCarrierFailure(e.response.data));
     yield put(addNotification({message: 'Carrier creation failed!', variant: 'error'}));

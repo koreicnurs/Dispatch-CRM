@@ -14,7 +14,7 @@ export function* loginUserSaga({payload: userData}) {
     try {
         const response = yield axiosApi.post('/users/sessions', userData);
         yield put(loginSuccess(response.data));
-        yield put(addNotification({message: 'Login successful!', variant: 'success'}));
+        yield put(addNotification({message: 'Successfully log in!', variant: 'success'}));
         yield put(historyPush('/trips'));
     } catch (e) {
         yield put(loginFailure(e.response.data));
@@ -25,7 +25,6 @@ export function* logoutUserSaga() {
     try {
         yield axiosApi.delete('/users/sessions');
         yield put(logoutSuccess());
-        yield put(addNotification({message: 'Logout successful!', variant: 'success'}));
         yield put(historyPush('/login'));
     } catch (e) {
     }

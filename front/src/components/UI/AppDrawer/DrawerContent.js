@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {List, ListItemButton, ListItemText, styled} from "@mui/material";
 import {Link} from "react-router-dom";
 import {useDispatch} from "react-redux";
@@ -21,9 +21,21 @@ const StyledList = styled(List)(({theme}) => ({
 
 const DrawerContent = () => {
     const dispatch = useDispatch();
+    console.log(window.location.pathname);
 
-    const menuItems = ['Trips', 'Carriers', 'Drivers'];
+    const menuItems = [
+        {title:'Trips', route:  '/trips'},
+        {title: 'Carriers', route: '/carriers'},
+        {title: 'Drivers', route: '/drivers'}];
+
     const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+    useEffect(() => {
+        const path = window.location.pathname;
+        const index = menuItems.findIndex(text => text.route === path);
+        setSelectedIndex(index);
+    }, []);
+
     const handleListItemClick = (index) => {
         setSelectedIndex(index);
         if (index === menuItems.length){
@@ -34,12 +46,12 @@ const DrawerContent = () => {
     return (
         <StyledList>
             {menuItems.map((text, index) => (
-                <ListItemButton key={text}
-                                component={Link} to={text.toLowerCase().replaceAll(' ', '')}
+                <ListItemButton key={text.title}
+                                component={Link} to={text.route}
                                 selected={selectedIndex === index}
                                 onClick={() => handleListItemClick(index)}
                 >
-                    <ListItemText primaryTypographyProps={{fontWeight: '700'}} primary={text}/>
+                    <ListItemText primaryTypographyProps={{fontWeight: '700'}} primary={text.title}/>
                 </ListItemButton>
             ))}
             <ListItemButton

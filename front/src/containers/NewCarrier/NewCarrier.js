@@ -143,9 +143,8 @@ const NewCarrier = () => {
                 type="submit"
                 fullWidth
                 variant="contained"
-                color="primary"
               >
-                Sign In
+                Create
               </ButtonWithProgress>
             </Grid>
 

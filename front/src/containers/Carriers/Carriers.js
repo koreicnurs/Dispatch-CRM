@@ -6,10 +6,11 @@ import AddButton from "../../components/UI/AddButton/AddButton";
 import TitleItem from "../../components/TitleItem/TitleItem";
 import CarrierItem from "../../components/CarrierItem/CarrierItem";
 import {Grid} from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 const useStyles = makeStyles()(theme => ({
   innerContainer: {
-    background: '#D9D9D9',
+    background: '#f0f2fe',
     height: "100vh",
     paddingLeft: "15px",
     paddingBottom: "15px",
@@ -32,6 +33,11 @@ const Carriers = () => {
         direction='column'
         className={classes.innerContainer}
       >
+        <Grid item>
+          <Typography variant="h5" fontWeight="bold">
+            Carriers
+          </Typography>
+        </Grid>
         <AddButton newItem='newCarrier'/>
 
         <Grid

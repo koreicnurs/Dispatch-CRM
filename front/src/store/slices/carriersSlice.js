@@ -24,6 +24,18 @@ const carriersSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+
+    createCarrierRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    createCarrierSuccess(state) {
+      state.loading = false;
+    },
+    createCarrierFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    }
   }
 });
 

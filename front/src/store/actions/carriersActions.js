@@ -3,5 +3,8 @@ import carriersSlice from "../slices/carriersSlice";
 export const {
   fetchCarriersRequest,
   fetchCarriersSuccess,
-  fetchCarriersFailure
+  fetchCarriersFailure,
+  createCarrierRequest,
+  createCarrierSuccess,
+  createCarrierFailure
 } = carriersSlice.actions;

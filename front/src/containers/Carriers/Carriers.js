@@ -5,6 +5,7 @@ import {makeStyles} from "tss-react/mui";
 import AddButton from "../../components/UI/AddButton/AddButton";
 import TitleItem from "../../components/TitleItem/TitleItem";
 import CarrierItem from "../../components/CarrierItem/CarrierItem";
+import {Grid} from "@mui/material";
 
 const useStyles = makeStyles()(theme => ({
   innerContainer: {

@@ -35,6 +35,7 @@ const CarrierItem = ({carrier}) => {
             </Grid>
           )
         }
+        return null;
       })}
     </Grid>
   );

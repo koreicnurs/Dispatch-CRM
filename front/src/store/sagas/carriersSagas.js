@@ -1,7 +1,14 @@
 import {put, takeEvery} from "redux-saga/effects";
 import axiosApi from "../../axiosApi";
-import {fetchCarriersFailure, fetchCarriersRequest, fetchCarriersSuccess} from "../actions/carriersActions";
+import {
+  createCarrierFailure, createCarrierRequest,
+  createCarrierSuccess,
+  fetchCarriersFailure,
+  fetchCarriersRequest,
+  fetchCarriersSuccess
+} from "../actions/carriersActions";
 import {addNotification} from "../actions/notifierActions";
+import {historyPush} from "../actions/historyActions";
 
 export function* fetchCarriers() {
   try {
@@ -13,8 +20,21 @@ export function* fetchCarriers() {
   }
 }
 
+export function* createCarrier({payload: carrierData}) {
+  try {
+    yield axiosApi.post('carriers', carrierData);
+    yield put(createCarrierSuccess());
+    yield put(addNotification({message: 'Carrier created!', variant: 'success'}));
+    yield put(historyPush('/carriers'));
+  } catch (e) {
+    yield put(createCarrierFailure(e.response.data));
+    yield put(addNotification({message: 'Carrier creation failed!', variant: 'error'}));
+  }
+}
+
 const carriersSaga = [
   takeEvery(fetchCarriersRequest, fetchCarriers),
+  takeEvery(createCarrierRequest, createCarrier)
 ];
 
 export default carriersSaga;

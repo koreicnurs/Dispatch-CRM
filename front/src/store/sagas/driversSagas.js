@@ -1,14 +1,14 @@
 import {put, takeEvery} from "redux-saga/effects";
 import axiosApi from "../../axiosApi";
-import {historyPush} from '../actions/historyActions';
 import {addNotification} from '../actions/notifierActions';
 import {
-  fetchDriversRequest,
-  fetchDriversSuccess,
-  fetchDriversFailure,
+  addDriverFailure,
   addDriverRequest,
   addDriverSuccess,
-  addDriverFailure
+  changeModalBoolean,
+  fetchDriversFailure,
+  fetchDriversRequest,
+  fetchDriversSuccess
 } from '../actions/driversActions';
 
 export function* getDrivers() {
@@ -24,9 +24,8 @@ export function* addDriver(action) {
   try {
     yield axiosApi.post('/drivers', action.payload);
     yield put(addDriverSuccess());
-  
+    yield put(changeModalBoolean());
     yield put(addNotification({message: 'You have successfully added a driver!', variant: 'success'}));
-    yield put(historyPush('/drivers'));
   } catch (e) {
     yield put(addDriverFailure(e.response && e.response.data));
   }
@@ -35,6 +34,7 @@ export function* addDriver(action) {
 const driversSagas = [
   takeEvery(fetchDriversRequest, getDrivers),
   takeEvery(addDriverRequest, addDriver),
+  takeEvery(changeModalBoolean, changeModalBoolean),
 ];
 
 export default driversSagas;

@@ -8,6 +8,7 @@ const initialState = {
   driversError: null,
   addDriverLoading: false,
   addDriverError: null,
+  modal: false,
 };
 
 const driversSlice = createSlice({
@@ -35,6 +36,10 @@ const driversSlice = createSlice({
       state.addDriverLoading = false;
       state.addDriverError = action.payload;
     },
+  
+    changeModalBoolean(state) {
+      state.modal = !state.modal;
+    }
   }
 });
 

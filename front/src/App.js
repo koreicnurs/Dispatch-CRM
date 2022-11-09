@@ -3,6 +3,7 @@ import {useSelector} from "react-redux";
 import Layout from "./components/UI/Layout/Layout";
 import Login from "./containers/Login/Login";
 import Trips from "./containers/Trips/Trips";
+import Carriers from "./containers/Carriers/Carriers";
 import Drivers from './containers/Drivers/Drivers';
 
 const ProtectedRoute = ({isAllowed, redirectTo, ...props}) => {
@@ -29,6 +30,12 @@ const App = () => {
                     redirectTo="/login"
                     path="/trips"
                     component={Trips}
+                />
+                <ProtectedRoute
+                  isAllowed={user}
+                  redirectTo="/login"
+                  path="/carriers"
+                  component={Carriers}
                 />
                 <ProtectedRoute
                   isAllowed={user}

@@ -5,6 +5,7 @@ const exitHook = require('async-exit-hook');
 const users = require('./app/users');
 const carriers = require('./app/carriers');
 const drivers = require('./app/drivers');
+const loads = require('./app/loads');
 
 const config = require('./config');
 
@@ -18,6 +19,7 @@ app.use(cors());
 app.use('/users', users);
 app.use('/carriers', carriers);
 app.use('/drivers', drivers);
+app.use('/loads', loads);
 
 const run = async () => {
     await mongoose.connect(config.mongo.db, config.mongo.options);

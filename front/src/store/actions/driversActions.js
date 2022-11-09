@@ -7,5 +7,6 @@ export const {
   addDriverRequest,
   addDriverSuccess,
   addDriverFailure,
-  changeModalBoolean
+  changeModalBoolean,
+  clearDriverErrors
 } = driversSlice.actions;

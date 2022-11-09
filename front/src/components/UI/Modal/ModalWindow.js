@@ -20,7 +20,7 @@ const style = {
 const ModalWindow = (props) => {
   return (
     <div>
-      <Button onClick={props.openCloseModal}>{props.name}</Button>
+      <Button variant='outlined' onClick={props.openCloseModal}>{props.name}</Button>
       <Modal
         sx={{
           '& .css-sox5kk-MuiBackdrop-root': {backgroundColor: 'rgb(25 44 110 / 30%)'},
@@ -29,7 +29,6 @@ const ModalWindow = (props) => {
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={props.open}
-        onClose={props.openCloseModal}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{

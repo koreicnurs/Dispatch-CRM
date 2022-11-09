@@ -34,7 +34,6 @@ export function* addDriver(action) {
 const driversSagas = [
   takeEvery(fetchDriversRequest, getDrivers),
   takeEvery(addDriverRequest, addDriver),
-  takeEvery(changeModalBoolean, changeModalBoolean),
 ];
 
 export default driversSagas;

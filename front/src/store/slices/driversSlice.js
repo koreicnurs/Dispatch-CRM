@@ -36,6 +36,9 @@ const driversSlice = createSlice({
       state.addDriverLoading = false;
       state.addDriverError = action.payload;
     },
+    clearDriverErrors(state) {
+      state.addDriverError = null;
+    },
   
     changeModalBoolean(state) {
       state.modal = !state.modal;

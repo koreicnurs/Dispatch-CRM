@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import ModalWindow from '../UI/Modal/ModalWindow';
 import {FormHelperText, Grid, Typography} from '@mui/material';
 import FormElement from '../UI/Form/FormElement/FormElement';
@@ -6,7 +6,12 @@ import FormSelect from '../UI/Form/FormSelect/FormSelect';
 import {COMPANIES, DRIVER_STATUS} from '../../constants';
 import {useDispatch, useSelector} from 'react-redux';
 import ButtonWithProgress from '../UI/ButtonWithProgress/ButtonWithProgress';
-import {addDriverRequest, changeModalBoolean, fetchDriversRequest} from '../../store/actions/driversActions';
+import {
+  addDriverRequest,
+  changeModalBoolean,
+  clearDriverErrors,
+  fetchDriversRequest
+} from '../../store/actions/driversActions';
 import {MuiTelInput} from 'mui-tel-input';
 import {makeStyles} from 'tss-react/mui';
 
@@ -44,12 +49,22 @@ const AddDriver = () => {
     },
   });
   
-  useEffect(() => {
-    dispatch(fetchDriversRequest())
-  }, [dispatch]);
-  
   const openCloseModal = () => {
     dispatch(changeModalBoolean());
+    setState({
+      email: '',
+      name: '',
+      phoneNumber: '',
+      companyId: '',
+      status: '',
+      description: {
+        address: '',
+        DOB: '',
+        info: '',
+        reference: '',
+      },
+    });
+    dispatch(clearDriverErrors());
   };
   
   const inputChangeHandler = (e) => {
@@ -75,6 +90,7 @@ const AddDriver = () => {
   const submitFormHandler = async (e) => {
     e.preventDefault();
     await dispatch(addDriverRequest({...state}));
+    await dispatch(fetchDriversRequest())
   };
   
   const getFieldError = fieldName => {
@@ -132,7 +148,7 @@ const AddDriver = () => {
             </Grid>
   
             <FormSelect
-              label={'Company'}
+              label={'Carriers'}
               name={'companyId'}
               array={COMPANIES}
               value={state.companyId}
@@ -194,7 +210,7 @@ const AddDriver = () => {
               </Grid>
             </Grid>
   
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <ButtonWithProgress
                 loading={loading}
                 disabled={loading}
@@ -203,7 +219,19 @@ const AddDriver = () => {
                 variant="contained"
                 color="primary"
               >
-                Add
+                Save
+              </ButtonWithProgress>
+            </Grid>
+  
+            <Grid item xs={6}>
+              <ButtonWithProgress
+                type="button"
+                fullWidth
+                variant="contained"
+                color="primary"
+                onClick={openCloseModal}
+              >
+                Cancel
               </ButtonWithProgress>
             </Grid>
           </Grid>

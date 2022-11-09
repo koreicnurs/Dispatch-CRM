@@ -7,7 +7,7 @@ import driversSlice from './slices/driversSlice';
 const rootReducer = combineReducers({
     users: usersSlice.reducer,
     drawer: drawerSlice.reducer,
-    carriers: carriersSlice.reducer
+    carriers: carriersSlice.reducer,
     drivers: driversSlice.reducer,
 });
 

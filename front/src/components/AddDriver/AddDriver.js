@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ModalWindow from '../UI/Modal/ModalWindow';
 import {FormHelperText, Grid, Typography} from '@mui/material';
 import FormElement from '../UI/Form/FormElement/FormElement';
 import FormSelect from '../UI/Form/FormSelect/FormSelect';
-import {COMPANIES, DRIVER_STATUS} from '../../constants';
+import {DRIVER_STATUS} from '../../constants';
 import {useDispatch, useSelector} from 'react-redux';
 import ButtonWithProgress from '../UI/ButtonWithProgress/ButtonWithProgress';
 import {
@@ -14,6 +14,7 @@ import {
 } from '../../store/actions/driversActions';
 import {MuiTelInput} from 'mui-tel-input';
 import {makeStyles} from 'tss-react/mui';
+import {fetchCarriersRequest} from '../../store/actions/carriersActions';
 
 const useStyles = makeStyles()(() =>({
   form : {
@@ -33,6 +34,7 @@ const AddDriver = () => {
   const {classes} = useStyles();
   const dispatch = useDispatch();
   const loading = useSelector(state => state.drivers.addDriverLoading);
+  const carriers = useSelector(state => state.carriers.carriers);
   const error = useSelector(state => state.drivers.addDriverError);
   const modal = useSelector(state => state.drivers.modal);
   const [state, setState] = useState({
@@ -48,6 +50,10 @@ const AddDriver = () => {
       reference: '',
     },
   });
+
+  useEffect(() => {
+    dispatch(fetchCarriersRequest());
+  }, [dispatch]);
   
   const openCloseModal = () => {
     dispatch(changeModalBoolean());
@@ -150,7 +156,7 @@ const AddDriver = () => {
             <FormSelect
               label={'Carriers'}
               name={'companyId'}
-              array={COMPANIES}
+              array={carriers}
               value={state.companyId}
               onChange={inputChangeHandler}
               variant={'object'}

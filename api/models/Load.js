@@ -5,7 +5,7 @@ const idValidator = require('mongoose-id-validator');
 const Schema = mongoose.Schema;
 
 const LoadSchema = new Schema({
-    loadId: {
+    loadCode: {
         type: String,
         required: true,
         unique: true,
@@ -15,7 +15,7 @@ const LoadSchema = new Schema({
         ref: 'Driver',
         required: true,
     },
-    dispatch: {
+    dispatchId: {
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true,

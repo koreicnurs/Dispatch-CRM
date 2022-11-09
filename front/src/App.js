@@ -4,6 +4,7 @@ import Layout from "./components/UI/Layout/Layout";
 import Login from "./containers/Login/Login";
 import Trips from "./containers/Trips/Trips";
 import Carriers from "./containers/Carriers/Carriers";
+import StatusUpdate from "./containers/StatusUpdate/StatusUpdate";
 
 const ProtectedRoute = ({isAllowed, redirectTo, ...props}) => {
     return isAllowed ?
@@ -23,6 +24,12 @@ const App = () => {
                     path="/"
                     exact
                     component={Trips}
+                />
+                <ProtectedRoute
+                    isAllowed={user}
+                    redirectTo="/login"
+                    path="/status_update"
+                    component={StatusUpdate}
                 />
                 <ProtectedRoute
                     isAllowed={user}

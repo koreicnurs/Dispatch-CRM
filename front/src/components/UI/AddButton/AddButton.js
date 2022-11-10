@@ -15,7 +15,7 @@ const AddButton = ({click}) => {
   const {classes} = useStyles();
 
   return (
-    <Grid item onClick={click}>
+    <Grid item onClick={click} sx={{paddingLeft: "15px"}}>
       <img src={add} className={classes.add} alt="add"/>
     </Grid>
 

@@ -4,10 +4,13 @@ import {Grid} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {fetchCarriersRequest} from "../../store/actions/carriersActions";
 import AddButton from "../../components/UI/AddButton/AddButton";
-import TitleItem from "../../components/TitleItem/TitleItem";
-import CarrierItem from "../../components/CarrierItem/CarrierItem";
 import NewCarrier from "../../components/Modals/NewCarrier";
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
+import InnerTable from "../../components/Table/InnerTable";
+import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
+import CarrierTableBody from "../../components/Table/TableBody/CarrierTableBody";
+
+const headerTitles = ["Company", "MC", "DOT", "FED-ID"];
 
 const Carriers = () => {
   const dispatch = useDispatch();
@@ -25,7 +28,7 @@ const Carriers = () => {
       <NewCarrier open={open} handleClose={handleClose}/>
 
       <InnerContainer>
-        <Grid item>
+        <Grid item sx={{paddingLeft: "15px"}}>
           <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
             Carriers
           </Typography>
@@ -33,25 +36,10 @@ const Carriers = () => {
 
         <AddButton click={() => setOpen(true)}/>
 
-        <Grid
-          item
-          container
-          spacing={2}
-          marginBottom="20px"
-        >
-          <TitleItem title="Company"/>
-          <TitleItem title="MC"/>
-          <TitleItem title="DOT"/>
-          <TitleItem title="FED-ID"/>
-        </Grid>
-
-        <Grid item container>
-          {carriers.length !== 0 &&
-            carriers.map(carrier => (
-              <CarrierItem key={carrier._id} carrier={carrier}/>
-            ))
-          }
-        </Grid>
+        <InnerTable
+          header={<TableHeaderRow headerCells={headerTitles}/>}
+          body={<CarrierTableBody carriers={carriers}/>}
+        />
 
       </InnerContainer>
 

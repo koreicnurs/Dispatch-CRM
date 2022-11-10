@@ -6,7 +6,6 @@ const useStyles = makeStyles()(theme => ({
   innerContainer: {
     background: '#f0f2fe',
     height: "100vh",
-    paddingLeft: "15px",
     paddingBottom: "15px",
     paddingTop: "15px"
   }

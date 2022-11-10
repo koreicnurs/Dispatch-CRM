@@ -6,12 +6,7 @@ import FormSelect from '../UI/Form/FormSelect/FormSelect';
 import {DRIVER_STATUS} from '../../constants';
 import {useDispatch, useSelector} from 'react-redux';
 import ButtonWithProgress from '../UI/ButtonWithProgress/ButtonWithProgress';
-import {
-  addDriverRequest,
-  changeModalBoolean,
-  clearDriverErrors,
-  fetchDriversRequest
-} from '../../store/actions/driversActions';
+import {addDriverRequest, changeModalBoolean, clearDriverErrors} from '../../store/actions/driversActions';
 import {MuiTelInput} from 'mui-tel-input';
 import {makeStyles} from 'tss-react/mui';
 import {fetchCarriersRequest} from '../../store/actions/carriersActions';
@@ -96,7 +91,6 @@ const AddDriver = () => {
   const submitFormHandler = async (e) => {
     e.preventDefault();
     await dispatch(addDriverRequest({...state}));
-    await dispatch(fetchDriversRequest())
   };
   
   const getFieldError = fieldName => {

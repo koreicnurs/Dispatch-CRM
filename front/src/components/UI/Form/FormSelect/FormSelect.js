@@ -6,7 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import {FormHelperText, Grid} from '@mui/material';
 
-const FormSelect = ({array, value, onChange, label, required, name, variant, error}) => {
+const FormSelect = ({array, value, onChange, label, required, name, variant, error, driver}) => {
   return (
     <Grid item xs={12}>
       <Box sx={{ minWidth: 120 }}>
@@ -26,7 +26,7 @@ const FormSelect = ({array, value, onChange, label, required, name, variant, err
                 return <MenuItem key={index} value={item}>{item}</MenuItem>
               }
               if (variant === 'object') {
-                return <MenuItem key={item._id} value={item._id}>{item.title}</MenuItem>
+                return <MenuItem key={item._id} value={item._id}>{driver ? item.name : item.title}</MenuItem>
               }
               return null;
             })}

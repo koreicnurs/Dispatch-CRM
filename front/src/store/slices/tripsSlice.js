@@ -8,7 +8,7 @@ export const initialState = {
   error: null,
 };
 
-const carriersSlice = createSlice({
+const tripsSlice = createSlice({
   name,
   initialState,
   reducers: {
@@ -25,7 +25,18 @@ const carriersSlice = createSlice({
       state.error = action.payload;
     },
 
+    createTripRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    createTripSuccess(state) {
+      state.loading = false;
+    },
+    createTripFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    }
   }
 });
 
-export default carriersSlice;
+export default tripsSlice;

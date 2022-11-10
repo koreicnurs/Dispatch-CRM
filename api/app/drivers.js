@@ -1,12 +1,15 @@
 const express = require('express');
 
 const Driver = require('../models/Driver');
+const auth = require('../middleware/auth');
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
-    const drivers = await Driver.find();
+    const drivers = await Driver
+      .find()
+      .populate('companyId', 'title');
     
     res.send(drivers);
   } catch (e) {
@@ -14,7 +17,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
   try {
     const {email, name, phoneNumber, companyId, status, description} = req.body;
     

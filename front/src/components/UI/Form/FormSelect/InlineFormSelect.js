@@ -1,7 +1,7 @@
 import React from 'react';
 import {FormControl, MenuItem, Select} from "@mui/material";
 
-const FormSelect = ({options, name, value, onchange, def, title, id}) => {
+const InlineFormSelect = ({options, name, value, onchange, def, title, id}) => {
   return (
     <FormControl size="small">
       <Select
@@ -26,4 +26,4 @@ const FormSelect = ({options, name, value, onchange, def, title, id}) => {
   );
 };
 
-export default FormSelect;
+export default InlineFormSelect;

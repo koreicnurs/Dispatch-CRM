@@ -1,7 +1,7 @@
 import React from 'react';
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
-// import FormSelect from "../../UI/Form/FormSelect/FormSelect";
+// import InlineFormSelect from "../../UI/Form/InlineFormSelect/InlineFormSelect";
 
 const TripTableBody = ({trips}) => {
 
@@ -31,7 +31,7 @@ const TripTableBody = ({trips}) => {
             <TableCell sx={{fontSize: "12px"}}>test</TableCell>
 
             {/*<TableCell sx={{fontSize: "12px"}}>*/}
-            {/*  <FormSelect*/}
+            {/*  <InlineFormSelect*/}
             {/*    name="dispatchTeam"*/}
             {/*    id={trip._id}*/}
             {/*    value={dispatchTeam}*/}

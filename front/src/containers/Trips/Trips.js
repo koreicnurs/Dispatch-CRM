@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchTripsRequest} from "../../store/actions/tripsActions";
 import TripTableBody from "../../components/Table/TableBody/TripTableBody";
 import AddButton from "../../components/UI/AddButton/AddButton";
+import NewTrip from "../../components/Modals/NewTrip";
 
 const headerTitles = [
   "Loading date", "Unloading date",
@@ -49,6 +50,8 @@ const Trips = () => {
 
   return (
     <>
+      <NewTrip handleClose={handleClose} open={open}/>
+
       <InnerContainer>
         <Grid item sx={{paddingLeft: "15px"}}>
           <Typography variant="h5" fontWeight="bold" textTransform="uppercase">

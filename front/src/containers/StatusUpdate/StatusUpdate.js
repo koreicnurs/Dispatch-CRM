@@ -4,6 +4,7 @@ import {fetchDriversRequest} from "../../store/actions/driversActions";
 import {makeStyles} from "tss-react/mui";
 import {Box, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import Typography from "@mui/material/Typography";
+import {fetchCarriersRequest} from "../../store/actions/carriersActions";
 
 const useStyles = makeStyles()(() => ({
     innerContainer: {
@@ -18,9 +19,11 @@ const useStyles = makeStyles()(() => ({
 const StatusUpdate = () => {
     const {classes} = useStyles();
     const dispatch = useDispatch();
+    const carriers = useSelector(state => state.carriers.drivers);
     const drivers = useSelector(state => state.drivers.drivers);
 
     useEffect(() => {
+        dispatch(fetchCarriersRequest());
         dispatch(fetchDriversRequest());
     }, [dispatch]);
 
@@ -31,52 +34,39 @@ const StatusUpdate = () => {
                 direction='column'
 
             >
-                <Grid item>
+                <Grid item marginBottom='20px'>
                     <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
-                        Carriers
+                        Status Update
                     </Typography>
                 </Grid>
                 <Grid item>
-                    <TableContainer component={Paper}>
-                        <Table sx={{ minWidth: 700 }} aria-label="spanning table">
+                    <TableContainer component={Paper} sx={{ maxHeight: '90vh' }}>
+                        <Table stickyHeader sx={{ minWidth: 700 }} aria-label="spanning table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell align="center" colSpan={3}>
-                                        Details
-                                    </TableCell>
-                                    <TableCell align="right">Price</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell>Desc</TableCell>
-                                    <TableCell align="right">Qty.</TableCell>
-                                    <TableCell align="right">Unit</TableCell>
-                                    <TableCell align="right">Sum</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold'}}>Carrier</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold'}}>Driver</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold'}}>Status</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold'}}>Location</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold'}}>ETA</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold'}}>Ready Time</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold'}}>Notes</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold'}}>Phone</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {drivers.map((driver) => (
-                                    <TableRow key={row.desc}>
-                                        <TableCell>{row.desc}</TableCell>
-                                        <TableCell align="right">{row.qty}</TableCell>
-                                        <TableCell align="right">{row.unit}</TableCell>
-                                        <TableCell align="right">{ccyFormat(row.price)}</TableCell>
+                                {drivers.map(driver => (
+                                    <TableRow key={driver._id}>
+                                        <TableCell>{driver.companyId.title}</TableCell>
+                                        <TableCell>{driver.name}</TableCell>
+                                        <TableCell>{driver.status}</TableCell>
+                                        <TableCell>Location</TableCell>
+                                        <TableCell>ETA</TableCell>
+                                        <TableCell>Ready Time</TableCell>
+                                        <TableCell>Notes</TableCell>
+                                        <TableCell>{driver.phoneNumber}</TableCell>
                                     </TableRow>
                                 ))}
-
-                                <TableRow>
-                                    <TableCell rowSpan={3} />
-                                    <TableCell colSpan={2}>Subtotal</TableCell>
-                                    <TableCell align="right">{ccyFormat(invoiceSubtotal)}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell>Tax</TableCell>
-                                    <TableCell align="right">{`${(TAX_RATE * 100).toFixed(0)} %`}</TableCell>
-                                    <TableCell align="right">{ccyFormat(invoiceTaxes)}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell colSpan={2}>Total</TableCell>
-                                    <TableCell align="right">{ccyFormat(invoiceTotal)}</TableCell>
-                                </TableRow>
                             </TableBody>
                         </Table>
                     </TableContainer>

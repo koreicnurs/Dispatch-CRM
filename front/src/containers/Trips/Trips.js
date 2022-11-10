@@ -4,8 +4,9 @@ import {Grid} from "@mui/material";
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
 import InnerTable from "../../components/Table/InnerTable";
 import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {fetchTripsRequest} from "../../store/actions/tripsActions";
+import TripTableBody from "../../components/Table/TableBody/TripTableBody";
 
 const headerTitles = [
   "Loading date", "Unloading date",
@@ -16,6 +17,7 @@ const headerTitles = [
 
 const Trips = () => {
   const dispatch = useDispatch();
+  const trips = useSelector(state => state.trips.trips);
 
   useEffect(() => {
     dispatch(fetchTripsRequest());
@@ -32,13 +34,12 @@ const Trips = () => {
 
         <InnerTable
           header={<TableHeaderRow headerCells={headerTitles}/>}
+          body={<TripTableBody trips={trips}/>}
         />
 
+      </InnerContainer>
 
-
-            </InnerContainer>
-
-        </>
+    </>
     );
 };
 

@@ -16,11 +16,11 @@ const carriersSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    fetchCTripsSuccess(state, {payload: trips}) {
+    fetchTripsSuccess(state, {payload: trips}) {
       state.loading = false;
       state.trips = trips;
     },
-    fetchCTripsFailure(state, action) {
+    fetchTripsFailure(state, action) {
       state.loading = false;
       state.error = action.payload;
     },

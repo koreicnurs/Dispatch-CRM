@@ -2,6 +2,6 @@ import tripsSlice from "../slices/tripsSlice";
 
 export const {
   fetchTripsRequest,
-  fetchCTripsSuccess,
-  fetchCTripsFailure
+  fetchTripsSuccess,
+  fetchTripsFailure
 } = tripsSlice.actions;

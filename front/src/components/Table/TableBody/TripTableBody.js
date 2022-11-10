@@ -1,8 +1,10 @@
 import React from 'react';
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
+// import FormSelect from "../../UI/Form/FormSelect/FormSelect";
 
 const TripTableBody = ({trips}) => {
+
   return (
     <>
       {trips &&
@@ -25,8 +27,22 @@ const TripTableBody = ({trips}) => {
             <TableCell sx={{fontSize: "12px"}}>{trip.miles}</TableCell>
             <TableCell sx={{fontSize: "12px"}}>{trip.rpm * trip.miles}</TableCell>
             <TableCell sx={{fontSize: "12px"}}>{trip.rpm}</TableCell>
-            <TableCell>{trip.driverId.name}</TableCell>
+            <TableCell sx={{fontSize: "12px"}}>{trip.driverId.name}</TableCell>
             <TableCell sx={{fontSize: "12px"}}>test</TableCell>
+
+            {/*<TableCell sx={{fontSize: "12px"}}>*/}
+            {/*  <FormSelect*/}
+            {/*    name="dispatchTeam"*/}
+            {/*    id={trip._id}*/}
+            {/*    value={dispatchTeam}*/}
+            {/*    onchange={selectChange}*/}
+            {/*    def={dispatchTeamOptions[0].title}*/}
+            {/*    options={dispatchTeamOptions}*/}
+            {/*    title="title"*/}
+            {/*  />*/}
+            {/*</TableCell>*/}
+
+
             <TableCell sx={{fontSize: "12px"}}>{trip.dispatchId.displayName}</TableCell>
 
           </TableRow>

@@ -22,6 +22,19 @@ const driversSlice = createSlice({
        fetchDriversByCarrierFailure(state, {payload: error}) {
            state.loading = false;
            state.error = error;
+       },
+
+       fetchDriverRequest(state) {
+           state.loading = true;
+           state.error = null;
+       },
+       fetchDriverSuccess(state, {payload: driver}) {
+           state.loading = false;
+           state.driver = driver;
+       },
+       fetchDriverFailure(state, {payload: error}) {
+           state.loading = false;
+           state.error = error;
        }
    }
 });

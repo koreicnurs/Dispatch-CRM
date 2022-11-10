@@ -22,6 +22,16 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/:id', async (req, res) => {
+  try {
+      const driver = await Driver.findById(req.params.id).populate('companyId', 'title');
+
+      res.send(driver);
+  } catch (e) {
+    res.sendStatus(500);
+  }
+});
+
 router.post('/', async (req, res) => {
   try {
     const {email, name, phoneNumber, companyId, status, description} = req.body;

@@ -10,6 +10,7 @@ import {addDriverRequest, changeModalBoolean, clearDriverErrors} from '../../sto
 import {MuiTelInput} from 'mui-tel-input';
 import {makeStyles} from 'tss-react/mui';
 import {fetchCarriersRequest} from '../../store/actions/carriersActions';
+import FileInput from '../UI/Form/FileInput/FileInput';
 
 const useStyles = makeStyles()(() =>({
   form : {
@@ -44,6 +45,7 @@ const AddDriver = () => {
       info: '',
       reference: '',
     },
+    license: '',
   });
 
   useEffect(() => {
@@ -88,9 +90,26 @@ const AddDriver = () => {
     }));
   };
   
-  const submitFormHandler = async (e) => {
+  const fileChangeHandler = e => {
+    const name = e.target.name;
+    const file = e.target.files[0];
+    
+    setState(prev => ({...prev, [name]: file}));
+  };
+  
+  const submitFormHandler = e => {
     e.preventDefault();
-    await dispatch(addDriverRequest({...state}));
+    const formData = new FormData();
+    
+    Object.keys(state).forEach(key => {
+      if (key === 'description') {
+        formData.append(key, JSON.stringify(state[key]));
+      } else {
+        formData.append(key, state[key]);
+      }
+    });
+    
+    dispatch(addDriverRequest(formData));
   };
   
   const getFieldError = fieldName => {
@@ -166,6 +185,14 @@ const AddDriver = () => {
               variant={'array'}
               error={getFieldError('status')}
             />
+            
+            <Grid item xs={12}>
+              <FileInput
+                label='License'
+                name='license'
+                onChange={fileChangeHandler}
+              />
+            </Grid>
             
             <Grid item xs={12}>
               <Grid

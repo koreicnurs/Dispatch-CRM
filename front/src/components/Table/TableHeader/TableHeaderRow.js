@@ -14,7 +14,7 @@ const TableHeaderRow = ({headerCells}) => {
   return (
     <>
       {headerCells.map(cell => (
-        <TableCell className={classes.headerTitle}>{cell}</TableCell>
+        <TableCell className={classes.headerTitle} key={Math.random() * 100}>{cell}</TableCell>
       ))}
     </>
   );

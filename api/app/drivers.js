@@ -6,9 +6,17 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const drivers = await Driver.find().populate('companyId', 'title');
-    
-    res.send(drivers);
+    if (req.query.carrier) {
+      const driversByCarrier = await Driver
+          .find({companyId: req.query.carrier}).populate('companyId', 'title');
+
+      res.send(driversByCarrier);
+    } else {
+      const drivers = await Driver.find().populate('companyId', 'title');
+
+      res.send(drivers);
+    }
+
   } catch (e) {
     res.sendStatus(500);
   }

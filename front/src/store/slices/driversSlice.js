@@ -5,21 +5,21 @@ const name = 'drivers';
 const driversSlice = createSlice({
     name,
     initialState: {
-        drivers: [],
+        driversByCarrier: [],
         driver: null,
         loading: false,
         error: null,
     },
    reducers: {
-        fetchDriversRequest(state) {
+        fetchDriversByCarrierRequest(state) {
             state.loading = true;
             state.error = null;
         },
-       fetchDriversSuccess(state, {payload: drivers}) {
+       fetchDriversByCarrierSuccess(state, {payload: drivers}) {
            state.loading = false;
-           state.drivers = drivers;
+           state.driversByCarrier = drivers;
        },
-       fetchDriversFailure(state, {payload: error}) {
+       fetchDriversByCarrierFailure(state, {payload: error}) {
            state.loading = false;
            state.error = error;
        }

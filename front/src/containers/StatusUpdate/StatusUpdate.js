@@ -1,10 +1,11 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {fetchDriversRequest} from "../../store/actions/driversActions";
+import {fetchDriversByCarrierRequest} from "../../store/actions/driversActions";
 import {makeStyles} from "tss-react/mui";
 import {Box, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {fetchCarriersRequest} from "../../store/actions/carriersActions";
+import FormSelect from "../../components/UI/Form/FormSelect/FormSelect";
 
 const useStyles = makeStyles()(() => ({
     innerContainer: {
@@ -19,20 +20,38 @@ const useStyles = makeStyles()(() => ({
 const StatusUpdate = () => {
     const {classes} = useStyles();
     const dispatch = useDispatch();
-    const carriers = useSelector(state => state.carriers.drivers);
-    const drivers = useSelector(state => state.drivers.drivers);
+    const carriers = useSelector(state => state.carriers.carriers);
+    const driversByCarrier = useSelector(state => state.drivers.driversByCarrier);
+
+    const [data, setData] = useState({
+        carrier: '',
+        driver: '',
+        status: '',
+        location: '',
+        ETA: '',
+        readyTime: '',
+        notes: '',
+        phoneNumber: ''
+    });
 
     useEffect(() => {
         dispatch(fetchCarriersRequest());
-        dispatch(fetchDriversRequest());
     }, [dispatch]);
+
+    useEffect(() => {
+        dispatch(fetchDriversByCarrierRequest(data.carrier));
+    }, [dispatch, data.carrier]);
+
+    const onChange = e => {
+        const {name, value} = e.target;
+        setData(prevState => ({...prevState, [name]: value}));
+    };
 
     return (
         <Box className={classes.innerContainer}>
             <Grid
                 container
                 direction='column'
-
             >
                 <Grid item marginBottom='20px'>
                     <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
@@ -55,18 +74,32 @@ const StatusUpdate = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {drivers.map(driver => (
-                                    <TableRow key={driver._id}>
-                                        <TableCell>{driver.companyId.title}</TableCell>
-                                        <TableCell>{driver.name}</TableCell>
-                                        <TableCell>{driver.status}</TableCell>
-                                        <TableCell>Location</TableCell>
-                                        <TableCell>ETA</TableCell>
-                                        <TableCell>Ready Time</TableCell>
-                                        <TableCell>Notes</TableCell>
-                                        <TableCell>{driver.phoneNumber}</TableCell>
+                                    <TableRow>
+                                        <TableCell>
+                                            <FormSelect
+                                                onChange={onChange}
+                                                name='carrier'
+                                                options={carriers}
+                                                label='carrier'
+                                                value={data.carrier}
+                                            />
+                                        </TableCell>
+                                        <TableCell>
+                                            <FormSelect
+                                                onChange={onChange}
+                                                name='driver'
+                                                options={driversByCarrier}
+                                                label='Driver'
+                                                value={data.driver}
+                                            />
+                                        </TableCell>
+                                        {/*<TableCell>{driver.status}</TableCell>*/}
+                                        {/*<TableCell>Location</TableCell>*/}
+                                        {/*<TableCell>ETA</TableCell>*/}
+                                        {/*<TableCell>Ready Time</TableCell>*/}
+                                        {/*<TableCell>Notes</TableCell>*/}
+                                        {/*<TableCell>{driver.phoneNumber}</TableCell>*/}
                                     </TableRow>
-                                ))}
                             </TableBody>
                         </Table>
                     </TableContainer>

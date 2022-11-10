@@ -1,7 +1,7 @@
 import driversSlice from "../slices/driversSlice";
 
 export const {
-    fetchDriversRequest,
-    fetchDriversSuccess,
-    fetchDriversFailure
+    fetchDriversByCarrierRequest,
+    fetchDriversByCarrierSuccess,
+    fetchDriversByCarrierFailure
 } = driversSlice.actions;

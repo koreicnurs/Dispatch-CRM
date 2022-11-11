@@ -1,9 +1,24 @@
 const express = require('express');
+const multer = require('multer');
+const {nanoid} = require('nanoid');
+const path = require('path');
 
 const Driver = require('../models/Driver');
 const auth = require('../middleware/auth');
+const config = require('../config');
 
 const router = express.Router();
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, config.uploadPath);
+  },
+  filename: (req, file, cb) => {
+    cb(null, nanoid() + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({storage});
 
 router.get('/', auth, async (req, res) => {
   try {
@@ -17,7 +32,7 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-router.post('/', auth, async (req, res) => {
+router.post('/', auth, upload.single('license'), async (req, res) => {
   try {
     const {email, name, phoneNumber, companyId, status, description} = req.body;
     
@@ -27,7 +42,8 @@ router.post('/', auth, async (req, res) => {
       phoneNumber,
       companyId,
       status,
-      description
+      description: JSON.parse(description),
+      license: req.file ? 'uploads/' + req.file.filename : null,
     };
     const driver = new Driver(driverData);
 

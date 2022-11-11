@@ -53,4 +53,24 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.put('/:id', async (req, res) => {
+  try {
+    const {email, name, phoneNumber, companyId, status, description} = req.body;
+
+    const driverData = {
+      email,
+      name,
+      phoneNumber,
+      companyId,
+      status,
+      description
+    };
+    const updateDriver = await Driver.findByIdAndUpdate(req.params.id, driverData, {new: true});
+
+    res.send(updateDriver);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
 module.exports = router;

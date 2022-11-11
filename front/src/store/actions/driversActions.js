@@ -6,5 +6,8 @@ export const {
     fetchDriversByCarrierFailure,
     fetchDriverRequest,
     fetchDriverSuccess,
-    fetchDriverFailure
+    fetchDriverFailure,
+    updateDriverRequest,
+    updateDriverSuccess,
+    updateDriverFailure
 } = driversSlice.actions;

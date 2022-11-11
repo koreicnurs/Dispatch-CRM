@@ -4,7 +4,7 @@ import {
     fetchDriverFailure, fetchDriverRequest,
     fetchDriversByCarrierFailure,
     fetchDriversByCarrierRequest,
-    fetchDriversByCarrierSuccess, fetchDriverSuccess
+    fetchDriversByCarrierSuccess, fetchDriverSuccess, updateDriverFailure, updateDriverRequest, updateDriverSuccess
 } from "../actions/driversActions";
 import {addNotification} from "../actions/notifierActions";
 
@@ -28,9 +28,20 @@ export function* fetchDriver({payload: id}) {
     }
 }
 
+export function* updateDriver({payload: id}) {
+    try{
+        yield axiosApi.put('/drivers/' + id);
+        yield put(updateDriverSuccess());
+    } catch (e) {
+        yield put(updateDriverFailure(e.response.data));
+        yield put(addNotification({message: 'Driver update failed!', variant: 'error'}));
+    }
+}
+
 const driversSaga = [
     takeEvery(fetchDriversByCarrierRequest, fetchDriversByCarrier),
-    takeEvery(fetchDriverRequest, fetchDriver)
+    takeEvery(fetchDriverRequest, fetchDriver),
+    takeEvery(updateDriverRequest, updateDriver)
 ];
 
 export default driversSaga;

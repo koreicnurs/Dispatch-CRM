@@ -35,7 +35,19 @@ const driversSlice = createSlice({
        fetchDriverFailure(state, {payload: error}) {
            state.loading = false;
            state.error = error;
-       }
+       },
+
+       updateDriverRequest(state) {
+           state.loading = true;
+           state.error = null;
+       },
+       updateDriverSuccess(state) {
+           state.loading = false;
+       },
+       updateDriverFailure(state, {payload: error}) {
+           state.loading = false;
+           state.error = error;
+       },
    }
 });
 

@@ -1,6 +1,8 @@
 import {put, takeEvery} from "redux-saga/effects";
 import axiosApi from "../../axiosApi";
 import {
+    fetchUsersFailure, fetchUsersRequest,
+    fetchUsersSuccess,
     loginFailure,
     loginRequest,
     loginSuccess,
@@ -30,9 +32,19 @@ export function* logoutUserSaga() {
     }
 }
 
+export function* fetchUsers() {
+    try {
+        const response = yield axiosApi('/users');
+        yield put(fetchUsersSuccess(response.data));
+    } catch (e) {
+        yield put(fetchUsersFailure(e.response.data));
+    }
+}
+
 const userSagas = [
     takeEvery(loginRequest, loginUserSaga),
-    takeEvery(logoutRequest, logoutUserSaga)
+    takeEvery(logoutRequest, logoutUserSaga),
+    takeEvery(fetchUsersRequest, fetchUsers)
 ];
 
 export default userSagas;

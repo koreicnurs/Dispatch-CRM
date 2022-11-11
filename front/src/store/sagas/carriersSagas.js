@@ -21,7 +21,7 @@ export function* fetchCarriers() {
 
 export function* createCarrier({payload: carrierData}) {
   try {
-    yield axiosApi.post('carriers', carrierData);
+    yield axiosApi.post('/carriers', carrierData);
     yield put(createCarrierSuccess());
     yield put(addNotification({message: 'Carrier created!', variant: 'success'}));
     const response = yield axiosApi('/carriers');

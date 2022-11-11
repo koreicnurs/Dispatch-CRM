@@ -9,7 +9,7 @@ const useStyles = makeStyles()(() => ({
 }));
 
 const FileInput = ({onChange, name, label}) => {
-  const { classes } = useStyles();
+  const {classes} = useStyles();
   const inputRef = useRef();
 
   const [filename, setFilename] = useState('');
@@ -20,6 +20,7 @@ const FileInput = ({onChange, name, label}) => {
     } else {
       setFilename('');
     }
+
     onChange(e);
   };
 
@@ -36,10 +37,10 @@ const FileInput = ({onChange, name, label}) => {
         onChange={onFileChange}
         ref={inputRef}
       />
-      <Grid container spacing={2} alignItems="center">
+      <Grid container direction="row" spacing={2} alignItems="center">
         <Grid item xs>
           <TextField
-            fullWidth
+            required={true}
             disabled
             label={label}
             value={filename}

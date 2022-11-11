@@ -1,26 +1,18 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {fetchCarriersRequest} from "../../store/actions/carriersActions";
-import {makeStyles} from "tss-react/mui";
-import AddButton from "../../components/UI/AddButton/AddButton";
-import TitleItem from "../../components/TitleItem/TitleItem";
-import CarrierItem from "../../components/CarrierItem/CarrierItem";
-import {Box, Grid} from "@mui/material";
+import {Grid} from "@mui/material";
 import Typography from "@mui/material/Typography";
+import {fetchCarriersRequest} from "../../store/actions/carriersActions";
+import AddButton from "../../components/UI/AddButton/AddButton";
 import NewCarrier from "../../components/Modals/NewCarrier";
+import InnerContainer from "../../components/InnerContainer/InnerContainer";
+import InnerTable from "../../components/Table/InnerTable";
+import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
+import CarrierTableBody from "../../components/Table/TableBody/CarrierTableBody";
 
-const useStyles = makeStyles()(theme => ({
-  innerContainer: {
-    background: '#f0f2fe',
-    height: "100vh",
-    paddingLeft: "15px",
-    paddingBottom: "15px",
-    paddingTop: "15px"
-  }
-}));
+const headerTitles = ["Company", "MC", "DOT", "FED-ID"];
 
 const Carriers = () => {
-  const {classes} = useStyles();
   const dispatch = useDispatch();
   const carriers = useSelector(state => state.carriers.carriers);
 
@@ -35,42 +27,21 @@ const Carriers = () => {
     <>
       <NewCarrier open={open} handleClose={handleClose}/>
 
-      <Box className={classes.innerContainer}>
-        <Grid
-          container
-          direction='column'
-
-        >
-          <Grid item>
-            <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
-              Carriers
-            </Typography>
-          </Grid>
-
-          <AddButton click={() => setOpen(true)}/>
-
-          <Grid
-            item
-            container
-            spacing={2}
-            marginBottom="20px"
-          >
-            <TitleItem title="Company"/>
-            <TitleItem title="MC"/>
-            <TitleItem title="DOT"/>
-            <TitleItem title="FED-ID"/>
-          </Grid>
-
-          <Grid item container>
-            {carriers.length !== 0 &&
-              carriers.map(carrier => (
-                <CarrierItem key={carrier._id} carrier={carrier}/>
-              ))
-            }
-          </Grid>
-
+      <InnerContainer>
+        <Grid item sx={{paddingLeft: "15px"}}>
+          <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
+            Carriers
+          </Typography>
         </Grid>
-      </Box>
+
+        <AddButton click={() => setOpen(true)}/>
+
+        <InnerTable
+          header={<TableHeaderRow headerCells={headerTitles}/>}
+          body={<CarrierTableBody carriers={carriers}/>}
+        />
+
+      </InnerContainer>
 
     </>
   );

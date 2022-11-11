@@ -8,6 +8,7 @@ import FormSelect from "../UI/Form/FormSelect/FormSelect";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {fetchDriversRequest} from "../../store/actions/driversActions";
 import {createTripRequest} from "../../store/actions/tripsActions";
+import FileInput from "../UI/Form/FileInput/FileInput";
 
 const style = {
   position: 'absolute',
@@ -59,12 +60,21 @@ const NewTrip = ({open, handleClose}) => {
     pu: "",
     del: "",
     status: "",
+    RC: "",
+    BOL: "",
     comment: ""
   });
 
   const inputChangeHandler = e => {
     const {name, value} = e.target;
     setTrip(prev => ({...prev, [name]: value}));
+  };
+
+  const fileChangeHandler = e => {
+    const name = e.target.name;
+    const file = e.target.files[0];
+
+    setTrip(prevState => ({...prevState, [name]: file}));
   };
 
   const submitFormHandler = async e => {
@@ -78,8 +88,12 @@ const NewTrip = ({open, handleClose}) => {
       const currentTrip = trip;
       currentTrip.datePU = new Date(trip.datePU).toISOString();
       currentTrip.dateDEL = new Date(trip.dateDEL).toISOString();
-      console.log({...currentTrip});
-      await dispatch(createTripRequest({...currentTrip}))
+
+      const formData = new FormData();
+      Object.keys(currentTrip).forEach(key => {
+        formData.append(key, currentTrip[key]);
+      });
+      await dispatch(createTripRequest(formData))
     }
 
     setTrip({
@@ -162,7 +176,7 @@ const NewTrip = ({open, handleClose}) => {
                     <FormElement
                       onChange={inputChangeHandler}
                       name="datePU"
-                      label="Loading date"
+                      label="Loading date MM-DD-YYYY"
                       value={trip.datePU}
                       required={true}
                       error={getFieldError('datePU')}
@@ -174,7 +188,7 @@ const NewTrip = ({open, handleClose}) => {
                     <FormElement
                       onChange={inputChangeHandler}
                       name="dateDEL"
-                      label="Arrival date"
+                      label="Arrival date MM-DD-YYYY"
                       value={trip.dateDEL}
                       required={true}
                       error={getFieldError('dateDEL')}
@@ -299,6 +313,14 @@ const NewTrip = ({open, handleClose}) => {
                   error={getFieldError("driverId")}
                   driver={true}
                 />
+
+                <Grid item>
+                  <FileInput name="RC" label="RC file" onChange={fileChangeHandler}/>
+                </Grid>
+
+                <Grid item>
+                  <FileInput name="BOL" label="BOL file" onChange={fileChangeHandler}/>
+                </Grid>
 
                 <FormElement
                   onChange={inputChangeHandler}

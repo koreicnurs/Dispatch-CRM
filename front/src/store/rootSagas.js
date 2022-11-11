@@ -12,9 +12,9 @@ export default function* rootSagas() {
     yield all([
         ...carriersSaga,
         ...tripsSagas,
-        ...driversSagas,
         ...userSagas,
         ...drawerSagas,
+        ...driversSagas,
         ...historySagas(history),
         ...notifierSagas,
     ])

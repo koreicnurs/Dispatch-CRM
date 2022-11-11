@@ -46,8 +46,7 @@ const DriverSchema = new Schema({
   },
   name: {
     type: String,
-    required: true,
-    unique: true,
+    required: true
   },
   phoneNumber: {
     type: String,
@@ -68,6 +67,12 @@ const DriverSchema = new Schema({
     enum: ['in transit', 'upcoming', 'off/home', 'n/a', 'sleep', 'ready', 'in tr/upc'],
   },
   description: DescriptionSchema,
+  pickUp: String,
+  delivery: String,
+  ETA: String,
+  readyTime: String,
+  notes: String,
+  license: String,
 });
 
 DriverSchema.plugin(uniqueValidator, { message: 'Error, expected {PATH} to be unique.' });

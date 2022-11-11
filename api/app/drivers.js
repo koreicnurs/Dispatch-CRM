@@ -1,10 +1,26 @@
 const express = require('express');
+const multer = require('multer');
+const {nanoid} = require('nanoid');
+const path = require('path');
 
 const Driver = require('../models/Driver');
+const auth = require('../middleware/auth');
+const config = require('../config');
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, config.uploadPath);
+  },
+  filename: (req, file, cb) => {
+    cb(null, nanoid() + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({storage});
+
+router.get('/', auth, async (req, res) => {
   try {
     if (req.query.carrier) {
       const driversByCarrier = await Driver
@@ -32,7 +48,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', auth, upload.single('license'), async (req, res) => {
   try {
     const {email, name, phoneNumber, companyId, status, description} = req.body;
     
@@ -42,7 +58,8 @@ router.post('/', async (req, res) => {
       phoneNumber,
       companyId,
       status,
-      description
+      description: JSON.parse(description),
+      license: req.file ? 'uploads/' + req.file.filename : null,
     };
     const driver = new Driver(driverData);
 
@@ -55,16 +72,17 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   try {
-    const {email, name, phoneNumber, companyId, status, description} = req.body;
-    console.log(req.body);
-    console.log(req.params.id);
+    const {email, name, phoneNumber, companyId, status, description, pickUp,
+      delivery, ETA, readyTime, notes} = req.body;
     const driverData = {
       email,
       name,
       phoneNumber,
       companyId,
       status,
-      description
+      description,
+      pickUp,
+      delivery, ETA, readyTime, notes
     };
     const updateDriver = await Driver.findOneAndUpdate({_id: req.params.id}, driverData, {new: true});
 

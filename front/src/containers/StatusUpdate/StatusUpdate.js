@@ -21,7 +21,7 @@ import {
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {fetchCarriersRequest} from "../../store/actions/carriersActions";
-import FormSelect from "../../components/UI/Form/FormSelect/FormSelect";
+import FormSelectDriver from "../../components/UI/Form/FormSelectDriver/FormSelectDriver";
 import MenuItem from "@mui/material/MenuItem";
 import FormElement from "../../components/UI/Form/FormElement/FormElement";
 
@@ -45,7 +45,8 @@ const StatusUpdate = () => {
         companyId: '',
         name: '',
         status: '',
-        location: '',
+        pickUp: '',
+        delivery: '',
         ETA: '',
         readyTime: '',
         notes: '',
@@ -71,10 +72,11 @@ const StatusUpdate = () => {
         setData(prevState => ({
             ...prevState,
             status: driver?.status,
-            // location: driver.status,
-            // ETA: driver.status,
-            // readyTime: driver.status,
-            // notes: driver.status,
+            pickUp: driver?.pickUp,
+            delivery: driver?.delivery,
+            ETA: driver?.ETA,
+            readyTime: driver?.readyTime,
+            notes: driver?.notes,
             phoneNumber: driver?.phoneNumber
         }));
     }, [driver])
@@ -107,7 +109,7 @@ const StatusUpdate = () => {
                                     <TableCell sx={{fontWeight: 'bold', padding: '5px'}}>Carrier</TableCell>
                                     <TableCell sx={{fontWeight: 'bold', padding: '5px'}}>Driver</TableCell>
                                     <TableCell sx={{fontWeight: 'bold', padding: '5px'}}>Status</TableCell>
-                                    <TableCell sx={{fontWeight: 'bold', padding: '5px'}}>Location</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold', padding: '5px', textAlign: 'center'}}>Location</TableCell>
                                     <TableCell sx={{fontWeight: 'bold', padding: '5px'}}>ETA</TableCell>
                                     <TableCell sx={{fontWeight: 'bold', padding: '5px'}}>Ready Time</TableCell>
                                     <TableCell sx={{fontWeight: 'bold', padding: '5px'}}>Notes</TableCell>
@@ -117,7 +119,7 @@ const StatusUpdate = () => {
                             <TableBody>
                                     <TableRow>
                                         <TableCell sx={{minWidth: '150px', padding: '5px'}}>
-                                            <FormSelect
+                                            <FormSelectDriver
                                                 onChange={onChange}
                                                 name='companyId'
                                                 options={carriers}
@@ -128,7 +130,7 @@ const StatusUpdate = () => {
                                             />
                                         </TableCell>
                                         <TableCell sx={{minWidth: '100px', padding: '5px'}}>
-                                            <FormSelect
+                                            <FormSelectDriver
                                                 onChange={onChange}
                                                 name='name'
                                                 options={driversByCarrier}
@@ -157,10 +159,45 @@ const StatusUpdate = () => {
                                                     </FormControl>
                                                 </Grid>
                                         </TableCell>
-                                        <TableCell sx={{padding: '5px'}}>Location</TableCell>
-                                        <TableCell sx={{padding: '5px'}}>ETA</TableCell>
-                                        <TableCell sx={{padding: '5px'}}>Ready Time</TableCell>
-                                        <TableCell sx={{padding: '5px'}}>Notes</TableCell>
+                                        <TableCell sx={{display: 'flex'}} >
+                                            <FormElement
+                                                onChange={onChange}
+                                                name='pickUp'
+                                                value={data.pickUp  || ''}
+                                                variant='standard'
+                                            />
+                                            >>
+                                            <FormElement
+                                                onChange={onChange}
+                                                name='delivery'
+                                                value={data.delivery  || ''}
+                                                variant='standard'
+                                            />
+                                        </TableCell>
+                                        <TableCell sx={{padding: '5px'}}>
+                                            <FormElement
+                                                onChange={onChange}
+                                                name='ETA'
+                                                value={data.ETA  || ''}
+                                                variant='standard'
+                                            />
+                                        </TableCell>
+                                        <TableCell sx={{padding: '5px'}}>
+                                            <FormElement
+                                                onChange={onChange}
+                                                name='readyTime'
+                                                value={data.readyTime  || ''}
+                                                variant='standard'
+                                            />
+                                        </TableCell>
+                                        <TableCell sx={{padding: '5px'}}>
+                                            <FormElement
+                                                onChange={onChange}
+                                                name='notes'
+                                                value={data.notes  || ''}
+                                                variant='standard'
+                                            />
+                                        </TableCell>
                                         <TableCell sx={{padding: '5px'}}>
                                             <FormElement
                                                 onChange={onChange}

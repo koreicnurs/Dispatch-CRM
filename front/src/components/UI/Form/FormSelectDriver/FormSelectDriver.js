@@ -3,7 +3,7 @@ import {FormControl, FormHelperText, Grid, InputLabel, Select} from "@mui/materi
 import MenuItem from "@mui/material/MenuItem";
 import PropTypes from "prop-types";
 
-const FormSelect = ({name, label, value, onChange, error, required, options, optionValue, optionItem, variant}) => {
+const FormSelectDriver = ({name, label, value, onChange, error, required, options, optionValue, optionItem, variant}) => {
     return (
         <Grid item textAlign="left">
             <FormControl fullWidth error={Boolean(error)}>
@@ -28,7 +28,7 @@ const FormSelect = ({name, label, value, onChange, error, required, options, opt
     );
 };
 
-FormSelect.propTypes = {
+FormSelectDriver.propTypes = {
     name: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -41,4 +41,4 @@ FormSelect.propTypes = {
     variant: PropTypes.string,
 };
 
-export default FormSelect;
+export default FormSelectDriver;

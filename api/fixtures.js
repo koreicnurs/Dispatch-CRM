@@ -136,7 +136,12 @@ const run = async () => {
       DOB: '18.12.2005',
       info: 'Lorem ipsum dolor sit amet',
       reference: 'Needs to gain more experience'
-    }
+    },
+    pickUp: 'Ohio',
+    delivery: 'Pennsylvania',
+    ETA: '04:00',
+    readyTime: '15.11.2022',
+    notes: 'bla bla',
   }, {
     email: 'mirbek@gmail.com',
     name: 'Mirbek',

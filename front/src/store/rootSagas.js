@@ -12,8 +12,8 @@ export default function* rootSagas() {
         ...carriersSaga,
         ...userSagas,
         ...drawerSagas,
+        ...driversSagas,
         ...historySagas(history),
         ...notifierSagas,
-        ...driversSagas
     ])
 }

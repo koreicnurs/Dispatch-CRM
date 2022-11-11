@@ -1,9 +1,8 @@
 import React from 'react';
 import {useSelector} from "react-redux";
-import {Box, CssBaseline} from "@mui/material";
+import {Box, CssBaseline, Toolbar} from "@mui/material";
 import AppToolbar from "../AppToolbar/AppToolbar";
 import AppDrawer from "../AppDrawer/AppDrawer";
-import AppMain from "../AppMain/AppMain";
 
 const Layout = ({children}) => {
     const user = useSelector(state => state.users.user);
@@ -17,7 +16,13 @@ const Layout = ({children}) => {
                         <AppToolbar/>
                         <AppDrawer/>
                     </>}
-                <AppMain children={children}/>
+                <Box
+                    component="main"
+                    sx={{flexGrow: 1, mr: 3}}
+                >
+                    <Toolbar/>
+                    {children}
+                </Box>
             </Box>
         </>
     );

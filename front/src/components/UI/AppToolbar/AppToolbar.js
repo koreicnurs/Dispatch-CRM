@@ -1,56 +1,38 @@
 import React from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {Grid, IconButton, styled, Toolbar} from "@mui/material";
-import MuiAppBar from "@mui/material/AppBar";
-import {DragHandle} from "@mui/icons-material";
-import Logo from "../Logo/Logo";
-import {handleDrawer} from "../../../store/actions/drawerActions";
-import {DRAWER_WIDTH} from "../../../constants";
+import {useSelector} from "react-redux";
 import 'react-toastify/dist/ReactToastify.css';
 import {ToastContainer} from "react-toastify";
-
-const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== 'open',
-})(({theme, open}) => ({
-    transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    ...(open && {
-        width: `calc(100% - ${DRAWER_WIDTH}px)`,
-        marginLeft: `${DRAWER_WIDTH}px`,
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    }),
-}));
+import {AppBar, Avatar, Grid, Stack, Toolbar, Typography} from "@mui/material";
+import {DRAWER_WIDTH} from "../../../constants";
+import {apiUrl} from "../../../config";
+import defaultAvatar from "../../../assets/default-avatar.png";
 
 const AppToolbar = () => {
-    const dispatch = useDispatch();
-    const open = useSelector(state => state.drawer.drawerOpen);
+    const user = useSelector(state => state.users.user);
 
-    const handleDrawerOpen = () => {
-        dispatch(handleDrawer(true));
-    };
+    let avatarImage = defaultAvatar;
 
+    if (user.avatar) {
+        avatarImage = apiUrl + '/' + user.avatar;
+    }
     return (
-        <AppBar position="fixed" open={open} color="transparent" elevation={0} sx={{height: 120}}>
+        <AppBar
+            position="fixed"
+            sx={{width: `calc(100% - ${DRAWER_WIDTH}px)`, ml: `${DRAWER_WIDTH}px`, mr: 3}}
+            color="transparent"
+            elevation={0}
+        >
             <ToastContainer/>
             <Toolbar>
-                <Grid container sx={{mr: 2, paddingTop: 1, ...(open && {display: 'none'})}}>
+                <Grid container justifyContent="flex-end" alignItems="center">
                     <Grid item>
-                        <Logo/>
-                    </Grid>
-                    <Grid item>
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={handleDrawerOpen}
-                            edge="start"
-                        >
-                            <DragHandle sx={{color: 'primary.dark'}}/>
-                        </IconButton>
+                        <Stack direction="row" spacing={1} color="inherit">
+                            <Avatar alt={user.displayName} src={avatarImage}
+                                    sx={{width: 32, height: 32, mr: 1}}/>
+                            <Typography variant="button" noWrap>
+                                Hello, {user.displayName}
+                            </Typography>
+                        </Stack>
                     </Grid>
                 </Grid>
             </Toolbar>

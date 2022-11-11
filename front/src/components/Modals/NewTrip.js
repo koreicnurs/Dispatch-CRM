@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {makeStyles} from "tss-react/mui";
 import {useDispatch, useSelector} from "react-redux";
-import {Alert, Box, Button, Grid, Modal} from "@mui/material";
+import {Alert, Box, Button, Grid, Modal, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import FormElement from "../UI/Form/FormElement/FormElement";
 import FormSelect from "../UI/Form/FormSelect/FormSelect";
@@ -9,6 +9,8 @@ import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {fetchDriversRequest} from "../../store/actions/driversActions";
 import {createTripRequest} from "../../store/actions/tripsActions";
 import FileInput from "../UI/Form/FileInput/FileInput";
+import {DesktopDatePicker, LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 
 const style = {
   position: 'absolute',
@@ -31,8 +33,6 @@ const useStyles = makeStyles()(theme => ({
 }));
 
 const statuses = ['upcoming', 'transit', 'finished'];
-
-const regexExp = /^\d{2}[./-]\d{2}[./-]\d{4}$/;
 
 const NewTrip = ({open, handleClose}) => {
   const {classes} = useStyles();
@@ -70,6 +70,9 @@ const NewTrip = ({open, handleClose}) => {
     setTrip(prev => ({...prev, [name]: value}));
   };
 
+  const [startDate, setStartDate] = useState(null);
+  const [finDate, setFinDate] = useState(null);
+
   const fileChangeHandler = e => {
     const name = e.target.name;
     const file = e.target.files[0];
@@ -80,14 +83,12 @@ const NewTrip = ({open, handleClose}) => {
   const submitFormHandler = async e => {
     e.preventDefault();
 
-    if (!trip.dateDEL.match(regexExp) || !trip.datePU.match(regexExp)) {
-      setDateError("Does not match date format!")
-    } else if(new Date(trip.datePU) > new Date(trip.dateDEL)) {
+    if(startDate > finDate) {
       setDateError("DEL date cannot be earlier than PU date!!")
     } else {
       const currentTrip = trip;
-      currentTrip.datePU = new Date(trip.datePU).toISOString();
-      currentTrip.dateDEL = new Date(trip.dateDEL).toISOString();
+      currentTrip.datePU = startDate;
+      currentTrip.dateDEL = finDate;
 
       const formData = new FormData();
       Object.keys(currentTrip).forEach(key => {
@@ -173,27 +174,28 @@ const NewTrip = ({open, handleClose}) => {
                   justifyContent="space-between"
                 >
                   <Grid item width="49.5%">
-                    <FormElement
-                      onChange={inputChangeHandler}
-                      name="datePU"
-                      label="Loading date MM-DD-YYYY"
-                      value={trip.datePU}
-                      required={true}
-                      error={getFieldError('datePU')}
-                      className={classes.field}
-                    />
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DesktopDatePicker
+                        label="Loading date"
+                        inputFormat="MM/DD/YYYY"
+                        onChange={(date) => setStartDate(date)}
+                        value={startDate}
+                        renderInput={(params) => <TextField {...params}/>}/>
+                    </LocalizationProvider>
+
                   </Grid>
 
+
+
                   <Grid item width="49.5%">
-                    <FormElement
-                      onChange={inputChangeHandler}
-                      name="dateDEL"
-                      label="Arrival date MM-DD-YYYY"
-                      value={trip.dateDEL}
-                      required={true}
-                      error={getFieldError('dateDEL')}
-                      className={classes.field}
-                    />
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DesktopDatePicker
+                        label="Arrival date"
+                        inputFormat="MM/DD/YYYY"
+                        onChange={(date) => setFinDate(date)}
+                        value={finDate}
+                        renderInput={(params) => <TextField {...params}/>}/>
+                    </LocalizationProvider>
                   </Grid>
                 </Grid>
 

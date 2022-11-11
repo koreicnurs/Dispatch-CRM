@@ -60,13 +60,14 @@ const Trips = () => {
         })
       })
     }
-  }
+  };
 
   return (
     <>
       <NewTrip handleClose={handleClose} open={open}/>
 
       <InnerContainer>
+
         <Grid item sx={{paddingLeft: "15px"}}>
           <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
             Trips

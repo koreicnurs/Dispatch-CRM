@@ -67,18 +67,25 @@ const StatusUpdate = () => {
         dispatch(fetchDriverRequest(data.name));
     }, [dispatch, data.name]);
 
-    const onChange = async e => {
+    useEffect(() => {
+        setData(prevState => ({
+            ...prevState,
+            status: driver?.status,
+            // location: driver.status,
+            // ETA: driver.status,
+            // readyTime: driver.status,
+            // notes: driver.status,
+            phoneNumber: driver?.phoneNumber
+        }));
+    }, [driver])
+
+    const onChange = e => {
         const {name, value} = e.target;
-        console.log(name, value);
         setData(prevState => ({...prevState, [name]: value}));
-        const driverData = {
-            ...driver,
-            ...data,
-            // email: driver.email,
-            // description: {...driver.description}
-        };
-        console.log(driverData);
-        // await dispatch(updateDriverRequest({id: driver._id, }))
+
+        if (driver._id) {
+            dispatch(updateDriverRequest({id: driver._id, data: {...data, name: driver.name}}));
+        }
     };
 
     return (
@@ -97,19 +104,19 @@ const StatusUpdate = () => {
                         <Table stickyHeader sx={{ minWidth: 700 }} aria-label="spanning table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell sx={{fontWeight: 'bold'}}>Carrier</TableCell>
-                                    <TableCell sx={{fontWeight: 'bold'}}>Driver</TableCell>
-                                    <TableCell sx={{fontWeight: 'bold'}}>Status</TableCell>
-                                    <TableCell sx={{fontWeight: 'bold'}}>Location</TableCell>
-                                    <TableCell sx={{fontWeight: 'bold'}}>ETA</TableCell>
-                                    <TableCell sx={{fontWeight: 'bold'}}>Ready Time</TableCell>
-                                    <TableCell sx={{fontWeight: 'bold'}}>Notes</TableCell>
-                                    <TableCell sx={{fontWeight: 'bold'}}>Phone</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold', padding: '5px'}}>Carrier</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold', padding: '5px'}}>Driver</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold', padding: '5px'}}>Status</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold', padding: '5px'}}>Location</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold', padding: '5px'}}>ETA</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold', padding: '5px'}}>Ready Time</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold', padding: '5px'}}>Notes</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold', padding: '5px'}}>Phone</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                     <TableRow>
-                                        <TableCell sx={{minWidth: '200px', padding: '5px'}}>
+                                        <TableCell sx={{minWidth: '150px', padding: '5px'}}>
                                             <FormSelect
                                                 onChange={onChange}
                                                 name='companyId'
@@ -117,9 +124,10 @@ const StatusUpdate = () => {
                                                 value={data.companyId}
                                                 variant='standard'
                                                 optionItem='title'
+                                                optionValue='_id'
                                             />
                                         </TableCell>
-                                        <TableCell sx={{minWidth: '200px', padding: '5px'}}>
+                                        <TableCell sx={{minWidth: '100px', padding: '5px'}}>
                                             <FormSelect
                                                 onChange={onChange}
                                                 name='name'
@@ -127,6 +135,7 @@ const StatusUpdate = () => {
                                                 value={data.name}
                                                 variant='standard'
                                                 optionItem='name'
+                                                optionValue='_id'
                                             />
                                         </TableCell>
                                         <TableCell  sx={{minWidth: '70px', padding: '5px'}}>
@@ -136,11 +145,10 @@ const StatusUpdate = () => {
                                                             fullWidth
                                                             onChange={onChange}
                                                             name='status'
-                                                            value={data.status}
+                                                            value={data.status || ''}
                                                             variant='standard'
                                                             displayEmpty={true}
-                                                            // defaultValue={driver?.status}
-                                                            renderValue={() => driver?.status}
+                                                            renderValue={() => data.status}
                                                         >
                                                             {statuses.map((status, i) => (
                                                                 <MenuItem key={i} value={status} sx={{background: backgroundC[i], ":hover": 'none', padding: '7px'}}>{status}</MenuItem>
@@ -149,15 +157,15 @@ const StatusUpdate = () => {
                                                     </FormControl>
                                                 </Grid>
                                         </TableCell>
-                                        <TableCell>Location</TableCell>
-                                        <TableCell>ETA</TableCell>
-                                        <TableCell>Ready Time</TableCell>
-                                        <TableCell>Notes</TableCell>
-                                        <TableCell>
+                                        <TableCell sx={{padding: '5px'}}>Location</TableCell>
+                                        <TableCell sx={{padding: '5px'}}>ETA</TableCell>
+                                        <TableCell sx={{padding: '5px'}}>Ready Time</TableCell>
+                                        <TableCell sx={{padding: '5px'}}>Notes</TableCell>
+                                        <TableCell sx={{padding: '5px'}}>
                                             <FormElement
                                                 onChange={onChange}
                                                 name='phoneNumber'
-                                                value={driver?.phoneNumber || ''}
+                                                value={data.phoneNumber  || ''}
                                                 variant='standard'
                                             />
                                         </TableCell>

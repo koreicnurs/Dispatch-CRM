@@ -28,9 +28,9 @@ export function* fetchDriver({payload: id}) {
     }
 }
 
-export function* updateDriver({payload: id}) {
+export function* updateDriver({payload}) {
     try{
-        yield axiosApi.put('/drivers/' + id);
+        yield axiosApi.put('/drivers/' + payload.id, payload.data);
         yield put(updateDriverSuccess());
     } catch (e) {
         yield put(updateDriverFailure(e.response.data));

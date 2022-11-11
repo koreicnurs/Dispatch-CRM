@@ -56,7 +56,8 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const {email, name, phoneNumber, companyId, status, description} = req.body;
-
+    console.log(req.body);
+    console.log(req.params.id);
     const driverData = {
       email,
       name,
@@ -65,7 +66,7 @@ router.put('/:id', async (req, res) => {
       status,
       description
     };
-    const updateDriver = await Driver.findByIdAndUpdate(req.params.id, driverData, {new: true});
+    const updateDriver = await Driver.findOneAndUpdate({_id: req.params.id}, driverData, {new: true});
 
     res.send(updateDriver);
   } catch (e) {

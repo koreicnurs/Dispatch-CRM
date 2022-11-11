@@ -4,8 +4,11 @@ const name = 'users';
 
 export const initialState = {
     user: null,
+    users: [],
     loginLoading: false,
     loginError: null,
+    fetchLoading: false,
+    fetchError: null
 };
 
 const usersSlice = createSlice({
@@ -27,6 +30,19 @@ const usersSlice = createSlice({
         logoutRequest() {},
         logoutSuccess(state) {
             state.user = null;
+        },
+
+        fetchUsersRequest(state) {
+            state.fetchLoading = true;
+            state.fetchError = null;
+        },
+        fetchUsersSuccess(state, {payload: users}) {
+            state.users = users;
+            state.fetchLoading = false;
+        },
+        fetchUsersFailure(state, action) {
+            state.loadingError = action.payload;
+            state.fetchLoading = false;
         }
     }
 });

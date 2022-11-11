@@ -9,6 +9,7 @@ import {fetchTripsRequest} from "../../store/actions/tripsActions";
 import TripTableBody from "../../components/Table/TableBody/TripTableBody";
 import AddButton from "../../components/UI/AddButton/AddButton";
 import NewTrip from "../../components/Modals/NewTrip";
+import {fetchUsersRequest} from "../../store/actions/usersActions";
 
 const headerTitles = [
   "Loading date", "Unloading date",
@@ -17,25 +18,24 @@ const headerTitles = [
     "Dispatch Team", "Dispatch"
 ];
 
-const dispatchTeamTest = [
-  {title: "Team #1", _id: 0},
-  {title: "Team #2", _id: 1},
-];
-
 const Trips = () => {
   const dispatch = useDispatch();
   const trips = useSelector(state => state.trips.trips);
 
   useEffect(() => {
     dispatch(fetchTripsRequest());
+    dispatch(fetchUsersRequest());
   }, [dispatch]);
 
   const [loads, setLoads] = useState([]);
 
   useEffect(() => {
     if (trips.length !== 0) {
-
-      setLoads(trips);
+      setLoads(trips.map(trip => ({
+        ...trip,
+        driverId: trip.driverId._id,
+        dispatchId: trip.dispatchId._id
+      })));
     }
 
   }, [trips]);
@@ -43,10 +43,24 @@ const Trips = () => {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
 
-  const [selectorData, setSelectorData] = useState(
-    {dispatchTeam: ""}
-  );
+  const drivers = useSelector(state => state.drivers.drivers);
+  const users = useSelector(state => state.users.users);
 
+  const selectorChangeHandler = (e, id) => {
+    const {name, value} = e.target.value;
+
+    if (loads.length !== 0) {
+      setLoads(prevState => {
+        return loads.map(load => {
+          if (load._id === id) {
+            return {...prevState, [name]: value}
+          } else {
+            return load;
+          }
+        })
+      })
+    }
+  }
 
   return (
     <>
@@ -66,8 +80,9 @@ const Trips = () => {
           body={
           <TripTableBody
             trips={loads}
-            dispatchTeam={selectorData.dispatchTeam}
-            dispatchTeamOptions={dispatchTeamTest}
+            drivers={drivers}
+            users={users}
+            selectChange={selectorChangeHandler}
           />
         }
         />

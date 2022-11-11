@@ -80,4 +80,13 @@ router.delete('/sessions', auth, async (req, res) => {
   }
 });
 
+router.get('/', auth, async (req, res) => {
+  try {
+    const users = await User.find();
+    res.send(users);
+  } catch (e) {
+    res.sendStatus(500);
+  }
+});
+
 module.exports = router;

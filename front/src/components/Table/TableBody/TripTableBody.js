@@ -1,9 +1,10 @@
 import React from 'react';
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
-// import InlineFormSelect from "../../UI/Form/InlineFormSelect/InlineFormSelect";
+import InlineFormSelect from "../../UI/Form/FormSelect/InlineFormSelect";
 
-const TripTableBody = ({trips}) => {
+
+const TripTableBody = ({trips, selectChange, drivers, users}) => {
 
   return (
     <>
@@ -27,7 +28,17 @@ const TripTableBody = ({trips}) => {
             <TableCell sx={{fontSize: "12px"}}>{trip.miles}</TableCell>
             <TableCell sx={{fontSize: "12px"}}>{trip.rpm * trip.miles}</TableCell>
             <TableCell sx={{fontSize: "12px"}}>{trip.rpm}</TableCell>
-            <TableCell sx={{fontSize: "12px"}}>{trip.driverId.name}</TableCell>
+            <TableCell sx={{fontSize: "12px"}}>
+              <InlineFormSelect
+                name="driverId"
+                id={trip._id}
+                value={trip.driverId._id}
+                onchange={selectChange}
+                def={trip.driverId}
+                options={drivers}
+                title="name"
+              />
+            </TableCell>
             <TableCell sx={{fontSize: "12px"}}>test</TableCell>
 
             {/*<TableCell sx={{fontSize: "12px"}}>*/}
@@ -43,7 +54,17 @@ const TripTableBody = ({trips}) => {
             {/*</TableCell>*/}
 
 
-            <TableCell sx={{fontSize: "12px"}}>{trip.dispatchId.displayName}</TableCell>
+            <TableCell sx={{fontSize: "12px"}}>
+              <InlineFormSelect
+                name="dispatchId"
+                id={trip._id}
+                value={trip.dispatchId._id}
+                onchange={selectChange}
+                def={trip.dispatchId}
+                options={users}
+                title="displayName"
+              />
+            </TableCell>
 
           </TableRow>
         ))

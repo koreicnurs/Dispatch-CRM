@@ -9,9 +9,9 @@ import {
 import {addNotification} from "../actions/notifierActions";
 import axiosApi from "../../axiosApi";
 
-export function* fetchTrips() {
+export function* fetchTrips({payload: value}) {
   try{
-    const response = yield axiosApi('/loads');
+    const response = yield axiosApi('/trips/' + value);
     yield put(fetchTripsSuccess(response.data));
   } catch (e) {
     yield put(fetchTripsFailure(e.response.error));
@@ -21,10 +21,10 @@ export function* fetchTrips() {
 
 export function* createTrip({payload: tripData}) {
   try {
-    yield axiosApi.post('/loads', tripData);
+    yield axiosApi.post('/trips', tripData);
     yield put(createTripSuccess());
     yield put(addNotification({message: 'Trip created!', variant: 'success'}));
-    const response = yield axiosApi('/loads');
+    const response = yield axiosApi('/trips?status=upcoming');
     yield put(fetchTripsSuccess(response.data));
   } catch (e) {
     yield put(createTripFailure(e));

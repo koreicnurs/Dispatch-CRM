@@ -5,7 +5,6 @@ import InlineFormSelect from "../../UI/Form/FormSelect/InlineFormSelect";
 
 
 const TripTableBody = ({trips, selectChange, drivers, users}) => {
-
   return (
     <>
       {trips &&

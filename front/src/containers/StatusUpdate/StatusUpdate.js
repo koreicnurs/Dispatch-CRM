@@ -1,29 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {
-    fetchDriverRequest,
-    fetchDriversByCarrierRequest,
-    updateDriverRequest
-} from "../../store/actions/driversActions";
+import {fetchDriversRequest} from "../../store/actions/driversActions";
 import {makeStyles} from "tss-react/mui";
-import {
-    Box,
-    FormControl,
-    Grid,
-    Paper,
-    Select,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow
-} from "@mui/material";
+import {Box, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import {fetchCarriersRequest} from "../../store/actions/carriersActions";
-import FormSelectDriver from "../../components/UI/Form/FormSelectDriver/FormSelectDriver";
-import MenuItem from "@mui/material/MenuItem";
-import FormElement from "../../components/UI/Form/FormElement/FormElement";
 
 const useStyles = makeStyles()(() => ({
     innerContainer: {
@@ -37,58 +17,11 @@ const useStyles = makeStyles()(() => ({
 const StatusUpdate = () => {
     const {classes} = useStyles();
     const dispatch = useDispatch();
-    const carriers = useSelector(state => state.carriers.carriers);
-    const driversByCarrier = useSelector(state => state.drivers.driversByCarrier);
-    const driver = useSelector(state => state.drivers.driver);
-
-    const [data, setData] = useState({
-        companyId: '',
-        name: '',
-        status: '',
-        pickUp: '',
-        delivery: '',
-        ETA: '',
-        readyTime: '',
-        notes: '',
-        phoneNumber: ''
-    });
-
-    const statuses = ['in transit', 'upcoming', 'off/home', 'n/a', 'sleep', 'ready', 'in tr/upc'];
-    const backgroundC = ['#0AF413', 'yellow', '#FFFFFF', 'lightBlue', '#4162DF', '#FC0707', '#E10AF4'];
+    const allDrivers = useSelector(state => state.drivers.drivers);
 
     useEffect(() => {
-        dispatch(fetchCarriersRequest());
+        dispatch(fetchDriversRequest());
     }, [dispatch]);
-
-    useEffect(() => {
-        dispatch(fetchDriversByCarrierRequest(data.companyId));
-    }, [dispatch, data.companyId]);
-
-    useEffect(() => {
-        dispatch(fetchDriverRequest(data.name));
-    }, [dispatch, data.name]);
-
-    useEffect(() => {
-        setData(prevState => ({
-            ...prevState,
-            status: driver?.status,
-            pickUp: driver?.pickUp,
-            delivery: driver?.delivery,
-            ETA: driver?.ETA,
-            readyTime: driver?.readyTime,
-            notes: driver?.notes,
-            phoneNumber: driver?.phoneNumber
-        }));
-    }, [driver])
-
-    const onChange = e => {
-        const {name, value} = e.target;
-        setData(prevState => ({...prevState, [name]: value}));
-
-        if (driver._id) {
-            dispatch(updateDriverRequest({id: driver._id, data: {...data, name: driver.name}}));
-        }
-    };
 
     return (
         <Box className={classes.innerContainer}>
@@ -117,96 +50,34 @@ const StatusUpdate = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                    <TableRow>
+                                {allDrivers.map(driver => (
+                                    <TableRow key={driver._id}>
                                         <TableCell sx={{minWidth: '150px', padding: '5px'}}>
-                                            <FormSelectDriver
-                                                onChange={onChange}
-                                                name='companyId'
-                                                options={carriers}
-                                                value={data.companyId}
-                                                variant='standard'
-                                                optionItem='title'
-                                                optionValue='_id'
-                                            />
+                                            {driver.companyId.title}
                                         </TableCell>
                                         <TableCell sx={{minWidth: '100px', padding: '5px'}}>
-                                            <FormSelectDriver
-                                                onChange={onChange}
-                                                name='name'
-                                                options={driversByCarrier}
-                                                value={data.name}
-                                                variant='standard'
-                                                optionItem='name'
-                                                optionValue='_id'
-                                            />
+                                            {driver.name}
                                         </TableCell>
                                         <TableCell  sx={{minWidth: '70px', padding: '5px'}}>
-                                                <Grid item textAlign="left" marginTop='12px'>
-                                                    <FormControl fullWidth>
-                                                        <Select
-                                                            fullWidth
-                                                            onChange={onChange}
-                                                            name='status'
-                                                            value={data.status || ''}
-                                                            variant='standard'
-                                                            displayEmpty={true}
-                                                            renderValue={() => data.status}
-                                                        >
-                                                            {statuses.map((status, i) => (
-                                                                <MenuItem key={i} value={status} sx={{background: backgroundC[i], ":hover": 'none', padding: '7px'}}>{status}</MenuItem>
-                                                            ))}
-                                                        </Select>
-                                                    </FormControl>
-                                                </Grid>
+                                            {driver.status}
                                         </TableCell>
                                         <TableCell sx={{display: 'flex'}} >
-                                            <FormElement
-                                                onChange={onChange}
-                                                name='pickUp'
-                                                value={data.pickUp  || ''}
-                                                variant='standard'
-                                            />
-                                            >>
-                                            <FormElement
-                                                onChange={onChange}
-                                                name='delivery'
-                                                value={data.delivery  || ''}
-                                                variant='standard'
-                                            />
+                                            {driver.pickUp} >> {driver.delivery}
                                         </TableCell>
                                         <TableCell sx={{padding: '5px'}}>
-                                            <FormElement
-                                                onChange={onChange}
-                                                name='ETA'
-                                                value={data.ETA  || ''}
-                                                variant='standard'
-                                            />
+                                            {driver.ETA}
                                         </TableCell>
                                         <TableCell sx={{padding: '5px'}}>
-                                            <FormElement
-                                                onChange={onChange}
-                                                name='readyTime'
-                                                value={data.readyTime  || ''}
-                                                variant='standard'
-                                            />
+                                            {driver.readyTime}
                                         </TableCell>
                                         <TableCell sx={{padding: '5px'}}>
-                                            <FormElement
-                                                onChange={onChange}
-                                                name='notes'
-                                                value={data.notes  || ''}
-                                                variant='standard'
-                                            />
+                                            {driver.notes }
                                         </TableCell>
                                         <TableCell sx={{padding: '5px'}}>
-                                            <FormElement
-                                                onChange={onChange}
-                                                name='phoneNumber'
-                                                value={data.phoneNumber  || ''}
-                                                variant='standard'
-                                            />
+                                            {driver.phoneNumber}
                                         </TableCell>
                                     </TableRow>
+                                ))}
                             </TableBody>
                         </Table>
                     </TableContainer>

@@ -6,6 +6,7 @@ const User = require('./models/User');
 const Carrier = require('./models/Carrier');
 const Driver = require("./models/Driver");
 const Load = require("./models/Load");
+const Learning = require("./models/Learning");
 
 const run = async () => {
   await mongoose.connect(config.mongo.db);
@@ -248,6 +249,22 @@ const run = async () => {
     del: 'Seattle, WS',
     status: 'finished',
   });
+  
+  await Learning.create(
+    {
+      title: 'Lorem Ipsum',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non',
+      author: user._id,
+    }, {
+      title: 'Convallis convallis',
+      description: 'Convallis convallis tellus id interdum velit laoreet id donec ultrices.',
+      author: user2._id,
+    }, {
+      title: 'Metus',
+      description: 'Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.',
+      author: user2._id,
+    }
+  );
   
   await mongoose.connection.close();
 };

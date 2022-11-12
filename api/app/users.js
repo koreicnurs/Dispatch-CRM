@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({storage});
 
-router.post('/', upload.single('image'), async (req, res) => {
+router.post('/', upload.single('avatar'), async (req, res) => {
   try {
     const {email, password, displayName} = req.body;
     const userData = {
@@ -65,6 +65,23 @@ router.post('/sessions', async (req,  res) => {
     res.send(user);
   } catch (e) {
     res.status(400).send(e);
+  }
+});
+
+router.put('/', auth, upload.single('avatar'), async (req, res) => {
+  try {
+    const {displayName, password} = req.body;
+
+    const userData = {
+      displayName,
+      password,
+      avatar: req.file ? 'uploads/' + req.file.filename : null,
+    };
+    const updateUser = await User.findOneAndUpdate({_id: req.user._id}, userData, {new: true});
+    res.send(updateUser);
+
+  } catch (e) {
+    res.sendStatus(500);
   }
 });
 

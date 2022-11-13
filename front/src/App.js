@@ -4,7 +4,8 @@ import Layout from "./components/UI/Layout/Layout";
 import Login from "./containers/Login/Login";
 import Trips from "./containers/Trips/Trips";
 import Carriers from "./containers/Carriers/Carriers";
-import Drivers from './containers/Drivers/Drivers';
+import StatusUpdate from "./containers/StatusUpdate/StatusUpdate";
+// import Drivers from './containers/Drivers/Drivers';
 
 const ProtectedRoute = ({isAllowed, redirectTo, ...props}) => {
     return isAllowed ?
@@ -28,6 +29,12 @@ const App = () => {
                 <ProtectedRoute
                     isAllowed={user}
                     redirectTo="/login"
+                    path="/status_update"
+                    component={StatusUpdate}
+                />
+                <ProtectedRoute
+                    isAllowed={user}
+                    redirectTo="/login"
                     path="/trips"
                     component={Trips}
                 />
@@ -37,12 +44,12 @@ const App = () => {
                   path="/carriers"
                   component={Carriers}
                 />
-                <ProtectedRoute
-                  isAllowed={user}
-                  redirectTo="/login"
-                  path="/drivers"
-                  component={Drivers}
-                />
+                {/*<ProtectedRoute*/}
+                {/*  isAllowed={user}*/}
+                {/*  redirectTo="/login"*/}
+                {/*  path="/drivers"*/}
+                {/*  component={Drivers}*/}
+                {/*/>*/}
                 <Route path="/login" component={Login}/>
             </Switch>
         </Layout>

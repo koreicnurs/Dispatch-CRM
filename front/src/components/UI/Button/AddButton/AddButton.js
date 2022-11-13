@@ -1,9 +1,9 @@
 import React from 'react';
-import add from '../../../assets/addButton.svg';
+import add from '../../../../assets/addButton.svg';
 import {makeStyles} from "tss-react/mui";
 import {Grid} from "@mui/material";
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles()(() => ({
   add: {
     marginTop: "19px",
     marginLeft: "7px",

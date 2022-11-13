@@ -4,7 +4,13 @@ export const {
   fetchCarriersRequest,
   fetchCarriersSuccess,
   fetchCarriersFailure,
+  fetchCarrierRequest,
+  fetchCarrierSuccess,
+  fetchCarrierFailure,
   createCarrierRequest,
   createCarrierSuccess,
-  createCarrierFailure
+  createCarrierFailure,
+  editCarrierRequest,
+  editCarrierSuccess,
+  editCarrierFailure
 } = carriersSlice.actions;

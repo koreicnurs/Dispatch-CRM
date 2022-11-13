@@ -26,10 +26,7 @@ const Carriers = () => {
   const [openAdd, setOpenAdd] = React.useState(false);
   const handleCloseAdd = () => setOpenAdd(false);
 
-  // const [carrierToEdit, setCarrierToEdit] = React.useState('');
-
   const onChoose = id => {
-    console.log(id);
     dispatch(fetchCarrierRequest(id));
   };
 
@@ -39,7 +36,11 @@ const Carriers = () => {
   return (
     <>
       <NewCarrier open={openAdd} handleClose={handleCloseAdd}/>
-      <EditCarrier open={openEdit} handleClose={handleCloseEdit} carrier={carrier}/>
+      <EditCarrier
+          open={openEdit}
+          handleClose={handleCloseEdit}
+          carrier={carrier}
+      />
 
       <InnerContainer>
         <Grid item sx={{paddingLeft: "15px"}}>

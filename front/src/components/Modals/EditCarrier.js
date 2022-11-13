@@ -73,15 +73,16 @@ const EditCarrier = ({open, handleClose, carrier}) => {
 
     return (
         <div>
-            <div>
-                <Modal
-                    keepMounted
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="keep-mounted-modal-title"
-                    aria-describedby="keep-mounted-modal-description"
-                >
-                    <Box sx={style}>
+            <Modal
+                keepMounted
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="keep-mounted-modal-title"
+                aria-describedby="keep-mounted-modal-description"
+            >
+                <Box sx={style}>
+                    {carrier ?
+                    <>
                         <Typography id="keep-mounted-modal-description" sx={{ mb: 2 }}>
                             Edit Carrier
                         </Typography>
@@ -168,12 +169,11 @@ const EditCarrier = ({open, handleClose, carrier}) => {
                                 </Grid>
 
                             </Grid> }
-
-
                         </Grid>
-                    </Box>
-                </Modal>
-            </div>
+                    </>
+                    : <h4>Please choose a carrier to edit!</h4> }
+                </Box>
+            </Modal>
         </div>
     );
 };

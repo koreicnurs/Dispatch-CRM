@@ -7,7 +7,7 @@ import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchTripsRequest} from "../../store/actions/tripsActions";
 import TripTableBody from "../../components/Table/TableBody/TripTableBody";
-import AddButton from "../../components/UI/AddButton/AddButton";
+import AddButton from "../../components/UI/Button/AddButton/AddButton";
 import NewTrip from "../../components/Modals/NewTrip";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
 

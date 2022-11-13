@@ -5,7 +5,7 @@ import {Alert, Box, Button, Grid, Modal, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import FormElement from "../UI/Form/FormElement/FormElement";
 import FormSelect from "../UI/Form/FormSelect/FormSelect";
-import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
+import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
 import {fetchDriversRequest} from "../../store/actions/driversActions";
 import {createTripRequest} from "../../store/actions/tripsActions";
 import FileInput from "../UI/Form/FileInput/FileInput";

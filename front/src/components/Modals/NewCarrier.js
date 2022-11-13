@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Alert, Box, Grid, Modal} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import FormElement from "../UI/Form/FormElement/FormElement";
-import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
+import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
 import {useDispatch, useSelector} from "react-redux";
 import {createCarrierRequest} from "../../store/actions/carriersActions";
 import {makeStyles} from "tss-react/mui";

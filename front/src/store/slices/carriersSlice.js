@@ -4,6 +4,7 @@ const name = 'carriers';
 
 export const initialState = {
   carriers: [],
+  carrier: null,
   loading: false,
   error: null,
 };
@@ -25,6 +26,19 @@ const carriersSlice = createSlice({
       state.error = action.payload;
     },
 
+    fetchCarrierRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    fetchCarrierSuccess(state, {payload: carrier}) {
+      state.loading = false;
+      state.carrier = carrier;
+    },
+    fetchCarrierFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
     createCarrierRequest(state) {
       state.loading = true;
       state.error = null;
@@ -35,7 +49,19 @@ const carriersSlice = createSlice({
     createCarrierFailure(state, action) {
       state.loading = false;
       state.error = action.payload;
-    }
+    },
+
+    editCarrierRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    editCarrierSuccess(state) {
+      state.loading = false;
+    },
+    editCarrierFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
   }
 });
 

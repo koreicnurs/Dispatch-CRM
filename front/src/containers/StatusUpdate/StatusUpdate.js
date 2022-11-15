@@ -39,20 +39,20 @@ const StatusUpdate = () => {
                         <Table stickyHeader sx={{ minWidth: 700 }} aria-label="spanning table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell sx={{fontWeight: 'bold', padding: '5px'}}>Carrier</TableCell>
-                                    <TableCell sx={{fontWeight: 'bold', padding: '5px'}}>Driver</TableCell>
-                                    <TableCell sx={{fontWeight: 'bold', padding: '5px'}}>Status</TableCell>
-                                    <TableCell sx={{fontWeight: 'bold', padding: '5px', textAlign: 'center'}}>Location</TableCell>
-                                    <TableCell sx={{fontWeight: 'bold', padding: '5px'}}>ETA</TableCell>
-                                    <TableCell sx={{fontWeight: 'bold', padding: '5px'}}>Ready Time</TableCell>
-                                    <TableCell sx={{fontWeight: 'bold', padding: '5px'}}>Notes</TableCell>
-                                    <TableCell sx={{fontWeight: 'bold', padding: '5px'}}>Phone</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold', background: '#f0f2fe', fontSize: "12px", padding: '15px'}}>Carrier</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold', background: '#f0f2fe', fontSize: "12px", padding: '15px'}}>Driver</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold', background: '#f0f2fe', fontSize: "12px", padding: '15px'}}>Status</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold', background: '#f0f2fe', fontSize: "12px", padding: '15px', textAlign: 'center'}}>Location</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold', background: '#f0f2fe', fontSize: "12px", padding: '15px'}}>ETA</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold', background: '#f0f2fe', fontSize: "12px", padding: '15px'}}>Ready Time</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold', background: '#f0f2fe', fontSize: "12px", padding: '15px'}}>Notes</TableCell>
+                                    <TableCell sx={{fontWeight: 'bold', background: '#f0f2fe', fontSize: "12px", padding: '15px'}}>Phone</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {allDrivers.map(driver => (
                                     <TableRow key={driver._id}>
-                                        <TableCell sx={{minWidth: '150px', padding: '5px'}}>
+                                        <TableCell sx={{minWidth: '150px', padding: '15px'}}>
                                             {driver.companyId.title}
                                         </TableCell>
                                         <TableCell sx={{minWidth: '100px', padding: '5px'}}>

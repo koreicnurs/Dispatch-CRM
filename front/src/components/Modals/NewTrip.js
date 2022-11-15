@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {makeStyles} from "tss-react/mui";
 import {useDispatch, useSelector} from "react-redux";
-import {Alert, Box, Button, Grid, Modal, TextField} from "@mui/material";
+import {Alert, Box, Grid, Modal, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import FormElement from "../UI/Form/FormElement/FormElement";
 import FormSelect from "../UI/Form/FormSelect/FormSelect";
@@ -334,14 +334,19 @@ const NewTrip = ({open, handleClose}) => {
                 />
 
                 <Grid item xs={12} container spacing={2} justifyContent="space-between">
-                  <Grid item>
-                    <Button variant="contained" onClick={handleClose}>
+                  <Grid item xs={6}>
+                    <ButtonWithProgress
+                      type="button"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      onClick={handleClose}
+                    >
                       Cancel
-                    </Button>
-
+                    </ButtonWithProgress>
                   </Grid>
 
-                  <Grid item>
+                  <Grid item xs={6}>
                     <ButtonWithProgress
                       loading={loading}
                       disabled={loading}
@@ -359,9 +364,6 @@ const NewTrip = ({open, handleClose}) => {
             </Grid>
 
           </Box>
-
-
-
         </Modal>
       </div>
 

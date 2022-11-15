@@ -29,7 +29,7 @@ const StatusUpdate = () => {
                 container
                 direction='column'
             >
-                <Grid item marginBottom='15px' ml='15px'>
+                <Grid item sx={{paddingLeft: "15px"}}>
                     <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
                         Status Update
                     </Typography>

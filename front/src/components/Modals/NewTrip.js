@@ -185,8 +185,6 @@ const NewTrip = ({open, handleClose}) => {
 
                   </Grid>
 
-
-
                   <Grid item width="49.5%">
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DesktopDatePicker

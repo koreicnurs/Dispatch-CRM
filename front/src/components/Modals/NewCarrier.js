@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Alert, Box, Grid, Modal} from "@mui/material";
+import {Alert, Box, Button, Grid, Modal} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import FormElement from "../UI/Form/FormElement/FormElement";
 import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
@@ -155,21 +155,26 @@ const NewCarrier = ({open, handleClose}) => {
                   className={classes.field}
                 />
 
-                <Grid item xs={12}>
-                  <ButtonWithProgress
-                    loading={loading}
-                    disabled={loading}
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                  >
-                    Create
-                  </ButtonWithProgress>
+                <Grid item xs={12} container spacing={2} justifyContent="space-between">
+                  <Grid item>
+                    <Button variant="contained" onClick={handleClose}>
+                      Cancel
+                    </Button>
+
+                  </Grid>
+                  <Grid item>
+                    <ButtonWithProgress
+                      loading={loading}
+                      disabled={loading}
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                    >
+                      Create
+                    </ButtonWithProgress>
+                  </Grid>
                 </Grid>
-
               </Grid>
-
-
             </Grid>
           </Box>
         </Modal>

@@ -70,7 +70,7 @@ router.post('/', auth, upload.single('license'), async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', upload.single('license'), async (req, res) => {
   try {
     const {email, name, phoneNumber, companyId, status, description, pickUp,
       delivery, ETA, readyTime, notes} = req.body;
@@ -80,10 +80,11 @@ router.put('/:id', async (req, res) => {
       phoneNumber,
       companyId,
       status,
-      description,
+      description: JSON.parse(description),
       pickUp,
       delivery, ETA, readyTime, notes
     };
+
     const updateDriver = await Driver.findOneAndUpdate({_id: req.params.id}, driverData, {new: true});
 
     res.send(updateDriver);

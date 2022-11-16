@@ -155,21 +155,33 @@ const NewCarrier = ({open, handleClose}) => {
                   className={classes.field}
                 />
 
-                <Grid item xs={12}>
-                  <ButtonWithProgress
-                    loading={loading}
-                    disabled={loading}
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                  >
-                    Create
-                  </ButtonWithProgress>
+                <Grid item xs={12} container spacing={2} justifyContent="space-between">
+                  <Grid item xs={6}>
+                    <ButtonWithProgress
+                      type="button"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      onClick={handleClose}
+                    >
+                      Cancel
+                    </ButtonWithProgress>
+                  </Grid>
+
+
+                  <Grid item xs={6}>
+                    <ButtonWithProgress
+                      loading={loading}
+                      disabled={loading}
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                    >
+                      Create
+                    </ButtonWithProgress>
+                  </Grid>
                 </Grid>
-
               </Grid>
-
-
             </Grid>
           </Box>
         </Modal>

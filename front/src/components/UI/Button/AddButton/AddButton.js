@@ -7,8 +7,13 @@ const useStyles = makeStyles()(() => ({
   add: {
     marginTop: "19px",
     marginLeft: "7px",
-    marginBottom: "19px"
+    marginBottom: "19px",
+    "&:hover": {
+      borderRadius: "8px",
+      backgroundColor: '#cccccc'
+    },
   }
+
 }));
 
 const AddButton = ({click}) => {

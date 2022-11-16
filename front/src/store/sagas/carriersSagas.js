@@ -53,7 +53,7 @@ export function* editCarrier({payload}) {
   try {
     yield axiosApi.put('/carriers/' + payload.id, payload.data);
     yield put(editCarrierSuccess());
-    yield put(addNotification({message: 'Carrier is edited!', variant: 'success'}));
+    yield put(addNotification({message: 'You have successfully edited a carrier!', variant: 'success'}));
   } catch (e) {
     yield put(editCarrierFailure(e.response.data));
     yield put(addNotification({message: 'Carrier edit is failed!', variant: 'error'}));

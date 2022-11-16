@@ -18,7 +18,7 @@ const style = {
   padding: '20px'
 };
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles()(() => ({
   field: {
     background: "white"
   }
@@ -62,7 +62,7 @@ const NewCarrier = ({open, handleClose}) => {
 
   const getFieldError = fieldName => {
     try {
-      return `${error.error} ${[fieldName]}`;
+      return error.errors[fieldName].message;
     } catch {
       return undefined;
     }

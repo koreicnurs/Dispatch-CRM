@@ -5,8 +5,8 @@ import {makeStyles} from "tss-react/mui";
 import {useDispatch, useSelector} from "react-redux";
 import FormElement from "../UI/Form/FormElement/FormElement";
 import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
-import {editCarrierRequest, fetchCarriersRequest} from "../../store/actions/carriersActions";
 import EditButton from "../UI/Button/EditButton/EditButton";
+import {editCarrierRequest, fetchCarriersRequest} from "../../store/actions/carriersActions";
 
 const style = {
   position: 'absolute',
@@ -63,12 +63,13 @@ const EditCarrier = ({carrier}) => {
       description: ''
     });
     await dispatch(fetchCarriersRequest());
+
     setModal(false);
   };
 
   const getFieldError = fieldName => {
     try {
-      return `${error.error} ${[fieldName]}`;
+      return error.errors[fieldName].message;
     } catch {
       return undefined;
     }
@@ -116,7 +117,7 @@ const EditCarrier = ({carrier}) => {
                     name="title"
                     label="Company name"
                     value={carrierData.title}
-                    required={true}
+                    required={carrierData.title !== ''}
                     error={getFieldError('title')}
                     className={classes.field}
                   />

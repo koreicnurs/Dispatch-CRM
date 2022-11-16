@@ -44,10 +44,10 @@ const Carriers = () => {
         <InnerTable
           header={<TableHeaderRow headerCells={headerTitles}/>}
           body={
-            <CarrierTableBody
+          <CarrierTableBody
               carriers={carriers}
               onChoose={onChoose}
-            />}
+          />}
         />
 
       </InnerContainer>

@@ -7,6 +7,8 @@ export const initialState = {
   carrier: null,
   loading: false,
   error: null,
+  editModal: false,
+  newModal: false,
 };
 
 const carriersSlice = createSlice({
@@ -61,6 +63,13 @@ const carriersSlice = createSlice({
     editCarrierFailure(state, action) {
       state.loading = false;
       state.error = action.payload;
+    },
+
+    changeEditModal(state) {
+      state.editModal = !state.editModal;
+    },
+    changeNewModal(state) {
+      state.newModal = !state.newModal;
     },
   }
 });

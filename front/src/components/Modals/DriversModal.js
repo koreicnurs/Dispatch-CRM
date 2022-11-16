@@ -48,7 +48,6 @@ const DriversModal = ({modalTitle, isAdd, driverData}) => {
 
   const loading = useSelector(state => state.drivers.addDriverLoading);
   const error = useSelector(state => state.drivers.addDriverError);
-  const editError = useSelector(state => state.drivers.error);
   const carriers = useSelector(state => state.carriers.carriers);
 
   useEffect(() => {
@@ -169,9 +168,7 @@ const DriversModal = ({modalTitle, isAdd, driverData}) => {
       await dispatch(updateDriverRequest({id: driverId, data: formData}));
       await dispatch(fetchDriversRequest());
 
-      if (editError) {
-        setModal(false);
-      }
+      setModal(false);
     }
   };
 

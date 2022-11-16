@@ -74,20 +74,23 @@ router.put('/:id', upload.single('license'), async (req, res) => {
   try {
     const {email, name, phoneNumber, companyId, status, description, pickUp,
       delivery, ETA, readyTime, notes} = req.body;
-    const driverData = {
-      email,
-      name,
-      phoneNumber,
-      companyId,
-      status,
-      description: JSON.parse(description),
-      pickUp,
-      delivery, ETA, readyTime, notes
-    };
 
-    const updateDriver = await Driver.findOneAndUpdate({_id: req.params.id}, driverData, {new: true});
+    const driver = await Driver.findById(req.params.id);
 
-    res.send(updateDriver);
+    driver.email = email;
+    driver.name = name;
+    driver.phoneNumber = phoneNumber;
+    driver.companyId = companyId;
+    driver.status = status;
+    driver.description = JSON.parse(description);
+    driver.pickUp = pickUp;
+    driver.delivery = delivery;
+    driver.ETA = ETA;
+    driver.readyTime = readyTime;
+    driver.notes = notes;
+
+    await driver.save();
+    res.send(driver);
   } catch (e) {
     res.status(400).send(e);
   }

@@ -209,25 +209,34 @@ const DriversModal = ({modalTitle, isAdd, driverData}) => {
                   onSubmit={submitFormHandler}
                   pr={'15px'}
                 >
-                  <Grid item xs={12} display={'flex'}>
-                    <FormElement
-                      type={'email'}
-                      name={'email'}
-                      label={'Email'}
-                      value={state.email}
-                      required={true}
-                      onChange={inputChangeHandler}
-                      error={getFieldError('email')}
-                    />
+                  <Grid
+                    item
+                    container
+                    spacing={2}
+                    justifyContent="space-between"
+                  >
+                    <Grid item width="49.5%">
+                      <FormElement
+                        type={'email'}
+                        name={'email'}
+                        label={'Email'}
+                        value={state.email}
+                        required={true}
+                        onChange={inputChangeHandler}
+                        error={getFieldError('email')}
+                      />
+                    </Grid>
 
-                    <FormElement
-                      name={'name'}
-                      label={'Name'}
-                      value={state.name}
-                      required={true}
-                      onChange={inputChangeHandler}
-                      error={getFieldError('name')}
-                    />
+                    <Grid item width="49.5%">
+                      <FormElement
+                        name={'name'}
+                        label={'Name'}
+                        value={state.name}
+                        required={true}
+                        onChange={inputChangeHandler}
+                        error={getFieldError('name')}
+                      />
+                    </Grid>
                   </Grid>
 
                   <Grid item xs={12}>
@@ -247,28 +256,36 @@ const DriversModal = ({modalTitle, isAdd, driverData}) => {
                     }}>{getFieldError('phoneNumber')}</FormHelperText>
                   </Grid>
 
-                  <Grid item xs={12} display={'flex'}>
-                    <FormSelect
-                      label={'Carriers'}
-                      name={'companyId'}
-                      array={carriers}
-                      value={state.companyId}
-                      onChange={inputChangeHandler}
-                      required={true}
-                      variant={'object'}
-                      error={getFieldError('companyId')}
-                    />
-
-                    <FormSelect
-                      label={'Status'}
-                      name={'status'}
-                      array={DRIVER_STATUS}
-                      value={state.status}
-                      onChange={inputChangeHandler}
-                      required={true}
-                      variant={'array'}
-                      error={getFieldError('status')}
-                    />
+                  <Grid
+                    item
+                    container
+                    spacing={2}
+                    justifyContent="space-between"
+                  >
+                    <Grid item width="49.5%">
+                      <FormSelect
+                        label={'Carriers'}
+                        name={'companyId'}
+                        array={carriers}
+                        value={state.companyId}
+                        onChange={inputChangeHandler}
+                        required={true}
+                        variant={'object'}
+                        error={getFieldError('companyId')}
+                      />
+                    </Grid>
+                    <Grid item width="49.5%">
+                      <FormSelect
+                        label={'Status'}
+                        name={'status'}
+                        array={DRIVER_STATUS}
+                        value={state.status}
+                        onChange={inputChangeHandler}
+                        required={true}
+                        variant={'array'}
+                        error={getFieldError('status')}
+                      />
+                    </Grid>
                   </Grid>
 
                   <Grid item xs={12}>
@@ -288,44 +305,60 @@ const DriversModal = ({modalTitle, isAdd, driverData}) => {
                       spacing={2}
                     >
                       <legend className={classes.descriptionLegend}>Description</legend>
-                      <Grid item xs={12} display={'flex'}>
-                        <FormElement
-                          name={'address'}
-                          label={'Address'}
-                          value={state.description.address}
-                          required={true}
-                          onChange={inputChangeHandlerDescription}
-                          error={getFieldError('description.address')}
-                        />
-
-                        <FormElement
-                          name={'DOB'}
-                          label={'DOB'}
-                          value={state.description.DOB}
-                          required={true}
-                          onChange={inputChangeHandlerDescription}
-                          error={getFieldError('description.DOB')}
-                        />
+                      <Grid
+                        item
+                        container
+                        spacing={2}
+                        justifyContent="space-between"
+                      >
+                        <Grid item width="49.5%">
+                          <FormElement
+                            name={'address'}
+                            label={'Address'}
+                            value={state.description.address}
+                            required={true}
+                            onChange={inputChangeHandlerDescription}
+                            error={getFieldError('description.address')}
+                          />
+                        </Grid>
+                        <Grid item width="49.5%">
+                          <FormElement
+                            name={'DOB'}
+                            label={'DOB'}
+                            value={state.description.DOB}
+                            required={true}
+                            onChange={inputChangeHandlerDescription}
+                            error={getFieldError('description.DOB')}
+                          />
+                        </Grid>
                       </Grid>
 
-                      <Grid item xs={12} display={'flex'}>
-                        <FormElement
-                          name={'info'}
-                          label={'Info'}
-                          value={state.description.info}
-                          required={true}
-                          onChange={inputChangeHandlerDescription}
-                          error={getFieldError('description.info')}
-                        />
-
-                        <FormElement
-                          name={'reference'}
-                          label={'Reference'}
-                          value={state.description.reference}
-                          required={true}
-                          onChange={inputChangeHandlerDescription}
-                          error={getFieldError('description.reference')}
-                        />
+                      <Grid
+                        item
+                        container
+                        spacing={2}
+                        justifyContent="space-between"
+                      >
+                        <Grid item width="49.5%">
+                          <FormElement
+                            name={'info'}
+                            label={'Info'}
+                            value={state.description.info}
+                            required={true}
+                            onChange={inputChangeHandlerDescription}
+                            error={getFieldError('description.info')}
+                          />
+                        </Grid>
+                        <Grid item width="49.5%">
+                          <FormElement
+                            name={'reference'}
+                            label={'Reference'}
+                            value={state.description.reference}
+                            required={true}
+                            onChange={inputChangeHandlerDescription}
+                            error={getFieldError('description.reference')}
+                          />
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Grid>

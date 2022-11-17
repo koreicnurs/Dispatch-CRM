@@ -20,7 +20,7 @@ const DriverTableBody = ({columns, drivers}) => {
             }
             return <TableCell sx={{fontSize: "12px"}} key={column.key + column.innerKey}>{value}</TableCell>;
           })}
-          <EditDriver driverData={driver}/>
+          <EditDriver driverEmail={driver.email}/>
         </TableRow>
       ))}
     </>

@@ -7,8 +7,10 @@ export const initialState = {
   carrier: null,
   loading: false,
   error: null,
-  editModal: false,
-  newModal: false,
+  addCarrierLoading: false,
+  addCarrierError: null,
+  editCarrierLoading: false,
+  editCarrierError: null,
 };
 
 const carriersSlice = createSlice({
@@ -42,34 +44,32 @@ const carriersSlice = createSlice({
     },
 
     createCarrierRequest(state) {
-      state.loading = true;
-      state.error = null;
+      state.addCarrierLoading = true;
+      state.addCarrierError = null;
     },
     createCarrierSuccess(state) {
-      state.loading = false;
+      state.addCarrierLoading = false;
     },
     createCarrierFailure(state, action) {
-      state.loading = false;
-      state.error = action.payload;
+      state.addCarrierLoading = false;
+      state.addCarrierError = action.payload;
     },
 
     editCarrierRequest(state) {
-      state.loading = true;
-      state.error = null;
+      state.editCarrierLoading = true;
+      state.editCarrierError = null;
     },
     editCarrierSuccess(state) {
-      state.loading = false;
+      state.editCarrierLoading = false;
     },
     editCarrierFailure(state, action) {
-      state.loading = false;
-      state.error = action.payload;
+      state.editCarrierLoading = false;
+      state.editCarrierError = action.payload;
     },
 
-    changeEditModal(state) {
-      state.editModal = !state.editModal;
-    },
-    changeNewModal(state) {
-      state.newModal = !state.newModal;
+    clearCarriersErrors(state) {
+      state.addCarrierError = null;
+      state.editCarrierError = null;
     },
   }
 });

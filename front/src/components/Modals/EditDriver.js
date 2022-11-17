@@ -2,11 +2,11 @@ import React from 'react';
 import {TableCell} from "@mui/material";
 import DriversModal from "./DriversModal";
 
-const EditDriver = ({driverData}) => (
+const EditDriver = ({driverEmail}) => (
   <TableCell>
     <DriversModal
       modalTitle={"Edit driver"}
-      driverData={driverData}
+      driverEmail={driverEmail}
     />
   </TableCell>
 );

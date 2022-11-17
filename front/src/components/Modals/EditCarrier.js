@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, Box, Grid, Modal, TableCell} from "@mui/material";
+import {Box, Grid, Modal, TableCell} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {makeStyles} from "tss-react/mui";
 import {useDispatch, useSelector} from "react-redux";
 import FormElement from "../UI/Form/FormElement/FormElement";
 import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
 import EditButton from "../UI/Button/EditButton/EditButton";
-import {editCarrierRequest, fetchCarriersRequest} from "../../store/actions/carriersActions";
+import {clearCarriersErrors, editCarrierRequest} from "../../store/actions/carriersActions";
 
 const style = {
   position: 'absolute',
@@ -29,7 +29,8 @@ const EditCarrier = ({carrier}) => {
   const {classes} = useStyles();
 
   const dispatch = useDispatch();
-  const error = useSelector(state => state.carriers.error);
+  const carriers = useSelector(state => state.carriers.carriers);
+  const error = useSelector(state => state.carriers.editCarrierError);
   const loading = useSelector(state => state.carriers.loading);
 
   const [modal, setModal] = useState(false);
@@ -43,8 +44,17 @@ const EditCarrier = ({carrier}) => {
   });
 
   useEffect(() => {
+    if (error === null) {
+      setModal(false);
+    }
+    // eslint-disable-next-line
+  }, [carriers]);
+
+  const openModalHandler = () => {
     setCarrierData(carrier);
-  }, [carrier]);
+    dispatch(clearCarriersErrors());
+    setModal(true);
+  };
 
   const inputChangeHandler = e => {
     const {name, value} = e.target;
@@ -54,17 +64,6 @@ const EditCarrier = ({carrier}) => {
   const submitFormHandler = async e => {
     e.preventDefault();
     await dispatch(editCarrierRequest({id: carrier._id, data: {...carrierData}}));
-
-    setCarrierData({
-      title: '',
-      mc: '',
-      dot: '',
-      fedid: '',
-      description: ''
-    });
-    await dispatch(fetchCarriersRequest());
-
-    setModal(false);
   };
 
   const getFieldError = fieldName => {
@@ -78,7 +77,7 @@ const EditCarrier = ({carrier}) => {
   return (
     <TableCell>
       <EditButton
-        click={() => setModal(true)}
+        click={() => openModalHandler()}
       />
       <Modal
         keepMounted
@@ -93,18 +92,6 @@ const EditCarrier = ({carrier}) => {
               <Typography id="keep-mounted-modal-description" sx={{mb: 2}}>
                 Edit Carrier
               </Typography>
-              <Grid
-                container
-                direction="column"
-              >
-                <Grid item>
-                  {error && (
-                    <Alert severity="error">
-                      Error! {error.message}
-                    </Alert>
-                  )}
-                </Grid>
-
                 <Grid
                   container
                   textAlign="center"
@@ -117,7 +104,7 @@ const EditCarrier = ({carrier}) => {
                     name="title"
                     label="Company name"
                     value={carrierData.title}
-                    required={carrierData.title !== ''}
+                    required={true}
                     error={getFieldError('title')}
                     className={classes.field}
                   />
@@ -190,7 +177,6 @@ const EditCarrier = ({carrier}) => {
                   </Grid>
 
                 </Grid>
-              </Grid>
             </>
             : <h4>Please choose a carrier to edit!</h4>}
         </Box>

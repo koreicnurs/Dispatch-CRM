@@ -41,24 +41,38 @@ const useStyles = makeStyles()(() => ({
   },
 }));
 
-const DriversModal = ({modalTitle, isAdd, driverData}) => {
+const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
   const {classes} = useStyles();
 
   const dispatch = useDispatch();
 
+  const drivers = useSelector(state => state.drivers.drivers);
   const loading = useSelector(state => state.drivers.addDriverLoading);
-  const error = useSelector(state => state.drivers.addDriverError);
+  const newError = useSelector(state => state.drivers.addDriverError);
+  const editError = useSelector(state => state.drivers.editDriverError);
   const carriers = useSelector(state => state.carriers.carriers);
 
-  useEffect(() => {
-    dispatch(fetchCarriersRequest());
-  }, [dispatch]);
-
-  const [modal, setModal] = useState(false);
+  const [newModal, setNewModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
 
   const [driverId, setDriverId] = useState('');
 
-  const [state, setState] = useState({
+  const [newData, setNewData] = useState({
+    email: '',
+    name: '',
+    phoneNumber: '',
+    companyId: '',
+    status: '',
+    description: {
+      address: '',
+      DOB: '',
+      info: '',
+      reference: '',
+    },
+    license: '',
+  });
+
+  const [editedData, setEditedData] = useState({
     email: '',
     name: '',
     phoneNumber: '',
@@ -74,13 +88,20 @@ const DriversModal = ({modalTitle, isAdd, driverData}) => {
   });
 
   useEffect(() => {
-    dispatch(fetchCarriersRequest());
-  }, [dispatch]);
+    if (newError === null) {
+      setNewModal(false);
+    }
+    if (editError === null) {
+      setEditModal(false);
+    }
+    // eslint-disable-next-line
+  }, [drivers]);
 
-  const openCloseModal = driver => {
+  const openCloseModal = emailDriver => {
+    dispatch(fetchCarriersRequest());
+
     if (isAdd) {
-      setModal(!modal);
-      setState({
+      setNewData({
         email: '',
         name: '',
         phoneNumber: '',
@@ -93,27 +114,29 @@ const DriversModal = ({modalTitle, isAdd, driverData}) => {
           reference: '',
         },
       });
-      dispatch(clearDriverErrors());
-    } else {
-      setModal(!modal);
-      if (driver) {
-        setDriverId(driver._id);
 
-        setState(prev => ({
-          ...prev,
-          email: driver.email,
-          name: driver.name,
-          phoneNumber: driver.phoneNumber,
-          companyId: driver.companyId._id,
-          status: driver.status,
-          description: {
-            address: driver.description.address,
-            DOB: driver.description.DOB,
-            info: driver.description.info,
-            reference: driver.description.reference,
-          },
-        }));
-      }
+      setNewModal(true);
+      dispatch(clearDriverErrors());
+    } else if (!isAdd) {
+      const driver = drivers.filter(item => item.email === emailDriver)[0];
+
+      setDriverId(driver._id);
+
+      setEditedData({
+        email: driver.email,
+        name: driver.name,
+        phoneNumber: driver.phoneNumber,
+        companyId: driver.companyId._id,
+        status: driver.status,
+        description: {
+          address: driver.description.address,
+          DOB: driver.description.DOB,
+          info: driver.description.info,
+          reference: driver.description.reference,
+        },
+      });
+
+      setEditModal(true);
       dispatch(clearDriverErrors());
     }
   };
@@ -121,28 +144,42 @@ const DriversModal = ({modalTitle, isAdd, driverData}) => {
   const inputChangeHandler = (e) => {
     if (e.target) {
       const {name, value} = e.target;
-      setState(prev => ({...prev, [name]: value}));
+      isAdd
+        ? setNewData(prev => ({...prev, [name]: value}))
+        : setEditedData(prev => ({...prev, [name]: value}));
     } else {
-      setState(prev => ({...prev, phoneNumber: e.replace(/ /g, '')}));
+      isAdd
+        ? setNewData(prev => ({...prev, phoneNumber: e.replace(/ /g, '')}))
+        : setEditedData(prev => ({...prev, phoneNumber: e.replace(/ /g, '')}));
     }
   };
 
   const inputChangeHandlerDescription = e => {
     const {name, value} = e.target;
-    setState(prev => ({
-      ...prev,
-      description: {
-        ...state.description,
-        [name]: value,
-      }
-    }));
+    isAdd
+      ? setNewData(prev => ({
+        ...prev,
+        description: {
+          ...newData.description,
+          [name]: value,
+        }
+      }))
+      : setEditedData(prev => ({
+        ...prev,
+        description: {
+          ...editedData.description,
+          [name]: value,
+        }
+      }));
   };
 
   const fileChangeHandler = e => {
     const name = e.target.name;
     const file = e.target.files[0];
 
-    setState(prev => ({...prev, [name]: file}));
+    isAdd
+      ? setNewData(prev => ({...prev, [name]: file}))
+      : setEditedData(prev => ({...prev, [name]: file}));
   };
 
   const submitFormHandler = async e => {
@@ -150,31 +187,25 @@ const DriversModal = ({modalTitle, isAdd, driverData}) => {
 
     const formData = new FormData();
 
-    Object.keys(state).forEach(key => {
+    Object.keys(isAdd ? newData : editedData).forEach(key => {
       if (key === 'description') {
-        formData.append(key, JSON.stringify(state[key]));
+        formData.append(key, JSON.stringify(isAdd ? newData[key] : editedData[key]));
       } else {
-        formData.append(key, state[key]);
+        formData.append(key, isAdd ? newData[key] : editedData[key]);
       }
     });
 
     if (isAdd) {
       dispatch(addDriverRequest(formData));
-
-      if (error) {
-        setModal(false);
-      }
     } else {
       await dispatch(updateDriverRequest({id: driverId, data: formData}));
       await dispatch(fetchDriversRequest());
-
-      setModal(false);
     }
   };
 
   const getFieldError = fieldName => {
     try {
-      return error.errors[fieldName].message;
+      return isAdd ? newError.errors[fieldName].message : editError.errors[fieldName].message;
     } catch {
       return undefined;
     }
@@ -185,16 +216,16 @@ const DriversModal = ({modalTitle, isAdd, driverData}) => {
       {isAdd
         ? <AddButton click={openCloseModal}/>
         : <EditButton
-          click={() => openCloseModal(driverData)}
+          click={() => openCloseModal(driverEmail)}
         />
       }
       <Modal
-        open={modal}
-        onClose={() => setModal(false)}
+        open={isAdd ? newModal : editModal}
+        onClose={() => isAdd ? setNewModal(false) : setEditModal(false)}
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
       >
-        <Fade in={modal}>
+        <Fade in={isAdd ? newModal : editModal}>
           <Box sx={style}>
             <div>
               <Grid>
@@ -220,7 +251,7 @@ const DriversModal = ({modalTitle, isAdd, driverData}) => {
                         type={'email'}
                         name={'email'}
                         label={'Email'}
-                        value={state.email}
+                        value={isAdd ? newData.email : editedData.email}
                         required={true}
                         onChange={inputChangeHandler}
                         error={getFieldError('email')}
@@ -231,7 +262,7 @@ const DriversModal = ({modalTitle, isAdd, driverData}) => {
                       <FormElement
                         name={'name'}
                         label={'Name'}
-                        value={state.name}
+                        value={isAdd ? newData.name : editedData.name}
                         required={true}
                         onChange={inputChangeHandler}
                         error={getFieldError('name')}
@@ -246,7 +277,7 @@ const DriversModal = ({modalTitle, isAdd, driverData}) => {
                       defaultCountry={'US'}
                       name={'phoneNumber'}
                       label={'Phone Number'}
-                      value={state.phoneNumber}
+                      value={isAdd ? newData.phoneNumber : editedData.phoneNumber}
                       required={true}
                       onChange={inputChangeHandler}
                     />
@@ -267,7 +298,7 @@ const DriversModal = ({modalTitle, isAdd, driverData}) => {
                         label={'Carriers'}
                         name={'companyId'}
                         array={carriers}
-                        value={state.companyId}
+                        value={isAdd ? newData.companyId : editedData.companyId}
                         onChange={inputChangeHandler}
                         required={true}
                         variant={'object'}
@@ -279,7 +310,7 @@ const DriversModal = ({modalTitle, isAdd, driverData}) => {
                         label={'Status'}
                         name={'status'}
                         array={DRIVER_STATUS}
-                        value={state.status}
+                        value={isAdd ? newData.status : editedData.status}
                         onChange={inputChangeHandler}
                         required={true}
                         variant={'array'}
@@ -315,7 +346,7 @@ const DriversModal = ({modalTitle, isAdd, driverData}) => {
                           <FormElement
                             name={'address'}
                             label={'Address'}
-                            value={state.description.address}
+                            value={isAdd ? newData.description.address : editedData.description.address}
                             required={true}
                             onChange={inputChangeHandlerDescription}
                             error={getFieldError('description.address')}
@@ -325,7 +356,7 @@ const DriversModal = ({modalTitle, isAdd, driverData}) => {
                           <FormElement
                             name={'DOB'}
                             label={'DOB'}
-                            value={state.description.DOB}
+                            value={isAdd ? newData.description.DOB : editedData.description.DOB}
                             required={true}
                             onChange={inputChangeHandlerDescription}
                             error={getFieldError('description.DOB')}
@@ -343,7 +374,7 @@ const DriversModal = ({modalTitle, isAdd, driverData}) => {
                           <FormElement
                             name={'info'}
                             label={'Info'}
-                            value={state.description.info}
+                            value={isAdd ? newData.description.info : editedData.description.info}
                             required={true}
                             onChange={inputChangeHandlerDescription}
                             error={getFieldError('description.info')}
@@ -353,7 +384,7 @@ const DriversModal = ({modalTitle, isAdd, driverData}) => {
                           <FormElement
                             name={'reference'}
                             label={'Reference'}
-                            value={state.description.reference}
+                            value={isAdd ? newData.description.reference : editedData.description.reference}
                             required={true}
                             onChange={inputChangeHandlerDescription}
                             error={getFieldError('description.reference')}
@@ -382,7 +413,7 @@ const DriversModal = ({modalTitle, isAdd, driverData}) => {
                       fullWidth
                       variant="contained"
                       color="primary"
-                      onClick={() => setModal(false)}
+                      onClick={() => isAdd ? setNewModal(false) : setEditModal(false)}
                     >
                       Cancel
                     </ButtonWithProgress>

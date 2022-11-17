@@ -13,5 +13,13 @@
   И нажимаю на кнопку "Sign In"
   То я вижу текст "HELLO, ADMIN"
 
+Сценарий:
+  Допустим я захожу на страницу "login"
+  Если я введу данные:
+    | email | test@gmail.com |
+    | password | test        |
+  И нажимаю на кнопку "Sign In"
+  То я вижу текст "Error! Credentials are wrong!"
+
 
 

@@ -17,9 +17,11 @@ Given('я введу данные:', (table) => {
 When('нажимаю на кнопку {string}', buttonText => {
   I.click(`//form//button[contains(text(), "${buttonText}")]`);
 
-  I.wait(10);
+  I.wait(6);
 });
 
 Then('я вижу текст {string}', text => {
  I.see(text);
 });
+
+

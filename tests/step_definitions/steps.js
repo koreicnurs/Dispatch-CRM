@@ -2,20 +2,24 @@ const { I } = inject();
 
 Given('я захожу на страницу {string}', (page) => {
   I.amOnPage('/' + page);
-  I.wait(4);
 });
 
-Given('я введу данные:', () => {
-  // From "features/auth.feature" {"line":10,"column":3}
-  throw new Error('Not implemented yet');
+Given('я введу данные:', (table) => {
+  table.rows.forEach(row => {
+    const name = row.cells[0].value;
+    const value = row.cells[1].value;
+
+    I.fillField(name, value);
+
+  });
 });
 
-When('нажимаю на кнопку {string}', () => {
-  // From "features/auth.feature" {"line":13,"column":3}
-  throw new Error('Not implemented yet');
+When('нажимаю на кнопку {string}', buttonText => {
+  I.click(`//form//button[contains(text(), "${buttonText}")]`);
+
+  I.wait(10);
 });
 
-Then('я вижу текст {string}', () => {
-  // From "features/auth.feature" {"line":14,"column":3}
-  throw new Error('Not implemented yet');
+Then('я вижу текст {string}', text => {
+ I.see(text);
 });

@@ -10,7 +10,7 @@
   Если я введу данные:
     | email | admin@gmail.com |
     | password | admin        |
-  И нажимаю на кнопку "Sign in"
+  И нажимаю на кнопку "Sign In"
   То я вижу текст "HELLO, ADMIN"
 
 

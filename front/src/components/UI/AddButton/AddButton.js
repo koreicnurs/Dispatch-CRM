@@ -7,7 +7,8 @@ const useStyles = makeStyles()(theme => ({
   add: {
     marginTop: "19px",
     marginLeft: "7px",
-    marginBottom: "19px"
+    marginBottom: "19px",
+    cursor: 'pointer'
   }
 }));
 

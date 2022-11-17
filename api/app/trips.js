@@ -24,9 +24,23 @@ const cpUpload = upload.fields([{name: 'BOL', maxCount: 1}, {name: 'RC', maxCoun
 
 router.get('/', auth, async (req, res) => {
     try {
-        const loads = await Load.find(req.query).populate('driverId', 'name').populate('dispatchId', 'displayName');
+        if (req.query.status === 'finished') {
+            const loads = await Load.find({status: {$in: ['finished', 'cancel']}}).populate('driverId', 'name').populate('dispatchId', 'displayName');
+            res.send(loads);
+        } else {
+            const loads = await Load.find(req.query).populate('driverId', 'name').populate('dispatchId', 'displayName');
+            res.send(loads);
+        }
+    } catch (e) {
+        res.sendStatus(500);
+    }
+});
 
-        res.send(loads);
+router.get('/:id', auth, async (req, res) => {
+    try {
+        const load = await Load.findById(req.params.id).populate('driverId', 'name').populate('dispatchId', 'displayName');
+
+        res.send(load);
     } catch (e) {
         res.sendStatus(500);
     }
@@ -96,7 +110,7 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
             pu,
             del,
             status,
-            comment: comment || null,
+            comment: comment || '',
         };
 
         if (loadData.datePU > loadData.dateDEL) {
@@ -124,5 +138,102 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
         res.status(500).send(e);
     }
 });
+
+
+router.put('/status/:id', auth, async (req, res) => {
+    try {
+        const load = await Load.findOne({_id: req.params.id});
+
+        if (!load) {
+            return res.status(404).send({message: 'Load not found!'});
+        }
+
+        if (load.status === 'upcoming') {
+            await Load.findByIdAndUpdate(req.params.id, {status: 'transit'});
+            const loads = await Load.find({status: 'upcoming'}).populate('driverId', 'name').populate('dispatchId', 'displayName');
+
+            res.send(loads);
+        }
+
+        if (load.status === 'transit') {
+            await Load.findByIdAndUpdate(req.params.id, {status: 'finished'});
+            const loads = await Load.find({status: 'transit'}).populate('driverId', 'name').populate('dispatchId', 'displayName');
+
+            res.send(loads);
+
+        }
+
+
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
+
+router.put('/cancel/:id', auth, async (req, res) => {
+    try {
+        const load = await Load.findOne({_id: req.params.id});
+
+        if (!load) {
+            return res.status(404).send({message: 'Load not found!'});
+        }
+
+        const canceledLoad = await Load.findByIdAndUpdate(req.params.id, {status: 'cancel'});
+
+        res.send(canceledLoad);
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
+
+router.put('/comment/:id', auth, async (req, res) => {
+    try {
+        const load = await Load.findOne({_id: req.params.id});
+
+        if (!load) {
+            return res.status(404).send({message: 'Load not found!'});
+        }
+
+        await Load.findByIdAndUpdate(req.params.id, req.body);
+
+
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
+
+router.put('/attachment/:id', auth, cpUpload, async (req, res) => {
+    try {
+        const load = await Load.findOne({_id: req.params.id});
+
+        if (!load) {
+            return res.status(404).send({message: 'Load not found!'});
+        }
+
+        const loadData = {RC: '',  BOL: ''};
+
+        if (req.files.BOL) {
+            if (load.BOL) {
+                fs.unlinkSync(load.BOL)
+            }
+            loadData.BOL = 'public/uploads/' + req.files['BOL'][0].filename;
+        }
+        if (req.files.RC) {
+            if (load.RC) {
+                fs.unlinkSync(load.RC)
+            }
+            loadData.RC = 'public/uploads/' + req.files['RC'][0].filename;
+        }
+
+
+       const updatedLoad = await Load.findByIdAndUpdate(req.params.id, loadData);
+
+       res.send(updatedLoad);
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
+
+
+
 
 module.exports = router;

@@ -54,7 +54,10 @@ const Trips = ({history}) => {
   const handleCloseAttachmentModal = () => setAttachment(false);
 
   const [viewAll, setViewAll] = useState(false);
-  const handleCloseViewAllModal = () => setViewAll(false);
+  const handleCloseViewAllModal = () => {
+    setViewAll(false);
+    setViewAllTripID(null);
+  }
 
   const [commentTripId, setCommentTripId] = useState(null);
   const [attachTripId, setAttachTripId] = useState(null);

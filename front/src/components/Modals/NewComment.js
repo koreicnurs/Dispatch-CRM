@@ -35,7 +35,7 @@ const NewComment = ({open, handleClose, id}) => {
       dispatch(fetchTripRequest(id));
       setComment(trip.comment);
     }
-  }, [dispatch, id, trip.comment]);
+  }, [dispatch, id, trip]);
 
 
 

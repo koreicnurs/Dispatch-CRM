@@ -7,6 +7,7 @@ export const initialState = {
   trip: null,
   loading: false,
   error: null,
+  createTripError: null,
 };
 
 const tripsSlice = createSlice({
@@ -28,14 +29,14 @@ const tripsSlice = createSlice({
 
     createTripRequest(state) {
       state.loading = true;
-      state.error = null;
+      state.createTripError = null;
     },
     createTripSuccess(state) {
       state.loading = false;
     },
     createTripFailure(state, action) {
       state.loading = false;
-      state.error = action.payload;
+      state.createTripError = action.payload;
     },
 
     changeTripStatusRequest(state) {
@@ -77,14 +78,14 @@ const tripsSlice = createSlice({
 
     editTripRequest(state) {
       state.loading = true;
-      state.error = null;
+      state.createTripError = null;
     },
     editTripSuccess(state) {
       state.loading = false;
     },
     editTripFailure(state, action) {
       state.loading = false;
-      state.error = action.payload;
+      state.createTripError = action.payload;
     },
 
     addCommentRequest(state) {
@@ -110,6 +111,11 @@ const tripsSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+
+    clearCreateTripErrorRequest(state) {
+      state.createTripError = null;
+      state.trip = null;
+    }
   }
 });
 

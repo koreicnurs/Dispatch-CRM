@@ -7,7 +7,7 @@ import FormElement from "../UI/Form/FormElement/FormElement";
 import FormSelect from "../UI/Form/FormSelect/FormSelect";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
 import {fetchDriversRequest} from "../../store/actions/driversActions";
-import {createTripRequest, editTripRequest} from "../../store/actions/tripsActions";
+import {clearCreateTripErrorRequest, createTripRequest, editTripRequest} from "../../store/actions/tripsActions";
 import FileInput from "../UI/Form/FileInput/FileInput";
 import {DesktopDatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
@@ -42,7 +42,7 @@ const statuses = ['upcoming', 'transit', 'finished', 'cancel'];
 const NewTrip = ({open, handleClose, editedTrip}) => {
   const {classes} = useStyles();
   const dispatch = useDispatch();
-  const error = useSelector(state => state.trips.error);
+  const error = useSelector(state => state.trips.createTripError);
   const loading = useSelector(state => state.trips.loading);
   const drivers = useSelector(state => state.drivers.drivers);
   const user = useSelector(state => state.users.user);
@@ -145,8 +145,10 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
       BOL: "",
     });
 
-    handleClose();
+    // handleClose();
   };
+
+
 
   const getFieldError = (fieldName) => {
     try {
@@ -154,6 +156,31 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
     } catch {
       return undefined;
     }
+  };
+
+  const handleCloseHandler = () => {
+    handleClose();
+    if(error) {
+      dispatch(clearCreateTripErrorRequest());
+    }
+    setTrip({
+      loadCode: "",
+      driverId: "",
+      dispatchId: user._id,
+      price: "",
+      miles: "",
+      rpm: "",
+      datePU: "",
+      dateDEL: "",
+      pu: "",
+      del: "",
+      status: "",
+      comment: "",
+      RC: "",
+      BOL: "",
+    });
+    setStartDate(null);
+    setFinDate(null);
   };
 
 
@@ -318,6 +345,7 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
                       name="status"
                       array={statuses}
                       value={trip.status}
+                      required={true}
                       onChange={inputChangeHandler}
                       variant="array"
                       error={getFieldError("status")}
@@ -345,6 +373,7 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
                   value={trip.driverId}
                   onChange={inputChangeHandler}
                   variant="object"
+                  required={true}
                   error={getFieldError("driverId")}
                   driver={true}
                 />
@@ -388,7 +417,7 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
 
                 <Grid item xs={12} container spacing={2} justifyContent="space-between">
                   <Grid item>
-                    <Button variant="contained" onClick={handleClose}>
+                    <Button variant="contained" onClick={handleCloseHandler}>
                       Cancel
                     </Button>
 

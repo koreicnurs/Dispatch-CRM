@@ -25,4 +25,5 @@ export const {
   addAttachmentRequest,
   addAttachmentSuccess,
   addAttachmentFailure,
+  clearCreateTripErrorRequest
 } = tripsSlice.actions;

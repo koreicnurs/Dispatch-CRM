@@ -31,6 +31,7 @@ const Trips = ({history}) => {
   const dispatch = useDispatch();
   const trips = useSelector(state => state.trips.trips);
   const trip = useSelector(state => state.trips.trip);
+  const createTripError = useSelector(state => state.trips.createTripError);
 
   useEffect(() => {
     dispatch(fetchTripsRequest(history.location.search));
@@ -105,7 +106,7 @@ const Trips = ({history}) => {
 
   const editTripHandler = id => {
     dispatch(fetchTripRequest(id));
-    setEdit(true)
+    setEdit(true);
   };
 
   const attachFileHandler = id => {
@@ -122,7 +123,15 @@ const Trips = ({history}) => {
   const viewAllHandler = id => {
     dispatch(fetchTripRequest(id));
     setViewAll(true);
-  }
+  };
+
+
+  useEffect(() => {
+    if(createTripError !== null) {
+      setOpen(true);
+    }
+  }, [createTripError]);
+
 
 
   return (

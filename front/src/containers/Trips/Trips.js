@@ -114,8 +114,9 @@ const Trips = ({history}) => {
   };
 
   const leaveCommentHandler = id => {
-    setComment(true);
     setCommentTripId(id);
+    dispatch(fetchTripRequest(id));
+    setComment(true);
   };
 
   const viewAllHandler = id => {

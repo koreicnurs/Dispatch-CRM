@@ -26,7 +26,7 @@ const FormElement = ({name, value, onChange, label, error, type, required, input
 
 FormElement.propTypes = {
     name: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
+    // value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     label: PropTypes.string.isRequired,
     error: PropTypes.string,

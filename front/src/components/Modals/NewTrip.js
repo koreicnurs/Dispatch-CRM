@@ -140,7 +140,9 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
       pu: "",
       del: "",
       status: "",
-      comment: ""
+      comment: "",
+      RC: "",
+      BOL: "",
     });
 
     handleClose();

@@ -33,13 +33,15 @@ const NewComment = ({open, handleClose, id}) => {
   useEffect(() => {
     if (id) {
       dispatch(fetchTripRequest(id));
-
-      if (trip && trip.comment) {
-        setComment(trip.comment);
-      }
     }
-  }, [dispatch, id, trip]);
+  }, [dispatch, id]);
 
+
+  useEffect(() => {
+    if (trip && trip.comment) {
+      setComment(trip.comment);
+    }
+  }, [trip]);
 
 
   const sendComment = () => {

@@ -42,15 +42,20 @@ router.post('/', auth, async (req, res) => {
 router.put('/:id', auth, async (req, res) => {
   try {
     const {title, mc, dot, fedid, description} = req.body;
-    const carrierData = {title, mc, dot, fedid, description};
 
-    const updateCarrier = await Carrier.findOneAndUpdate({_id: req.params.id}, carrierData, {new: true});
-    console.log(updateCarrier);
+    const carrier = await Carrier.findById(req.params.id);
 
-    res.send(updateCarrier);
+    carrier.title = title;
+    carrier.mc = mc;
+    carrier.dot = dot;
+    carrier.fedid = fedid;
+    carrier.description = description;
 
+    await carrier.save();
+    
+    res.send(carrier);
   } catch (e) {
-    res.sendStatus(500);
+    res.status(400).send(e);
   }
 });
 

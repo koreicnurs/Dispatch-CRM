@@ -41,8 +41,7 @@ export function* createCarrier({payload: carrierData}) {
     yield axiosApi.post('/carriers', carrierData);
     yield put(createCarrierSuccess());
     yield put(addNotification({message: 'Carrier created!', variant: 'success'}));
-    const response = yield axiosApi('/carriers');
-    yield put(fetchCarriersSuccess(response.data));
+    yield put(fetchCarriersRequest());
   } catch (e) {
     yield put(createCarrierFailure(e.response.data));
     yield put(addNotification({message: 'Carrier creation failed!', variant: 'error'}));
@@ -51,10 +50,10 @@ export function* createCarrier({payload: carrierData}) {
 
 export function* editCarrier({payload}) {
   try {
-    console.log(payload);
     yield axiosApi.put('/carriers/' + payload.id, payload.data);
     yield put(editCarrierSuccess());
-    yield put(addNotification({message: 'Carrier is edited!', variant: 'success'}));
+    yield put(fetchCarriersRequest());
+    yield put(addNotification({message: 'You have successfully edited a carrier!', variant: 'success'}));
   } catch (e) {
     yield put(editCarrierFailure(e.response.data));
     yield put(addNotification({message: 'Carrier edit is failed!', variant: 'error'}));

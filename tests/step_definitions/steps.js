@@ -1,3 +1,4 @@
+
 const { I } = inject();
 
 Given('я захожу на страницу {string}', (page) => {
@@ -25,3 +26,29 @@ Then('я вижу текст {string}', text => {
 });
 
 
+
+
+Given('я открываю страницу {string}', page => {
+  console.log(page);
+
+});
+
+Then('я нажимаю на кнопку {string}', () => {
+  // From "features/carrier.feature" {"line":11,"column":3}
+  throw new Error('Not implemented yet');
+});
+
+When('я напишу данные:', () => {
+  // From "features/carrier.feature" {"line":12,"column":3}
+  throw new Error('Not implemented yet');
+});
+
+Then('нажимаю на {string}', () => {
+  // From "features/carrier.feature" {"line":18,"column":3}
+  throw new Error('Not implemented yet');
+});
+
+Then('я вижу {string}', () => {
+  // From "features/carrier.feature" {"line":19,"column":3}
+  throw new Error('Not implemented yet');
+});

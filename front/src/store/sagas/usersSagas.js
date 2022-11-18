@@ -9,7 +9,7 @@ import {
     logoutRequest,
     logoutSuccess,
 } from "../actions/usersActions";
-import {historyPush} from "../actions/historyActions";
+import {historyPush, historyReplace} from "../actions/historyActions";
 import {addNotification} from "../actions/notifierActions";
 
 export function* loginUserSaga({payload: userData}) {
@@ -17,7 +17,7 @@ export function* loginUserSaga({payload: userData}) {
         const response = yield axiosApi.post('/users/sessions', userData);
         yield put(loginSuccess(response.data));
         yield put(addNotification({message: 'Successfully log in!', variant: 'success'}));
-        yield put(historyPush('/trips?status=upcoming'));
+        yield put(historyReplace('/trips?status=upcoming'));
     } catch (e) {
         yield put(loginFailure(e.response.data));
     }

@@ -358,14 +358,14 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
                 <Box sx={{display: 'flex', justifyContent: 'space-between', width: '100%', margin: '12px 0 12px 10px'}}>
                   {editedTrip && editedTrip.RC
                     ? <ButtonWithProgress variant="contained" component="label">
-                        <a href={apiUrl + editedTrip.RC.slice(6)} target="_blank" download className={classes.link}>Download RC</a>
+                        <a href={apiUrl + editedTrip.RC.slice(6)} target="_blank" download className={classes.link} rel="noreferrer">Download RC</a>
                       </ButtonWithProgress>
                     : null
                   }
 
                   {editedTrip && editedTrip.BOL
                     ? <ButtonWithProgress variant="contained" component="label">
-                        <a href={apiUrl + editedTrip.BOL.slice(6)} target="_blank" download className={classes.link}>Download BOL</a>
+                        <a href={apiUrl + editedTrip.BOL.slice(6)} target="_blank" download className={classes.link} rel="noreferrer">Download BOL</a>
                       </ButtonWithProgress>
                     : null
                   }

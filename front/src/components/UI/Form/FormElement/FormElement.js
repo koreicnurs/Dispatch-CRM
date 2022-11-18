@@ -30,7 +30,6 @@ FormElement.propTypes = {
     onChange: PropTypes.func.isRequired,
     label: PropTypes.string.isRequired,
     error: PropTypes.string,
-    type: PropTypes.string,
     required: PropTypes.bool,
     inputProps: PropTypes.object,
     multiline: PropTypes.bool,

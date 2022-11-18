@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
-import {useDispatch} from "react-redux";
+import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
 import {Box, Modal, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
-import {addCommentRequest} from "../../store/actions/tripsActions";
+import {addCommentRequest, fetchTripRequest} from "../../store/actions/tripsActions";
 
 const style = {
   position: 'absolute',
@@ -22,11 +22,20 @@ const style = {
 
 const NewComment = ({open, handleClose, id}) => {
   const dispatch = useDispatch();
+  const trip = useSelector(state => state.trips.trip);
   const [comment, setComment] = useState('');
 
   const inputChangeHandler = e => {
     setComment(e.target.value);
   };
+
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchTripRequest(id));
+      setComment(trip.comment);
+    }
+  }, [dispatch, id, trip.comment]);
 
 
 
@@ -69,7 +78,7 @@ const NewComment = ({open, handleClose, id}) => {
               <ButtonWithProgress
                 type="button"
                 variant="contained"
-                onClick={handleClose}
+                onClick={() => [handleClose(), setComment('')]}
               >
                 Cancel
               </ButtonWithProgress>

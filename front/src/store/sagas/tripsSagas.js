@@ -19,7 +19,7 @@ import axiosApi from "../../axiosApi";
 
 export function* fetchTrips({payload: value}) {
   try{
-    const response = yield axiosApi('/trips/' + value);
+    const response = yield axiosApi('/loads/' + value);
     yield put(fetchTripsSuccess(response.data));
   } catch (e) {
     yield put(fetchTripsFailure(e.response.error));
@@ -29,7 +29,7 @@ export function* fetchTrips({payload: value}) {
 
 export function* fetchTrip({payload: value}) {
   try{
-    const response = yield axiosApi('/trips/' + value);
+    const response = yield axiosApi('/loads/' + value);
     yield put(fetchTripSuccess(response.data));
   } catch (e) {
     yield put(fetchTripFailure(e.response.error));
@@ -38,10 +38,10 @@ export function* fetchTrip({payload: value}) {
 
 export function* createTrip({payload: tripData}) {
   try {
-    yield axiosApi.post('/trips', tripData);
+    yield axiosApi.post('/loads', tripData);
     yield put(createTripSuccess());
     yield put(addNotification({message: 'Trip created!', variant: 'success'}));
-    const response = yield axiosApi('/trips?status=upcoming');
+    const response = yield axiosApi('/loads?status=upcoming');
     yield put(fetchTripsSuccess(response.data));
   } catch (e) {
     yield put(createTripFailure(e));
@@ -51,10 +51,10 @@ export function* createTrip({payload: tripData}) {
 
 export function* editTrip({payload}) {
   try {
-    yield axiosApi.put('/trips/' + payload.id, payload.tripData);
+    yield axiosApi.put('/loads/' + payload.id, payload.tripData);
     yield put(editTripSuccess());
     yield put(addNotification({message: 'Trip edited!', variant: 'success'}));
-    const response = yield axiosApi('/trips?status=' + payload.path);
+    const response = yield axiosApi('/loads?status=' + payload.path);
     yield put(fetchTripsSuccess(response.data));
   } catch (e) {
     yield put(editTripFailure(e));
@@ -64,7 +64,7 @@ export function* editTrip({payload}) {
 
 export function* addComment({payload}) {
   try {
-    yield axiosApi.put('/trips/comment/' + payload.id, {comment:payload.comment});
+    yield axiosApi.put('/loads/comment/' + payload.id, {comment:payload.comment});
     yield put(addCommentSuccess());
   } catch (e) {
     yield put(addCommentFailure(e));
@@ -73,7 +73,7 @@ export function* addComment({payload}) {
 
 export function* addAttachment({payload}) {
   try {
-    yield axiosApi.put('/trips/attachment/' + payload.id, payload.formData);
+    yield axiosApi.put('/loads/attachment/' + payload.id, payload.formData);
     yield put(addAttachmentSuccess());
   } catch (e) {
     yield put(addAttachmentFailure(e));
@@ -82,9 +82,9 @@ export function* addAttachment({payload}) {
 
 export function* changeTripStatus({payload}) {
   try {
-    yield axiosApi.put('/trips/status/' + payload.id);
+    yield axiosApi.put('/loads/status/' + payload.id);
     yield put(changeTripStatusSuccess());
-    const response = yield axiosApi('/trips' + payload.path);
+    const response = yield axiosApi('/loads' + payload.path);
     yield put(fetchTripsSuccess(response.data));
   } catch (e) {
     yield put(changeTripStatusFailure(e));
@@ -93,9 +93,9 @@ export function* changeTripStatus({payload}) {
 
 export function* cancelTrip({payload}) {
   try {
-    yield axiosApi.put('/trips/cancel/' + payload.id);
+    yield axiosApi.put('/loads/cancel/' + payload.id);
     yield put(cancelTripSuccess());
-    const response = yield axiosApi('/trips' + payload.path);
+    const response = yield axiosApi('/loads' + payload.path);
     yield put(fetchTripsSuccess(response.data));
   } catch (e) {
     yield put(cancelTripFailure(e));

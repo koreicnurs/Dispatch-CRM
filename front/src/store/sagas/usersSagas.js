@@ -17,7 +17,7 @@ export function* loginUserSaga({payload: userData}) {
         const response = yield axiosApi.post('/users/sessions', userData);
         yield put(loginSuccess(response.data));
         yield put(addNotification({message: 'Successfully log in!', variant: 'success'}));
-        yield put(historyReplace('/trips?status=upcoming'));
+        yield put(historyReplace('/loads?status=upcoming'));
     } catch (e) {
         yield put(loginFailure(e.response.data));
     }

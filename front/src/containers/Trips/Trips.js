@@ -144,9 +144,9 @@ const Trips = ({history}) => {
         <Box sx={{ width: '100%' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-              <Tab label="Upcoming" component={Link} to='/trips?status=upcoming' {...a11yProps(0)} />
-              <Tab label="In Transit"  component={Link} to='/trips?status=transit' {...a11yProps(1)} />
-              <Tab label="History"  component={Link} to='/trips?status=finished' {...a11yProps(2)} />
+              <Tab label="Upcoming" component={Link} to='/loads?status=upcoming' {...a11yProps(0)} />
+              <Tab label="In Transit"  component={Link} to='/loads?status=transit' {...a11yProps(1)} />
+              <Tab label="History"  component={Link} to='/loads?status=finished' {...a11yProps(2)} />
             </Tabs>
           </Box>
           <Box sx={{display: 'flex', justifyContent: 'space-between'}}>

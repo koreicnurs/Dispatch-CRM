@@ -5,7 +5,7 @@ const exitHook = require('async-exit-hook');
 const users = require('./app/users');
 const carriers = require('./app/carriers');
 const drivers = require('./app/drivers');
-const trips = require('./app/trips');
+const loads = require('./app/loads');
 const learnings = require('./app/learnings');
 
 const config = require('./config');
@@ -20,7 +20,7 @@ app.use(cors());
 app.use('/users', users);
 app.use('/carriers', carriers);
 app.use('/drivers', drivers);
-app.use('/trips', trips);
+app.use('/loads', loads);
 app.use('/learnings', learnings);
 
 const run = async () => {

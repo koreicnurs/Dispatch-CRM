@@ -33,6 +33,7 @@ const NewComment = ({open, handleClose, id}) => {
   useEffect(() => {
     if (id) {
       dispatch(fetchTripRequest(id));
+
       if (trip && trip.comment) {
         setComment(trip.comment);
       }

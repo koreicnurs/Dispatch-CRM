@@ -13,7 +13,6 @@ import {fetchCarriersRequest} from "../../store/actions/carriersActions";
 import {
   addDriverRequest,
   clearDriverErrors,
-  fetchDriversRequest,
   updateDriverRequest
 } from "../../store/actions/driversActions";
 import AddButton from "../UI/Button/AddButton/AddButton";
@@ -88,6 +87,10 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
   });
 
   useEffect(() => {
+    dispatch(fetchCarriersRequest());
+  }, [dispatch]);
+
+  useEffect(() => {
     if (newError === null) {
       setNewModal(false);
     }
@@ -98,8 +101,6 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
   }, [drivers]);
 
   const openCloseModal = emailDriver => {
-    dispatch(fetchCarriersRequest());
-
     if (isAdd) {
       setNewData({
         email: '',
@@ -198,8 +199,7 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
     if (isAdd) {
       dispatch(addDriverRequest(formData));
     } else {
-      await dispatch(updateDriverRequest({id: driverId, data: formData}));
-      await dispatch(fetchDriversRequest());
+      dispatch(updateDriverRequest({id: driverId, data: formData}));
     }
   };
 

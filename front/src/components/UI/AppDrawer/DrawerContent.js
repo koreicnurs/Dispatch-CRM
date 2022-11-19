@@ -24,7 +24,7 @@ const DrawerContent = () => {
 
     const menuItems = useMemo(() => [
         {title:'Status Update', route:  '/status_update'},
-        {title:'Trips', route:  '/trips'},
+        {title:'Trips', route:  '/loads/?status=upcoming'},
         {title: 'Carriers', route: '/carriers'},
         {title: 'Drivers', route: '/drivers'}
     ], [])

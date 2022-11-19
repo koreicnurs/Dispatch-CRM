@@ -94,7 +94,6 @@ Then('нажму на кнопку выбора лицензии {string}', butt
 
 Then('выбираю нужный файл для лицензии {string}', file => {
   I.attachFile("input[type='file']", file);
-  I.pressKey("Enter");
   I.wait(1);
 });
 
@@ -111,3 +110,4 @@ Then('я вижу текст о успешной регистрации води
 Then('я вижу текст о ошибке регистрации водителя {string}', text => {
   I.see(text);
   I.wait(1);
+});

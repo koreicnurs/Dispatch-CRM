@@ -323,6 +323,7 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
                       name="miles"
                       label="Miles"
                       value={trip.miles}
+                      inputProps={{min:0}}
                       required={true}
                       error={getFieldError('miles')}
                       className={classes.field}
@@ -336,6 +337,7 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
                       name="rpm"
                       label="Rate per mile"
                       value={trip.rpm}
+                      inputProps={{min:0}}
                       required={true}
                       error={getFieldError('rpm')}
                       className={classes.field}
@@ -368,6 +370,7 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
                       type="number"
                       name="price"
                       label="Price"
+                      inputProps={{min:0}}
                       value={trip.price}
                       required={true}
                       error={getFieldError('price')}

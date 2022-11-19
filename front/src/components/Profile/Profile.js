@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {useDispatch} from "react-redux";
 import PropTypes from "prop-types";
 import {Box, Button, Card, CardContent, CardMedia, Grid} from "@mui/material";
 import Typography from "@mui/material/Typography";
@@ -6,8 +7,11 @@ import FormElement from "../UI/Form/FormElement/FormElement";
 import {apiUrl} from "../../config";
 import FileInput from "../UI/Form/FileInput/FileInput";
 import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
+import {changeUserRequest} from "../../store/actions/usersActions";
 
 const Profile = ({user, error}) => {
+  const dispatch = useDispatch();
+
   const [userProfile, setUserProfile] = useState({
     email: "",
     password: "",
@@ -56,12 +60,25 @@ const Profile = ({user, error}) => {
     }
   };
 
+
+  const submitFormHandler = async e => {
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    Object.keys(userProfile).forEach(key => {
+      formData.append(key, userProfile[key]);
+    });
+    await dispatch(changeUserRequest(formData))
+  };
+
   return (
     <Grid
       item
       container
       direction="column"
       component="form"
+      onSubmit={submitFormHandler}
     >
       <Card sx={{ display: 'flex', backgroundColor: "#f0f2fe", flexDirection: "column", marginBottom: "15px" }}>
         <Box sx={{

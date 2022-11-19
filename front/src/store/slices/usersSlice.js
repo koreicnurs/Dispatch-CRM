@@ -8,7 +8,9 @@ export const initialState = {
     loginLoading: false,
     loginError: null,
     fetchLoading: false,
-    fetchError: null
+    fetchError: null,
+    changeLoading: false,
+    changeError: null
 };
 
 const usersSlice = createSlice({
@@ -43,6 +45,19 @@ const usersSlice = createSlice({
         fetchUsersFailure(state, action) {
             state.loadingError = action.payload;
             state.fetchLoading = false;
+        },
+
+        changeUserRequest(state) {
+            state.changeLoading = true;
+            state.changeError = null;
+        },
+        changeUserSuccess(state, {payload: user}) {
+            state.changeLoading = false;
+            state.user = user;
+        },
+        changeUserFailure(state, action) {
+            state.changeLoading =false;
+            state.changeError = action.payload;
         }
     }
 });

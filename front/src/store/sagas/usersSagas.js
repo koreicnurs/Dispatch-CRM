@@ -1,6 +1,7 @@
 import {put, takeEvery} from "redux-saga/effects";
 import axiosApi from "../../axiosApi";
 import {
+    changeUserFailure, changeUserRequest, changeUserSuccess,
     fetchUsersFailure, fetchUsersRequest,
     fetchUsersSuccess,
     loginFailure,
@@ -41,10 +42,23 @@ export function* fetchUsers() {
     }
 }
 
+export function* changeUserData({payload: userData}) {
+    try {
+        const response = yield axiosApi.put('/users', userData);
+        yield put(changeUserSuccess(response.data));
+        yield put(addNotification({message: 'Successfully changed!', variant: 'success'}));
+
+    } catch (e) {
+        yield put(addNotification({message: 'Changing failed!', variant: 'error'}))
+        yield put(changeUserFailure(e.response.data));
+    }
+}
+
 const userSagas = [
     takeEvery(loginRequest, loginUserSaga),
     takeEvery(logoutRequest, logoutUserSaga),
-    takeEvery(fetchUsersRequest, fetchUsers)
+    takeEvery(fetchUsersRequest, fetchUsers),
+    takeEvery(changeUserRequest, changeUserData)
 ];
 
 export default userSagas;

@@ -72,11 +72,21 @@ router.put('/', auth, upload.single('avatar'), async (req, res) => {
   try {
     const {displayName, password} = req.body;
 
-    const userData = {
-      displayName,
-      password,
-      avatar: req.file ? 'uploads/' + req.file.filename : null,
-    };
+    let userData;
+
+    if (password !== "") {
+      userData = {
+        displayName,
+        password,
+        avatar: req.file ? 'uploads/' + req.file.filename : req.body.avatar,
+      };
+    } else {
+      userData = {
+        displayName,
+        avatar: req.file ? 'uploads/' + req.file.filename : req.body.avatar,
+      };
+    }
+
     const updateUser = await User.findOneAndUpdate({_id: req.user._id}, userData, {new: true});
     res.send(updateUser);
 

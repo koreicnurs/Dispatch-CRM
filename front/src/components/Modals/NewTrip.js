@@ -42,7 +42,8 @@ const statuses = ['upcoming', 'transit', 'finished', 'cancel'];
 const NewTrip = ({open, handleClose, editedTrip}) => {
   const {classes} = useStyles();
   const dispatch = useDispatch();
-  const error = useSelector(state => state.trips.createTripError);
+  const createError = useSelector(state => state.trips.createTripError);
+  const editError = useSelector(state => state.trips.editTripError);
   const loading = useSelector(state => state.trips.loading);
   const drivers = useSelector(state => state.drivers.drivers);
   const user = useSelector(state => state.users.user);
@@ -145,14 +146,20 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
       BOL: "",
     });
 
-    // handleClose();
+    if (!createError || !editError) {
+      handleClose();
+    }
   };
 
 
 
   const getFieldError = (fieldName) => {
     try {
-      return `${error.error} ${[fieldName]}`;
+      if(createError) {
+        return `${createError.error} ${[fieldName]}`;
+      } else if(editError) {
+        return `${editError.error} ${[fieldName]}`;
+      }
     } catch {
       return undefined;
     }
@@ -160,7 +167,7 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
 
   const handleCloseHandler = () => {
     handleClose();
-    if(error) {
+    if(createError) {
       dispatch(clearCreateTripErrorRequest());
     }
     setTrip({
@@ -205,11 +212,18 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
               direction="column"
             >
               <Grid item>
-                {error && (
+                {createError && (
                   <Alert severity="error">
-                    Error! {error.message}
+                    Error! {createError.message}
                   </Alert>
                 )}
+                <Grid item>
+                  {editError && (
+                    <Alert severity="error">
+                      Error! {editError.message}
+                    </Alert>
+                  )}
+                </Grid>
               </Grid>
 
               <Grid item>
@@ -240,7 +254,7 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
                         inputFormat="MM/DD/YYYY"
                         onChange={(date) => setStartDate(date)}
                         value={startDate}
-                        renderInput={(params) => <TextField {...params}/>}/>
+                        renderInput={(params) => <TextField {...params} required={true}/>}/>
                     </LocalizationProvider>
 
                   </Grid>
@@ -254,7 +268,7 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
                         inputFormat="MM/DD/YYYY"
                         onChange={(date) => setFinDate(date)}
                         value={finDate}
-                        renderInput={(params) => <TextField {...params}/>}/>
+                        renderInput={(params) => <TextField {...params} required={true}/>}/>
                     </LocalizationProvider>
                   </Grid>
                 </Grid>
@@ -410,6 +424,7 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
                   label="Comment"
                   value={trip.comment}
                   multiline={true}
+                  required={false}
                   rows={2}
                   error={getFieldError('comment')}
                   className={classes.field}

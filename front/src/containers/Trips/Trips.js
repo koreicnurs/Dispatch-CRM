@@ -32,6 +32,7 @@ const Trips = ({history}) => {
   const trips = useSelector(state => state.trips.trips);
   const trip = useSelector(state => state.trips.trip);
   const createTripError = useSelector(state => state.trips.createTripError);
+  const editTripError = useSelector(state => state.trips.editTripError);
 
   useEffect(() => {
     dispatch(fetchTripsRequest(history.location.search));
@@ -130,7 +131,10 @@ const Trips = ({history}) => {
     if(createTripError !== null) {
       setOpen(true);
     }
-  }, [createTripError]);
+    if(editTripError !== null) {
+      setEdit(true);
+    }
+  }, [createTripError, editTripError]);
 
 
 

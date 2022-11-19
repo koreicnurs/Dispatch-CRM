@@ -20,6 +20,7 @@ const FormSelect = ({array, value, onChange, label, required, name, variant, err
             label={label}
             name={name}
             onChange={onChange}
+            required={required}
           >
             {array.map((item, index) => {
               if (variant === 'array') {

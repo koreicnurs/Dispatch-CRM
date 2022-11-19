@@ -58,6 +58,7 @@ export function* editTrip({payload}) {
     yield put(fetchTripsSuccess(response.data));
   } catch (e) {
     yield put(editTripFailure(e));
+    console.log(e);
     yield put(addNotification({message: 'Trip edit failed!', variant: 'error'}));
   }
 }

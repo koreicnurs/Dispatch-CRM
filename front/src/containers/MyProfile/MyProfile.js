@@ -5,15 +5,15 @@ import UserProfile from "../../components/Profile/UserProfile";
 
 const MyProfile = () => {
   const user = useSelector(state => state.users.user);
+  const error = useSelector(state => state.users.fetchError);
 
   return (
     <>
       {
         user.role === "admin"
-          ? <AdminProfile/>
-          : <UserProfile/>
+          ? <AdminProfile user={user} error={error}/>
+          : <UserProfile user={user} error={error}/>
       }
-      
     </>
   );
 };

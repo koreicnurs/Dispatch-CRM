@@ -2,8 +2,10 @@ import React from 'react';
 import InnerContainer from "../InnerContainer/InnerContainer";
 import Typography from "@mui/material/Typography";
 import {Grid} from "@mui/material";
+import Profile from "./Profile";
+import PropTypes from "prop-types";
 
-const UserProfile = () => {
+const UserProfile = ({user, error}) => {
   return (
     <InnerContainer>
       <Grid item sx={{paddingLeft: "15px"}}>
@@ -12,8 +14,16 @@ const UserProfile = () => {
         </Typography>
       </Grid>
 
+      <Grid item>
+        <Profile user={user} error={error}/>
+      </Grid>
+
     </InnerContainer>
   );
+};
+
+UserProfile.propTypes = {
+  user: PropTypes.object.isRequired,
 };
 
 export default UserProfile;

@@ -37,14 +37,11 @@ Then('я нажимаю на кнопку {string}', add => {
   I.click(`[alt="${add}"]`);
 });
 
-// const uniqNumber = new Date().getTime();
-
 When('я напишу данные:', table => {
   table.rows.forEach(row => {
     const name = row.cells[0].value;
     const value = row.cells[1].value;
     I.fillField(name, value);
-    // I.fillField(name, `${value}${uniqNumber}`);
   });
 });
 

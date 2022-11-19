@@ -5,7 +5,7 @@ import {LockOpenOutlined} from "@mui/icons-material";
 import {useDispatch, useSelector} from "react-redux";
 import {loginRequest} from "../../store/actions/usersActions";
 import FormElement from "../../components/UI/Form/FormElement/FormElement";
-import ButtonWithProgress from "../../components/UI/ButtonWithProgress/ButtonWithProgress";
+import ButtonWithProgress from "../../components/UI/Button/ButtonWithProgress/ButtonWithProgress";
 
 const useStyles = makeStyles()(theme => ({
     paper: {

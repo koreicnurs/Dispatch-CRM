@@ -39,4 +39,4 @@ const FormSelect = ({array, value, onChange, label, required, name, variant, err
   );
 };
 
-export default FormSelect
+export default FormSelect;

@@ -3,9 +3,9 @@ import {Button, Grid, TextField} from "@mui/material";
 import {makeStyles} from "tss-react/mui";
 
 const useStyles = makeStyles()(() => ({
-  input: {
-    display: "none",
-  }
+    input: {
+        display: "none",
+    }
 }));
 
 const FileInput = ({onChange, name, label, required}) => {

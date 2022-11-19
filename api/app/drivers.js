@@ -22,11 +22,27 @@ const upload = multer({storage});
 
 router.get('/', auth, async (req, res) => {
   try {
-    const drivers = await Driver
-      .find()
-      .populate('companyId', 'title');
-    
-    res.send(drivers);
+    if (req.query.carrier) {
+      const driversByCarrier = await Driver
+          .find({companyId: req.query.carrier}).populate('companyId', 'title');
+
+      res.send(driversByCarrier);
+    } else {
+      const drivers = await Driver.find().populate('companyId', 'title');
+
+      res.send(drivers);
+    }
+
+  } catch (e) {
+    res.sendStatus(500);
+  }
+});
+
+router.get('/:id', async (req, res) => {
+  try {
+      const driver = await Driver.findById(req.params.id).populate('companyId', 'title');
+
+      res.send(driver);
   } catch (e) {
     res.sendStatus(500);
   }
@@ -46,6 +62,32 @@ router.post('/', auth, upload.single('license'), async (req, res) => {
       license: req.file ? 'uploads/' + req.file.filename : null,
     };
     const driver = new Driver(driverData);
+
+    await driver.save();
+    res.send(driver);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
+router.put('/:id', upload.single('license'), async (req, res) => {
+  try {
+    const {email, name, phoneNumber, companyId, status, description, pickUp,
+      delivery, ETA, readyTime, notes} = req.body;
+
+    const driver = await Driver.findById(req.params.id);
+
+    driver.email = email;
+    driver.name = name;
+    driver.phoneNumber = phoneNumber;
+    driver.companyId = companyId;
+    driver.status = status;
+    driver.description = JSON.parse(description);
+    driver.pickUp = pickUp;
+    driver.delivery = delivery;
+    driver.ETA = ETA;
+    driver.readyTime = readyTime;
+    driver.notes = notes;
 
     await driver.save();
     res.send(driver);

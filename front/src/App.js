@@ -6,6 +6,7 @@ import Trips from "./containers/Trips/Trips";
 import Carriers from "./containers/Carriers/Carriers";
 import StatusUpdate from "./containers/StatusUpdate/StatusUpdate";
 import Drivers from "./containers/Drivers/Drivers";
+import MyProfile from "./containers/MyProfile/MyProfile";
 
 const ProtectedRoute = ({isAllowed, redirectTo, ...props}) => {
     return isAllowed ?
@@ -49,6 +50,12 @@ const App = () => {
                   redirectTo="/login"
                   path="/drivers"
                   component={Drivers}
+                />
+                <ProtectedRoute
+                  isAllowed={user}
+                  redirectTo="/login"
+                  path="/my_profile"
+                  component={MyProfile}
                 />
                 <Route path="/login" component={Login}/>
             </Switch>

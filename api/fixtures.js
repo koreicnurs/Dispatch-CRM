@@ -72,6 +72,7 @@ const run = async () => {
     phoneNumber: '+267●5350802',
     companyId: bahawayCarrier._id,
     status: 'in transit',
+    telegramId: '',
     description: {
       address: 'US, LA, Avalon c., str. 1, h. 45',
       DOB: '15.12.1980',
@@ -84,6 +85,7 @@ const run = async () => {
     phoneNumber: '+929●3774446',
     companyId: bahawayCarrier._id,
     status: 'upcoming',
+    telegramId: '',
     description: {
       address: 'US, LA, Downey c., str. 1, h. 4',
       DOB: '5.04.1990',
@@ -96,6 +98,7 @@ const run = async () => {
     phoneNumber: '+323●7454492',
     companyId: safewayCargoCarrier._id,
     status: 'off/home',
+    telegramId: '',
     description: {
       address: 'US, IL, Chicago c., str. 1, h. 4',
       DOB: '12.06.1988',
@@ -108,6 +111,7 @@ const run = async () => {
     phoneNumber: '+513●8081130',
     companyId: safewayCargoCarrier._id,
     status: 'ready',
+    telegramId: '',
     description: {
       address: 'US, IL, Chicago c., str. 1, h. 48',
       DOB: '30.08.1995',
@@ -120,6 +124,7 @@ const run = async () => {
     phoneNumber: '+630●6702075',
     companyId: safewayCargoCarrier._id,
     status: 'n/a',
+    telegramId: '',
     description: {
       address: 'US, IL, Chicago c., str. 10, h. 48',
       DOB: '25.07.1993',
@@ -132,6 +137,7 @@ const run = async () => {
     phoneNumber: '+312●6840690',
     companyId: turanExpressCarrier._id,
     status: 'sleep',
+    telegramId: '',
     description: {
       address: 'US, NY, New-York c., 5 Avenue, h. 48',
       DOB: '18.12.2005',
@@ -149,6 +155,7 @@ const run = async () => {
     phoneNumber: '+773●6913604',
     companyId: turanExpressCarrier._id,
     status: 'in tr/upc',
+    telegramId: '',
     description: {
       address: 'US, NY, New-York c., str. 56, h. 48',
       DOB: '3.01.1996',
@@ -161,6 +168,7 @@ const run = async () => {
     phoneNumber: '+773●9466304',
     companyId: tumarExpressCarrier._id,
     status: 'ready',
+    telegramId: '',
     description: {
       address: 'US, MS, Gulfport c., str. 4, h. 75, ap. 7',
       DOB: '22.02.1992',
@@ -173,6 +181,7 @@ const run = async () => {
     phoneNumber: '+347●4941314',
     companyId: tumarExpressCarrier._id,
     status: 'in transit',
+    telegramId: '',
     description: {
       address: 'US, TX, Houston c., str. 45, h. 12, ap. 12',
       DOB: '5.05.1995',

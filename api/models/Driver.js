@@ -36,6 +36,7 @@ const DescriptionSchema = new Schema({
 });
 
 const DriverSchema = new Schema({
+  telegramId: Number,
   email: {
     type: String,
     required: true,

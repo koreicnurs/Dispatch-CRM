@@ -3,7 +3,6 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import InlineFormSelect from "../../UI/Form/FormSelect/InlineFormSelect";
 
-
 const TripTableBody = ({trips, selectChange, drivers, users}) => {
 
   return (
@@ -40,19 +39,6 @@ const TripTableBody = ({trips, selectChange, drivers, users}) => {
               />
             </TableCell>
             <TableCell sx={{fontSize: "12px"}}>test</TableCell>
-
-            {/*<TableCell sx={{fontSize: "12px"}}>*/}
-            {/*  <InlineFormSelect*/}
-            {/*    name="dispatchTeam"*/}
-            {/*    id={trip._id}*/}
-            {/*    value={dispatchTeam}*/}
-            {/*    onchange={selectChange}*/}
-            {/*    def={dispatchTeamOptions[0].title}*/}
-            {/*    options={dispatchTeamOptions}*/}
-            {/*    title="title"*/}
-            {/*  />*/}
-            {/*</TableCell>*/}
-
 
             <TableCell sx={{fontSize: "12px"}}>
               <InlineFormSelect

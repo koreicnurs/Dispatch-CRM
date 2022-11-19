@@ -77,15 +77,14 @@ const Trips = () => {
         <AddButton click={() => setOpen(true)}/>
 
         <InnerTable
-          header={<TableHeaderRow headerCells={headerTitles}/>}
+          header={<TableHeaderRow headerCells={headerTitles} sx={{fontSize: "12px", fontWeight: "bold"}}/>}
           body={
           <TripTableBody
             trips={loads}
             drivers={drivers}
             users={users}
             selectChange={selectorChangeHandler}
-          />
-        }
+          />}
         />
 
       </InnerContainer>

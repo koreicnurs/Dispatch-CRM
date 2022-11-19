@@ -1,13 +1,26 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
 import PropTypes from "prop-types";
-import {Box, Button, Card, CardContent, CardMedia, Grid} from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  Grid,
+  IconButton,
+  InputAdornment,
+  OutlinedInput
+} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import FormElement from "../UI/Form/FormElement/FormElement";
 import {apiUrl} from "../../config";
 import FileInput from "../UI/Form/FileInput/FileInput";
 import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
 import {changeUserRequest} from "../../store/actions/usersActions";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
 
 const Profile = ({user, error}) => {
   const dispatch = useDispatch();
@@ -24,6 +37,7 @@ const Profile = ({user, error}) => {
   });
 
   const [changePassword, setChangePassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     setUserProfile({
@@ -165,15 +179,32 @@ const Profile = ({user, error}) => {
 
               {changePassword === true &&
                 <Grid item sx={{marginTop: "10px", backgroundColor: "white"}}>
-                  <FormElement
-                    type={'password'}
-                    name={'password'}
-                    label={'Password'}
-                    value={userProfile.password}
-                    required={true}
-                    onChange={inputChangeHandler}
-                    error={getFieldError('password')}
-                  />
+                  <FormControl variant="outlined">
+                    <InputLabel htmlFor="adornment-password">Password</InputLabel>
+                    <OutlinedInput
+                      id="adornment-password"
+                      type={showPassword ? "text" : "password"}
+                      name={'password'}
+                      label={'Password'}
+                      value={userProfile.password}
+                      required={true}
+                      onChange={inputChangeHandler}
+                      error={getFieldError('password')}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={() => setShowPassword(!showPassword)}
+                            onMouseDown={() => setShowPassword(!showPassword)}
+                            edge="end"
+                          >
+                            {showPassword ? <VisibilityOff/> : <Visibility/>}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                  </FormControl>
+
                 </Grid>
               }
 

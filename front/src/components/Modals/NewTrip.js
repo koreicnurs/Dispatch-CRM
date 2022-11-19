@@ -1,16 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import {makeStyles} from "tss-react/mui";
 import {useDispatch, useSelector} from "react-redux";
-import {Alert, Box, Grid, Modal, TextField} from "@mui/material";
+import {Alert, Box, Button, Grid, Modal, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import FormElement from "../UI/Form/FormElement/FormElement";
 import FormSelect from "../UI/Form/FormSelect/FormSelect";
 import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
 import {fetchDriversRequest} from "../../store/actions/driversActions";
-import {createTripRequest} from "../../store/actions/tripsActions";
+import {clearCreateTripErrorRequest, createTripRequest, editTripRequest} from "../../store/actions/tripsActions";
 import FileInput from "../UI/Form/FileInput/FileInput";
 import {DesktopDatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import {apiUrl} from "../../config";
 
 const style = {
   position: 'absolute',
@@ -29,15 +30,20 @@ const useStyles = makeStyles()(theme => ({
   field: {
     background: "white",
     fontSize: "12px"
+  },
+  link: {
+    color: "white",
+    textDecoration: "none",
   }
 }));
 
-const statuses = ['upcoming', 'transit', 'finished'];
+const statuses = ['upcoming', 'transit', 'finished', 'cancel'];
 
-const NewTrip = ({open, handleClose}) => {
+const NewTrip = ({open, handleClose, editedTrip}) => {
   const {classes} = useStyles();
   const dispatch = useDispatch();
-  const error = useSelector(state => state.trips.error);
+  const createError = useSelector(state => state.trips.createTripError);
+  const editError = useSelector(state => state.trips.editTripError);
   const loading = useSelector(state => state.trips.loading);
   const drivers = useSelector(state => state.drivers.drivers);
   const user = useSelector(state => state.users.user);
@@ -64,6 +70,26 @@ const NewTrip = ({open, handleClose}) => {
     BOL: "",
     comment: ""
   });
+
+  useEffect(() => {
+    if (editedTrip) {
+      setStartDate(editedTrip.datePU);
+      setFinDate(editedTrip.dateDEL);
+      setTrip({
+        loadCode: editedTrip.loadCode,
+        driverId: editedTrip.driverId._id,
+        dispatchId: editedTrip.dispatchId._id,
+        price: +editedTrip.price,
+        miles: +editedTrip.miles,
+        rpm: +editedTrip.rpm,
+        pu: editedTrip.pu,
+        del: editedTrip.del,
+        status: editedTrip.status,
+        comment: editedTrip.comment || ''
+      });
+
+    }
+  }, [dispatch, editedTrip]);
 
   const inputChangeHandler = e => {
     const {name, value} = e.target;
@@ -94,7 +120,13 @@ const NewTrip = ({open, handleClose}) => {
       Object.keys(currentTrip).forEach(key => {
         formData.append(key, currentTrip[key]);
       });
-      await dispatch(createTripRequest(formData))
+
+      if (editedTrip) {
+        await dispatch(editTripRequest({tripData: formData, id: editedTrip._id, path: editedTrip.status}));
+      } else {
+        await dispatch(createTripRequest(formData));
+      }
+
     }
 
     setTrip({
@@ -109,18 +141,51 @@ const NewTrip = ({open, handleClose}) => {
       pu: "",
       del: "",
       status: "",
-      comment: ""
+      comment: "",
+      RC: "",
+      BOL: "",
     });
 
-    handleClose();
+    if (!createError || !editError) {
+      handleClose();
+    }
   };
 
   const getFieldError = (fieldName) => {
     try {
-      return `${error.error} ${[fieldName]}`;
+      if(createError) {
+        return `${createError.error} ${[fieldName]}`;
+      } else if(editError) {
+        return `${editError.error} ${[fieldName]}`;
+      }
     } catch {
       return undefined;
     }
+  };
+
+  const handleCloseHandler = () => {
+    handleClose();
+    if(createError) {
+      dispatch(clearCreateTripErrorRequest());
+    }
+    setTrip({
+      loadCode: "",
+      driverId: "",
+      dispatchId: user._id,
+      price: "",
+      miles: "",
+      rpm: "",
+      datePU: "",
+      dateDEL: "",
+      pu: "",
+      del: "",
+      status: "",
+      comment: "",
+      RC: "",
+      BOL: "",
+    });
+    setStartDate(null);
+    setFinDate(null);
   };
 
 
@@ -137,7 +202,7 @@ const NewTrip = ({open, handleClose}) => {
 
           <Box sx={style}>
             <Typography id="keep-mounted-modal-description" sx={{ mb: 2 }}>
-              New Load
+              {editedTrip ? 'Edit Trip' : 'New Load'}
             </Typography>
 
             <Grid
@@ -145,11 +210,18 @@ const NewTrip = ({open, handleClose}) => {
               direction="column"
             >
               <Grid item>
-                {error && (
+                {createError && (
                   <Alert severity="error">
-                    Error! {error.message}
+                    Error! {createError.message}
                   </Alert>
                 )}
+                <Grid item>
+                  {editError && (
+                    <Alert severity="error">
+                      Error! {editError.message}
+                    </Alert>
+                  )}
+                </Grid>
               </Grid>
 
               <Grid item>
@@ -180,7 +252,7 @@ const NewTrip = ({open, handleClose}) => {
                         inputFormat="MM/DD/YYYY"
                         onChange={(date) => setStartDate(date)}
                         value={startDate}
-                        renderInput={(params) => <TextField {...params}/>}/>
+                        renderInput={(params) => <TextField {...params} required={true}/>}/>
                     </LocalizationProvider>
 
                   </Grid>
@@ -192,7 +264,7 @@ const NewTrip = ({open, handleClose}) => {
                         inputFormat="MM/DD/YYYY"
                         onChange={(date) => setFinDate(date)}
                         value={finDate}
-                        renderInput={(params) => <TextField {...params}/>}/>
+                        renderInput={(params) => <TextField {...params} required={true}/>}/>
                     </LocalizationProvider>
                   </Grid>
                 </Grid>
@@ -251,6 +323,7 @@ const NewTrip = ({open, handleClose}) => {
                       name="miles"
                       label="Miles"
                       value={trip.miles}
+                      inputProps={{min:0}}
                       required={true}
                       error={getFieldError('miles')}
                       className={classes.field}
@@ -264,6 +337,7 @@ const NewTrip = ({open, handleClose}) => {
                       name="rpm"
                       label="Rate per mile"
                       value={trip.rpm}
+                      inputProps={{min:0}}
                       required={true}
                       error={getFieldError('rpm')}
                       className={classes.field}
@@ -283,6 +357,7 @@ const NewTrip = ({open, handleClose}) => {
                       name="status"
                       array={statuses}
                       value={trip.status}
+                      required={true}
                       onChange={inputChangeHandler}
                       variant="array"
                       error={getFieldError("status")}
@@ -295,6 +370,7 @@ const NewTrip = ({open, handleClose}) => {
                       type="number"
                       name="price"
                       label="Price"
+                      inputProps={{min:0}}
                       value={trip.price}
                       required={true}
                       error={getFieldError('price')}
@@ -310,17 +386,36 @@ const NewTrip = ({open, handleClose}) => {
                   value={trip.driverId}
                   onChange={inputChangeHandler}
                   variant="object"
+                  required={true}
                   error={getFieldError("driverId")}
                   driver={true}
                 />
 
                 <Grid item>
-                  <FileInput name="RC" label="RC file" onChange={fileChangeHandler}/>
+                  <FileInput name="RC" label="RC file" onChange={fileChangeHandler} required={false}/>
                 </Grid>
 
                 <Grid item>
-                  <FileInput name="BOL" label="BOL file" onChange={fileChangeHandler}/>
+                  <FileInput name="BOL" label="BOL file" onChange={fileChangeHandler} required={false}/>
                 </Grid>
+
+                <Box sx={{display: 'flex', justifyContent: 'space-between', width: '100%', margin: '12px 0 12px 10px'}}>
+                  {editedTrip && editedTrip.RC
+                    ? <ButtonWithProgress variant="contained" component="label">
+                        <a href={apiUrl + editedTrip.RC.slice(6)} target="_blank" download className={classes.link} rel="noreferrer">Download RC</a>
+                      </ButtonWithProgress>
+                    : null
+                  }
+
+                  {editedTrip && editedTrip.BOL
+                    ? <ButtonWithProgress variant="contained" component="label">
+                        <a href={apiUrl + editedTrip.BOL.slice(6)} target="_blank" download className={classes.link} rel="noreferrer">Download BOL</a>
+                      </ButtonWithProgress>
+                    : null
+                  }
+                </Box>
+
+
 
                 <FormElement
                   onChange={inputChangeHandler}
@@ -328,25 +423,21 @@ const NewTrip = ({open, handleClose}) => {
                   label="Comment"
                   value={trip.comment}
                   multiline={true}
+                  required={false}
                   rows={2}
                   error={getFieldError('comment')}
                   className={classes.field}
                 />
 
                 <Grid item xs={12} container spacing={2} justifyContent="space-between">
-                  <Grid item xs={6}>
-                    <ButtonWithProgress
-                      type="button"
-                      fullWidth
-                      variant="contained"
-                      color="primary"
-                      onClick={handleClose}
-                    >
+                  <Grid item>
+                    <Button variant="contained" onClick={handleCloseHandler}>
                       Cancel
-                    </ButtonWithProgress>
+                    </Button>
+
                   </Grid>
 
-                  <Grid item xs={6}>
+                  <Grid item>
                     <ButtonWithProgress
                       loading={loading}
                       disabled={loading}
@@ -354,7 +445,7 @@ const NewTrip = ({open, handleClose}) => {
                       fullWidth
                       variant="contained"
                     >
-                      Create
+                      {editedTrip ? 'Save' : 'Create'}
                     </ButtonWithProgress>
                   </Grid>
                 </Grid>

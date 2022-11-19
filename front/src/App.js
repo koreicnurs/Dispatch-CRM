@@ -35,7 +35,7 @@ const App = () => {
                 <ProtectedRoute
                     isAllowed={user}
                     redirectTo="/login"
-                    path="/trips"
+                    path="/loads"
                     component={Trips}
                 />
                 <ProtectedRoute

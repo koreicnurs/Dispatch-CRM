@@ -16,10 +16,10 @@
   Допустим я открываю страницу "carriers"
   То я нажимаю на кнопку "add"
   Если я напишу данные:
-    | title       | SWCK          |
-    | mc          | 123           |
-    | dot         | 123           |
-    | fedid       | 88-23         |
+    | title       | SWCS          |
+    | mc          | 1234           |
+    | dot         | 126           |
+    | fedid       | 88-237         |
     | description | test company |
   Затем нажимаю на "Create"
   То я вижу "Carrier created!"

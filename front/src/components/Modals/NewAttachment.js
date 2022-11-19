@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useDispatch} from "react-redux";
 import {Box, Grid, Modal} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
+import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
 import {addAttachmentRequest} from "../../store/actions/tripsActions";
 import FileInput from "../UI/Form/FileInput/FileInput";
 

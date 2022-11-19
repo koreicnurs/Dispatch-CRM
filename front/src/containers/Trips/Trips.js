@@ -145,16 +145,14 @@ const Trips = ({history}) => {
       <NewComment handleClose={handleCloseCommentModal} open={openComment} id={commentTripId}/>
       <ViewAll handleClose={handleCloseViewAllModal} open={viewAll} id={viewAllTripId} trip={trip}/>
       <NewAttachment handleClose={handleCloseAttachmentModal} open={openAttachment} id={attachTripId}/>
-      <Grid item sx={{paddingLeft: "15px"}}>
-        <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
-          Trips
-        </Typography>
-      </Grid>
-
-
 
       <InnerContainer>
         <Box sx={{ width: '100%' }}>
+          <Grid item sx={{paddingLeft: "15px"}}>
+            <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
+              Trips
+            </Typography>
+          </Grid>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
               <Tab label="Upcoming" component={Link} to='/loads?status=upcoming' {...a11yProps(0)} />

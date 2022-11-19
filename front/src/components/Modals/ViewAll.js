@@ -1,7 +1,7 @@
 import React from 'react';
 import {makeStyles} from "tss-react/mui";
 import {Box, Button, Grid, Modal, TextField} from "@mui/material";
-import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
+import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
 import {apiUrl} from "../../config";
 
 const style = {

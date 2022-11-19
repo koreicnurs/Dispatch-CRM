@@ -1,5 +1,5 @@
 import React from 'react';
-import add from '../../../assets/addButton.svg';
+import add from '../../../../assets/addButton.svg';
 import {makeStyles} from "tss-react/mui";
 import {Grid} from "@mui/material";
 

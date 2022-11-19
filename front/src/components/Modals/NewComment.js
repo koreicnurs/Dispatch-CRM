@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Box, Modal, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import ButtonWithProgress from "../UI/ButtonWithProgress/ButtonWithProgress";
+import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
 import {addCommentRequest, fetchTripRequest} from "../../store/actions/tripsActions";
 
 const style = {

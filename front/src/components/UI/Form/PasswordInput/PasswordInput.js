@@ -9,7 +9,7 @@ const PasswordInput = ({show, inputHandler, error, value, name, label, showHandl
   return (
     <>
       <FormControl variant="outlined" sx={{width: "100%"}}>
-        <InputLabel htmlFor="adornment-password">Password</InputLabel>
+        <InputLabel htmlFor="adornment-password">{label}</InputLabel>
         <OutlinedInput
           fullWidth
           id="adornment-password"

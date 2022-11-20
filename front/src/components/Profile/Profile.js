@@ -22,6 +22,7 @@ const Profile = ({user, error}) => {
 
   const [userProfile, setUserProfile] = useState({
     email: "",
+    oldPassword: "",
     password: "",
     displayName: "",
     avatar: ""
@@ -33,10 +34,12 @@ const Profile = ({user, error}) => {
 
   const [changePassword, setChangePassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showOldPassword, setShowOldPassword] = useState(false);
 
   useEffect(() => {
     setUserProfile({
       email: user.email,
+      oldPassword: "",
       password: "",
       displayName: user.displayName,
       avatar: user.avatar
@@ -69,7 +72,6 @@ const Profile = ({user, error}) => {
     }
   };
 
-
   const submitFormHandler = async e => {
     e.preventDefault();
 
@@ -79,7 +81,10 @@ const Profile = ({user, error}) => {
       formData.append(key, userProfile[key]);
     });
 
-    await dispatch(changeUserRequest(formData))
+    await dispatch(changeUserRequest(formData));
+    setChangePassword(!changePassword);
+    setShowPassword(false);
+    setShowOldPassword(false);
   };
 
   return (
@@ -175,16 +180,31 @@ const Profile = ({user, error}) => {
               </Grid>
 
               {changePassword === true &&
-                <Grid item sx={{marginTop: "10px", backgroundColor: "white"}}>
-                  <PasswordInput
-                    label="Password"
-                    name="password"
-                    show={showPassword}
-                    showHandler={() => setShowPassword(!showPassword)}
-                    inputHandler={inputChangeHandler}
-                    getError={getFieldError("password")}
-                  />
-                </Grid>
+                <>
+                  <Grid item sx={{marginTop: "10px", backgroundColor: "white"}}>
+                    <PasswordInput
+                      label="Old password"
+                      name="oldPassword"
+                      value={userProfile.oldPassword}
+                      show={showOldPassword}
+                      showHandler={() => setShowOldPassword(!showOldPassword)}
+                      inputHandler={inputChangeHandler}
+                      getError={getFieldError("oldPassword")}
+                    />
+                  </Grid>
+
+                  <Grid item sx={{marginTop: "10px", backgroundColor: "white"}}>
+                    <PasswordInput
+                      label="New password"
+                      name="password"
+                      value={userProfile.password}
+                      show={showPassword}
+                      showHandler={() => setShowPassword(!showPassword)}
+                      inputHandler={inputChangeHandler}
+                      getError={getFieldError("password")}
+                    />
+                  </Grid>
+                </>
               }
 
             </CardContent>

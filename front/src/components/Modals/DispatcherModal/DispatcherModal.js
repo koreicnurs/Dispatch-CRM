@@ -89,6 +89,7 @@ const DispatcherModal = ({modal, dispatcher, modalHandler, submitFormHandler, in
               <PasswordInput
                 label="Password"
                 name="password"
+                value={dispatcher.password}
                 show={showPassword}
                 showHandler={() => setShowPassword(!showPassword)}
                 inputHandler={inputHandler}

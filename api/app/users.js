@@ -100,7 +100,6 @@ router.put('/', auth, upload.single('avatar'), async (req, res) => {
 router.put('/change_dispatcher', auth, upload.single('avatar'), async (req, res) => {
   try {
     const {email, password, displayName, role, id} = req.body;
-    console.log(req.body);
 
     const user = await User.find({_id: id});
 

@@ -7,10 +7,7 @@ import {
   Card,
   CardContent,
   CardMedia,
-  Grid,
-  IconButton,
-  InputAdornment,
-  OutlinedInput
+  Grid
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import FormElement from "../UI/Form/FormElement/FormElement";
@@ -18,9 +15,7 @@ import {apiUrl} from "../../config";
 import FileInput from "../UI/Form/FileInput/FileInput";
 import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
 import {changeUserRequest} from "../../store/actions/usersActions";
-import {Visibility, VisibilityOff} from "@mui/icons-material";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
+import PasswordInput from "../UI/Form/PasswordInput/PasswordInput";
 
 const Profile = ({user, error}) => {
   const dispatch = useDispatch();
@@ -181,31 +176,14 @@ const Profile = ({user, error}) => {
 
               {changePassword === true &&
                 <Grid item sx={{marginTop: "10px", backgroundColor: "white"}}>
-                  <FormControl variant="outlined">
-                    <InputLabel htmlFor="adornment-password">Password</InputLabel>
-                    <OutlinedInput
-                      id="adornment-password"
-                      type={showPassword ? "text" : "password"}
-                      name={'password'}
-                      label={'Password'}
-                      value={userProfile.password}
-                      required={true}
-                      onChange={inputChangeHandler}
-                      error={getFieldError('password')}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={() => setShowPassword(!showPassword)}
-                            onMouseDown={() => setShowPassword(!showPassword)}
-                            edge="end"
-                          >
-                            {showPassword ? <VisibilityOff/> : <Visibility/>}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                    />
-                  </FormControl>
+                  <PasswordInput
+                    label="Password"
+                    name="password"
+                    show={showPassword}
+                    showHandler={() => setShowPassword(!showPassword)}
+                    inputHandler={inputChangeHandler}
+                    getError={getFieldError("password")}
+                  />
                 </Grid>
               }
 

@@ -92,7 +92,7 @@ const DispatcherModal = ({modal, dispatcher, modalHandler, submitFormHandler, in
                 show={showPassword}
                 showHandler={() => setShowPassword(!showPassword)}
                 inputHandler={inputHandler}
-                getError={getFieldError("name")}
+                getError={getFieldError("password")}
               />
             </Grid>
 

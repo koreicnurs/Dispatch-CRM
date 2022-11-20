@@ -7,8 +7,8 @@ const carriers = require('./app/carriers');
 const drivers = require('./app/drivers');
 const loads = require('./app/loads');
 const learnings = require('./app/learnings');
-
 const config = require('./config');
+const bot = require("./telegramBotSD");
 
 const app = express();
 const PORT = 8000;
@@ -23,6 +23,7 @@ app.use('/drivers', drivers);
 app.use('/loads', loads);
 app.use('/learnings', learnings);
 
+
 const run = async () => {
     await mongoose.connect(config.mongo.db, config.mongo.options);
 
@@ -35,5 +36,7 @@ const run = async () => {
         console.log('MongoDb disconnect');
     });
 };
+
+bot();
 
 run().catch(e => console.log(e));

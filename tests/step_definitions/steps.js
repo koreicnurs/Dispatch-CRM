@@ -1,5 +1,4 @@
-
-const { I } = inject();
+const {I} = inject();
 
 Given('я захожу на страницу {string}', (page) => {
   I.amOnPage('/' + page);
@@ -54,3 +53,66 @@ Then('нажимаю на {string}', buttonText => {
 Then('я вижу {string}', text => {
   I.see(text);
 });
+
+Given('я открываю страницу водителей {string}', page => {
+  I.amOnPage('/' + page);
+});
+
+Then('я нажимаю на кнопку открытия модального окна для формы редактирования водителя', () => {
+  I.click('//td//div');
+});
+
+When('я введу данные в форму редактирования водителя:', table => {
+  table.rows.forEach(row => {
+    const name = row.cells[0].value;
+    I.fillField(name, '');
+  });
+
+  table.rows.forEach(row => {
+    const name = row.cells[0].value;
+    const value = row.cells[1].value;
+    I.clearField(name);
+    I.fillField(name, value);
+  });
+});
+
+Then('нажимаю на выбор компании {string}', text => {
+  I.click(`//div[contains(text(), "${text}")]`);
+});
+
+Then('нажимаю на компанию {string}', companyName => {
+  I.click(`//ul//li[contains(text(), "${companyName}")]`);
+  I.wait(1);
+});
+
+Then('нажимаю на выбор статуса {string}', text => {
+  I.click(`//div[contains(text(), "${text}")]`);
+});
+
+Then('нажимаю на статус {string}', statusName => {
+  I.click(`//ul//li[contains(text(), "${statusName}")]`);
+  I.wait(1);
+});
+
+Then('нажимаю на кнопку редактирования водителя {string}', buttonText => {
+  I.click(`//form//button[contains(text(), "${buttonText}")]`);
+  I.wait(1);
+});
+
+Then('я вижу текст о успешном редактировании водителя {string}', text => {
+  I.see(text);
+});
+
+Then('я вижу текст об ошибке почты {string}', text => {
+  I.see(text);
+});
+
+Then('я вижу текст об ошибке номера {string}', text => {
+  I.see(text);
+});
+
+Then('я вижу текст о ошибке редактирования {string}', text => {
+  I.see(text);
+  I.wait(1);
+});
+

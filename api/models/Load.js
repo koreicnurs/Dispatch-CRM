@@ -54,7 +54,8 @@ const LoadSchema = new Schema({
     status: {
         type: String,
         required: true,
-        enum: ['upcoming', 'transit', 'finished'],
+        default: 'upcoming',
+        enum: ['upcoming', 'transit', 'finished', 'cancel'],
     },
     BOL: String,
     RC: String,

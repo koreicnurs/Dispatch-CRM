@@ -21,7 +21,7 @@ const UserTableBody = ({users, onClickHandler}) => {
             </TableCell>
 
             <TableCell component="th" scope="row" sx={{fontSize: "16px"}}>
-              <EditButton click={onClickHandler}/>
+              <EditButton click={() => onClickHandler(user._id)}/>
             </TableCell>
 
           </TableRow>

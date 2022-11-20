@@ -49,7 +49,7 @@ const Profile = ({user, error}) => {
     setCurrentAvatar({
       avatarImg: apiUrl + "/" + user.avatar,
     })
-  }, []);
+  }, [user]);
 
   const inputChangeHandler = e => {
     const {name, value} = e.target;
@@ -83,6 +83,7 @@ const Profile = ({user, error}) => {
     Object.keys(userProfile).forEach(key => {
       formData.append(key, userProfile[key]);
     });
+
     await dispatch(changeUserRequest(formData))
   };
 
@@ -204,7 +205,6 @@ const Profile = ({user, error}) => {
                       }
                     />
                   </FormControl>
-
                 </Grid>
               }
 

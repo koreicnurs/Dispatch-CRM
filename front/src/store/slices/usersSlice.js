@@ -58,6 +58,18 @@ const usersSlice = createSlice({
         changeUserFailure(state, action) {
             state.changeLoading =false;
             state.changeError = action.payload;
+        },
+
+        changeDispatcherRequest(state) {
+            state.changeLoading = true;
+            state.changeError = null;
+        },
+        changeDispatcherSuccess(state) {
+            state.changeLoading = false;
+        },
+        changeDispatcherFailure(state, action) {
+            state.changeLoading =false;
+            state.changeError = action.payload;
         }
     }
 });

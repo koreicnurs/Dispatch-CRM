@@ -70,19 +70,21 @@ router.post('/sessions', async (req,  res) => {
 
 router.put('/', auth, upload.single('avatar'), async (req, res) => {
   try {
-    const {displayName, password} = req.body;
+    const {displayName, password, email} = req.body;
 
     let userData;
 
     if (password !== "") {
       userData = {
         displayName,
+        email,
         password,
         avatar: req.file ? 'uploads/' + req.file.filename : req.body.avatar,
       };
     } else {
       userData = {
         displayName,
+        email,
         avatar: req.file ? 'uploads/' + req.file.filename : req.body.avatar,
       };
     }
@@ -90,6 +92,39 @@ router.put('/', auth, upload.single('avatar'), async (req, res) => {
     const updateUser = await User.findOneAndUpdate({_id: req.user._id}, userData, {new: true});
     res.send(updateUser);
 
+  } catch (e) {
+    res.sendStatus(500);
+  }
+});
+
+router.put('/change_dispatcher', auth, upload.single('avatar'), async (req, res) => {
+  try {
+    const {email, password, displayName, role, id} = req.body;
+    console.log(req.body);
+
+    const user = await User.find({_id: id});
+
+    let userData;
+
+    if(password !== "") {
+      userData = {
+        email,
+        password,
+        displayName,
+        role,
+        avatar: req.file ? 'uploads/' + req.file.filename : user.avatar,
+      };
+    } else {
+      userData = {
+        email,
+        displayName,
+        role,
+        avatar: req.file ? 'uploads/' + req.file.filename : user.avatar,
+      };
+    }
+
+    const updateUser = await User.findOneAndUpdate({_id: id}, userData, {new: true});
+    res.send(updateUser);
   } catch (e) {
     res.sendStatus(500);
   }

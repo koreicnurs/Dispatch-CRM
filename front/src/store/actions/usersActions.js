@@ -11,5 +11,8 @@ export const {
     fetchUsersFailure,
     changeUserRequest,
     changeUserSuccess,
-    changeUserFailure
+    changeUserFailure,
+    changeDispatcherRequest,
+    changeDispatcherSuccess,
+    changeDispatcherFailure
 } = usersSlice.actions

@@ -10,6 +10,7 @@ import InnerTable from "../Table/InnerTable";
 import TableHeaderRow from "../Table/TableHeader/TableHeaderRow";
 import UserTableBody from "../Table/TableBody/UserTableBody";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
+import EditDispatcher from "../Modals/EditDispatcher";
 
 const headerTitles = ["email", "name"];
 
@@ -17,10 +18,16 @@ const AdminProfile = ({user, error}) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const users = useSelector(state => state.users.users);
+  const [chosenDispatcher, setChosenDispatcher] = useState(null);
+
+  const chooseDispatcher = id => {
+    setChosenDispatcher(users.find(user => user._id === id));
+    setOpen(!open);
+  };
 
   useEffect(() => {
     dispatch(fetchUsersRequest());
-  }, [dispatch]);
+  }, [dispatch, users]);
 
   return (
     <InnerContainer>
@@ -49,8 +56,14 @@ const AdminProfile = ({user, error}) => {
           drivers={false}
           sx={{fontSize: "16px", fontWeight: "bold", textTransform: "uppercase"}}
         />}
-        body={<UserTableBody users={users} onClickHandler={() => setOpen(!open)}/>}
+        body={<UserTableBody users={users} onClickHandler={chooseDispatcher}/>}
       />
+
+      {
+        chosenDispatcher &&
+        <EditDispatcher modalHandler={() => setOpen(!open)} modal={open} dispatcher={chosenDispatcher}/>
+      }
+
 
     </InnerContainer>
   );

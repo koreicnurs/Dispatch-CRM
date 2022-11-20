@@ -5,7 +5,7 @@ import UserProfile from "../../components/Profile/UserProfile";
 
 const MyProfile = () => {
   const user = useSelector(state => state.users.user);
-  const error = useSelector(state => state.users.fetchError);
+  const error = useSelector(state => state.users.changeError);
 
   return (
     <>

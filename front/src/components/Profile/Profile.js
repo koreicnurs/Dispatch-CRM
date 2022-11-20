@@ -135,6 +135,7 @@ const Profile = ({user, error}) => {
 
                 <Grid item sx={{marginLeft: "15px", backgroundColor: "white"}}>
                   <FormElement
+                    disabled={user.role === "admin" && true}
                     type={'email'}
                     name={'email'}
                     label={'Email'}

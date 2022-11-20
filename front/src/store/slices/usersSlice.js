@@ -10,7 +10,9 @@ export const initialState = {
     fetchLoading: false,
     fetchError: null,
     changeLoading: false,
-    changeError: null
+    changeError: null,
+    createLoading: false,
+    createError: null
 };
 
 const usersSlice = createSlice({
@@ -70,7 +72,19 @@ const usersSlice = createSlice({
         changeDispatcherFailure(state, action) {
             state.changeLoading =false;
             state.changeError = action.payload;
-        }
+        },
+
+        createDispatcherRequest(state) {
+            state.createLoading = true;
+            state.createError = null;
+        },
+        createDispatcherSuccess(state) {
+            state.createLoading = false;
+        },
+        createDispatcherFailure(state, action) {
+            state.createLoading =false;
+            state.createError = action.payload;
+        },
     }
 });
 

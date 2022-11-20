@@ -8,7 +8,7 @@ const drivers = require('./app/drivers');
 const loads = require('./app/loads');
 const learnings = require('./app/learnings');
 const config = require('./config');
-const bot = require("./telegramBotSD");
+// const bot = require("./telegramBotSD");
 
 const app = express();
 const PORT = 8000;
@@ -37,6 +37,6 @@ const run = async () => {
     });
 };
 
-bot();
+// bot();
 
 run().catch(e => console.log(e));

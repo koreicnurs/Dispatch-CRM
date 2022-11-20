@@ -1,9 +1,17 @@
 import {put, takeEvery} from "redux-saga/effects";
 import axiosApi from "../../axiosApi";
 import {
-    changeDispatcherFailure, changeDispatcherRequest, changeDispatcherSuccess,
-    changeUserFailure, changeUserRequest, changeUserSuccess,
-    fetchUsersFailure, fetchUsersRequest,
+    changeDispatcherFailure,
+    changeDispatcherRequest,
+    changeDispatcherSuccess,
+    changeUserFailure,
+    changeUserRequest,
+    changeUserSuccess,
+    createDispatcherFailure,
+    createDispatcherRequest,
+    createDispatcherSuccess,
+    fetchUsersFailure,
+    fetchUsersRequest,
     fetchUsersSuccess,
     loginFailure,
     loginRequest,
@@ -60,11 +68,24 @@ export function* changeDispatcherData({payload: dispatcherData}) {
         yield axiosApi.put('/users/change_dispatcher', dispatcherData);
         yield put(changeDispatcherSuccess());
         yield put(addNotification({message: 'Successfully changed!', variant: 'success'}));
-        // const response = yield axiosApi('/users');
-        // yield put(fetchUsersSuccess(response.data));
+        const response = yield axiosApi('/users');
+        yield put(fetchUsersSuccess(response.data));
     } catch (e) {
         yield put(addNotification({message: 'Changing failed!', variant: 'error'}));
         yield put(changeDispatcherFailure(e.response.data));
+    }
+}
+
+export function* createDispatcher({payload: dispatcherData}) {
+    try {
+        yield axiosApi.post('/users', dispatcherData);
+        yield put(createDispatcherSuccess());
+        yield put(addNotification({message: 'Successfully created!', variant: 'success'}));
+        const response = yield axiosApi('/users');
+        yield put(fetchUsersSuccess(response.data));
+    } catch (e) {
+        yield put(addNotification({message: 'Creating failed!', variant: 'error'}));
+        yield put(createDispatcherFailure(e.response.data));
     }
 }
 
@@ -73,7 +94,8 @@ const userSagas = [
     takeEvery(logoutRequest, logoutUserSaga),
     takeEvery(fetchUsersRequest, fetchUsers),
     takeEvery(changeUserRequest, changeUserData),
-    takeEvery(changeDispatcherRequest, changeDispatcherData)
+    takeEvery(changeDispatcherRequest, changeDispatcherData),
+    takeEvery(createDispatcherRequest, createDispatcher)
 ];
 
 export default userSagas;

@@ -10,19 +10,21 @@ import InnerTable from "../Table/InnerTable";
 import TableHeaderRow from "../Table/TableHeader/TableHeaderRow";
 import UserTableBody from "../Table/TableBody/UserTableBody";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
-import EditDispatcher from "../Modals/EditDispatcher";
+import EditDispatcher from "../Modals/DispatcherModal/EditDispatcher";
+import NewDispatcher from "../Modals/DispatcherModal/NewDispatcher";
 
 const headerTitles = ["email", "name"];
 
 const AdminProfile = ({user, error}) => {
   const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
+  const [openChange, setOpenChange] = useState(false);
+  const [openCreate, setOpenCreate] = useState(false);
   const users = useSelector(state => state.users.users);
   const [chosenDispatcher, setChosenDispatcher] = useState(null);
 
   const chooseDispatcher = id => {
     setChosenDispatcher(users.find(user => user._id === id));
-    setOpen(!open);
+    setOpenChange(!openChange);
   };
 
   useEffect(() => {
@@ -47,7 +49,12 @@ const AdminProfile = ({user, error}) => {
         </Typography>
       </Grid>
 
-      <AddButton click={() => setOpen(true)}/>
+      <AddButton click={() => setOpenCreate(!openCreate)}/>
+
+      <NewDispatcher
+        modalHandler={() => setOpenCreate(!openCreate)}
+        modal={openCreate}
+      />
 
       <InnerTable
         header={
@@ -61,7 +68,11 @@ const AdminProfile = ({user, error}) => {
 
       {
         chosenDispatcher &&
-        <EditDispatcher modalHandler={() => setOpen(!open)} modal={open} dispatcher={chosenDispatcher}/>
+        <EditDispatcher
+          modalHandler={() => setOpenChange(!openChange)}
+          modal={openChange}
+          dispatcher={chosenDispatcher}
+        />
       }
 
 

@@ -31,6 +31,7 @@ const UserSchema = new Schema({
     required: true,
   },
   avatar:  String,
+  telegramId: Number,
 });
 
 UserSchema.pre('save', async function (next) {

@@ -82,7 +82,7 @@ const Profile = ({user, error}) => {
     });
 
     await dispatch(changeUserRequest(formData));
-    setChangePassword(!changePassword);
+    setChangePassword(false);
     setShowPassword(false);
     setShowOldPassword(false);
   };
@@ -183,6 +183,7 @@ const Profile = ({user, error}) => {
                 <>
                   <Grid item sx={{marginTop: "10px", backgroundColor: "white"}}>
                     <PasswordInput
+                      id="old_password"
                       label="Old password"
                       name="oldPassword"
                       value={userProfile.oldPassword}
@@ -195,6 +196,7 @@ const Profile = ({user, error}) => {
 
                   <Grid item sx={{marginTop: "10px", backgroundColor: "white"}}>
                     <PasswordInput
+                      id="new_password"
                       label="New password"
                       name="password"
                       value={userProfile.password}

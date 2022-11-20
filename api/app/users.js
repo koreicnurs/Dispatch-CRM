@@ -71,33 +71,45 @@ router.post('/sessions', async (req,  res) => {
 router.put('/', auth, upload.single('avatar'), async (req, res) => {
   try {
     const {displayName, password, oldPassword, email} = req.body;
+    let userData;
 
-    const user = await User.findOne({_id: req.user._id});
-    const isMatch = await user.checkPassword(oldPassword);
+    if (oldPassword !== "") {
+      const user = await User.findOne({_id: req.user._id});
+      const isMatch = await user.checkPassword(oldPassword);
 
-    if (isMatch) {
-      let userData;
+      if (isMatch) {
 
-      if (password !== "") {
-        userData = {
-          displayName,
-          email,
-          password,
-          avatar: req.file ? 'uploads/' + req.file.filename : req.body.avatar,
-        };
+        if (password !== "") {
+          userData = {
+            displayName,
+            email,
+            password,
+            avatar: req.file ? 'uploads/' + req.file.filename : req.body.avatar,
+          };
+        } else {
+          userData = {
+            displayName,
+            email,
+            avatar: req.file ? 'uploads/' + req.file.filename : req.body.avatar,
+          };
+        }
+
+        const updateUser = await User.findOneAndUpdate({_id: req.user._id}, userData, {new: true});
+        res.send(updateUser);
       } else {
-        userData = {
-          displayName,
-          email,
-          avatar: req.file ? 'uploads/' + req.file.filename : req.body.avatar,
-        };
+        return res.status(401).send({message: 'Old password is wrong!'});
       }
+    } else {
+      userData = {
+        displayName,
+        email,
+        avatar: req.file ? 'uploads/' + req.file.filename : req.body.avatar,
+      };
 
       const updateUser = await User.findOneAndUpdate({_id: req.user._id}, userData, {new: true});
       res.send(updateUser);
-    } else {
-      return res.status(401).send({message: 'Old password is wrong!'});
     }
+
   } catch (e) {
     res.status(400).send(e);
   }

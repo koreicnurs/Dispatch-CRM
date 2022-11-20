@@ -5,14 +5,14 @@ import {IconButton, InputAdornment, OutlinedInput} from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import PropTypes from "prop-types";
 
-const PasswordInput = ({show, inputHandler, error, value, name, label, showHandler}) => {
+const PasswordInput = ({show, inputHandler, error, value, name, label, showHandler, id}) => {
   return (
     <>
       <FormControl variant="outlined" sx={{width: "100%"}}>
-        <InputLabel htmlFor="adornment-password">{label}</InputLabel>
+        <InputLabel htmlFor={id}>{label}</InputLabel>
         <OutlinedInput
           fullWidth
-          id="adornment-password"
+          id={id}
           type={show ? "text" : "password"}
           name={name}
           label={label}

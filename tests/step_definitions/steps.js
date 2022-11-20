@@ -1,5 +1,4 @@
-
-const { I } = inject();
+const {I} = inject();
 
 Given('я захожу на страницу {string}', (page) => {
   I.amOnPage('/' + page);
@@ -108,6 +107,51 @@ Then('я вижу текст о успешной регистрации води
 });
 
 Then('я вижу текст о ошибке регистрации водителя {string}', text => {
+  I.see(text);
+  I.wait(1);
+});
+
+/* Driver editing test */
+
+Then('я нажимаю на кнопку открытия модального окна для формы редактирования водителя', () => {
+  I.click('//td//div');
+});
+
+When('я введу данные в форму редактирования водителя:', table => {
+  table.rows.forEach(row => {
+    const name = row.cells[0].value;
+    const value = row.cells[1].value;
+    I.clearField(name);
+    I.fillField(name, value);
+  });
+});
+
+Then('нажимаю на выбор компании для редактирования {string}', text => {
+  I.click(`//div[contains(text(), "${text}")]`);
+});
+
+Then('нажимаю на выбор статуса для редактирования {string}', text => {
+  I.click(`//div[contains(text(), "${text}")]`);
+});
+
+Then('нажимаю на кнопку редактирования водителя {string}', buttonText => {
+  I.click(`//form//button[contains(text(), "${buttonText}")]`);
+  I.wait(1);
+});
+
+Then('я вижу текст о успешном редактировании водителя {string}', text => {
+  I.see(text);
+});
+
+Then('я вижу текст об ошибке почты {string}', text => {
+  I.see(text);
+});
+
+Then('я вижу текст об ошибке номера {string}', text => {
+  I.see(text);
+});
+
+Then('я вижу текст о ошибке редактирования {string}', text => {
   I.see(text);
   I.wait(1);
 });

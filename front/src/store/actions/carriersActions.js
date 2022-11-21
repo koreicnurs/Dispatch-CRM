@@ -12,5 +12,6 @@ export const {
   createCarrierFailure,
   editCarrierRequest,
   editCarrierSuccess,
-  editCarrierFailure
+  editCarrierFailure,
+  clearCarriersErrors,
 } = carriersSlice.actions;

@@ -1,7 +1,7 @@
 import React from 'react';
 import TableCell from "@mui/material/TableCell";
 
-const TableHeaderRow = ({headerCells}) => {
+const TableHeaderRow = ({headerCells, drivers}) => {
   return (
     <>
       {headerCells.map(cell => (
@@ -9,7 +9,7 @@ const TableHeaderRow = ({headerCells}) => {
           sx={{fontSize: "12px", fontWeight: "bold"}}
           key={Math.random() * 100}
         >
-          {cell}
+          {!drivers ? cell : cell.label}
         </TableCell>
       ))}
     </>

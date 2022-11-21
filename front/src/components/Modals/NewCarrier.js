@@ -1,11 +1,12 @@
-import React, {useState} from 'react';
-import {Alert, Box, Grid, Modal} from "@mui/material";
+import React, {useEffect, useState} from 'react';
+import {Box, Grid, Modal} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import FormElement from "../UI/Form/FormElement/FormElement";
 import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
 import {useDispatch, useSelector} from "react-redux";
-import {createCarrierRequest} from "../../store/actions/carriersActions";
+import {clearCarriersErrors, createCarrierRequest} from "../../store/actions/carriersActions";
 import {makeStyles} from "tss-react/mui";
+import AddButton from "../UI/Button/AddButton/AddButton";
 
 const style = {
   position: 'absolute',
@@ -18,18 +19,21 @@ const style = {
   padding: '20px'
 };
 
-const useStyles = makeStyles()(theme => ({
+const useStyles = makeStyles()(() => ({
   field: {
     background: "white"
   }
 }));
 
-const NewCarrier = ({open, handleClose}) => {
+const NewCarrier = () => {
   const {classes} = useStyles();
 
   const dispatch = useDispatch();
-  const error = useSelector(state => state.carriers.error);
+  const carriers = useSelector(state => state.carriers.carriers);
+  const error = useSelector(state => state.carriers.addCarrierError);
   const loading = useSelector(state => state.carriers.loading);
+
+  const [modal, setModal] = useState(false);
 
   const [carrier, setCarrier] = useState({
     title: '',
@@ -39,6 +43,18 @@ const NewCarrier = ({open, handleClose}) => {
     description: ''
   });
 
+  useEffect(() => {
+    if (error === null) {
+      setModal(false);
+    }
+    // eslint-disable-next-line
+  }, [carriers]);
+
+  const openModalHandler = () => {
+    dispatch(clearCarriersErrors());
+    setModal(true);
+  };
+
   const inputChangeHandler = e => {
     const {name, value} = e.target;
     setCarrier(prev => ({...prev, [name]: value}));
@@ -46,23 +62,12 @@ const NewCarrier = ({open, handleClose}) => {
 
   const submitFormHandler = async e => {
     e.preventDefault();
-
     await dispatch(createCarrierRequest({...carrier}));
-
-    setCarrier({
-      title: '',
-      mc: '',
-      dot: '',
-      fedid: '',
-      description: ''
-    });
-
-    handleClose();
   };
 
   const getFieldError = fieldName => {
     try {
-      return `${error.error} ${[fieldName]}`;
+      return error.errors[fieldName].message;
     } catch {
       return undefined;
     }
@@ -72,10 +77,12 @@ const NewCarrier = ({open, handleClose}) => {
   return (
     <div>
       <div>
+        <AddButton click={() => openModalHandler()}/>
+
         <Modal
           keepMounted
-          open={open}
-          onClose={handleClose}
+          open={modal}
+          onClose={() => setModal(false)}
           aria-labelledby="keep-mounted-modal-title"
           aria-describedby="keep-mounted-modal-description"
         >
@@ -83,19 +90,6 @@ const NewCarrier = ({open, handleClose}) => {
             <Typography id="keep-mounted-modal-description" sx={{ mb: 2 }}>
               New Carrier
             </Typography>
-
-            <Grid
-              container
-              direction="column"
-            >
-
-              <Grid item>
-                {error && (
-                  <Alert severity="error">
-                    Error! {error.message}
-                  </Alert>
-                )}
-              </Grid>
 
               <Grid
                 component="form"
@@ -155,22 +149,34 @@ const NewCarrier = ({open, handleClose}) => {
                   className={classes.field}
                 />
 
-                <Grid item xs={12}>
-                  <ButtonWithProgress
-                    loading={loading}
-                    disabled={loading}
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                  >
-                    Create
-                  </ButtonWithProgress>
+                <Grid item xs={12} container spacing={1} justifyContent="space-between">
+
+                  <Grid item xs={6}>
+                    <ButtonWithProgress
+                      loading={loading}
+                      disabled={loading}
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                    >
+                      Create
+                    </ButtonWithProgress>
+                  </Grid>
+
+                  <Grid item xs={6}>
+                    <ButtonWithProgress
+                      type="button"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      onClick={() => setModal(false)}
+                    >
+                      Cancel
+                    </ButtonWithProgress>
+                  </Grid>
+
                 </Grid>
-
               </Grid>
-
-
-            </Grid>
           </Box>
         </Modal>
       </div>

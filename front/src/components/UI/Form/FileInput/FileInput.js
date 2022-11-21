@@ -8,50 +8,51 @@ const useStyles = makeStyles()(() => ({
     }
 }));
 
-const FileInput = ({onChange, name, label}) => {
-    const { classes } = useStyles();
-    const inputRef = useRef();
+const FileInput = ({onChange, name, label, required}) => {
+  const {classes} = useStyles();
+  const inputRef = useRef();
 
-    const [filename, setFilename] = useState('');
+  const [filename, setFilename] = useState('');
 
-    const onFileChange = e => {
-        if (e.target.files[0]) {
-            setFilename(e.target.files[0].name);
-        } else {
-            setFilename('');
-        }
-        onChange(e);
-    };
+  const onFileChange = e => {
+    if (e.target.files[0]) {
+      setFilename(e.target.files[0].name);
+    } else {
+      setFilename('');
+    }
 
-    const activateInput = () => {
-        inputRef.current.click();
-    };
+    onChange(e);
+  };
 
-    return (
-        <>
-            <input
-                type="file"
-                name={name}
-                className={classes.input}
-                onChange={onFileChange}
-                ref={inputRef}
-            />
-            <Grid container spacing={2} alignItems="center">
-                <Grid item xs>
-                    <TextField
-                        fullWidth
-                        disabled
-                        label={label}
-                        value={filename}
-                        onClick={activateInput}
-                    />
-                </Grid>
-                <Grid item>
-                    <Button variant="contained" onClick={activateInput}>Browse</Button>
-                </Grid>
-            </Grid>
-        </>
-    );
+  const activateInput = () => {
+    inputRef.current.click();
+  };
+
+  return (
+    <>
+      <input
+        type="file"
+        name={name}
+        className={classes.input}
+        onChange={onFileChange}
+        ref={inputRef}
+      />
+      <Grid container direction="row" spacing={2} alignItems="center">
+        <Grid item xs>
+          <TextField
+            required={required}
+            disabled
+            label={label}
+            value={filename}
+            onClick={activateInput}
+          />
+        </Grid>
+        <Grid item>
+          <Button variant="contained" onClick={activateInput}>Browse</Button>
+        </Grid>
+      </Grid>
+    </>
+  );
 };
 
 export default FileInput;

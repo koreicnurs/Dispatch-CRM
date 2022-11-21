@@ -35,6 +35,9 @@ Example => <b>dispatch@gmail.com</b>`
 
         if (text === '/load') {
             const driver = await Driver.findOne({telegramId: msg.from.id});
+            if (!driver) {
+                return await bot.sendMessage(chatId, 'You are not registered');
+            }
             const load = await Load.find({driverId: driver.id});
             const upcomingLoad = load[0];
             if (upcomingLoad.status === 'upcoming') {

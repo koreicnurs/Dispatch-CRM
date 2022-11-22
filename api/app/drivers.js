@@ -4,6 +4,7 @@ const {nanoid} = require('nanoid');
 const path = require('path');
 
 const Driver = require('../models/Driver');
+const User = require("../models/User");
 const auth = require('../middleware/auth');
 const config = require('../config');
 
@@ -51,6 +52,19 @@ router.get('/:id', async (req, res) => {
 router.post('/', auth, upload.single('license'), async (req, res) => {
   try {
     const {email, name, phoneNumber, companyId, status, description} = req.body;
+
+    const duplicatedEmail = await User.findOne({email});
+
+    if (duplicatedEmail) {
+      const error = new Error();
+      error.errors = {
+        email: {
+          "name": "ValidatorError",
+          "message": "Error, expected email to be unique."
+        }
+      }
+      throw error;
+    }
     
     const driverData = {
       email,
@@ -74,6 +88,19 @@ router.put('/:id', upload.single('license'), async (req, res) => {
   try {
     const {email, name, phoneNumber, companyId, status, description, pickUp,
       delivery, ETA, readyTime, notes} = req.body;
+
+    const duplicatedEmail = await User.findOne({email});
+
+    if (duplicatedEmail) {
+      const error = new Error();
+      error.errors = {
+        email: {
+          "name": "ValidatorError",
+          "message": "Error, expected email to be unique."
+        }
+      }
+      throw error;
+    }
 
     const driver = await Driver.findById(req.params.id);
 

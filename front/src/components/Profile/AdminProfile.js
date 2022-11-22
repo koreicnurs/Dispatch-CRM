@@ -29,7 +29,7 @@ const AdminProfile = ({user, error}) => {
 
   useEffect(() => {
     dispatch(fetchUsersRequest());
-  }, [dispatch, users]);
+  }, [dispatch]);
 
   return (
     <InnerContainer>

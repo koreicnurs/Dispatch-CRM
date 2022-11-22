@@ -28,7 +28,7 @@ const useStyles = makeStyles()(() => ({
 
 const radioSelectors = [{label: "User", id: 1, value: "user"}, {label: "Admin", id: 2, value: "admin"}];
 
-const DispatcherModal = ({modal, dispatcher, modalHandler, submitFormHandler, inputHandler, getFieldError, fileHandler, loading, buttonName}) => {
+const DispatcherModal = ({modal, title, dispatcher, modalHandler, submitFormHandler, inputHandler, getFieldError, fileHandler, loading, buttonName, required}) => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -43,7 +43,7 @@ const DispatcherModal = ({modal, dispatcher, modalHandler, submitFormHandler, in
       >
         <Box sx={style}>
           <Typography id="keep-mounted-modal-description" sx={{ mb: 2 }}>
-            Edit Dispatcher data
+            {title}
           </Typography>
 
           <Grid
@@ -94,6 +94,7 @@ const DispatcherModal = ({modal, dispatcher, modalHandler, submitFormHandler, in
                 showHandler={() => setShowPassword(!showPassword)}
                 inputHandler={inputHandler}
                 getError={getFieldError("password")}
+                required={required}
               />
             </Grid>
 

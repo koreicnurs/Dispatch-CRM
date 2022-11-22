@@ -65,6 +65,7 @@ const EditDispatcher = ({modal, modalHandler, dispatcher}) => {
     <div>
       {dispatcher &&
         <DispatcherModal
+          title="Edit Dispatcher data"
           modal={modal}
           dispatcher={dispatcherData}
           modalHandler={modalHandler}

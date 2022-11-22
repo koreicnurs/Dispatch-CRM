@@ -12,10 +12,21 @@ const NewDispatcher = ({modal, modalHandler}) => {
   const [dispatcherData, setDispatcherData] = useState({
     email: "",
     password: "",
-    role: "",
+    role: "user",
     displayName: "",
     avatar:  ""
   });
+
+  const modalCloseHandler = () => {
+    modalHandler(!modal);
+    setDispatcherData({
+      email: "",
+      password: "",
+      role: "user",
+      displayName: "",
+      avatar:  ""
+    });
+  };
 
   const inputChangeHandler = e => {
     const {name, value} = e.target;
@@ -46,22 +57,27 @@ const NewDispatcher = ({modal, modalHandler}) => {
       formData.append(key, dispatcherData[key]);
     });
     await dispatch(createDispatcherRequest(formData));
-    modalHandler(!modal);
+
+    if (error === null) {
+      modalCloseHandler();
+    }
   };
 
 
   return (
     <div>
       <DispatcherModal
+        title="New Dispatcher"
         modal={modal}
         dispatcher={dispatcherData}
-        modalHandler={modalHandler}
+        modalHandler={modalCloseHandler}
         submitFormHandler={submitFormHandler}
         inputHandler={inputChangeHandler}
         getFieldError={getFieldError}
         fileHandler={fileChangeHandler}
         loading={loading}
         buttonName="Create"
+        required={true}
       />
     </div>
   );

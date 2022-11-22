@@ -24,7 +24,11 @@ const cpUpload = upload.fields([{name: 'BOL', maxCount: 1}, {name: 'RC', maxCoun
 
 router.get('/', auth, async (req, res) => {
     try {
-        if (req.query.status === 'finished' || req.query.status === 'cancel') {
+        if ((req.query.status === 'finished' || req.query.status === 'cancel') && req.user.role === 'carrier') {
+            const loads = await Load.find({driverId: {$in: req.user}, status: {$in: ['finished', 'cancel']}}).populate('driverId', 'name').populate('dispatchId', 'displayName');
+            console.log(loads);
+            res.send(loads);
+        } else if (req.query.status === 'finished' || req.query.status === 'cancel') {
             const loads = await Load.find({status: {$in: ['finished', 'cancel']}}).populate('driverId', 'name').populate('dispatchId', 'displayName');
             res.send(loads);
         } else {

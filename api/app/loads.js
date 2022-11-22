@@ -48,7 +48,7 @@ router.get('/:id', auth, async (req, res) => {
 
 router.post('/', auth, cpUpload, async (req, res) => {
     try {
-        const {loadCode, driverId, dispatchId, price, miles, rpm, datePU, dateDEL, pu, del, status, comment, timeToPU, timeToDel} = req.body;
+        const {loadCode, driverId, dispatchId, price, miles, rpm, datePU, dateDEL, pu, del, comment, timeToPU, timeToDel} = req.body;
         
         const loadData = {
             loadCode,
@@ -63,13 +63,12 @@ router.post('/', auth, cpUpload, async (req, res) => {
             timeToPU,
             pu,
             del,
-            status,
             BOL: null,
             RC: null,
             comment: comment || null,
         };
 
-        if (loadData.datePU > loadData.dateDEL) {
+        if (new Date(loadData.datePU) > new Date(loadData.dateDEL)) {
             return res.status(400).send({message: 'DEL date cannot be earlier than PU date!'});
         }
 
@@ -122,8 +121,8 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
             status,
             comment: comment || '',
         };
-
-        if (loadData.datePU > loadData.dateDEL) {
+        
+        if (new Date(loadData.datePU) > new Date(loadData.dateDEL)) {
             return res.status(400).send({message: 'DEL date cannot be earlier than PU date!'});
         }
 

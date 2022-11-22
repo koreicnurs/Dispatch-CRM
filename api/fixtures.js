@@ -17,7 +17,7 @@ const run = async () => {
     await mongoose.connection.db.dropCollection(coll.name);
   }
   
-  const [admin, user, user2] = await User.create({
+  const [admin, user, user2, bahCarrier] = await User.create({
     email: 'admin@gmail.com',
     password: 'admin',
     role: 'admin',
@@ -37,6 +37,12 @@ const run = async () => {
     role: 'user',
     token: nanoid(),
     displayName: 'User2',
+  }, {
+    email: 'carrier@gmail.com',
+    password: 'carrier',
+    role: 'carrier',
+    token: nanoid(),
+    displayName: 'Bahaway Carrier',
   });
 
   const [bahawayCarrier, safewayCargoCarrier, turanExpressCarrier, tumarExpressCarrier] = await Carrier.create({

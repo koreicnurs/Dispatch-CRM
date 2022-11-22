@@ -11,7 +11,7 @@ const config = require('./config');
 const bot = require("./telegramBotSD");
 
 const app = express();
-const PORT = 8000;
+
 
 app.use(express.static('public'));
 app.use(express.json());
@@ -27,8 +27,8 @@ app.use('/learnings', learnings);
 const run = async () => {
     await mongoose.connect(config.mongo.db, config.mongo.options);
 
-    app.listen(PORT, () => {
-        console.log(`Server started on ${PORT} port!`);
+    app.listen(config.port, () => {
+        console.log(`Server started on ${config.port} port!`);
     });
 
     exitHook(() => {

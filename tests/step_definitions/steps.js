@@ -24,6 +24,8 @@ Then('я вижу текст {string}', text => {
  I.see(text);
 });
 
+/* Carriers registration test */
+
 Given('я открываю страницу {string}', page => {
   I.amOnPage('/' + page);
   I.wait(2);

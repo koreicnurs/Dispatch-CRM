@@ -14,7 +14,8 @@ const TripTableBody = (props) => {
     editTripHandler,
     leaveCommentHandler,
     attachFileHandler,
-    viewAllHandler
+    viewAllHandler,
+    user
   } = props;
 
   return (
@@ -50,6 +51,7 @@ const TripTableBody = (props) => {
 
             <TableCell sx={{fontSize: "12px"}}>
               <MenuBtn
+                user={user}
                 trip={trip}
                 sendTrip={sendTrip}
                 cancelTripHandler={cancelTripHandler}

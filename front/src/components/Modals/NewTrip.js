@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {makeStyles} from "tss-react/mui";
 import {useDispatch, useSelector} from "react-redux";
-import {Alert, Box, Button, Grid, Modal, TextField} from "@mui/material";
+import {Alert, Box, Button, FormHelperText, Grid, Modal, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import FormElement from "../UI/Form/FormElement/FormElement";
 import FormSelect from "../UI/Form/FormSelect/FormSelect";
@@ -10,7 +10,7 @@ import {fetchDriversRequest} from "../../store/actions/driversActions";
 import {clearCreateTripErrorRequest, createTripRequest, editTripRequest} from "../../store/actions/tripsActions";
 import FileInput from "../UI/Form/FileInput/FileInput";
 import {DesktopDatePicker, LocalizationProvider} from "@mui/x-date-pickers";
-import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
+import {DesktopTimePicker} from '@mui/x-date-pickers/DesktopTimePicker';
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {apiUrl} from "../../config";
 import dayjs from 'dayjs';
@@ -41,7 +41,7 @@ const useStyles = makeStyles()(theme => ({
 
 const statuses = ['upcoming', 'transit', 'finished', 'cancel'];
 
-const NewTrip = ({open, handleClose, editedTrip}) => {
+const NewTrip = ({open, handleClose, editedTrip, trips}) => {
   const {classes} = useStyles();
   const dispatch = useDispatch();
   const createError = useSelector(state => state.trips.createTripError);
@@ -53,10 +53,59 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
   useEffect(() => {
     dispatch(fetchDriversRequest());
   }, [dispatch]);
-
-  const [dateError, setDateError] = useState();
   
-  const [timeValue, setTimeValue] = useState(dayjs(new Date().toISOString()));
+  useEffect(() => {
+    if (editError === null) {
+      setTrip({
+        loadCode: "",
+        driverId: "",
+        dispatchId: user._id,
+        price: "",
+        miles: "",
+        rpm: "",
+        datePU: "",
+        dateDEL: "",
+        pu: "",
+        del: "",
+        status: "",
+        comment: "",
+        RC: "",
+        BOL: "",
+      });
+  
+      clearCreateTripErrorRequest();
+      handleCloseHandler();
+    }
+    if (createError === null) {
+      setTrip({
+        loadCode: "",
+        driverId: "",
+        dispatchId: user._id,
+        price: "",
+        miles: "",
+        rpm: "",
+        datePU: "",
+        dateDEL: "",
+        pu: "",
+        del: "",
+        status: "",
+        comment: "",
+        RC: "",
+        BOL: "",
+      });
+  
+      clearCreateTripErrorRequest();
+      handleCloseHandler();
+    }
+    setStartDate(null);
+    setFinDate(null);
+    setTimeToPUValue(null);
+    setTimeToDelValue(null);
+    // eslint-disable-next-line
+  }, [trips]);
+
+  const [timeToPUValue, setTimeToPUValue] = useState(null);
+  const [timeToDelValue, setTimeToDelValue] = useState(null);
 
   const [trip, setTrip] = useState({
     loadCode: "",
@@ -73,13 +122,16 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
     RC: "",
     BOL: "",
     comment: "",
-    timeToPU: ""
+    timeToPU: "",
+    timeToDel: ""
   });
 
   useEffect(() => {
     if (editedTrip) {
       setStartDate(editedTrip.datePU);
       setFinDate(editedTrip.dateDEL);
+      setTimeToPUValue(dayjs(new Date(`${editedTrip.datePU} ${editedTrip.timeToPU}`).toUTCString()));
+      setTimeToDelValue(dayjs(new Date(`${editedTrip.dateDEL} ${editedTrip.timeToDel}`).toUTCString()));
       setTrip({
         loadCode: editedTrip.loadCode,
         driverId: editedTrip.driverId._id,
@@ -90,7 +142,9 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
         pu: editedTrip.pu,
         del: editedTrip.del,
         status: editedTrip.status,
-        comment: editedTrip.comment || ''
+        comment: editedTrip.comment || '',
+        timeToPU: dayjs(new Date(`${editedTrip.datePU} ${editedTrip.timeToPU}`).toUTCString()),
+        timeToDel: dayjs(new Date(`${editedTrip.dateDEL} ${editedTrip.timeToDel}`).toUTCString())
       });
 
     }
@@ -111,100 +165,51 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
     setTrip(prevState => ({...prevState, [name]: file}));
   };
   
-  const timeChangeHandler = (e) => {
-    setTimeValue(e);
-  };
-
   const submitFormHandler = async e => {
     e.preventDefault();
+  
+    const currentTrip = trip;
+    currentTrip.datePU = startDate;
+    currentTrip.dateDEL = finDate;
+    currentTrip.timeToPU = timeToPUValue.$H + ':' + timeToPUValue.$m;
+    currentTrip.timeToDel = timeToDelValue.$H + ':' + timeToDelValue.$m;
 
-    if(startDate > finDate) {
-      setDateError("DEL date cannot be earlier than PU date!!")
-    } else {
-      const currentTrip = trip;
-      currentTrip.datePU = startDate;
-      currentTrip.dateDEL = finDate;
-      currentTrip.timeToPU = timeValue.$H + ':' + timeValue.$m;
-      const formData = new FormData();
-      Object.keys(currentTrip).forEach(key => {
-        formData.append(key, currentTrip[key]);
-      });
-
-      if (editedTrip) {
-        await dispatch(editTripRequest({tripData: formData, id: editedTrip._id, path: editedTrip.status}));
-      } else {
-        await dispatch(createTripRequest(formData));
-      }
-
-    }
-
-    setTrip({
-      loadCode: "",
-      driverId: "",
-      dispatchId: user._id,
-      price: "",
-      miles: "",
-      rpm: "",
-      datePU: "",
-      dateDEL: "",
-      pu: "",
-      del: "",
-      status: "",
-      comment: "",
-      RC: "",
-      BOL: "",
+    const formData = new FormData();
+    Object.keys(currentTrip).forEach(key => {
+      formData.append(key, currentTrip[key]);
     });
-
-    if (!createError || !editError) {
-      handleClose();
+  
+    if (editedTrip) {
+      await dispatch(editTripRequest({tripData: formData, id: editedTrip._id, path: editedTrip.status}));
+    } else {
+      await dispatch(createTripRequest(formData));
     }
   };
 
   const getFieldError = (fieldName) => {
     try {
       if(createError) {
-        return `${createError.error} ${[fieldName]}`;
+        return createError.errors[fieldName].message;
       } else if(editError) {
-        return `${editError.error} ${[fieldName]}`;
+        return editError.errors[fieldName].message;
       }
     } catch {
       return undefined;
     }
   };
-
-  const handleCloseHandler = () => {
+  
+  const handleCloseHandler = async () => {
+    await dispatch(clearCreateTripErrorRequest());
     handleClose();
-    if(createError) {
-      dispatch(clearCreateTripErrorRequest());
-    }
-    setTrip({
-      loadCode: "",
-      driverId: "",
-      dispatchId: user._id,
-      price: "",
-      miles: "",
-      rpm: "",
-      datePU: "",
-      dateDEL: "",
-      pu: "",
-      del: "",
-      status: "",
-      comment: "",
-      RC: "",
-      BOL: "",
-    });
-    setStartDate(null);
-    setFinDate(null);
   };
-
-
+  
   return (
     <div>
       <div>
         <Modal
           keepMounted
           open={open}
-          onClose={handleClose}
+          onClose={handleCloseHandler}
           aria-labelledby="keep-mounted-modal-title"
           aria-describedby="keep-mounted-modal-description"
         >
@@ -218,25 +223,18 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
               container
               direction="column"
             >
-              <Grid item>
-                {createError && (
+              <Grid item mb={2}>
+                {(editError && Object.keys(editError).length === 1) && (
                   <Alert severity="error">
-                    Error! {createError.message}
+                    Error! {editError.message}
                   </Alert>
                 )}
-                <Grid item>
-                  {editError && (
-                    <Alert severity="error">
-                      Error! {editError.message}
-                    </Alert>
-                  )}
-                </Grid>
               </Grid>
-
-              <Grid item>
-                {dateError && (
+  
+              <Grid item mb={2}>
+                {(createError && Object.keys(createError).length === 1) && (
                   <Alert severity="error">
-                    Error! {dateError}
+                    Error! {createError.message}
                   </Alert>
                 )}
               </Grid>
@@ -277,6 +275,43 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
                     </LocalizationProvider>
                   </Grid>
                 </Grid>
+  
+                <Grid
+                  item
+                  container
+                  spacing={2}
+                  justifyContent="space-between"
+                >
+                  <Grid item width="49.5%">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DesktopTimePicker
+                        label="Loading time"
+                        value={timeToPUValue}
+                        onChange={(newValue) => setTimeToPUValue(newValue)}
+                        renderInput={(params) => <TextField {...params} required={true}/>}
+                      />
+                      <FormHelperText sx={{
+                        color: '#d32f2f',
+                        margin: '3px 14px 0'
+                      }}>{getFieldError('timeToPU')}</FormHelperText>
+                    </LocalizationProvider>
+                  </Grid>
+  
+                  <Grid item width="49.5%">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DesktopTimePicker
+                        label="Arrival time"
+                        value={timeToDelValue}
+                        onChange={(newValue) => setTimeToDelValue(newValue)}
+                        renderInput={(params) => <TextField {...params} required={true}/>}
+                      />
+                      <FormHelperText sx={{
+                        color: '#d32f2f',
+                        margin: '3px 14px 0'
+                      }}>{getFieldError('timeToDel')}</FormHelperText>
+                    </LocalizationProvider>
+                  </Grid>
+                </Grid>
 
                 <FormElement
                   onChange={inputChangeHandler}
@@ -287,17 +322,6 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
                   error={getFieldError('loadCode')}
                   className={classes.field}
                 />
-                
-                <Grid item>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DesktopTimePicker
-                      label="Loading time"
-                      value={timeValue}
-                      onChange={(newValue) => setTimeValue(newValue)}
-                      renderInput={(params) => <TextField {...params} />}
-                    />
-                  </LocalizationProvider>
-                </Grid>
 
                 <Grid
                   item
@@ -343,7 +367,7 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
                       name="miles"
                       label="Miles"
                       value={trip.miles}
-                      inputProps={{min:0}}
+                      inputProps={{min:0, step: '0.01'}}
                       required={true}
                       error={getFieldError('miles')}
                       className={classes.field}
@@ -357,7 +381,7 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
                       name="rpm"
                       label="Rate per mile"
                       value={trip.rpm}
-                      inputProps={{min:0}}
+                      inputProps={{min:0, step: '0.01'}}
                       required={true}
                       error={getFieldError('rpm')}
                       className={classes.field}
@@ -371,26 +395,28 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
                   spacing={2}
                   justifyContent="space-between"
                 >
-                  <Grid item width="49.5%">
-                    <FormSelect
-                      label="Status"
-                      name="status"
-                      array={statuses}
-                      value={trip.status}
-                      required={true}
-                      onChange={inputChangeHandler}
-                      variant="array"
-                      error={getFieldError("status")}
-                    />
-                  </Grid>
+                  {editedTrip ?
+                    <Grid item width="49.5%">
+                      <FormSelect
+                        label="Status"
+                        name="status"
+                        array={statuses}
+                        value={trip.status}
+                        required={true}
+                        onChange={inputChangeHandler}
+                        variant="array"
+                        error={getFieldError("status")}
+                      />
+                    </Grid> : null
+                  }
 
-                  <Grid item width="49.5%">
+                  <Grid item width={editedTrip ? "49.5%" : "100%"}>
                     <FormElement
                       onChange={inputChangeHandler}
                       type="number"
                       name="price"
                       label="Price"
-                      inputProps={{min:0}}
+                      inputProps={{min:0, step: '0.01'}}
                       value={trip.price}
                       required={true}
                       error={getFieldError('price')}

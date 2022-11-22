@@ -10,8 +10,10 @@ import {fetchDriversRequest} from "../../store/actions/driversActions";
 import {clearCreateTripErrorRequest, createTripRequest, editTripRequest} from "../../store/actions/tripsActions";
 import FileInput from "../UI/Form/FileInput/FileInput";
 import {DesktopDatePicker, LocalizationProvider} from "@mui/x-date-pickers";
+import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {apiUrl} from "../../config";
+import dayjs from 'dayjs';
 
 const style = {
   position: 'absolute',
@@ -53,6 +55,8 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
   }, [dispatch]);
 
   const [dateError, setDateError] = useState();
+  
+  const [timeValue, setTimeValue] = useState(dayjs(new Date().toISOString()));
 
   const [trip, setTrip] = useState({
     loadCode: "",
@@ -68,7 +72,8 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
     status: "",
     RC: "",
     BOL: "",
-    comment: ""
+    comment: "",
+    timeToPU: ""
   });
 
   useEffect(() => {
@@ -105,6 +110,10 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
 
     setTrip(prevState => ({...prevState, [name]: file}));
   };
+  
+  const timeChangeHandler = (e) => {
+    setTimeValue(e);
+  };
 
   const submitFormHandler = async e => {
     e.preventDefault();
@@ -115,7 +124,7 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
       const currentTrip = trip;
       currentTrip.datePU = startDate;
       currentTrip.dateDEL = finDate;
-
+      currentTrip.timeToPU = timeValue.$H + ':' + timeValue.$m;
       const formData = new FormData();
       Object.keys(currentTrip).forEach(key => {
         formData.append(key, currentTrip[key]);
@@ -278,6 +287,17 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
                   error={getFieldError('loadCode')}
                   className={classes.field}
                 />
+                
+                <Grid item>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DesktopTimePicker
+                      label="Loading time"
+                      value={timeValue}
+                      onChange={(newValue) => setTimeValue(newValue)}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  </LocalizationProvider>
+                </Grid>
 
                 <Grid
                   item

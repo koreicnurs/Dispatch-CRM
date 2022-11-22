@@ -21,11 +21,12 @@ const upload = multer({storage});
 
 router.post('/', upload.single('avatar'), async (req, res) => {
   try {
-    const {email, password, displayName} = req.body;
+    const {email, password, displayName, role} = req.body;
     const userData = {
       email,
       password,
       displayName,
+      role,
       avatar: req.file ? 'uploads/' + req.file.filename : null,
     };
     const user = new User(userData);

@@ -475,15 +475,15 @@ const NewTrip = ({open, handleClose, editedTrip, trips}) => {
                   className={classes.field}
                 />
 
-                <Grid item xs={12} container spacing={2} justifyContent="space-between">
-                  <Grid item>
-                    <Button variant="contained" onClick={handleCloseHandler}>
+                <Grid item xs={12} container spacing={1} justifyContent="space-between">
+                  <Grid item xs={6}>
+                    <Button fullWidth variant="contained" onClick={handleCloseHandler}>
                       Cancel
                     </Button>
 
                   </Grid>
 
-                  <Grid item>
+                  <Grid item xs={6}>
                     <ButtonWithProgress
                       loading={loading}
                       disabled={loading}

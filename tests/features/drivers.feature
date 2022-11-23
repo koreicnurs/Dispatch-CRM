@@ -47,8 +47,8 @@
     Допустим я открываю страницу водителей "drivers"
     То я нажимаю на кнопку открытия модального окна для формы регистрации водителя "add"
     Если я введу данные в форму регистрации водителя:
-      | email       | jhondoe@gmail.com |
-      | name        | Jhon Doe          |
+      | email       | umot@gmail.com    |
+      | name        | Umot              |
       | phoneNumber | 3213213212        |
       | address     | test address      |
       | DOB         | test DOB          |

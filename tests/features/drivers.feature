@@ -36,7 +36,7 @@
     То я вижу текст о успешной регистрации водителя "You have successfully added a driver!"
 
 
-    @driverRegisterFailed
+    @registerDriverFailed
   Сценарий: Регистрация нового водителя не прошла
     Допустим я захожу на страницу "login"
     Если я введу данные:

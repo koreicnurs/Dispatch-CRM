@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {makeStyles} from "tss-react/mui";
 import {useDispatch, useSelector} from "react-redux";
-import {Alert, Box, Button, FormHelperText, Grid, Modal, TextField} from "@mui/material";
+import {Alert, Box, Button, Grid, Modal, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import FormElement from "../UI/Form/FormElement/FormElement";
 import FormSelect from "../UI/Form/FormSelect/FormSelect";
@@ -10,10 +10,8 @@ import {fetchDriversRequest} from "../../store/actions/driversActions";
 import {clearCreateTripErrorRequest, createTripRequest, editTripRequest} from "../../store/actions/tripsActions";
 import FileInput from "../UI/Form/FileInput/FileInput";
 import {DesktopDatePicker, LocalizationProvider} from "@mui/x-date-pickers";
-import {DesktopTimePicker} from '@mui/x-date-pickers/DesktopTimePicker';
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {apiUrl} from "../../config";
-import dayjs from 'dayjs';
 
 const style = {
   position: 'absolute',
@@ -65,6 +63,8 @@ const NewTrip = ({open, handleClose, editedTrip, trips}) => {
         rpm: "",
         datePU: "",
         dateDEL: "",
+        timeToPU: "",
+        timeToDel: "",
         pu: "",
         del: "",
         status: "",
@@ -86,6 +86,8 @@ const NewTrip = ({open, handleClose, editedTrip, trips}) => {
         rpm: "",
         datePU: "",
         dateDEL: "",
+        timeToPU: "",
+        timeToDel: "",
         pu: "",
         del: "",
         status: "",
@@ -99,13 +101,11 @@ const NewTrip = ({open, handleClose, editedTrip, trips}) => {
     }
     setStartDate(null);
     setFinDate(null);
-    setTimeToPUValue(null);
-    setTimeToDelValue(null);
     // eslint-disable-next-line
   }, [trips]);
-
-  const [timeToPUValue, setTimeToPUValue] = useState(null);
-  const [timeToDelValue, setTimeToDelValue] = useState(null);
+  
+  const [startDate, setStartDate] = useState(null);
+  const [finDate, setFinDate] = useState(null);
 
   const [trip, setTrip] = useState({
     loadCode: "",
@@ -130,8 +130,6 @@ const NewTrip = ({open, handleClose, editedTrip, trips}) => {
     if (editedTrip) {
       setStartDate(editedTrip.datePU);
       setFinDate(editedTrip.dateDEL);
-      setTimeToPUValue(dayjs(new Date(`${editedTrip.datePU} ${editedTrip.timeToPU}`).toUTCString()));
-      setTimeToDelValue(dayjs(new Date(`${editedTrip.dateDEL} ${editedTrip.timeToDel}`).toUTCString()));
       setTrip({
         loadCode: editedTrip.loadCode,
         driverId: editedTrip.driverId._id,
@@ -143,10 +141,9 @@ const NewTrip = ({open, handleClose, editedTrip, trips}) => {
         del: editedTrip.del,
         status: editedTrip.status,
         comment: editedTrip.comment || '',
-        timeToPU: dayjs(new Date(`${editedTrip.datePU} ${editedTrip.timeToPU}`).toUTCString()),
-        timeToDel: dayjs(new Date(`${editedTrip.dateDEL} ${editedTrip.timeToDel}`).toUTCString())
+        timeToPU: editedTrip.timeToPU,
+        timeToDel: editedTrip.timeToDel,
       });
-
     }
   }, [dispatch, editedTrip]);
 
@@ -154,9 +151,6 @@ const NewTrip = ({open, handleClose, editedTrip, trips}) => {
     const {name, value} = e.target;
     setTrip(prev => ({...prev, [name]: value}));
   };
-
-  const [startDate, setStartDate] = useState(null);
-  const [finDate, setFinDate] = useState(null);
 
   const fileChangeHandler = e => {
     const name = e.target.name;
@@ -171,8 +165,6 @@ const NewTrip = ({open, handleClose, editedTrip, trips}) => {
     const currentTrip = trip;
     currentTrip.datePU = startDate;
     currentTrip.dateDEL = finDate;
-    currentTrip.timeToPU = timeToPUValue.$H + ':' + timeToPUValue.$m;
-    currentTrip.timeToDel = timeToDelValue.$H + ':' + timeToDelValue.$m;
 
     const formData = new FormData();
     Object.keys(currentTrip).forEach(key => {
@@ -283,33 +275,26 @@ const NewTrip = ({open, handleClose, editedTrip, trips}) => {
                   justifyContent="space-between"
                 >
                   <Grid item width="49.5%">
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DesktopTimePicker
-                        label="Loading time"
-                        value={timeToPUValue}
-                        onChange={(newValue) => setTimeToPUValue(newValue)}
-                        renderInput={(params) => <TextField {...params} required={true}/>}
-                      />
-                      <FormHelperText sx={{
-                        color: '#d32f2f',
-                        margin: '3px 14px 0'
-                      }}>{getFieldError('timeToPU')}</FormHelperText>
-                    </LocalizationProvider>
+                    <FormElement
+                      onChange={inputChangeHandler}
+                      name="timeToPU"
+                      label="Time to pick up"
+                      value={trip.timeToPU}
+                      error={getFieldError('timeToPU')}
+                      className={classes.field}
+                    />
                   </Grid>
   
                   <Grid item width="49.5%">
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DesktopTimePicker
-                        label="Arrival time"
-                        value={timeToDelValue}
-                        onChange={(newValue) => setTimeToDelValue(newValue)}
-                        renderInput={(params) => <TextField {...params} required={true}/>}
-                      />
-                      <FormHelperText sx={{
-                        color: '#d32f2f',
-                        margin: '3px 14px 0'
-                      }}>{getFieldError('timeToDel')}</FormHelperText>
-                    </LocalizationProvider>
+                    <FormElement
+                      onChange={inputChangeHandler}
+                      name="timeToDel"
+                      label="Time to delivery"
+                      value={trip.timeToDel}
+                      required={true}
+                      error={getFieldError('timeToDel')}
+                      className={classes.field}
+                    />
                   </Grid>
                 </Grid>
 

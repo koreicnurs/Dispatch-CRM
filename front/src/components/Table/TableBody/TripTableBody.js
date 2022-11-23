@@ -30,10 +30,12 @@ const TripTableBody = (props) => {
             <TableCell sx={{fontSize: "14px", fontWeight: 'bold'}}>
               {trip.pu}
               <Box sx={{fontSize: "12px", fontWeight: 'normal'}}>{trip.datePU.substring(0, 10)}</Box>
+              <Box sx={{fontSize: "12px", fontWeight: 'normal'}}>{trip.timeToPU}</Box>
             </TableCell>
             <TableCell sx={{fontSize: "14px", fontWeight: 'bold'}}>
               {trip.del}
               <Box sx={{fontSize: "12px", fontWeight: 'normal'}}>{trip.dateDEL.substring(0, 10)}</Box>
+              <Box sx={{fontSize: "12px", fontWeight: 'normal'}}>{trip.timeToDel}</Box>
             </TableCell>
             <TableCell sx={{fontSize: "12px"}}>{trip.miles}</TableCell>
             <TableCell sx={{fontSize: "14px", fontWeight: 'bold'}}>
@@ -42,6 +44,9 @@ const TripTableBody = (props) => {
             </TableCell>
             <TableCell sx={{fontSize: "14px", fontWeight: 'bold'}}>
               {trip.driverId.name}
+            </TableCell>
+            <TableCell sx={{fontSize: "14px", fontWeight: 'bold'}}>
+              {trip.driverId.status}
             </TableCell>
             <TableCell sx={{fontSize: "12px"}}>test</TableCell>
 

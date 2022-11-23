@@ -8,12 +8,6 @@ const validateDate = value => {
     if (!pattern.test(value)) return false;
 };
 
-const validateTime = value => {
-    const pattern = /^([1]?[0-9]|2[0-3]):([1]?[0-9]|[0-5][0-9])$/;
-    
-    if (!pattern.test(value)) return false;
-};
-
 const Schema = mongoose.Schema;
 
 const LoadSchema = new Schema({
@@ -61,19 +55,10 @@ const LoadSchema = new Schema({
             {validator: validateDate, message: 'Arrival date is not valid!'},
         ]
     },
-    timeToPU: {
-        type: String,
-        required: true,
-        validate: [
-            {validator: validateTime, message: 'Loading time is not valid!'},
-        ]
-    },
+    timeToPU: String,
     timeToDel: {
         type: String,
         required: true,
-        validate: [
-            {validator: validateTime, message: 'Arrival time is not valid!'},
-        ]
     },
     pu: {
         type: String,

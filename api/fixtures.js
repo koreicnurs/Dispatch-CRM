@@ -16,34 +16,6 @@ const run = async () => {
   for (const coll of collections) {
     await mongoose.connection.db.dropCollection(coll.name);
   }
-  
-  const [admin, user, user2, bahCarrier] = await User.create({
-    email: 'admin@gmail.com',
-    password: 'admin',
-    role: 'admin',
-    token: nanoid(),
-    displayName: 'Admin',
-    avatar: 'fixtures/admin.png',
-  }, {
-    email: 'user@gmail.com',
-    password: 'user',
-    role: 'user',
-    token: nanoid(),
-    displayName: 'User',
-    avatar: 'fixtures/user.png',
-  }, {
-    email: 'user2@gmail.com',
-    password: 'user2',
-    role: 'user',
-    token: nanoid(),
-    displayName: 'User2',
-  }, {
-    email: 'carrier@gmail.com',
-    password: 'carrier',
-    role: 'carrier',
-    token: nanoid(),
-    displayName: 'Bahaway Carrier',
-  });
 
   const [bahawayCarrier, safewayCargoCarrier, turanExpressCarrier, tumarExpressCarrier] = await Carrier.create({
     title: 'BAHAWAY',
@@ -69,6 +41,42 @@ const run = async () => {
     dot: '2638087',
     fedid: '47-4067936',
     description: 'test company #4'
+  });
+
+  const [admin, user, user2, bahCarrier] = await User.create({
+    email: 'admin@gmail.com',
+    password: 'admin',
+    role: 'admin',
+    token: nanoid(),
+    displayName: 'Admin',
+    avatar: 'fixtures/admin.png',
+  }, {
+    email: 'user@gmail.com',
+    password: 'user',
+    role: 'user',
+    token: nanoid(),
+    displayName: 'User',
+    avatar: 'fixtures/user.png',
+  }, {
+    email: 'user2@gmail.com',
+    password: 'user2',
+    role: 'user',
+    token: nanoid(),
+    displayName: 'User2',
+  }, {
+    email: 'bahaway@gmail.com',
+    password: 'bahaway',
+    role: 'carrier',
+    token: nanoid(),
+    displayName: 'BAHAWAY',
+    companyId: bahawayCarrier._id
+  }, {
+    email: 'safeway@gmail.com',
+    password: 'safeway',
+    role: 'carrier',
+    token: nanoid(),
+    displayName: 'SAFEWAY CARGO',
+    companyId: safewayCargoCarrier._id
   });
 
   const [umotDriver, kubaDriver, timurDriver, keldibekDriver, bakdoolotDriver, askhatDriver,
@@ -219,7 +227,7 @@ const run = async () => {
     dateDEL: '2022-11-16T17:48:00.000Z',
     pu: 'Pittsburg, PA',
     del: 'Boston, MA',
-    status: 'upcoming',
+    status: 'cancel',
   }, {
     loadCode: 'T-454GRG45R4G',
     driverId: timurDriver._id,

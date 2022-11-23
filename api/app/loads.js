@@ -6,6 +6,7 @@ const fs = require("fs");
 const auth = require("../middleware/auth");
 const config = require('../config');
 const Load = require("../models/Load");
+const Driver = require("../models/Driver");
 
 const router = express.Router();
 
@@ -24,9 +25,12 @@ const cpUpload = upload.fields([{name: 'BOL', maxCount: 1}, {name: 'RC', maxCoun
 
 router.get('/', auth, async (req, res) => {
     try {
-        if ((req.query.status === 'finished' || req.query.status === 'cancel') && req.user.role === 'carrier') {
-            const loads = await Load.find({driverId: {$in: req.user}, status: {$in: ['finished', 'cancel']}}).populate('driverId', 'name').populate('dispatchId', 'displayName');
-            console.log(loads);
+        if (req.user.role === 'carrier') {
+            const drivers = await Driver.find({companyId: req.user.companyId});
+            const loads = await Load
+              .find({status: {$in: ['finished', 'cancel']}, driverId: {$in: drivers}})
+              .populate('driverId', 'name')
+              .populate('dispatchId', 'displayName');
             res.send(loads);
         } else if (req.query.status === 'finished' || req.query.status === 'cancel') {
             const loads = await Load.find({status: {$in: ['finished', 'cancel']}}).populate('driverId', 'name').populate('dispatchId', 'displayName');

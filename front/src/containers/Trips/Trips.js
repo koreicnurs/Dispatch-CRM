@@ -34,14 +34,14 @@ const Trips = ({history}) => {
   const createTripError = useSelector(state => state.trips.createTripError);
   const editTripError = useSelector(state => state.trips.editTripError);
 
+  const drivers = useSelector(state => state.drivers.drivers);
+  const users = useSelector(state => state.users.users);
+
   useEffect(() => {
-    dispatch(fetchTripsRequest(history.location.search));
-    dispatch(fetchUsersRequest());
-    dispatch(fetchDriversRequest());
+      dispatch(fetchTripsRequest(history.location.search));
+      dispatch(fetchUsersRequest());
+      dispatch(fetchDriversRequest());
   }, [dispatch,history.location.search]);
-
-
-
 
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
@@ -59,15 +59,11 @@ const Trips = ({history}) => {
   const handleCloseViewAllModal = () => {
     setViewAll(false);
     setViewAllTripID(null);
-  }
+  };
 
   const [commentTripId, setCommentTripId] = useState(null);
   const [attachTripId, setAttachTripId] = useState(null);
   const [viewAllTripId, setViewAllTripID] = useState(null);
-
-  const drivers = useSelector(state => state.drivers.drivers);
-  const users = useSelector(state => state.users.users);
-
 
   const [value, setValue] = useState(0);
 
@@ -82,9 +78,7 @@ const Trips = ({history}) => {
       default:
         break
     }
-  }, [dispatch, history.location.search])
-
-
+  }, [dispatch, history.location.search]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -126,7 +120,6 @@ const Trips = ({history}) => {
     setViewAll(true);
   };
 
-
   useEffect(() => {
     if(createTripError !== null) {
       setOpen(true);
@@ -135,8 +128,6 @@ const Trips = ({history}) => {
       setEdit(true);
     }
   }, [createTripError, editTripError]);
-
-
 
   return (
     <>

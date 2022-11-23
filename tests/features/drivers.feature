@@ -47,13 +47,13 @@
     Допустим я открываю страницу водителей "drivers"
     То я нажимаю на кнопку открытия модального окна для формы регистрации водителя "add"
     Если я введу данные в форму регистрации водителя:
-      | email       | jhondoe@gmail.com |
-      | name        | Jhon Doe          |
-      | phoneNumber | 3213213212        |
-      | address     | test address      |
-      | DOB         | test DOB          |
-      | info        | test info         |
-      | reference   | test reference    |
+      | email       | umot@gmail.com                   |
+      | name        | Umot                             |
+      | phoneNumber | +267●5350802                     |
+      | address     | US, LA, Avalon c., str. 1, h. 45 |
+      | DOB         | 15.12.1980                       |
+      | info        | Lorem ipsum dolor sit amet       |
+      | reference   | Punctual, decent                 |
     Затем нажимаю на выбор компании "Carriers"
     И нажимаю на компанию "BAHAWAY"
 

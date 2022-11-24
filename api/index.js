@@ -7,6 +7,7 @@ const carriers = require('./app/carriers');
 const drivers = require('./app/drivers');
 const loads = require('./app/loads');
 const learnings = require('./app/learnings');
+const brokers = require('./app/brokers');
 const config = require('./config');
 const bot = require("./telegramBotSD");
 
@@ -22,6 +23,7 @@ app.use('/carriers', carriers);
 app.use('/drivers', drivers);
 app.use('/loads', loads);
 app.use('/learnings', learnings);
+app.use('/brokers', brokers);
 
 
 const run = async () => {

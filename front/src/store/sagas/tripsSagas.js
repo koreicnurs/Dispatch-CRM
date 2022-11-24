@@ -44,7 +44,7 @@ export function* createTrip({payload: tripData}) {
     const response = yield axiosApi('/loads?status=upcoming');
     yield put(fetchTripsSuccess(response.data));
   } catch (e) {
-    yield put(createTripFailure(e));
+    yield put(createTripFailure(e.response && e.response.data));
     yield put(addNotification({message: 'Trip creation failed!', variant: 'error'}));
   }
 }
@@ -57,8 +57,7 @@ export function* editTrip({payload}) {
     const response = yield axiosApi('/loads?status=' + payload.path);
     yield put(fetchTripsSuccess(response.data));
   } catch (e) {
-    yield put(editTripFailure(e));
-    console.log(e);
+    yield put(editTripFailure(e.response && e.response.data));
     yield put(addNotification({message: 'Trip edit failed!', variant: 'error'}));
   }
 }
@@ -67,8 +66,10 @@ export function* addComment({payload}) {
   try {
     yield axiosApi.put('/loads/comment/' + payload.id, {comment:payload.comment});
     yield put(addCommentSuccess());
+    yield put(addNotification({message: 'Comment added!', variant: 'success'}));
   } catch (e) {
     yield put(addCommentFailure(e));
+    yield put(addNotification({message: 'Failed to add comment!', variant: 'error'}));
   }
 }
 
@@ -76,8 +77,10 @@ export function* addAttachment({payload}) {
   try {
     yield axiosApi.put('/loads/attachment/' + payload.id, payload.formData);
     yield put(addAttachmentSuccess());
+    yield put(addNotification({message: 'Attachment added!', variant: 'success'}));
   } catch (e) {
     yield put(addAttachmentFailure(e));
+    yield put(addNotification({message: 'Failed to add attachment!', variant: 'error'}));
   }
 }
 

@@ -10,27 +10,17 @@ import InnerTable from "../Table/InnerTable";
 import TableHeaderRow from "../Table/TableHeader/TableHeaderRow";
 import UserTableBody from "../Table/TableBody/UserTableBody";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
-import EditDispatcher from "../Modals/DispatcherModal/EditDispatcher";
 import NewDispatcher from "../Modals/DispatcherModal/NewDispatcher";
 
 const headerTitles = ["email", "name"];
 
 const AdminProfile = ({user, error}) => {
   const dispatch = useDispatch();
-  const [openChange, setOpenChange] = useState(false);
   const [openCreate, setOpenCreate] = useState(false);
   const users = useSelector(state => state.users.users);
-  const [chosenDispatcher, setChosenDispatcher] = useState(null);
-  let admins;
-
-  const chooseDispatcher = id => {
-    setChosenDispatcher(users.find(user => user._id === id));
-    setOpenChange(!openChange);
-  };
 
   useEffect(() => {
     dispatch(fetchUsersRequest());
-    admins = users.filter(user => user.role === "admin");
   }, [dispatch]);
 
   return (
@@ -47,7 +37,7 @@ const AdminProfile = ({user, error}) => {
 
       <Grid item sx={{paddingLeft: "15px"}}>
         <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
-          Dispatchers
+          Other admins
         </Typography>
       </Grid>
 
@@ -65,18 +55,8 @@ const AdminProfile = ({user, error}) => {
           drivers={false}
           sx={{fontSize: "16px", fontWeight: "bold", textTransform: "uppercase"}}
         />}
-        body={<UserTableBody users={admins} onClickHandler={chooseDispatcher}/>}
+        body={<UserTableBody users={users}/>}
       />
-
-      {
-        chosenDispatcher &&
-        <EditDispatcher
-          modalHandler={() => setOpenChange(!openChange)}
-          modal={openChange}
-          dispatcher={chosenDispatcher}
-        />
-      }
-
 
     </InnerContainer>
   );

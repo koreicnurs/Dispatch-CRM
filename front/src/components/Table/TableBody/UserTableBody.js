@@ -10,7 +10,7 @@ const UserTableBody = ({users}) => {
   return (
     <>
       {users &&
-        users.map(user => {
+        users.filter(user => user.role === "admin").map(user => {
           if (user._id !== currentUser._id) {
             return (
               <TableRow

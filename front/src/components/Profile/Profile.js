@@ -135,7 +135,7 @@ const Profile = ({user, error}) => {
 
                 <Grid item sx={{marginLeft: "15px", backgroundColor: "white"}}>
                   <FormElement
-                    disabled={user.role === "admin" && true}
+                    disabled={true}
                     type={'email'}
                     name={'email'}
                     label={'Email'}
@@ -170,14 +170,16 @@ const Profile = ({user, error}) => {
                 </Grid>
               </Grid>
 
-              <Grid item sx={{marginTop: "25px"}}>
-                <Button
-                  variant="contained"
-                  onClick={() => setChangePassword(!changePassword)}
-                >
-                  Change Password
-                </Button>
-              </Grid>
+              {user.role === "admin" &&
+                <Grid item sx={{marginTop: "25px"}}>
+                  <Button
+                    variant="contained"
+                    onClick={() => setChangePassword(!changePassword)}
+                  >
+                    Change Password
+                  </Button>
+                </Grid>
+              }
 
               {changePassword === true &&
                 <>

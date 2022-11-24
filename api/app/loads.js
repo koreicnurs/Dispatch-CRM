@@ -203,8 +203,7 @@ router.put('/comment/:id', auth, async (req, res) => {
         }
 
         await Load.findByIdAndUpdate(req.params.id, req.body);
-
-
+        res.send('Comment added successfully');
     } catch (e) {
         res.status(400).send(e);
     }

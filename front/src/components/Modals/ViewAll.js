@@ -232,8 +232,8 @@ const ViewAll = ({open, handleClose, trip}) => {
                     : null
                   }
 
-                  <Grid item>
-                    <Button variant="contained" onClick={handleClose}>
+                  <Grid item xs={12} ml={'auto'}>
+                    <Button fullWidth variant="contained" onClick={handleClose}>
                       Close
                     </Button>
 

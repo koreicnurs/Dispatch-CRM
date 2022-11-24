@@ -2,6 +2,12 @@ const mongoose = require("mongoose");
 const uniqueValidator = require('mongoose-unique-validator');
 const idValidator = require('mongoose-id-validator');
 
+const validateDate = value => {
+    const pattern = /^([1-9]|1[0-2])\/([1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
+    
+    if (!pattern.test(value)) return false;
+};
+
 const Schema = mongoose.Schema;
 
 const LoadSchema = new Schema({
@@ -36,11 +42,22 @@ const LoadSchema = new Schema({
         min: 0
     },
     datePU: {
-        type: Date,
+        type: String,
         required: true,
+        validate: [
+            {validator: validateDate, message: 'Loading date is not valid!'},
+        ]
     },
     dateDEL: {
-        type: Date,
+        type: String,
+        required: true,
+        validate: [
+            {validator: validateDate, message: 'Arrival date is not valid!'},
+        ]
+    },
+    timeToPU: String,
+    timeToDel: {
+        type: String,
         required: true,
     },
     pu: {

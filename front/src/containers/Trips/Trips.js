@@ -23,7 +23,7 @@ import ViewAll from "../../components/Modals/ViewAll";
 
 const headerTitles = [
     "Load ID", "PU Location", "DEL Location",
-    "MILES", "RATE",  "Driver",
+    "MILES", "RATE",  "Driver", "Driver status",
     "Dispatch Team", "Dispatch"
 ];
 
@@ -67,6 +67,7 @@ const Trips = ({history}) => {
 
   const drivers = useSelector(state => state.drivers.drivers);
   const users = useSelector(state => state.users.users);
+  const user = useSelector(state => state.users.user);
 
 
   const [value, setValue] = useState(0);
@@ -140,8 +141,8 @@ const Trips = ({history}) => {
 
   return (
     <>
-      <NewTrip handleClose={handleClose} open={open}/>
-      <NewTrip handleClose={handleCloseEditModal} open={edit} editedTrip={trip}/>
+      <NewTrip handleClose={handleClose} open={open} trips={trips}/>
+      <NewTrip handleClose={handleCloseEditModal} open={edit} editedTrip={trip} trips={trips}/>
       <NewComment handleClose={handleCloseCommentModal} open={openComment} id={commentTripId}/>
       <ViewAll handleClose={handleCloseViewAllModal} open={viewAll} id={viewAllTripId} trip={trip}/>
       <NewAttachment handleClose={handleCloseAttachmentModal} open={openAttachment} id={attachTripId}/>
@@ -169,6 +170,7 @@ const Trips = ({history}) => {
             header={<TableHeaderRow headerCells={headerTitles}/>}
             body={
               <TripTableBody
+                user={user}
                 trips={trips}
                 drivers={drivers}
                 users={users}

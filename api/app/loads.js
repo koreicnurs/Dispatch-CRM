@@ -25,10 +25,10 @@ const cpUpload = upload.fields([{name: 'BOL', maxCount: 1}, {name: 'RC', maxCoun
 router.get('/', auth, async (req, res) => {
     try {
         if (req.query.status === 'finished' || req.query.status === 'cancel') {
-            const loads = await Load.find({status: {$in: ['finished', 'cancel']}}).populate('driverId', 'name').populate('dispatchId', 'displayName');
+            const loads = await Load.find({status: {$in: ['finished', 'cancel']}}).populate('driverId', ['name', 'status']).populate('dispatchId', 'displayName');
             res.send(loads);
         } else {
-            const loads = await Load.find(req.query).populate('driverId', 'name').populate('dispatchId', 'displayName');
+            const loads = await Load.find(req.query).populate('driverId', ['name', 'status']).populate('dispatchId', 'displayName');
             res.send(loads);
         }
     } catch (e) {
@@ -48,8 +48,8 @@ router.get('/:id', auth, async (req, res) => {
 
 router.post('/', auth, cpUpload, async (req, res) => {
     try {
-        const {loadCode, driverId, dispatchId, price, miles, rpm, datePU, dateDEL, pu, del, status, comment} = req.body;
-
+        const {loadCode, driverId, dispatchId, price, miles, rpm, datePU, dateDEL, pu, del, comment, timeToPU, timeToDel} = req.body;
+        
         const loadData = {
             loadCode,
             driverId,
@@ -57,17 +57,18 @@ router.post('/', auth, cpUpload, async (req, res) => {
             price,
             miles,
             rpm,
-            datePU: new Date(datePU),
-            dateDEL: new Date(dateDEL),
+            datePU: new Date(datePU).toLocaleDateString('en-Us'),
+            dateDEL: new Date(dateDEL).toLocaleDateString('en-Us'),
+            timeToDel,
+            timeToPU,
             pu,
             del,
-            status,
             BOL: null,
             RC: null,
             comment: comment || null,
         };
 
-        if (loadData.datePU > loadData.dateDEL) {
+        if (new Date(loadData.datePU) > new Date(loadData.dateDEL)) {
             return res.status(400).send({message: 'DEL date cannot be earlier than PU date!'});
         }
 
@@ -90,14 +91,20 @@ router.post('/', auth, cpUpload, async (req, res) => {
 
 router.put('/:id', auth, cpUpload, async (req, res) => {
     try {
+        const roles = ['admin'];
         const load = await Load.findOne({_id: req.params.id});
 
         if (!load) {
             return res.status(404).send({message: 'Load not found!'});
         }
+        
+        if (load.status === 'finished' || load.status === 'cancel') {
+            if (!roles.includes(req.user.role)) {
+                return res.status(403).send({message: 'You do not have permission to edit!'});
+            }
+        }
 
-        const {loadCode, driverId, dispatchId, price, miles, rpm, datePU, dateDEL, pu, del, status, comment} = req.body;
-
+        const {loadCode, driverId, dispatchId, price, miles, rpm, datePU, dateDEL, pu, del, status, comment, timeToPU, timeToDel} = req.body;
         const loadData = {
             loadCode,
             driverId,
@@ -105,15 +112,17 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
             price,
             miles,
             rpm,
-            datePU: new Date(datePU),
-            dateDEL: new Date(dateDEL),
+            datePU: new Date(datePU).toLocaleDateString('en-Us'),
+            dateDEL: new Date(dateDEL).toLocaleDateString('en-Us'),
+            timeToPU,
+            timeToDel,
             pu,
             del,
             status,
             comment: comment || '',
         };
-
-        if (loadData.datePU > loadData.dateDEL) {
+        
+        if (new Date(loadData.datePU) > new Date(loadData.dateDEL)) {
             return res.status(400).send({message: 'DEL date cannot be earlier than PU date!'});
         }
 
@@ -135,7 +144,7 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
         res.send(updateLoad);
 
     } catch (e) {
-        res.status(500).send(e);
+        res.status(400).send(e);
     }
 });
 
@@ -165,7 +174,7 @@ router.put('/status/:id', auth, async (req, res) => {
 
 
     } catch (e) {
-        res.status(500).send(e);
+        res.status(400).send(e);
     }
 });
 
@@ -181,7 +190,7 @@ router.put('/cancel/:id', auth, async (req, res) => {
 
         res.send(canceledLoad);
     } catch (e) {
-        res.status(500).send(e);
+        res.status(400).send(e);
     }
 });
 
@@ -194,10 +203,9 @@ router.put('/comment/:id', auth, async (req, res) => {
         }
 
         await Load.findByIdAndUpdate(req.params.id, req.body);
-
-
+        res.send('Comment added successfully');
     } catch (e) {
-        res.status(500).send(e);
+        res.status(400).send(e);
     }
 });
 
@@ -229,7 +237,7 @@ router.put('/attachment/:id', auth, cpUpload, async (req, res) => {
 
        res.send(updatedLoad);
     } catch (e) {
-        res.status(500).send(e);
+        res.status(400).send(e);
     }
 });
 

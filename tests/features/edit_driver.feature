@@ -35,7 +35,7 @@
     То я вижу текст о успешном редактировании водителя "You have successfully updated a driver!"
 
 
-    @driverEditFailed
+    @editDriverFailed
   Сценарий: Неуспешное редактирование данных водителя
     Допустим я захожу на страницу "login"
     Если я введу данные:

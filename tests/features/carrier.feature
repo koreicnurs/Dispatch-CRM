@@ -24,7 +24,7 @@
     Затем нажимаю на "Create"
     То я вижу "Carrier created!"
 
-   @carrierRegisterFailed
+   @registerCarrierFailed
   Сценарий: Регистрация нового Carrier не прошла
     Допустим я захожу на страницу "login"
     Если я введу данные:

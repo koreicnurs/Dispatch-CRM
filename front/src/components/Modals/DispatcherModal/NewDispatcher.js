@@ -12,7 +12,7 @@ const NewDispatcher = ({modal, modalHandler}) => {
   const [dispatcherData, setDispatcherData] = useState({
     email: "",
     password: "",
-    role: "user",
+    role: "admin",
     displayName: "",
     avatar:  ""
   });
@@ -22,7 +22,7 @@ const NewDispatcher = ({modal, modalHandler}) => {
     setDispatcherData({
       email: "",
       password: "",
-      role: "user",
+      role: "admin",
       displayName: "",
       avatar:  ""
     });

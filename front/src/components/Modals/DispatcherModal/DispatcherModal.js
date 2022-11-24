@@ -65,15 +65,17 @@ const DispatcherModal = ({modal, title, dispatcher, modalHandler, submitFormHand
               className={classes.field}
             />
 
-            <FormElement
-              onChange={inputHandler}
-              name="displayName"
-              label="Name"
-              value={dispatcher.displayName}
-              required={true}
-              error={getFieldError('displayName')}
-              className={classes.field}
-            />
+            {dispatcher.role !== "admin" &&
+              <FormElement
+                onChange={inputHandler}
+                name="displayName"
+                label="Name"
+                value={dispatcher.displayName}
+                required={true}
+                error={getFieldError('displayName')}
+                className={classes.field}
+              />
+            }
 
             <Grid item xs={12}>
               <RadioInputs

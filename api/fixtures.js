@@ -7,6 +7,7 @@ const Carrier = require('./models/Carrier');
 const Driver = require("./models/Driver");
 const Load = require("./models/Load");
 const Learning = require("./models/Learning");
+const Broker = require("./models/Broker");
 
 const run = async () => {
   await mongoose.connect(config.mongo.db);
@@ -289,6 +290,33 @@ const run = async () => {
       title: 'Metus',
       description: 'Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.',
       author: user2._id,
+    }
+  );
+  
+  await Broker.create(
+    {
+      name: 'Azamat',
+      phoneNumber: ['+99655555555', '+2678480704'],
+      mc: 'Lorem1',
+      description: 'Lorem ipsum dolor sit amet',
+      companiesContract: [bahawayCarrier._id],
+    }, {
+      name: 'Aibek',
+      phoneNumber: ['+2678892567'],
+      mc: 'Lorem2',
+      description: 'Consectetur adipiscing elit',
+      companiesContract: [bahawayCarrier._id],
+    }, {
+      name: 'Nurbek',
+      phoneNumber: ['+9293525578', '+9294884446'],
+      mc: 'Lorem3',
+      companiesContract: [bahawayCarrier._id],
+    }, {
+      name: 'Adilet',
+      phoneNumber: ['+996999523214', '+7678480704', '+3232523146'],
+      mc: 'Lorem4',
+      description: 'Convallis convallis tellus id interdum velit laoreet id donec ultrices',
+      companiesContract: [bahawayCarrier._id],
     }
   );
   

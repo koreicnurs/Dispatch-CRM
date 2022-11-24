@@ -7,6 +7,7 @@ import InnerTable from "../../components/Table/InnerTable";
 import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import DriverTableBody from "../../components/Table/TableBody/DriverTableBody";
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
+import Search from "../../components/UI/Search/Search";
 
 const columns = [
   {key: 'email', label: 'Email'},
@@ -35,9 +36,20 @@ const Drivers = () => {
           Drivers
         </Typography>
       </Grid>
-      <Grid container item flexDirection="row" justifyContent="space-between" alignItems="center" paddingRight="15px">
-        <AddDriver/>
+      <Grid
+        item
+        container
+        spacing={2}
+        justifyContent="space-between"
+      >
+        <Grid padding="15px">
+          <AddDriver/>
+        </Grid>
+        <Grid>
+          <Search/>
+        </Grid>
       </Grid>
+
       <InnerTable
         header={<TableHeaderRow headerCells={columns} drivers={true}/>}
         body={

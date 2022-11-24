@@ -21,6 +21,7 @@ const AdminProfile = ({user, error}) => {
   const [openCreate, setOpenCreate] = useState(false);
   const users = useSelector(state => state.users.users);
   const [chosenDispatcher, setChosenDispatcher] = useState(null);
+  let admins;
 
   const chooseDispatcher = id => {
     setChosenDispatcher(users.find(user => user._id === id));
@@ -29,6 +30,7 @@ const AdminProfile = ({user, error}) => {
 
   useEffect(() => {
     dispatch(fetchUsersRequest());
+    admins = users.filter(user => user.role === "admin");
   }, [dispatch]);
 
   return (
@@ -63,7 +65,7 @@ const AdminProfile = ({user, error}) => {
           drivers={false}
           sx={{fontSize: "16px", fontWeight: "bold", textTransform: "uppercase"}}
         />}
-        body={<UserTableBody users={users} onClickHandler={chooseDispatcher}/>}
+        body={<UserTableBody users={admins} onClickHandler={chooseDispatcher}/>}
       />
 
       {

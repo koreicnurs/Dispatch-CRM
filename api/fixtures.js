@@ -19,24 +19,28 @@ const run = async () => {
 
   const [bahawayCarrier, safewayCargoCarrier, turanExpressCarrier, tumarExpressCarrier] = await Carrier.create({
     title: 'BAHAWAY',
+    phoneNumber: '+611234567890',
     mc: '1180196',
     dot: '3537967',
     fedid: '83-3826233',
     description: 'test company #1'
   }, {
     title: 'SAFEWAY CARGO',
+    phoneNumber: '+431234567890',
     mc: '1296697',
     dot: '3703312',
     fedid: '87-113019',
     description: 'test company #2'
   }, {
     title: 'TURAN EXPRESS',
+    phoneNumber: '+994123456789',
     mc: '1256775',
     dot: '3648632',
     fedid: '84-2388341',
     description: 'test company #3'
   }, {
     title: 'TUMAR EXPRESS',
+    phoneNumber: '+355123456789',
     mc: '918995',
     dot: '2638087',
     fedid: '47-4067936',

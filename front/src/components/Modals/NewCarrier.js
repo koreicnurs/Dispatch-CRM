@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Grid, Modal} from "@mui/material";
+import {Box, FormHelperText, Grid, Modal} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import FormElement from "../UI/Form/FormElement/FormElement";
 import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {clearCarriersErrors, createCarrierRequest} from "../../store/actions/carriersActions";
 import {makeStyles} from "tss-react/mui";
 import AddButton from "../UI/Button/AddButton/AddButton";
+import {MuiTelInput} from 'mui-tel-input';
 
 const style = {
   position: 'absolute',
@@ -40,7 +41,8 @@ const NewCarrier = () => {
     mc: '',
     dot: '',
     fedid: '',
-    description: ''
+    description: '',
+    phoneNumber: ''
   });
 
   useEffect(() => {
@@ -56,8 +58,12 @@ const NewCarrier = () => {
   };
 
   const inputChangeHandler = e => {
-    const {name, value} = e.target;
-    setCarrier(prev => ({...prev, [name]: value}));
+    if (e.target) {
+      const {name, value} = e.target;
+      setCarrier(prev => ({...prev, [name]: value}));
+    } else {
+      setCarrier(prev => ({...prev, phoneNumber: e.replace(/ /g, '')}))
+    }
   };
 
   const submitFormHandler = async e => {
@@ -107,6 +113,23 @@ const NewCarrier = () => {
                   error={getFieldError('title')}
                   className={classes.field}
                 />
+  
+                <Grid item xs={12}>
+                  <MuiTelInput
+                    error={Boolean(getFieldError('phoneNumber'))}
+                    preferredCountries={['US']}
+                    defaultCountry={'US'}
+                    name={'phoneNumber'}
+                    label={'Phone Number'}
+                    value={carrier.phoneNumber}
+                    required={true}
+                    onChange={inputChangeHandler}
+                  />
+                  <FormHelperText sx={{
+                    color: '#d32f2f',
+                    margin: '3px 14px 0'
+                  }}>{getFieldError('phoneNumber')}</FormHelperText>
+                </Grid>
 
                 <FormElement
                   onChange={inputChangeHandler}

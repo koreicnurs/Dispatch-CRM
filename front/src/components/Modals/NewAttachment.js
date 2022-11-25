@@ -67,22 +67,29 @@ const NewAttachment = ({open, handleClose, id}) => {
             <Grid item>
               <FileInput name="BOL" label="BOL file" onChange={fileChangeHandler} required={false}/>
             </Grid>
-            <Box sx={{width: '40%', display: 'flex', justifyContent: 'space-between', margin: '10px auto'}}>
-              <ButtonWithProgress
-                type="button"
-                variant="contained"
-                onClick={sendAttachment}
-              >
-                Save
-              </ButtonWithProgress>
-              <ButtonWithProgress
-                type="button"
-                variant="contained"
-                onClick={handleClose}
-              >
-                Cancel
-              </ButtonWithProgress>
-            </Box>
+            <Grid container justifyContent={'space-between'} spacing={1} my={'10px'}>
+              <Grid item xs={6}>
+                <ButtonWithProgress
+                  fullWidth
+                  type="button"
+                  variant="contained"
+                  onClick={sendAttachment}
+                >
+                  Save
+                </ButtonWithProgress>
+              </Grid>
+              
+              <Grid item xs={6}>
+                <ButtonWithProgress
+                  fullWidth
+                  type="button"
+                  variant="contained"
+                  onClick={handleClose}
+                >
+                  Cancel
+                </ButtonWithProgress>
+              </Grid>
+            </Grid>
           </Box>
 
 

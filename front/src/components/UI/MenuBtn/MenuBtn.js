@@ -2,7 +2,7 @@ import React from 'react';
 import {IconButton, Menu, MenuItem} from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-const MenuBtn = ({trip, sendTrip, cancelTripHandler, editTripHandler, attachFileHandler, leaveCommentHandler, viewAllHandler}) => {
+const MenuBtn = ({trip, sendTrip, cancelTripHandler, editTripHandler, attachFileHandler, leaveCommentHandler, viewAllHandler, user}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -34,7 +34,10 @@ const MenuBtn = ({trip, sendTrip, cancelTripHandler, editTripHandler, attachFile
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={() => [editTripHandler(trip._id), handleClose()]}>Edit</MenuItem>
+        {(trip.status === 'finished' || trip.status === 'cancel') && user?.role === 'admin'
+          ? <MenuItem onClick={() => [editTripHandler(trip._id), handleClose()]}>Edit</MenuItem>
+          : null
+        }
         {trip.status === 'upcoming' && <MenuItem onClick={() => [sendTrip(trip._id), handleClose()]}>Send</MenuItem>}
         {trip.status === 'transit' && <MenuItem onClick={() => [sendTrip(trip._id), handleClose()]}>Close</MenuItem>}
         {trip.status !== 'finished' && trip.status !== 'cancel'

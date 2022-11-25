@@ -54,7 +54,6 @@ const DispatcherModal = ({modal, title, dispatcher, modalHandler, submitFormHand
             spacing={1}
           >
             <FormElement
-              disabled={dispatcher.role === "admin" && true}
               onChange={inputHandler}
               type="email"
               name="email"
@@ -65,25 +64,27 @@ const DispatcherModal = ({modal, title, dispatcher, modalHandler, submitFormHand
               className={classes.field}
             />
 
-            <FormElement
-              onChange={inputHandler}
-              name="displayName"
-              label="Name"
-              value={dispatcher.displayName}
-              required={true}
-              error={getFieldError('displayName')}
-              className={classes.field}
-            />
-
-            <Grid item xs={12}>
-              <RadioInputs
-                radioSelectors={radioSelectors}
-                handleChange={inputHandler}
-                label="Role"
-                value={dispatcher.role}
-                def={dispatcher.role}
+              <FormElement
+                onChange={inputHandler}
+                name="displayName"
+                label="Name"
+                value={dispatcher.displayName}
+                required={true}
+                error={getFieldError('displayName')}
+                className={classes.field}
               />
-            </Grid>
+
+            {dispatcher.role !== "admin" &&
+              <Grid item xs={12}>
+                <RadioInputs
+                  radioSelectors={radioSelectors}
+                  handleChange={inputHandler}
+                  label="Role"
+                  value={dispatcher.role}
+                  def={dispatcher.role}
+                />
+              </Grid>
+            }
 
             <Grid item xs={12} >
               <PasswordInput

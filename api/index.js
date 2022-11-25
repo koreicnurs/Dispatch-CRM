@@ -7,11 +7,12 @@ const carriers = require('./app/carriers');
 const drivers = require('./app/drivers');
 const loads = require('./app/loads');
 const learnings = require('./app/learnings');
+const brokers = require('./app/brokers');
 const config = require('./config');
 const bot = require("./telegramBotSD");
 
 const app = express();
-const PORT = 8000;
+
 
 app.use(express.static('public'));
 app.use(express.json());
@@ -22,13 +23,14 @@ app.use('/carriers', carriers);
 app.use('/drivers', drivers);
 app.use('/loads', loads);
 app.use('/learnings', learnings);
+app.use('/brokers', brokers);
 
 
 const run = async () => {
     await mongoose.connect(config.mongo.db, config.mongo.options);
 
-    app.listen(PORT, () => {
-        console.log(`Server started on ${PORT} port!`);
+    app.listen(config.port, () => {
+        console.log(`Server started on ${config.port} port!`);
     });
 
     exitHook(() => {

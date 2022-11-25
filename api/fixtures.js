@@ -7,6 +7,7 @@ const Carrier = require('./models/Carrier');
 const Driver = require("./models/Driver");
 const Load = require("./models/Load");
 const Learning = require("./models/Learning");
+const Broker = require("./models/Broker");
 
 const run = async () => {
   await mongoose.connect(config.mongo.db);
@@ -16,28 +17,6 @@ const run = async () => {
   for (const coll of collections) {
     await mongoose.connection.db.dropCollection(coll.name);
   }
-  
-  const [admin, user, user2] = await User.create({
-    email: 'admin@gmail.com',
-    password: 'admin',
-    role: 'admin',
-    token: nanoid(),
-    displayName: 'Admin',
-    avatar: 'fixtures/admin.png',
-  }, {
-    email: 'user@gmail.com',
-    password: 'user',
-    role: 'user',
-    token: nanoid(),
-    displayName: 'User',
-    avatar: 'fixtures/user.png',
-  }, {
-    email: 'user2@gmail.com',
-    password: 'user2',
-    role: 'user',
-    token: nanoid(),
-    displayName: 'User2',
-  });
 
   const [bahawayCarrier, safewayCargoCarrier, turanExpressCarrier, tumarExpressCarrier] = await Carrier.create({
     title: 'BAHAWAY',
@@ -63,6 +42,42 @@ const run = async () => {
     dot: '2638087',
     fedid: '47-4067936',
     description: 'test company #4'
+  });
+
+  const [admin, user, user2, bahCarrier] = await User.create({
+    email: 'admin@gmail.com',
+    password: 'admin',
+    role: 'admin',
+    token: nanoid(),
+    displayName: 'Admin',
+    avatar: 'fixtures/admin.png',
+  }, {
+    email: 'user@gmail.com',
+    password: 'user',
+    role: 'user',
+    token: nanoid(),
+    displayName: 'User',
+    avatar: 'fixtures/user.png',
+  }, {
+    email: 'user2@gmail.com',
+    password: 'user2',
+    role: 'user',
+    token: nanoid(),
+    displayName: 'User2',
+  }, {
+    email: 'bahaway@gmail.com',
+    password: 'bahaway',
+    role: 'carrier',
+    token: nanoid(),
+    displayName: 'BAHAWAY',
+    companyId: bahawayCarrier._id
+  }, {
+    email: 'safeway@gmail.com',
+    password: 'safeway',
+    role: 'carrier',
+    token: nanoid(),
+    displayName: 'SAFEWAY CARGO',
+    companyId: safewayCargoCarrier._id
   });
 
   const [umotDriver, kubaDriver, timurDriver, keldibekDriver, bakdoolotDriver, askhatDriver,
@@ -197,8 +212,10 @@ const run = async () => {
     price: 1335.6,
     miles: 445.2,
     rpm: 3,
-    datePU: '2022-11-05T14:48:00.000Z',
-    dateDEL: '2022-11-09T17:48:00.000Z',
+    datePU: '11/5/2022',
+    dateDEL: '11/9/2022',
+    timeToPU: '22:16',
+    timeToDel: '11:16',
     pu: 'Shepherd, KY',
     del: 'Pittsburg, PA',
     status: 'transit',
@@ -209,11 +226,13 @@ const run = async () => {
     price: 800,
     miles: 200,
     rpm: 4,
-    datePU: '2022-11-15T14:48:00.000Z',
-    dateDEL: '2022-11-16T17:48:00.000Z',
+    datePU: '11/15/2022',
+    dateDEL: '11/16/2022',
+    timeToPU: '10:16',
+    timeToDel: '15:16',
     pu: 'Pittsburg, PA',
     del: 'Boston, MA',
-    status: 'upcoming',
+    status: 'cancel',
   }, {
     loadCode: 'T-454GRG45R4G',
     driverId: timurDriver._id,
@@ -221,8 +240,10 @@ const run = async () => {
     price: 1750,
     miles: 700,
     rpm: 2.5,
-    datePU: '2022-11-05T14:48:00.000Z',
-    dateDEL: '2022-11-08T17:48:00.000Z',
+    datePU: '11/5/2022',
+    dateDEL: '11/8/2022',
+    timeToPU: '3:16',
+    timeToDel: '19:16',
     pu: 'New-York, NY',
     del: 'Chicago, IL',
     status: 'finished',
@@ -233,8 +254,10 @@ const run = async () => {
     price: 2500,
     miles: 500,
     rpm: 5,
-    datePU: '2022-11-20T14:48:00.000Z',
-    dateDEL: '2022-11-22T17:48:00.000Z',
+    datePU: '11/20/2022',
+    dateDEL: '11/22/2022',
+    timeToPU: '22:0',
+    timeToDel: '11:05',
     pu: 'Chicago, IL',
     del: 'Lafayette, LA',
     status: 'upcoming',
@@ -245,8 +268,10 @@ const run = async () => {
     price: 750,
     miles: 250,
     rpm: 3,
-    datePU: '2022-11-09T14:48:00.000Z',
-    dateDEL: '2022-11-10T17:48:00.000Z',
+    datePU: '11/9/2022',
+    dateDEL: '11/10/2022',
+    timeToPU: '11:0',
+    timeToDel: '12:10',
     pu: 'Houston, TX',
     del: 'New Orleans, LA',
     status: 'transit',
@@ -257,8 +282,10 @@ const run = async () => {
     price: 1500,
     miles: 500,
     rpm: 3,
-    datePU: '2022-11-01T14:48:00.000Z',
-    dateDEL: '2022-11-03T17:48:00.000Z',
+    datePU: '11/1/2022',
+    dateDEL: '11/3/2022',
+    timeToPU: '1:0',
+    timeToDel: '18:0',
     pu: 'New-York, NY',
     del: 'Seattle, WS',
     status: 'finished',
@@ -277,6 +304,37 @@ const run = async () => {
       title: 'Metus',
       description: 'Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.',
       author: user2._id,
+    }
+  );
+  
+  await Broker.create(
+    {
+      name: 'Azamat',
+      author: user._id,
+      phoneNumber: ['+99655555555', '+2678480704'],
+      mc: 'Lorem1',
+      description: 'Lorem ipsum dolor sit amet',
+      companiesContract: [bahawayCarrier._id],
+    }, {
+      name: 'Aibek',
+      author: user._id,
+      phoneNumber: ['+2678892567'],
+      mc: 'Lorem2',
+      description: 'Consectetur adipiscing elit',
+      companiesContract: [bahawayCarrier._id],
+    }, {
+      name: 'Nurbek',
+      author: user._id,
+      phoneNumber: ['+9293525578', '+9294884446'],
+      mc: 'Lorem3',
+      companiesContract: [bahawayCarrier._id],
+    }, {
+      name: 'Adilet',
+      author: user2._id,
+      phoneNumber: ['+996999523214', '+7678480704', '+3232523146'],
+      mc: 'Lorem4',
+      description: 'Convallis convallis tellus id interdum velit laoreet id donec ultrices',
+      companiesContract: [bahawayCarrier._id],
     }
   );
   

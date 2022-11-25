@@ -1,16 +1,16 @@
 import React from 'react';
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
-import EditButton from "../../UI/Button/EditButton/EditButton";
 import {useSelector} from "react-redux";
+import PropTypes from "prop-types";
 
-const UserTableBody = ({users, onClickHandler}) => {
+const UserTableBody = ({users}) => {
   const currentUser = useSelector(state => state.users.user);
 
   return (
     <>
       {users &&
-        users.map(user => {
+        users.filter(user => user.role === "admin").map(user => {
           if (user._id !== currentUser._id) {
             return (
               <TableRow
@@ -25,10 +25,6 @@ const UserTableBody = ({users, onClickHandler}) => {
                   {user.displayName}
                 </TableCell>
 
-                <TableCell component="th" scope="row" sx={{fontSize: "16px"}}>
-                  <EditButton click={() => onClickHandler(user._id)}/>
-                </TableCell>
-
               </TableRow>
             );
           }
@@ -38,5 +34,9 @@ const UserTableBody = ({users, onClickHandler}) => {
     </>
   );
 };
+
+UserTableBody.propsType = {
+  users: PropTypes.array.isRequired,
+}
 
 export default UserTableBody;

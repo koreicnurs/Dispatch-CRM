@@ -251,7 +251,7 @@ const NewTrip = ({open, handleClose, editedTrip, trips}) => {
                         inputFormat="MM/DD/YYYY"
                         onChange={(date) => setStartDate(date)}
                         value={startDate}
-                        renderInput={(params) => <TextField {...params} required={true}/>}/>
+                        renderInput={(params) => <TextField name="datePU" {...params} required={true}/>}/>
                     </LocalizationProvider>
 
                   </Grid>
@@ -263,7 +263,7 @@ const NewTrip = ({open, handleClose, editedTrip, trips}) => {
                         inputFormat="MM/DD/YYYY"
                         onChange={(date) => setFinDate(date)}
                         value={finDate}
-                        renderInput={(params) => <TextField {...params} required={true}/>}/>
+                        renderInput={(params) => <TextField name="dateDEL" {...params} required={true}/>}/>
                     </LocalizationProvider>
                   </Grid>
                 </Grid>

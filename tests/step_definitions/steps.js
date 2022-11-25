@@ -181,3 +181,18 @@ Then('я вижу текст о успешном редактировании п
   I.see(text);
 });
 
+
+/* Trips registration test */
+Then('нажимаю на поле с надписью {string}', text => {
+  I.click(`//div//label[contains(text(), "${text}")]`);
+});
+
+Then('нажимаю на элемент списка с текстом {string}', driverName => {
+  I.click(`//ul//li[contains(text(), "${driverName}")]`);
+  I.wait(1);
+});
+
+Then('прикрепляю в поле {string} файл {string}', (fieldName, file) => {
+  I.attachFile(`input[name=${fieldName}]`, file);
+  I.wait(1);
+});

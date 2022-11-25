@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {InputBase, styled} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
+import {useSelector} from "react-redux";
+import useTableSearch from "../useTableSearch/useTableSearch";
 
 const SearchStyle = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -44,17 +46,34 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 const Search = () => {
+  const drivers = useSelector(state => state.drivers.drivers);
+  const [searchVal, setSearchVal] = useState(null);
+  const { filteredData, loading } = useTableSearch({
+    searchVal,
+    drivers
+  });
+
 
   return (
-    <SearchStyle>
-      <SearchIconWrapper>
-        <SearchIcon />
-      </SearchIconWrapper>
-      <StyledInputBase
-        placeholder="Search"
-        inputProps={{ 'aria-label': 'search' }}
-      />
-    </SearchStyle>
+    <>
+      <SearchStyle>
+        <SearchIconWrapper>
+          <SearchIcon />
+        </SearchIconWrapper>
+        <StyledInputBase
+          placeholder="Search"
+          inputProps={{ 'aria-label': 'search' }}
+          onChange={e => setSearchVal(e.target.value)}
+        />
+      </SearchStyle>
+      {/*<Table*/}
+      {/*  rowKey="name"*/}
+      {/*  dataSource={filteredData}*/}
+      {/*  // columns={userColumns}*/}
+      {/*  loading={loading}*/}
+      {/*  pagination={false}*/}
+      {/*/>*/}
+    </>
   );
 };
 

@@ -7,7 +7,7 @@ import InnerTable from "../../components/Table/InnerTable";
 import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import DriverTableBody from "../../components/Table/TableBody/DriverTableBody";
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
-import Search from "../../components/UI/Search/Search";
+import Search from "../../components/UI/Filter/Search/Search";
 
 const columns = [
   {key: 'email', label: 'Email'},
@@ -24,6 +24,7 @@ const columns = [
 const Drivers = () => {
   const dispatch = useDispatch();
   const drivers = useSelector(state => state.drivers.drivers);
+  // const loading = useSelector(state => state.drivers.driversLoading);
 
   useEffect(() => {
     dispatch(fetchDriversRequest());

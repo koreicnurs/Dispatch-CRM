@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {Box, Modal, TextField} from "@mui/material";
+import {Box, Grid, Modal, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
 import {addCommentRequest, fetchTripRequest} from "../../store/actions/tripsActions";
@@ -72,22 +72,28 @@ const NewComment = ({open, handleClose, id}) => {
               rows={4}
               onChange={inputChangeHandler}
             />
-            <Box sx={{width: '40%', display: 'flex', justifyContent: 'space-between', margin: '10px auto'}}>
-              <ButtonWithProgress
-                type="button"
-                variant="contained"
-                onClick={sendComment}
-              >
-                Save
-              </ButtonWithProgress>
-              <ButtonWithProgress
-                type="button"
-                variant="contained"
-                onClick={() => [handleClose(), setComment('')]}
-              >
-                Cancel
-              </ButtonWithProgress>
-            </Box>
+            <Grid container justifyContent={'space-between'} spacing={1} my={'10px'}>
+              <Grid item xs={6}>
+                <ButtonWithProgress
+                  fullWidth
+                  type="button"
+                  variant="contained"
+                  onClick={sendComment}
+                >
+                  Save
+                </ButtonWithProgress>
+              </Grid>
+              <Grid item xs={6}>
+                <ButtonWithProgress
+                  fullWidth
+                  type="button"
+                  variant="contained"
+                  onClick={() => [handleClose(), setComment('')]}
+                >
+                  Cancel
+                </ButtonWithProgress>
+              </Grid>
+            </Grid>
           </Box>
 
 

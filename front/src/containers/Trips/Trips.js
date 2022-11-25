@@ -22,9 +22,9 @@ import NewAttachment from "../../components/Modals/NewAttachment";
 import ViewAll from "../../components/Modals/ViewAll";
 
 const headerTitles = [
-    "Load ID", "PU Location", "DEL Location",
-    "MILES", "RATE",  "Driver",
-    "Dispatch Team", "Dispatch"
+  "Load ID", "PU Location", "DEL Location",
+  "MILES", "RATE", "Driver", "Driver status",
+  "Dispatch Team", "Dispatch"
 ];
 
 const Trips = ({history}) => {
@@ -34,14 +34,11 @@ const Trips = ({history}) => {
   const createTripError = useSelector(state => state.trips.createTripError);
   const editTripError = useSelector(state => state.trips.editTripError);
 
-  const drivers = useSelector(state => state.drivers.drivers);
-  const users = useSelector(state => state.users.users);
-
   useEffect(() => {
-      dispatch(fetchTripsRequest(history.location.search));
-      dispatch(fetchUsersRequest());
-      dispatch(fetchDriversRequest());
-  }, [dispatch,history.location.search]);
+    dispatch(fetchTripsRequest(history.location.search));
+    dispatch(fetchUsersRequest());
+    dispatch(fetchDriversRequest());
+  }, [dispatch, history.location.search]);
 
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
@@ -64,6 +61,11 @@ const Trips = ({history}) => {
   const [commentTripId, setCommentTripId] = useState(null);
   const [attachTripId, setAttachTripId] = useState(null);
   const [viewAllTripId, setViewAllTripID] = useState(null);
+
+  const drivers = useSelector(state => state.drivers.drivers);
+  const users = useSelector(state => state.users.users);
+  const user = useSelector(state => state.users.user);
+
 
   const [value, setValue] = useState(0);
 
@@ -91,7 +93,7 @@ const Trips = ({history}) => {
     };
   }
 
-  const sendTrip = id=> {
+  const sendTrip = id => {
     dispatch(changeTripStatusRequest({id, path: history.location.search}));
   };
 
@@ -121,34 +123,34 @@ const Trips = ({history}) => {
   };
 
   useEffect(() => {
-    if(createTripError !== null) {
+    if (createTripError !== null) {
       setOpen(true);
     }
-    if(editTripError !== null) {
+    if (editTripError !== null) {
       setEdit(true);
     }
   }, [createTripError, editTripError]);
 
   return (
     <>
-      <NewTrip handleClose={handleClose} open={open}/>
-      <NewTrip handleClose={handleCloseEditModal} open={edit} editedTrip={trip}/>
+      <NewTrip handleClose={handleClose} open={open} trips={trips}/>
+      <NewTrip handleClose={handleCloseEditModal} open={edit} editedTrip={trip} trips={trips}/>
       <NewComment handleClose={handleCloseCommentModal} open={openComment} id={commentTripId}/>
       <ViewAll handleClose={handleCloseViewAllModal} open={viewAll} id={viewAllTripId} trip={trip}/>
       <NewAttachment handleClose={handleCloseAttachmentModal} open={openAttachment} id={attachTripId}/>
 
       <InnerContainer>
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{width: '100%'}}>
           <Grid item sx={{paddingLeft: "15px"}}>
             <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
               Trips
             </Typography>
           </Grid>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
               <Tab label="Upcoming" component={Link} to='/loads?status=upcoming' {...a11yProps(0)} />
-              <Tab label="In Transit"  component={Link} to='/loads?status=transit' {...a11yProps(1)} />
-              <Tab label="History"  component={Link} to='/loads?status=finished' {...a11yProps(2)} />
+              <Tab label="In Transit" component={Link} to='/loads?status=transit' {...a11yProps(1)} />
+              <Tab label="History" component={Link} to='/loads?status=finished' {...a11yProps(2)} />
             </Tabs>
           </Box>
           <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
@@ -160,6 +162,7 @@ const Trips = ({history}) => {
             header={<TableHeaderRow headerCells={headerTitles}/>}
             body={
               <TripTableBody
+                user={user}
                 trips={trips}
                 drivers={drivers}
                 users={users}
@@ -176,7 +179,7 @@ const Trips = ({history}) => {
         </Box>
       </InnerContainer>
     </>
-    );
+  );
 };
 
 export default Trips;

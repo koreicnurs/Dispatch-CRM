@@ -6,7 +6,6 @@ const fs = require("fs");
 const auth = require("../middleware/auth");
 const config = require('../config');
 const Load = require("../models/Load");
-const Driver = require("../models/Driver");
 
 const router = express.Router();
 

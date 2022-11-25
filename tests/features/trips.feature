@@ -38,7 +38,7 @@
     То я вижу "Trip created!"
 
 
-  @tripRegisterFailed
+  @registerTripFailed
   Сценарий: Регистрация нового груза не прошла
     Допустим я захожу на страницу "login"
     Если я введу данные:

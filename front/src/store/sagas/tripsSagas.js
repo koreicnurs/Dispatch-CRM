@@ -19,8 +19,8 @@ import axiosApi from "../../axiosApi";
 
 export function* fetchTrips({payload: value}) {
   try{
-    const response = yield axiosApi('/loads/' + value);
-    yield put(fetchTripsSuccess(response.data));
+      const response = yield axiosApi('/loads/' + value);
+      yield put(fetchTripsSuccess(response.data));
   } catch (e) {
     yield put(fetchTripsFailure(e.response.error));
     yield put(addNotification({message: 'Trips fetch failed!', variant: 'error'}));

@@ -2,10 +2,11 @@ import React from 'react';
 import {TableCell, TableRow} from "@mui/material";
 import EditDriver from "../../Modals/EditDriver";
 
-const DriverTableBody = ({columns, drivers}) => {
+const DriverTableBody = ({columns, filteredData}) => {
+
   return (
     <>
-      {drivers.map(driver => (
+      {filteredData.map(driver => (
         <TableRow
           key={driver._id}
           sx={{

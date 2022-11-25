@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Grid, Typography} from '@mui/material';
 import {fetchDriversRequest} from '../../store/actions/driversActions';
@@ -7,7 +7,50 @@ import InnerTable from "../../components/Table/InnerTable";
 import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import DriverTableBody from "../../components/Table/TableBody/DriverTableBody";
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
-import Search from "../../components/UI/Filter/Search/Search";
+import SearchIcon from "@mui/icons-material/Search";
+import {InputBase, styled} from "@mui/material";
+import useTableSearch from "../../components/UI/Filter/useTableSearch/useTableSearch";
+
+
+const SearchStyle = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: '#fff',
+  '&:hover': {
+    backgroundColor: '#fff',
+  },
+  marginRight: theme.spacing(6),
+  marginLeft: 0,
+  marginTop: '25px',
+  width: '50%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(3),
+    width: 'auto',
+  },
+}));
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    width: '50%',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch',
+    },
+  },
+}));
 
 const columns = [
   {key: 'email', label: 'Email'},
@@ -22,13 +65,21 @@ const columns = [
 ];
 
 const Drivers = () => {
+  const [searchVal, setSearchVal] = useState(null);
+
   const dispatch = useDispatch();
   const drivers = useSelector(state => state.drivers.drivers);
-  // const loading = useSelector(state => state.drivers.driversLoading);
 
   useEffect(() => {
     dispatch(fetchDriversRequest());
   }, [dispatch]);
+
+
+  const { filteredData} = useTableSearch({
+    searchVal,
+    drivers
+  });
+
 
   return (
     <InnerContainer>
@@ -47,7 +98,16 @@ const Drivers = () => {
           <AddDriver/>
         </Grid>
         <Grid>
-          <Search/>
+          <SearchStyle>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Search"
+              inputProps={{ 'aria-label': 'search' }}
+              onChange={e => setSearchVal(e.target.value)}
+            />
+          </SearchStyle>
         </Grid>
       </Grid>
 
@@ -55,8 +115,8 @@ const Drivers = () => {
         header={<TableHeaderRow headerCells={columns} drivers={true}/>}
         body={
           <DriverTableBody
-            drivers={drivers}
             columns={columns}
+            filteredData={filteredData}
           />
         }
       />

@@ -30,7 +30,6 @@ const UseTableSearch = ({ searchVal, drivers }) => {
     fetchData();
   }, [drivers]);
 
-  console.log(filteredData);
   useEffect(() => {
     if (searchVal) {
       const reqData = searchIndex.map((user, index) => {

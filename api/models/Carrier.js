@@ -3,6 +3,12 @@ const uniqueValidator = require('mongoose-unique-validator');
 
 const Schema = mongoose.Schema;
 
+const validatePhoneNumber = value => {
+  const pattern = /^\+(?:[0-9]●?){6,14}[0-9]$/;
+  
+  if (!pattern.test(value)) return false;
+};
+
 const CarrierSchema = new Schema({
   title: {
     type: String,
@@ -24,7 +30,13 @@ const CarrierSchema = new Schema({
     required: true,
     unique: true
   },
-  description: String
+  description: String,
+  phoneNumber: {
+    type: String,
+    required: true,
+    unique: true,
+    validate: [{validator: validatePhoneNumber, message: 'Phone number is not valid!'}],
+  },
 });
 
 CarrierSchema.plugin(uniqueValidator, {message: 'Error, expected {PATH} to be unique'});

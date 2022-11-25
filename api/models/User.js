@@ -24,11 +24,16 @@ const UserSchema = new Schema({
     type: String,
     required: true,
     default: 'user',
-    enum: ['user', 'admin'],
+    enum: ['user', 'admin', 'carrier'],
   },
   displayName: {
     type: String,
     required: true,
+  },
+  companyId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Carrier',
+    required: this.role === 'carrier',
   },
   avatar:  String,
   telegramId: Number,

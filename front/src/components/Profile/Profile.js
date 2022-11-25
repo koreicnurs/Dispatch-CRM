@@ -170,7 +170,6 @@ const Profile = ({user, error}) => {
                 </Grid>
               </Grid>
 
-              {user.role === "admin" &&
                 <Grid item sx={{marginTop: "25px"}}>
                   <Button
                     variant="contained"
@@ -179,7 +178,6 @@ const Profile = ({user, error}) => {
                     Change Password
                   </Button>
                 </Grid>
-              }
 
               {changePassword === true &&
                 <>

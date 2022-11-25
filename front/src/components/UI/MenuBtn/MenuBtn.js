@@ -12,6 +12,7 @@ const MenuBtn = ({trip, sendTrip, cancelTripHandler, editTripHandler, attachFile
     setAnchorEl(null);
   };
 
+
   return (
     <div>
       <IconButton
@@ -33,7 +34,10 @@ const MenuBtn = ({trip, sendTrip, cancelTripHandler, editTripHandler, attachFile
           'aria-labelledby': 'basic-button',
         }}
       >
-        {(trip.status === 'finished' || trip.status === 'cancel') && user.role === 'user' ? null : <MenuItem onClick={() => [editTripHandler(trip._id), handleClose()]}>Edit</MenuItem>}
+        {(trip.status === 'finished' || trip.status === 'cancel') && user?.role === 'admin'
+          ? <MenuItem onClick={() => [editTripHandler(trip._id), handleClose()]}>Edit</MenuItem>
+          : null
+        }
         {trip.status === 'upcoming' && <MenuItem onClick={() => [sendTrip(trip._id), handleClose()]}>Send</MenuItem>}
         {trip.status === 'transit' && <MenuItem onClick={() => [sendTrip(trip._id), handleClose()]}>Close</MenuItem>}
         {trip.status !== 'finished' && trip.status !== 'cancel'

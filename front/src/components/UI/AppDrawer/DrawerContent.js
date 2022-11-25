@@ -26,8 +26,9 @@ const DrawerContent = () => {
         {title:'Status Update', route:  '/status_update'},
         {title:'Trips', route:  '/loads/?status=upcoming'},
         {title: 'Carriers', route: '/carriers'},
-        {title: 'Drivers', route: '/drivers'}
-    ], [])
+        {title: 'Drivers', route: '/drivers'},
+        {title: 'My Profile', route: '/my_profile'},
+    ], []);
 
     const [selectedIndex, setSelectedIndex] = React.useState(0);
 

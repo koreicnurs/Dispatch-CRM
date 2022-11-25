@@ -25,30 +25,30 @@ const upload = multer({storage});
 const cpUpload = upload.fields([{name: 'BOL', maxCount: 1}, {name: 'RC', maxCount: 1}])
 
 router.get('/', auth, async (req, res) => {
-    try {
-        if (req.query.status === 'finished' || req.query.status === 'cancel') {
-            const loads = await Load.find({status: {$in: ['finished', 'cancel']}}).populate('driverId', ['name', 'status']).populate('dispatchId', 'displayName');
-            res.send(loads);
-        } else {
-            const loads = await Load.find(req.query).populate('driverId', ['name', 'status']).populate('dispatchId', 'displayName');
-            res.send(loads);
-        }
-    } catch (e) {
-        res.sendStatus(500);
+  try {
+    if (req.query.status === 'finished' || req.query.status === 'cancel') {
+      const loads = await Load.find({status: {$in: ['finished', 'cancel']}}).populate('driverId', 'name').populate('dispatchId', 'displayName');
+      res.send(loads);
+    } else {
+      const loads = await Load.find(req.query).populate('driverId', 'name').populate('dispatchId', 'displayName');
+      res.send(loads);
     }
+  } catch (e) {
+    res.sendStatus(500);
+  }
 });
 
 router.get('/carrier', auth, permit('carrier'), async (req, res) => {
-    try {
-        const drivers = await Driver.find({companyId: req.user.companyId});
-        const loads = await Load
-          .find({status: {$in: ['finished', 'cancel']}, driverId: {$in: drivers}})
-          .populate('driverId', 'name')
-          .populate('dispatchId', 'displayName');
-        res.send(loads);
-    } catch (e) {
-        res.sendStatus(500);
-    }
+  try {
+    const drivers = await Driver.find({companyId: req.user.companyId});
+    const loads = await Load
+      .find({status: {$in: ['finished', 'cancel']}, driverId: {$in: drivers}})
+      .populate('driverId', 'name')
+      .populate('dispatchId', 'displayName');
+    res.send(loads);
+  } catch (e) {
+    res.sendStatus(500);
+  }
 });
 
 router.get('/:id', auth, async (req, res) => {
@@ -97,7 +97,6 @@ router.post('/', auth, cpUpload, async (req, res) => {
     await load.save();
 
     res.send(load);
-
   } catch (e) {
     res.status(400).send(e);
   }

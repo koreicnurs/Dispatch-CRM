@@ -6,16 +6,17 @@ let dbURL = 'mongodb://localhost/dispatchers';
 let port = 8000;
 
 if(process.env.NODE_ENV === 'test') {
-    dbURL = 'mongodb://localhost/dispatchers';
+    dbURL = 'mongodb://localhost/dispatchers-test';
     port = 8010;
 }
 
 
 module.exports = {
     rootPath,
+    port,
     uploadPath: path.join(rootPath, 'public/uploads'),
     mongo: {
-        db: 'mongodb://localhost/dispatchers',
+        db: dbURL,
         options: {useNewUrlParser: true},
     },
 };

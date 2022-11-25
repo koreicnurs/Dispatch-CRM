@@ -32,7 +32,7 @@ const Carriers = () => {
         </Grid>
 
         <InnerTable
-          header={<TableHeaderRow headerCells={headerTitles}/>}
+          header={<TableHeaderRow headerCells={headerTitles} sx={{fontSize: "12px", fontWeight: "bold"}}/>}
           body={
           <CarrierTableBody
               carriers={carriers}

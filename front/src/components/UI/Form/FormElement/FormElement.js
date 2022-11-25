@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Grid, TextField} from "@mui/material";
 
-const FormElement = ({name, value, onChange, label, error, type, required, inputProps, multiline, rows, className, variant}) => {
+const FormElement = ({name, value, onChange, label, error, type, required, inputProps, multiline, rows, className, variant, disabled}) => {
     return (
         <Grid item xs={12} >
                 <TextField
                     type={type}
                     required={required}
+                    disabled={disabled}
                     label={label}
                     name={name}
                     value={value}

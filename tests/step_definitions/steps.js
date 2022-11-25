@@ -157,3 +157,28 @@ Then('я вижу текст о ошибке редактирования {strin
   I.see(text);
   I.wait(1);
 });
+
+/* Carrier editing test */
+
+Then('я нажимаю на кнопку открытия модального окна для формы редактирования перевозчика', () => {
+  I.click('//td//div');
+});
+
+When('я введу данные в форму редактирования перевозчика:', table => {
+  table.rows.forEach(row => {
+    const name = row.cells[0].value;
+    const value = row.cells[1].value;
+    I.clearField(name);
+    I.fillField(name, value);
+  })
+});
+
+Then('нажимаю на кнопку редактирования перевозчика {string}', buttonText => {
+  I.click(`//form//button[contains(text(), "${buttonText}")]`);
+  I.wait(4);
+});
+
+Then('я вижу текст о успешном редактировании перевозчика{string}', text => {
+  I.see(text);
+});
+

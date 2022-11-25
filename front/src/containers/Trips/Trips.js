@@ -23,7 +23,7 @@ import ViewAll from "../../components/Modals/ViewAll";
 
 const headerTitles = [
     "Load ID", "PU Location", "DEL Location",
-    "MILES", "RATE",  "Driver",
+    "MILES", "RATE",  "Driver", "Status",
     "Dispatch Team", "Dispatch"
 ];
 

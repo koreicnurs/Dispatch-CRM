@@ -36,6 +36,7 @@ const Trips = ({history}) => {
 
   const drivers = useSelector(state => state.drivers.drivers);
   const users = useSelector(state => state.users.users);
+  const user = useSelector(state => state.users.user);
 
   useEffect(() => {
     dispatch(fetchTripsRequest(history.location.search));
@@ -131,8 +132,8 @@ const Trips = ({history}) => {
 
   return (
     <>
-      <NewTrip handleClose={handleClose} open={open}/>
-      <NewTrip handleClose={handleCloseEditModal} open={edit} editedTrip={trip}/>
+      <NewTrip handleClose={handleClose} open={open} trips={trips}/>
+      <NewTrip handleClose={handleCloseEditModal} open={edit} editedTrip={trip} trips={trips}/>
       <NewComment handleClose={handleCloseCommentModal} open={openComment} id={commentTripId}/>
       <ViewAll handleClose={handleCloseViewAllModal} open={viewAll} id={viewAllTripId} trip={trip}/>
       <NewAttachment handleClose={handleCloseAttachmentModal} open={openAttachment} id={attachTripId}/>
@@ -160,6 +161,7 @@ const Trips = ({history}) => {
             header={<TableHeaderRow headerCells={headerTitles}/>}
             body={
               <TripTableBody
+                user={user}
                 trips={trips}
                 drivers={drivers}
                 users={users}

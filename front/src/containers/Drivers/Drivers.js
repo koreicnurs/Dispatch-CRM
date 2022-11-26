@@ -112,7 +112,7 @@ const Drivers = () => {
       </Grid>
 
       <InnerTable
-        header={<TableHeaderRow headerCells={columns} drivers={true}/>}
+        header={<TableHeaderRow headerCells={columns} drivers={true} sx={{fontSize: "12px", fontWeight: "bold"}}/>}
         body={
           <DriverTableBody
             columns={columns}

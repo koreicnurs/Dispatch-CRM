@@ -45,7 +45,7 @@ const UserSchema = new Schema({
   telegramId: Number,
   phoneNumber: {
     type: String,
-    required: true,
+    required: this.role === 'user',
     unique: true,
     validate: [
       {validator: validatePhoneNumber, message: 'Phone number is not valid!'}

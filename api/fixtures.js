@@ -50,7 +50,6 @@ const run = async () => {
     token: nanoid(),
     displayName: 'Admin',
     avatar: 'fixtures/admin.png',
-    phoneNumber: '+267●5350802'
   }, {
     email: 'user@gmail.com',
     password: 'user',
@@ -73,7 +72,6 @@ const run = async () => {
     token: nanoid(),
     displayName: 'BAHAWAY',
     companyId: bahawayCarrier._id,
-    phoneNumber: '+267●5350802'
   }, {
     email: 'safeway@gmail.com',
     password: 'safeway',

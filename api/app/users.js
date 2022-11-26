@@ -6,6 +6,7 @@ const path = require('path');
 const User = require('../models/User');
 const config = require('../config');
 const auth = require('../middleware/auth');
+const permit = require("../middleware/permit");
 
 const router = express.Router();
 
@@ -19,13 +20,44 @@ const storage = multer.diskStorage({
 });
 const upload = multer({storage});
 
+router.get('/dispatchers', auth, permit('admin'), async (req, res) => {
+  try {
+    const dispatchers = await User.find({role: 'user'});
+    res.send(dispatchers);
+  } catch (e) {
+    res.sendStatus(500);
+  }
+});
+
 router.post('/', upload.single('avatar'), async (req, res) => {
   try {
-    const {email, password, displayName} = req.body;
+    const {email, password, displayName, phoneNumber} = req.body;
     const userData = {
       email,
       password,
       displayName,
+      phoneNumber,
+      avatar: req.file ? 'uploads/' + req.file.filename : null,
+    };
+    const user = new User(userData);
+
+    user.generateToken();
+    await user.save();
+
+    res.send(user);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
+router.post('/dispatchers', auth, permit('admin'), upload.single('avatar'), async (req, res) => {
+  try {
+    const {email, password, displayName, phoneNumber} = req.body;
+    const userData = {
+      email,
+      password,
+      displayName,
+      phoneNumber,
       avatar: req.file ? 'uploads/' + req.file.filename : null,
     };
     const user = new User(userData);
@@ -75,6 +107,24 @@ router.put('/', auth, upload.single('avatar'), async (req, res) => {
     const userData = {
       displayName,
       password,
+      avatar: req.file ? 'uploads/' + req.file.filename : null,
+    };
+    const updateUser = await User.findOneAndUpdate({_id: req.user._id}, userData, {new: true});
+    res.send(updateUser);
+
+  } catch (e) {
+    res.sendStatus(500);
+  }
+});
+
+router.put('/change_dispatcher', auth, permit('user'), upload.single('avatar'), async (req, res) => {
+  try {
+    const {displayName, password, phoneNumber} = req.body;
+
+    const userData = {
+      displayName,
+      password,
+      phoneNumber,
       avatar: req.file ? 'uploads/' + req.file.filename : null,
     };
     const updateUser = await User.findOneAndUpdate({_id: req.user._id}, userData, {new: true});

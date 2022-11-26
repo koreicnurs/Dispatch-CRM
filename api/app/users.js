@@ -6,6 +6,7 @@ const path = require('path');
 const User = require('../models/User');
 const config = require('../config');
 const auth = require('../middleware/auth');
+const permit = require("../middleware/permit");
 
 const router = express.Router();
 
@@ -19,6 +20,15 @@ const storage = multer.diskStorage({
 });
 const upload = multer({storage});
 
+router.get('/dispatchers', auth, permit('admin'), async (req, res) => {
+  try {
+    const dispatchers = await User.find({role: 'user'});
+    res.send(dispatchers);
+  } catch (e) {
+    res.sendStatus(500);
+  }
+});
+
 router.post('/', upload.single('avatar'), async (req, res) => {
   try {
     const {email, password, displayName, role} = req.body;
@@ -27,6 +37,27 @@ router.post('/', upload.single('avatar'), async (req, res) => {
       password,
       displayName,
       role,
+      avatar: req.file ? 'uploads/' + req.file.filename : null,
+    };
+    const user = new User(userData);
+
+    user.generateToken();
+    await user.save();
+
+    res.send(user);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
+router.post('/dispatchers', auth, permit('admin'), upload.single('avatar'), async (req, res) => {
+  try {
+    const {email, password, displayName, phoneNumber} = req.body;
+    const userData = {
+      email,
+      password,
+      displayName,
+      phoneNumber,
       avatar: req.file ? 'uploads/' + req.file.filename : null,
     };
     const user = new User(userData);
@@ -118,31 +149,40 @@ router.put('/', auth, upload.single('avatar'), async (req, res) => {
 
 router.put('/change_dispatcher', auth, upload.single('avatar'), async (req, res) => {
   try {
-    const {email, password, displayName, role, id} = req.body;
+    const {email, password, displayName, role, phoneNumber, id} = req.body;
 
-    const user = await User.find({_id: id});
+    if (id && (email || password || displayName || phoneNumber)) {
 
-    let userData;
+      if (id === req.user._id.toString()) {
+        let userData;
 
-    if(password !== "") {
-      userData = {
-        email,
-        password,
-        displayName,
-        role,
-        avatar: req.file ? 'uploads/' + req.file.filename : user.avatar,
-      };
+        if(password !== "") {
+          userData = {
+            email,
+            password,
+            displayName,
+            role,
+            phoneNumber,
+            avatar: req.file ? 'uploads/' + req.file.filename : req.user.avatar,
+          };
+        } else {
+          userData = {
+            email,
+            displayName,
+            role,
+            phoneNumber,
+            avatar: req.file ? 'uploads/' + req.file.filename : req.user.avatar,
+          };
+        }
+        const updateUser = await User.findOneAndUpdate({_id: id}, userData, {new: true});
+        res.send(updateUser);
+      } else {
+        return res.status(401).send({message: 'Wrong user id'});
+      }
     } else {
-      userData = {
-        email,
-        displayName,
-        role,
-        avatar: req.file ? 'uploads/' + req.file.filename : user.avatar,
-      };
+      return res.status(400).send({message: 'Data is not valid'});
     }
 
-    const updateUser = await User.findOneAndUpdate({_id: id}, userData, {new: true});
-    res.send(updateUser);
   } catch (e) {
     res.status(400).send(e);
   }

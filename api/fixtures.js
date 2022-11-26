@@ -63,7 +63,7 @@ const run = async () => {
     token: nanoid(),
     displayName: 'User',
     avatar: 'fixtures/user.png',
-    phoneNumber: '+267●5350802'
+    phoneNumber: '+267●5350802',
     isWorking: 'active'
   }, {
     email: 'user2@gmail.com',
@@ -71,7 +71,7 @@ const run = async () => {
     role: 'user',
     token: nanoid(),
     displayName: 'User2',
-    phoneNumber: '+267●5350802'
+    phoneNumber: '+267●5350802',
     isWorking: 'inactive'
   }, {
     email: 'bahaway@gmail.com',

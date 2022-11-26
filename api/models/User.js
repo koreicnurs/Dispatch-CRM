@@ -16,6 +16,12 @@ const validateDisplayName = value => {
   if (!pattern.test(value)) return false;
 };
 
+const validatePhoneNumber = value => {
+  const pattern = /^\+(?:[0-9]●?){6,14}[0-9]$/;
+
+  if (!pattern.test(value)) return false;
+};
+
 const UserSchema = new Schema({
   email: {
     type: String,
@@ -53,6 +59,14 @@ const UserSchema = new Schema({
   },
   avatar:  String,
   telegramId: Number,
+  phoneNumber: {
+    type: String,
+    required: this.role === 'user',
+    unique: true,
+    validate: [
+      {validator: validatePhoneNumber, message: 'Phone number is not valid!'}
+    ],
+  },
   isWorking: {
     type: String,
     required: true,

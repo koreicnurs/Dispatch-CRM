@@ -63,6 +63,17 @@ UserSchema.pre('save', async function (next) {
   next();
 });
 
+UserSchema.pre('findOneAndUpdate', async function (next) {
+  const update = this.getUpdate();
+
+  if (update.password) {
+    const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
+    const hash = await bcrypt.hash(update.password, salt);
+    update.password = hash;
+  }
+  next();
+})
+
 UserSchema.set('toJSON', {
   transform: (doc, ret, options) => {
     delete ret.password;

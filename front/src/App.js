@@ -7,6 +7,7 @@ import Carriers from "./containers/Carriers/Carriers";
 import StatusUpdate from "./containers/StatusUpdate/StatusUpdate";
 import Drivers from "./containers/Drivers/Drivers";
 import MyProfile from "./containers/MyProfile/MyProfile";
+import Dispatchers from "./containers/Dispatchers/Dispatchers";
 
 const ProtectedRoute = ({isAllowed, redirectTo, ...props}) => {
     return isAllowed ?
@@ -56,6 +57,12 @@ const App = () => {
                   redirectTo="/login"
                   path="/my_profile"
                   component={MyProfile}
+                />
+                <ProtectedRoute
+                  isAllowed={user}
+                  redirectTo="/login"
+                  path="/dispatchers"
+                  component={Dispatchers}
                 />
                 <Route path="/login" component={Login}/>
             </Switch>

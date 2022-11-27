@@ -55,7 +55,7 @@ const run = async () => {
     token: nanoid(),
     displayName: 'Admin',
     avatar: 'fixtures/admin.png',
-    phoneNumber: '+267●5350811'
+    phoneNumber: '+267●5350811',
     isWorking: 'active'
   }, {
     email: 'user@gmail.com',

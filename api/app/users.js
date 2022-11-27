@@ -31,12 +31,14 @@ router.get('/dispatchers', auth, permit('admin'), async (req, res) => {
 
 router.post('/', upload.single('avatar'), async (req, res) => {
   try {
-    const {email, password, displayName, role} = req.body;
+    const {email, password, displayName, role, phoneNumber} = req.body;
     const userData = {
       email,
       password,
       displayName,
+      phoneNumber,
       role,
+      isWorking: true,
       avatar: req.file ? 'uploads/' + req.file.filename : null,
     };
     const user = new User(userData);
@@ -58,6 +60,7 @@ router.post('/dispatchers', auth, permit('admin'), upload.single('avatar'), asyn
       password,
       displayName,
       phoneNumber,
+      isWorking: true,
       avatar: req.file ? 'uploads/' + req.file.filename : null,
     };
     const user = new User(userData);

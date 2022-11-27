@@ -63,7 +63,7 @@ const run = async () => {
     token: nanoid(),
     displayName: 'User',
     avatar: 'fixtures/user.png',
-    phoneNumber: '+267●5350802',
+    phoneNumber: '+267●5350801',
     isWorking: true
   }, {
     email: 'user2@gmail.com',
@@ -88,7 +88,7 @@ const run = async () => {
     token: nanoid(),
     displayName: 'SAFEWAY CARGO',
     companyId: safewayCargoCarrier._id,
-    phoneNumber: '+267●5350802',
+    phoneNumber: '+267●5350803',
     isWorking: true
   });
 

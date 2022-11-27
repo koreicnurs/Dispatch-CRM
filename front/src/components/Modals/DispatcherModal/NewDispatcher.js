@@ -4,15 +4,16 @@ import PropTypes from "prop-types";
 import {createDispatcherRequest} from "../../../store/actions/usersActions";
 import DispatcherModal from "./DispatcherModal";
 
-const NewDispatcher = ({modal, modalHandler}) => {
+const NewDispatcher = ({modal, modalHandler, dispatcherRole}) => {
   const dispatch = useDispatch();
   const error = useSelector(state => state.users.createError);
   const loading = useSelector(state => state.users.createLoading);
 
   const [dispatcherData, setDispatcherData] = useState({
     email: "",
+    phoneNumber: "",
     password: "",
-    role: "admin",
+    role: dispatcherRole,
     displayName: "",
     avatar:  ""
   });
@@ -21,8 +22,9 @@ const NewDispatcher = ({modal, modalHandler}) => {
     modalHandler(!modal);
     setDispatcherData({
       email: "",
+      phoneNumber: "",
       password: "",
-      role: "admin",
+      role: dispatcherRole,
       displayName: "",
       avatar:  ""
     });
@@ -85,7 +87,8 @@ const NewDispatcher = ({modal, modalHandler}) => {
 
 NewDispatcher.propTypes = {
   modal: PropTypes.bool.isRequired,
-  modalHandler: PropTypes.func.isRequired
+  modalHandler: PropTypes.func.isRequired,
+  dispatcherRole: PropTypes.string.isRequired
 };
 
 export default NewDispatcher;

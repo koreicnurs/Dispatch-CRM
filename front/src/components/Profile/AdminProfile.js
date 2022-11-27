@@ -46,6 +46,7 @@ const AdminProfile = ({user, error}) => {
       <NewDispatcher
         modalHandler={() => setOpenCreate(!openCreate)}
         modal={openCreate}
+        dispatcherRole="admin"
       />
 
       <InnerTable

@@ -4,7 +4,6 @@ import Typography from "@mui/material/Typography";
 import PropTypes from "prop-types";
 import {makeStyles} from "tss-react/mui";
 import FormElement from "../../UI/Form/FormElement/FormElement";
-import RadioInputs from "../../UI/Form/RadioInputs/RadioInputs";
 import PasswordInput from "../../UI/Form/PasswordInput/PasswordInput";
 import FileInput from "../../UI/Form/FileInput/FileInput";
 import ButtonWithProgress from "../../UI/Button/ButtonWithProgress/ButtonWithProgress";
@@ -25,8 +24,6 @@ const useStyles = makeStyles()(() => ({
     background: "white"
   }
 }));
-
-const radioSelectors = [{label: "User", id: 1, value: "user"}, {label: "Admin", id: 2, value: "admin"}];
 
 const DispatcherModal = ({modal, title, dispatcher, modalHandler, submitFormHandler, inputHandler, getFieldError, fileHandler, loading, buttonName, required}) => {
   const classes = useStyles();
@@ -64,27 +61,26 @@ const DispatcherModal = ({modal, title, dispatcher, modalHandler, submitFormHand
               className={classes.field}
             />
 
-              <FormElement
-                onChange={inputHandler}
-                name="displayName"
-                label="Name"
-                value={dispatcher.displayName}
-                required={true}
-                error={getFieldError('displayName')}
-                className={classes.field}
-              />
+            <FormElement
+              onChange={inputHandler}
+              type="phone"
+              name="phoneNumber"
+              label="Phone"
+              value={dispatcher.phoneNumber}
+              required={dispatcher.role !== "admin"}
+              error={getFieldError('email')}
+              className={classes.field}
+            />
 
-            {dispatcher.role !== "admin" &&
-              <Grid item xs={12}>
-                <RadioInputs
-                  radioSelectors={radioSelectors}
-                  handleChange={inputHandler}
-                  label="Role"
-                  value={dispatcher.role}
-                  def={dispatcher.role}
-                />
-              </Grid>
-            }
+            <FormElement
+              onChange={inputHandler}
+              name="displayName"
+              label="Name"
+              value={dispatcher.displayName}
+              required={true}
+              error={getFieldError('displayName')}
+              className={classes.field}
+            />
 
             <Grid item xs={12} >
               <PasswordInput

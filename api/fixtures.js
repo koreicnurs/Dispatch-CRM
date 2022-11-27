@@ -56,6 +56,7 @@ const run = async () => {
     displayName: 'Admin',
     avatar: 'fixtures/admin.png',
     phoneNumber: '+267●5350811'
+    isWorking: 'active'
   }, {
     email: 'user@gmail.com',
     password: 'user',
@@ -63,14 +64,16 @@ const run = async () => {
     token: nanoid(),
     displayName: 'User',
     avatar: 'fixtures/user.png',
-    phoneNumber: '+267●5350802'
+    phoneNumber: '+267●5350802',
+    isWorking: 'active'
   }, {
     email: 'user2@gmail.com',
     password: 'user2',
     role: 'user',
     token: nanoid(),
     displayName: 'User2',
-    phoneNumber: '+267●5350803'
+    phoneNumber: '+267●5350803',
+    isWorking: 'inactive'
   }, {
     email: 'bahaway@gmail.com',
     password: 'bahaway',

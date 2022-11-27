@@ -197,7 +197,7 @@ Then('прикрепляю в поле {string} файл {string}', (fieldName, 
   I.wait(1);
 });
 
-/* Trips upcoming edit test */
+/* Trips upcoming/transit/history edit test */
 
 Then('нажимаю на кнопку, чтобы открыть форму редактирования данных о грузе', () => {
   I.click('//td//div//button');
@@ -234,7 +234,7 @@ Then('я вижу текст об ошибке редактирования {str
   I.see(text);
   I.wait(1);
 });
-/* Trips transit edit test */
+
 
 
 

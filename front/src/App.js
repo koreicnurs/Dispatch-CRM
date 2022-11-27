@@ -15,6 +15,18 @@ const ProtectedRoute = ({isAllowed, redirectTo, ...props}) => {
         <Redirect to={redirectTo}/>
 };
 
+const RoleProtectedRoute = ({isAllowed, redirectTo, ...props}) => {
+    if (isAllowed) {
+        if (isAllowed.role === "admin") {
+            return <Route {...props}/>
+        } else {
+            return <Redirect to="/loads"/>
+        }
+    } else {
+        return <Redirect to={redirectTo}/>
+    }
+};
+
 const App = () => {
     const user = useSelector(state => state.users.user);
 
@@ -58,7 +70,7 @@ const App = () => {
                   path="/my_profile"
                   component={MyProfile}
                 />
-                <ProtectedRoute
+                <RoleProtectedRoute
                   isAllowed={user}
                   redirectTo="/login"
                   path="/dispatchers"

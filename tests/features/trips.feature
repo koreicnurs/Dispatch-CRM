@@ -69,3 +69,4 @@
 
     Когда нажимаю на "Create"
     То я вижу "Trip creation failed!"
+

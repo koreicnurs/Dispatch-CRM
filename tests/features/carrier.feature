@@ -16,11 +16,12 @@
     Допустим я открываю страницу "carriers"
     То я нажимаю на кнопку "add"
     Если я напишу данные:
-      | title       | SWCS         |
-      | mc          | 1234         |
-      | dot         | 126          |
-      | fedid       | 88-237       |
-      | description | test company |
+      | title       | SWCS          |
+      | phoneNumber | +611234567890 |
+      | mc          | 1234          |
+      | dot         | 126           |
+      | fedid       | 88-237        |
+      | description | test company  |
     Затем нажимаю на "Create"
     То я вижу "Carrier created!"
 
@@ -36,6 +37,7 @@
     То я нажимаю на кнопку "add"
     Если я напишу данные:
       | title       | BAHAWAY         |
+      | phoneNumber | +611234567890   |
       | mc          | 1180196         |
       | dot         | 3537967         |
       | fedid       | 83-3826233      |

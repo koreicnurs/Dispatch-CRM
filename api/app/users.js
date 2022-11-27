@@ -105,9 +105,9 @@ router.put('/', auth, upload.single('avatar'), async (req, res) => {
 
         if (req.query.isWorking) {
             const status = req.query.isWorking;
-            if ("active" !== status && "inactive" !== status) {
-                return res.status(400).send('Invalid argument');
-            }
+            // if ("active" !== status && "inactive" !== status) {
+            //     return res.status(400).send('Invalid argument');
+            // }
             if (req.user.role !== 'admin') {
                 return res.status(403).send('You have no permission to make changes!');
             }

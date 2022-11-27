@@ -196,3 +196,39 @@ Then('прикрепляю в поле {string} файл {string}', (fieldName, 
   I.attachFile(`input[name=${fieldName}]`, file);
   I.wait(1);
 });
+/* Trips upcoming edit test */
+
+Then('нажимаю на кнопку, чтобы открыть форму редактирования данных о грузе', () => {
+  I.click('//td//div//button');
+  I.wait(1);
+});
+Then('я нажимаю на кнопку открытия модального окна для формы редактирования груза', edit => {
+  I.click(`//div//li[contains(text(), "${edit}")]`);
+  I.wait(1);
+});
+When('я введу данные в форму редактирования груза:', table => {
+  table.rows.forEach(row => {
+    const name = row.cells[0].value;
+    const value = row.cells[1].value;
+    // I.clearField(name);
+    I.fillField(name, value);
+  })
+});
+Then('нажимаю на выбор водителя {string}', text => {
+  I.click(`//div[contains(text(), "${text}")]`);
+  I.wait(1);
+});
+Then('нажимаю на водителя {string}', text => {
+  I.click(`//ul//li[contains(text(), "${text}")]`);
+  I.wait(1);
+});
+
+
+Then('я вижу текст об ошибке некорректной даты {string}', text => {
+  I.see(text);
+});
+
+Then('я вижу текст о ошибке редактирования {string}', text => {
+  I.see(text);
+  I.wait(1);
+});

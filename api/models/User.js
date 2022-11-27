@@ -6,6 +6,16 @@ const uniqueValidator = require('mongoose-unique-validator');
 const Schema = mongoose.Schema;
 const SALT_WORK_FACTOR = 10;
 
+const validateEmail = value => {
+  const pattern = /^\w+(\.?\w+)*@\w+(\.?\w+)*(\.\w{2,3})+$/;
+  if (!pattern.test(value)) return false;
+};
+
+const validateDisplayName = value => {
+  const pattern = /^[\w\d]+.*[\w\d]+$/;
+  if (!pattern.test(value)) return false;
+};
+
 const validatePhoneNumber = value => {
   const pattern = /^\+(?:[0-9]●?){6,14}[0-9]$/;
 
@@ -17,6 +27,9 @@ const UserSchema = new Schema({
     type: String,
     required: true,
     unique: true,
+    validate: [
+      {validator: validateEmail, message: 'Email is not valid!'},
+    ]
   },
   password: {
     type: String,
@@ -35,6 +48,9 @@ const UserSchema = new Schema({
   displayName: {
     type: String,
     required: true,
+    validate: [
+      {validator: validateDisplayName, message: 'Name is not valid!'},
+    ]
   },
   companyId: {
     type: Schema.Types.ObjectId,
@@ -51,6 +67,12 @@ const UserSchema = new Schema({
       {validator: validatePhoneNumber, message: 'Phone number is not valid!'}
     ],
   },
+  isWorking: {
+    type: String,
+    required: true,
+    default: 'active',
+    enum: ['active', 'inactive'],
+  }
 });
 
 UserSchema.pre('save', async function (next) {

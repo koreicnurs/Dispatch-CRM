@@ -101,50 +101,68 @@ router.post('/sessions', async (req,  res) => {
 });
 
 router.put('/', auth, upload.single('avatar'), async (req, res) => {
-  try {
-    const {displayName, password, oldPassword, email} = req.body;
-    let userData;
+    try {
 
-    if (oldPassword !== "") {
-      const user = await User.findOne({_id: req.user._id});
-      const isMatch = await user.checkPassword(oldPassword);
-
-      if (isMatch) {
-
-        if (password !== "") {
-          userData = {
-            displayName,
-            email,
-            password,
-            avatar: req.file ? 'uploads/' + req.file.filename : req.body.avatar,
-          };
-        } else {
-          userData = {
-            displayName,
-            email,
-            avatar: req.file ? 'uploads/' + req.file.filename : req.body.avatar,
-          };
+        if (req.query.isWorking) {
+            const status = req.query.isWorking;
+            if ("active" !== status && "inactive" !== status) {
+                return res.status(400).send('Invalid argument');
+            }
+            if (req.user.role !== 'admin') {
+                return res.status(403).send('You have no permission to make changes!');
+            }
+            const user = await User.findById(req.body._id);
+            if (!user) {
+                return res.status(404).send({message: 'User not found!'});
+            }
+            if (user.role !== 'user') {
+                return res.status(403).send('You can make changes only for dispatchers!');
+            }
+            user.isWorking = status;
+            await user.save();
+            return res.send(user);
         }
 
-        const updateUser = await User.findOneAndUpdate({_id: req.user._id}, userData, {new: true});
+        const {displayName, password, oldPassword, email} = req.body;
+        const userData ={};
+
+        if ((oldPassword && !password) || (!oldPassword && password)) {
+            return res.status(400).send({message: 'To change the password, the old and new password are required'});
+        }
+
+        if (oldPassword) {
+            const user = await User.findOne({_id: req.user._id});
+            const isMatch = await user.checkPassword(oldPassword);
+            const pattern = /^\S{4,}$/;
+            const isValid = pattern.test(password);
+
+            if (!isMatch) {
+                return res.status(400).send({message: 'Old password is wrong!'});
+            }
+            if (!isValid) {
+                return res.status(400).send({message: 'New password not valid!'});
+            }
+            userData.password = password;
+        }
+        if (displayName) {
+            userData.displayName = displayName;
+        }
+        if (email) {
+            userData.email = email;
+        }
+        if (req.file){
+            userData.avatar = 'uploads/' + req.file.filename;
+        }
+
+        const updateUser = await User.findOneAndUpdate({_id: req.user._id}, userData, {
+            new: true,
+            runValidators: true
+        });
         res.send(updateUser);
-      } else {
-        return res.status(401).send({message: 'Old password is wrong!'});
-      }
-    } else {
-      userData = {
-        displayName,
-        email,
-        avatar: req.file ? 'uploads/' + req.file.filename : req.body.avatar,
-      };
 
-      const updateUser = await User.findOneAndUpdate({_id: req.user._id}, userData, {new: true});
-      res.send(updateUser);
+    } catch (e) {
+        res.status(400).send(e);
     }
-
-  } catch (e) {
-    res.status(400).send(e);
-  }
 });
 
 router.put('/change_dispatcher', auth, upload.single('avatar'), async (req, res) => {

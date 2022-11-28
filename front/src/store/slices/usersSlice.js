@@ -82,6 +82,7 @@ const usersSlice = createSlice({
         },
         createDispatcherSuccess(state) {
             state.createLoading = false;
+            state.createError = null;
         },
         createDispatcherFailure(state, action) {
             state.createLoading = false;

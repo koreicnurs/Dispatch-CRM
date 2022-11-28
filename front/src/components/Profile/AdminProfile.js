@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import InnerContainer from "../InnerContainer/InnerContainer";
 import Typography from "@mui/material/Typography";
 import {Grid} from "@mui/material";
 import PropTypes from "prop-types";
 import Profile from "./Profile";
-import AddButton from "../UI/Button/AddButton/AddButton";
 import InnerTable from "../Table/InnerTable";
 import TableHeaderRow from "../Table/TableHeader/TableHeaderRow";
 import UserTableBody from "../Table/TableBody/UserTableBody";
@@ -16,7 +15,6 @@ const headerTitles = ["email", "name"];
 
 const AdminProfile = ({user, error}) => {
   const dispatch = useDispatch();
-  const [openCreate, setOpenCreate] = useState(false);
   const users = useSelector(state => state.users.users);
 
   useEffect(() => {
@@ -41,11 +39,7 @@ const AdminProfile = ({user, error}) => {
         </Typography>
       </Grid>
 
-      <AddButton click={() => setOpenCreate(!openCreate)}/>
-
       <NewDispatcher
-        modalHandler={() => setOpenCreate(!openCreate)}
-        modal={openCreate}
         dispatcherRole="admin"
       />
 

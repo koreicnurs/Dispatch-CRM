@@ -7,16 +7,14 @@ import InnerTable from "../../components/Table/InnerTable";
 import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import DispatcherTableBody from "../../components/Table/TableBody/DispatcherTableBody";
 import {changeStatusRequest, fetchUsersRequest} from "../../store/actions/usersActions";
-import AddButton from "../../components/UI/Button/AddButton/AddButton";
 import NewDispatcher from "../../components/Modals/DispatcherModal/NewDispatcher";
 
-const headerTitles = ["email", "name", "status"];
+const headerTitles = ["avatar", "email", "name", "phone", "status"];
 
 const Dispatchers = () => {
   const dispatch = useDispatch();
   const users = useSelector(state => state.users.users);
   const [dispatchers, setDispatchers] = useState([]);
-  const [openCreate, setOpenCreate] = useState(false);
 
   useEffect(() => {
     dispatch(fetchUsersRequest());
@@ -56,11 +54,7 @@ const Dispatchers = () => {
           </Typography>
         </Grid>
 
-        <AddButton click={() => setOpenCreate(!openCreate)}/>
-
         <NewDispatcher
-          modalHandler={() => setOpenCreate(!openCreate)}
-          modal={openCreate}
           dispatcherRole="user"
         />
 

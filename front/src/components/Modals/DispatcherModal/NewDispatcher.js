@@ -1,13 +1,16 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import PropTypes from "prop-types";
 import {createDispatcherRequest} from "../../../store/actions/usersActions";
 import DispatcherModal from "./DispatcherModal";
+import AddButton from "../../UI/Button/AddButton/AddButton";
 
-const NewDispatcher = ({modal, modalHandler, dispatcherRole}) => {
+const NewDispatcher = ({dispatcherRole}) => {
   const dispatch = useDispatch();
   const error = useSelector(state => state.users.createError);
   const loading = useSelector(state => state.users.createLoading);
+
+  const [openCreate, setOpenCreate] = useState(false);
 
   const [dispatcherData, setDispatcherData] = useState({
     email: "",
@@ -18,8 +21,22 @@ const NewDispatcher = ({modal, modalHandler, dispatcherRole}) => {
     avatar:  ""
   });
 
+  useEffect(() => {
+    if (error === null) {
+      setOpenCreate(false);
+      setDispatcherData({
+        email: "",
+        phoneNumber: "",
+        password: "",
+        role: dispatcherRole,
+        displayName: "",
+        avatar:  ""
+      });
+    }
+  }, [error, dispatcherRole])
+
   const modalCloseHandler = () => {
-    modalHandler(!modal);
+    setOpenCreate(false);
     setDispatcherData({
       email: "",
       phoneNumber: "",
@@ -31,8 +48,12 @@ const NewDispatcher = ({modal, modalHandler, dispatcherRole}) => {
   };
 
   const inputChangeHandler = e => {
-    const {name, value} = e.target;
-    setDispatcherData(prev => ({...prev, [name]: value}));
+    if (e.target) {
+      const {name, value} = e.target;
+      setDispatcherData(prev => ({...prev, [name]: value}));
+    } else {
+      setDispatcherData(prev => ({...prev, phoneNumber: e.replace(/ /g, '')}))
+    }
   };
 
   const fileChangeHandler = e => {
@@ -59,18 +80,14 @@ const NewDispatcher = ({modal, modalHandler, dispatcherRole}) => {
       formData.append(key, dispatcherData[key]);
     });
     await dispatch(createDispatcherRequest(formData));
-
-    if (error === null) {
-      modalCloseHandler();
-    }
   };
-
 
   return (
     <div>
+      <AddButton click={() => setOpenCreate(!openCreate)}/>
       <DispatcherModal
         title="New Dispatcher"
-        modal={modal}
+        modal={openCreate}
         dispatcher={dispatcherData}
         modalHandler={modalCloseHandler}
         submitFormHandler={submitFormHandler}
@@ -86,8 +103,6 @@ const NewDispatcher = ({modal, modalHandler, dispatcherRole}) => {
 };
 
 NewDispatcher.propTypes = {
-  modal: PropTypes.bool.isRequired,
-  modalHandler: PropTypes.func.isRequired,
   dispatcherRole: PropTypes.string.isRequired
 };
 

@@ -68,7 +68,7 @@ const DispatcherModal = ({modal, title, dispatcher, modalHandler, submitFormHand
               label="Phone"
               value={dispatcher.phoneNumber}
               required={dispatcher.role !== "admin"}
-              error={getFieldError('email')}
+              error={getFieldError('phoneNumber')}
               className={classes.field}
             />
 

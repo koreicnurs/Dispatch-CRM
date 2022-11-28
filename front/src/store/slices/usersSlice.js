@@ -8,7 +8,13 @@ export const initialState = {
     loginLoading: false,
     loginError: null,
     fetchLoading: false,
-    fetchError: null
+    fetchError: null,
+    changeLoading: false,
+    changeError: null,
+    createLoading: false,
+    createError: null,
+    changeStatusLoading: false,
+    changeStatusError: null
 };
 
 const usersSlice = createSlice({
@@ -43,6 +49,56 @@ const usersSlice = createSlice({
         fetchUsersFailure(state, action) {
             state.loadingError = action.payload;
             state.fetchLoading = false;
+        },
+
+        changeUserRequest(state) {
+            state.changeLoading = true;
+            state.changeError = null;
+        },
+        changeUserSuccess(state, {payload: user}) {
+            state.changeLoading = false;
+            state.user = user;
+        },
+        changeUserFailure(state, action) {
+            state.changeLoading =false;
+            state.changeError = action.payload;
+        },
+
+        changeDispatcherRequest(state) {
+            state.changeLoading = true;
+            state.changeError = null;
+        },
+        changeDispatcherSuccess(state) {
+            state.changeLoading = false;
+        },
+        changeDispatcherFailure(state, action) {
+            state.changeLoading =false;
+            state.changeError = action.payload;
+        },
+
+        createDispatcherRequest(state) {
+            state.createLoading = true;
+            state.createError = null;
+        },
+        createDispatcherSuccess(state) {
+            state.createLoading = false;
+            state.createError = null;
+        },
+        createDispatcherFailure(state, action) {
+            state.createLoading = false;
+            state.createError = action.payload;
+        },
+
+        changeStatusRequest(state) {
+            state.changeStatusLoading = true;
+            state.changeStatusError = null;
+        },
+        changeStatusSuccess(state) {
+            state.changeStatusLoading = false;
+        },
+        changeStatusFailure(state, action) {
+            state.changeStatusLoading = false;
+            state.changeStatusError = action.payload;
         }
     }
 });

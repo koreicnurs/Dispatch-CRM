@@ -17,6 +17,7 @@ const CarrierTableBody = ({carriers}) => {
           <TableCell component="th" scope="row" sx={{fontSize: "12px"}}>
             {carrier.title}
           </TableCell>
+          <TableCell sx={{fontSize: "12px"}}>{carrier.phoneNumber}</TableCell>
           <TableCell sx={{fontSize: "12px"}}>{carrier.mc}</TableCell>
           <TableCell sx={{fontSize: "12px"}}>{carrier.dot}</TableCell>
           <TableCell sx={{fontSize: "12px"}}>{carrier.fedid}</TableCell>

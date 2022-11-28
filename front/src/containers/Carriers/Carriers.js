@@ -9,7 +9,7 @@ import InnerTable from "../../components/Table/InnerTable";
 import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import CarrierTableBody from "../../components/Table/TableBody/CarrierTableBody";
 
-const headerTitles = ["Company", "MC", "DOT", "FED-ID"];
+const headerTitles = ["Company", "Phone number", "MC", "DOT", "FED-ID"];
 
 const Carriers = () => {
   const dispatch = useDispatch();
@@ -32,7 +32,7 @@ const Carriers = () => {
         </Grid>
 
         <InnerTable
-          header={<TableHeaderRow headerCells={headerTitles}/>}
+          header={<TableHeaderRow headerCells={headerTitles} sx={{fontSize: "12px", fontWeight: "bold"}}/>}
           body={
           <CarrierTableBody
               carriers={carriers}

@@ -8,5 +8,17 @@ export const {
     logoutSuccess,
     fetchUsersRequest,
     fetchUsersSuccess,
-    fetchUsersFailure
+    fetchUsersFailure,
+    changeUserRequest,
+    changeUserSuccess,
+    changeUserFailure,
+    changeDispatcherRequest,
+    changeDispatcherSuccess,
+    changeDispatcherFailure,
+    createDispatcherRequest,
+    createDispatcherSuccess,
+    createDispatcherFailure,
+    changeStatusRequest,
+    changeStatusSuccess,
+    changeStatusFailure
 } = usersSlice.actions

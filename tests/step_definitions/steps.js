@@ -24,6 +24,8 @@ Then('я вижу текст {string}', text => {
  I.see(text);
 });
 
+/* Carriers registration test */
+
 Given('я открываю страницу {string}', page => {
   I.amOnPage('/' + page);
   I.wait(2);
@@ -153,5 +155,44 @@ Then('я вижу текст об ошибке номера {string}', text => {
 
 Then('я вижу текст о ошибке редактирования {string}', text => {
   I.see(text);
+  I.wait(1);
+});
+
+/* Carrier editing test */
+Then('я нажимаю на кнопку открытия модального окна для формы редактирования перевозчика', () => {
+  I.click('//td//div');
+});
+
+When('я введу данные в форму редактирования перевозчика:', table => {
+  table.rows.forEach(row => {
+    const name = row.cells[0].value;
+    const value = row.cells[1].value;
+    I.clearField(name);
+    I.fillField(name, value);
+  })
+});
+
+Then('нажимаю на кнопку редактирования перевозчика {string}', buttonText => {
+  I.click(`//form//button[contains(text(), "${buttonText}")]`);
+  I.wait(4);
+});
+
+Then('я вижу текст о успешном редактировании перевозчика{string}', text => {
+  I.see(text);
+});
+
+
+/* Trips registration test */
+Then('нажимаю на поле с надписью {string}', text => {
+  I.click(`//div//label[contains(text(), "${text}")]`);
+});
+
+Then('нажимаю на элемент списка с текстом {string}', driverName => {
+  I.click(`//ul//li[contains(text(), "${driverName}")]`);
+  I.wait(1);
+});
+
+Then('прикрепляю в поле {string} файл {string}', (fieldName, file) => {
+  I.attachFile(`input[name=${fieldName}]`, file);
   I.wait(1);
 });

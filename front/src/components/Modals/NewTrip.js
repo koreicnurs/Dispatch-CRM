@@ -39,7 +39,7 @@ const useStyles = makeStyles()(theme => ({
 
 const statuses = ['upcoming', 'transit', 'finished', 'cancel'];
 
-const NewTrip = ({open, handleClose, editedTrip}) => {
+const NewTrip = ({open, handleClose, editedTrip, trips}) => {
   const {classes} = useStyles();
   const dispatch = useDispatch();
   const createError = useSelector(state => state.trips.createTripError);
@@ -51,8 +51,61 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
   useEffect(() => {
     dispatch(fetchDriversRequest());
   }, [dispatch]);
-
-  const [dateError, setDateError] = useState();
+  
+  useEffect(() => {
+    if (editError === null) {
+      setTrip({
+        loadCode: "",
+        driverId: "",
+        dispatchId: user._id,
+        price: "",
+        miles: "",
+        rpm: "",
+        datePU: "",
+        dateDEL: "",
+        timeToPU: "",
+        timeToDel: "",
+        pu: "",
+        del: "",
+        status: "",
+        comment: "",
+        RC: "",
+        BOL: "",
+      });
+  
+      clearCreateTripErrorRequest();
+      handleCloseHandler();
+    }
+    if (createError === null) {
+      setTrip({
+        loadCode: "",
+        driverId: "",
+        dispatchId: user._id,
+        price: "",
+        miles: "",
+        rpm: "",
+        datePU: "",
+        dateDEL: "",
+        timeToPU: "",
+        timeToDel: "",
+        pu: "",
+        del: "",
+        status: "",
+        comment: "",
+        RC: "",
+        BOL: "",
+      });
+  
+      clearCreateTripErrorRequest();
+      handleCloseHandler();
+    }
+    setStartDate(null);
+    setFinDate(null);
+    // eslint-disable-next-line
+  }, [trips]);
+  
+  const [startDate, setStartDate] = useState(null);
+  const [finDate, setFinDate] = useState(null);
 
   const [trip, setTrip] = useState({
     loadCode: "",
@@ -68,7 +121,9 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
     status: "",
     RC: "",
     BOL: "",
-    comment: ""
+    comment: "",
+    timeToPU: "",
+    timeToDel: ""
   });
 
   useEffect(() => {
@@ -85,9 +140,10 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
         pu: editedTrip.pu,
         del: editedTrip.del,
         status: editedTrip.status,
-        comment: editedTrip.comment || ''
+        comment: editedTrip.comment || '',
+        timeToPU: editedTrip.timeToPU,
+        timeToDel: editedTrip.timeToDel,
       });
-
     }
   }, [dispatch, editedTrip]);
 
@@ -96,106 +152,56 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
     setTrip(prev => ({...prev, [name]: value}));
   };
 
-  const [startDate, setStartDate] = useState(null);
-  const [finDate, setFinDate] = useState(null);
-
   const fileChangeHandler = e => {
     const name = e.target.name;
     const file = e.target.files[0];
 
     setTrip(prevState => ({...prevState, [name]: file}));
   };
-
+  
   const submitFormHandler = async e => {
     e.preventDefault();
+  
+    const currentTrip = trip;
+    currentTrip.datePU = startDate;
+    currentTrip.dateDEL = finDate;
 
-    if(startDate > finDate) {
-      setDateError("DEL date cannot be earlier than PU date!!")
-    } else {
-      const currentTrip = trip;
-      currentTrip.datePU = startDate;
-      currentTrip.dateDEL = finDate;
-
-      const formData = new FormData();
-      Object.keys(currentTrip).forEach(key => {
-        formData.append(key, currentTrip[key]);
-      });
-
-      if (editedTrip) {
-        await dispatch(editTripRequest({tripData: formData, id: editedTrip._id, path: editedTrip.status}));
-      } else {
-        await dispatch(createTripRequest(formData));
-      }
-
-    }
-
-    setTrip({
-      loadCode: "",
-      driverId: "",
-      dispatchId: user._id,
-      price: "",
-      miles: "",
-      rpm: "",
-      datePU: "",
-      dateDEL: "",
-      pu: "",
-      del: "",
-      status: "",
-      comment: "",
-      RC: "",
-      BOL: "",
+    const formData = new FormData();
+    Object.keys(currentTrip).forEach(key => {
+      formData.append(key, currentTrip[key]);
     });
-
-    if (!createError || !editError) {
-      handleClose();
+  
+    if (editedTrip) {
+      await dispatch(editTripRequest({tripData: formData, id: editedTrip._id, path: editedTrip.status}));
+    } else {
+      await dispatch(createTripRequest(formData));
     }
   };
 
   const getFieldError = (fieldName) => {
     try {
       if(createError) {
-        return `${createError.error} ${[fieldName]}`;
+        return createError.errors[fieldName].message;
       } else if(editError) {
-        return `${editError.error} ${[fieldName]}`;
+        return editError.errors[fieldName].message;
       }
     } catch {
       return undefined;
     }
   };
-
-  const handleCloseHandler = () => {
+  
+  const handleCloseHandler = async () => {
+    await dispatch(clearCreateTripErrorRequest());
     handleClose();
-    if(createError) {
-      dispatch(clearCreateTripErrorRequest());
-    }
-    setTrip({
-      loadCode: "",
-      driverId: "",
-      dispatchId: user._id,
-      price: "",
-      miles: "",
-      rpm: "",
-      datePU: "",
-      dateDEL: "",
-      pu: "",
-      del: "",
-      status: "",
-      comment: "",
-      RC: "",
-      BOL: "",
-    });
-    setStartDate(null);
-    setFinDate(null);
   };
-
-
+  
   return (
     <div>
       <div>
         <Modal
           keepMounted
           open={open}
-          onClose={handleClose}
+          onClose={handleCloseHandler}
           aria-labelledby="keep-mounted-modal-title"
           aria-describedby="keep-mounted-modal-description"
         >
@@ -209,25 +215,18 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
               container
               direction="column"
             >
-              <Grid item>
-                {createError && (
+              <Grid item mb={2}>
+                {(editError && Object.keys(editError).length === 1) && (
                   <Alert severity="error">
-                    Error! {createError.message}
+                    Error! {editError.message}
                   </Alert>
                 )}
-                <Grid item>
-                  {editError && (
-                    <Alert severity="error">
-                      Error! {editError.message}
-                    </Alert>
-                  )}
-                </Grid>
               </Grid>
-
-              <Grid item>
-                {dateError && (
+  
+              <Grid item mb={2}>
+                {(createError && Object.keys(createError).length === 1) && (
                   <Alert severity="error">
-                    Error! {dateError}
+                    Error! {createError.message}
                   </Alert>
                 )}
               </Grid>
@@ -252,7 +251,7 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
                         inputFormat="MM/DD/YYYY"
                         onChange={(date) => setStartDate(date)}
                         value={startDate}
-                        renderInput={(params) => <TextField {...params} required={true}/>}/>
+                        renderInput={(params) => <TextField name="datePU" {...params} required={true}/>}/>
                     </LocalizationProvider>
 
                   </Grid>
@@ -264,8 +263,38 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
                         inputFormat="MM/DD/YYYY"
                         onChange={(date) => setFinDate(date)}
                         value={finDate}
-                        renderInput={(params) => <TextField {...params} required={true}/>}/>
+                        renderInput={(params) => <TextField name="dateDEL" {...params} required={true}/>}/>
                     </LocalizationProvider>
+                  </Grid>
+                </Grid>
+  
+                <Grid
+                  item
+                  container
+                  spacing={2}
+                  justifyContent="space-between"
+                >
+                  <Grid item width="49.5%">
+                    <FormElement
+                      onChange={inputChangeHandler}
+                      name="timeToPU"
+                      label="Time to pick up"
+                      value={trip.timeToPU}
+                      error={getFieldError('timeToPU')}
+                      className={classes.field}
+                    />
+                  </Grid>
+  
+                  <Grid item width="49.5%">
+                    <FormElement
+                      onChange={inputChangeHandler}
+                      name="timeToDel"
+                      label="Time to delivery"
+                      value={trip.timeToDel}
+                      required={true}
+                      error={getFieldError('timeToDel')}
+                      className={classes.field}
+                    />
                   </Grid>
                 </Grid>
 
@@ -323,7 +352,7 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
                       name="miles"
                       label="Miles"
                       value={trip.miles}
-                      inputProps={{min:0}}
+                      inputProps={{min:0, step: '0.01'}}
                       required={true}
                       error={getFieldError('miles')}
                       className={classes.field}
@@ -337,7 +366,7 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
                       name="rpm"
                       label="Rate per mile"
                       value={trip.rpm}
-                      inputProps={{min:0}}
+                      inputProps={{min:0, step: '0.01'}}
                       required={true}
                       error={getFieldError('rpm')}
                       className={classes.field}
@@ -351,26 +380,28 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
                   spacing={2}
                   justifyContent="space-between"
                 >
-                  <Grid item width="49.5%">
-                    <FormSelect
-                      label="Status"
-                      name="status"
-                      array={statuses}
-                      value={trip.status}
-                      required={true}
-                      onChange={inputChangeHandler}
-                      variant="array"
-                      error={getFieldError("status")}
-                    />
-                  </Grid>
+                  {editedTrip ?
+                    <Grid item width="49.5%">
+                      <FormSelect
+                        label="Status"
+                        name="status"
+                        array={statuses}
+                        value={trip.status}
+                        required={true}
+                        onChange={inputChangeHandler}
+                        variant="array"
+                        error={getFieldError("status")}
+                      />
+                    </Grid> : null
+                  }
 
-                  <Grid item width="49.5%">
+                  <Grid item width={editedTrip ? "49.5%" : "100%"}>
                     <FormElement
                       onChange={inputChangeHandler}
                       type="number"
                       name="price"
                       label="Price"
-                      inputProps={{min:0}}
+                      inputProps={{min:0, step: '0.01'}}
                       value={trip.price}
                       required={true}
                       error={getFieldError('price')}
@@ -429,15 +460,15 @@ const NewTrip = ({open, handleClose, editedTrip}) => {
                   className={classes.field}
                 />
 
-                <Grid item xs={12} container spacing={2} justifyContent="space-between">
-                  <Grid item>
-                    <Button variant="contained" onClick={handleCloseHandler}>
+                <Grid item xs={12} container spacing={1} justifyContent="space-between">
+                  <Grid item xs={6}>
+                    <Button fullWidth variant="contained" onClick={handleCloseHandler}>
                       Cancel
                     </Button>
 
                   </Grid>
 
-                  <Grid item>
+                  <Grid item xs={6}>
                     <ButtonWithProgress
                       loading={loading}
                       disabled={loading}

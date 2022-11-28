@@ -26,8 +26,8 @@ router.get('/:id', auth, async (req, res) => {
 
 router.post('/', auth, async (req, res) => {
   try {
-    const {title, mc, dot, fedid, description} = req.body;
-    const carrierData = {title, mc, dot, fedid, description};
+    const {title, mc, dot, fedid, description, phoneNumber} = req.body;
+    const carrierData = {title, mc, dot, fedid, description, phoneNumber};
 
     const carrier = new Carrier(carrierData);
     await carrier.save();
@@ -41,7 +41,7 @@ router.post('/', auth, async (req, res) => {
 
 router.put('/:id', auth, async (req, res) => {
   try {
-    const {title, mc, dot, fedid, description} = req.body;
+    const {title, mc, dot, fedid, description, phoneNumber} = req.body;
 
     const carrier = await Carrier.findById(req.params.id);
 
@@ -50,6 +50,7 @@ router.put('/:id', auth, async (req, res) => {
     carrier.dot = dot;
     carrier.fedid = fedid;
     carrier.description = description;
+    carrier.phoneNumber = phoneNumber;
 
     await carrier.save();
     

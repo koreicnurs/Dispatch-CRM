@@ -7,11 +7,24 @@ import Carriers from "./containers/Carriers/Carriers";
 import StatusUpdate from "./containers/StatusUpdate/StatusUpdate";
 import Drivers from "./containers/Drivers/Drivers";
 import MyProfile from "./containers/MyProfile/MyProfile";
+import Dispatchers from "./containers/Dispatchers/Dispatchers";
 
 const ProtectedRoute = ({isAllowed, redirectTo, ...props}) => {
     return isAllowed ?
         <Route {...props}/> :
         <Redirect to={redirectTo}/>
+};
+
+const RoleProtectedRoute = ({isAllowed, redirectTo, ...props}) => {
+    if (isAllowed) {
+        if (isAllowed.role === "admin") {
+            return <Route {...props}/>
+        } else {
+            return <Redirect to="/loads"/>
+        }
+    } else {
+        return <Redirect to={redirectTo}/>
+    }
 };
 
 const App = () => {
@@ -56,6 +69,12 @@ const App = () => {
                   redirectTo="/login"
                   path="/my_profile"
                   component={MyProfile}
+                />
+                <RoleProtectedRoute
+                  isAllowed={user}
+                  redirectTo="/login"
+                  path="/dispatchers"
+                  component={Dispatchers}
                 />
                 <Route path="/login" component={Login}/>
             </Switch>

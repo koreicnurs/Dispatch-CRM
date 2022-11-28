@@ -3,7 +3,7 @@ import axiosApi from "../../axiosApi";
 import {
     changeDispatcherFailure,
     changeDispatcherRequest,
-    changeDispatcherSuccess,
+    changeDispatcherSuccess, changeStatusFailure, changeStatusRequest, changeStatusSuccess,
     changeUserFailure,
     changeUserRequest,
     changeUserSuccess,
@@ -89,13 +89,27 @@ export function* createDispatcher({payload: dispatcherData}) {
     }
 }
 
+export function* changeStatus({payload: dispatcherData}) {
+    try {
+        yield axiosApi.put(`/users/?isWorking=${dispatcherData.isWorking}`, dispatcherData);
+        yield put(changeStatusSuccess());
+        yield put(addNotification({message: 'Status successfully changed!', variant: 'success'}));
+        const response = yield axiosApi('/users');
+        yield put(fetchUsersSuccess(response.data));
+    } catch (e) {
+        yield put(addNotification({message: 'Status changing failed!', variant: 'error'}));
+        yield put(changeStatusFailure(e.response.data));
+    }
+}
+
 const userSagas = [
     takeEvery(loginRequest, loginUserSaga),
     takeEvery(logoutRequest, logoutUserSaga),
     takeEvery(fetchUsersRequest, fetchUsers),
     takeEvery(changeUserRequest, changeUserData),
     takeEvery(changeDispatcherRequest, changeDispatcherData),
-    takeEvery(createDispatcherRequest, createDispatcher)
+    takeEvery(createDispatcherRequest, createDispatcher),
+    takeEvery(changeStatusRequest, changeStatus)
 ];
 
 export default userSagas;

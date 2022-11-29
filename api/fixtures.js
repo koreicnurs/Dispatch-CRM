@@ -261,7 +261,6 @@ const run = async () => {
     status: 'finished',
   }, {
     loadCode: 'T-12FEF4E5F',
-    driverId: keldibekDriver._id,
     dispatchId: user2._id,
     price: 2500,
     miles: 500,
@@ -300,6 +299,19 @@ const run = async () => {
     timeToDel: '18:0',
     pu: 'New-York, NY',
     del: 'Seattle, WS',
+    status: 'finished',
+  },{
+    loadCode: 'T-D1EF78SD1C',
+    dispatchId: user2._id,
+    price: 1500,
+    miles: 500,
+    rpm: 3,
+    datePU: '11/1/2022',
+    dateDEL: '11/3/2022',
+    timeToPU: '1:0',
+    timeToDel: '25:0',
+    pu: 'Bronx, NY',
+    del: 'Gulfport, MS',
     status: 'finished',
   });
   

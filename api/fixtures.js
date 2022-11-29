@@ -55,6 +55,7 @@ const run = async () => {
     token: nanoid(),
     displayName: 'Admin',
     avatar: 'fixtures/admin.png',
+    phoneNumber: '+267●5350811',
     isWorking: true
   }, {
     email: 'user@gmail.com',
@@ -80,6 +81,7 @@ const run = async () => {
     token: nanoid(),
     displayName: 'BAHAWAY',
     companyId: bahawayCarrier._id,
+    phoneNumber: '+267●5350812',
     isWorking: true
   }, {
     email: 'safeway@gmail.com',
@@ -96,9 +98,10 @@ const run = async () => {
     mirbekDriver, bekmuratDriver, makenDriver] = await Driver.create({
     email: 'umot@gmail.com',
     name: 'Umot',
-    phoneNumber: '+267●5350802',
+    phoneNumber: '+267●5350808',
     companyId: bahawayCarrier._id,
     status: 'in transit',
+    currentStatus: 'driving',
     telegramId: '',
     description: {
       address: 'US, LA, Avalon c., str. 1, h. 45',
@@ -124,7 +127,8 @@ const run = async () => {
     name: 'Timur',
     phoneNumber: '+323●7454492',
     companyId: safewayCargoCarrier._id,
-    status: 'off/home',
+    status: 'off',
+    currentStatus: 'off',
     telegramId: '',
     description: {
       address: 'US, IL, Chicago c., str. 1, h. 4',
@@ -150,7 +154,8 @@ const run = async () => {
     name: 'Bakdoolot',
     phoneNumber: '+630●6702075',
     companyId: safewayCargoCarrier._id,
-    status: 'n/a',
+    status: 'in tr/upc',
+    currentStatus: 'rest',
     telegramId: '',
     description: {
       address: 'US, IL, Chicago c., str. 10, h. 48',
@@ -163,7 +168,8 @@ const run = async () => {
     name: 'Askhat',
     phoneNumber: '+312●6840690',
     companyId: turanExpressCarrier._id,
-    status: 'sleep',
+    status: 'off',
+    currentStatus: 'off',
     telegramId: '',
     description: {
       address: 'US, NY, New-York c., 5 Avenue, h. 48',
@@ -182,6 +188,7 @@ const run = async () => {
     phoneNumber: '+773●6913604',
     companyId: turanExpressCarrier._id,
     status: 'in tr/upc',
+    currentStatus: 'driving',
     telegramId: '',
     description: {
       address: 'US, NY, New-York c., str. 56, h. 48',
@@ -208,6 +215,7 @@ const run = async () => {
     phoneNumber: '+347●4941314',
     companyId: tumarExpressCarrier._id,
     status: 'in transit',
+    currentStatus: 'rest',
     telegramId: '',
     description: {
       address: 'US, TX, Houston c., str. 45, h. 12, ap. 12',

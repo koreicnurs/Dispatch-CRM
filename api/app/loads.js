@@ -66,7 +66,7 @@ router.post('/', auth, cpUpload, async (req, res) => {
 
         const loadData = {
             loadCode,
-            driverId,
+            driverId: driverId ||null,
             dispatchId,
             price,
             miles,
@@ -125,7 +125,7 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
 
         const loadData = {
             loadCode,
-            driverId,
+            driverId: driverId || null,
             dispatchId,
             price,
             miles,

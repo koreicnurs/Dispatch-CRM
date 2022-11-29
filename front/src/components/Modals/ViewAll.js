@@ -195,7 +195,7 @@ const ViewAll = ({open, handleClose, trip}) => {
                     <TextField
                       label="Drivers"
                       name="driverId"
-                      value={trip.driverId.name}
+                      value={trip.driverId?.name}
                     />
                   </Grid>
 

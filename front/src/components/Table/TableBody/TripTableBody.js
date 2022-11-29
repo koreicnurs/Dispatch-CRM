@@ -43,10 +43,7 @@ const TripTableBody = (props) => {
               <Box sx={{fontSize: "12px", fontWeight: 'normal'}}>${trip.rpm}/mi</Box>
             </TableCell>
             <TableCell sx={{fontSize: "14px", fontWeight: 'bold'}}>
-              {trip.driverId.name}
-            </TableCell>
-            <TableCell sx={{fontSize: "14px", fontWeight: 'bold'}}>
-              {trip.driverId.status}
+              {trip.driverId?.name || 'n/a'}
             </TableCell>
             <TableCell sx={{fontSize: "12px"}}>test</TableCell>
 

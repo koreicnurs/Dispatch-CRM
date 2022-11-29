@@ -42,3 +42,5 @@ const run = async () => {
 bot();
 
 run().catch(e => console.log(e));
+
+module.exports = app;

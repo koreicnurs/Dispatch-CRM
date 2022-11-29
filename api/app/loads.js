@@ -118,6 +118,11 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
         }
 
         const {loadCode, driverId, dispatchId, price, miles, rpm, datePU, dateDEL, pu, del, status, comment, timeToPU, timeToDel} = req.body;
+
+        if (status !== 'upcoming' && !driverId) {
+          return res.status(401).send('The status of the load without driver cannot be changed!');
+        }
+
         const loadData = {
             loadCode,
             driverId,
@@ -167,6 +172,10 @@ router.put('/status/:id', auth, async (req, res) => {
 
     if (!load) {
       return res.status(404).send({message: 'Load not found!'});
+    }
+
+    if (!load.driverId) {
+      return res.status(403).send({message: 'The status of the load without driver cannot be changed!'});
     }
 
     if (load.status === 'upcoming') {

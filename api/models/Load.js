@@ -19,7 +19,6 @@ const LoadSchema = new Schema({
     driverId: {
         type: Schema.Types.ObjectId,
         ref: 'Driver',
-        required: true,
     },
     dispatchId: {
         type: Schema.Types.ObjectId,

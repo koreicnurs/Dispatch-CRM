@@ -1,11 +1,11 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchDriversRequest} from "../../store/actions/driversActions";
 import {Grid, InputBase, styled} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
-import {DataGrid} from "@mui/x-data-grid";
+// import {DataGrid} from "@mui/x-data-grid";
 import useTableSearch from "../../components/UI/Filter/useTableSearch/useTableSearch";
 import InnerTable from "../../components/Table/InnerTable";
 import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";

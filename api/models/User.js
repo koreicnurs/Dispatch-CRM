@@ -63,6 +63,7 @@ const UserSchema = new Schema({
     type: String,
     required: this.role === 'user',
     unique: true,
+    sparse: true,
     validate: [
       {validator: validatePhoneNumber, message: 'Phone number is not valid!'}
     ],

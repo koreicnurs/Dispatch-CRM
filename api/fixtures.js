@@ -312,7 +312,7 @@ const run = async () => {
     timeToDel: '25:0',
     pu: 'Bronx, NY',
     del: 'Gulfport, MS',
-    status: 'finished',
+    status: 'cancel',
   });
   
   await Learning.create(

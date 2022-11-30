@@ -1,6 +1,7 @@
 import React from 'react';
 import TableCell from "@mui/material/TableCell";
 
+
 const TableHeaderRow = ({headerCells, drivers, sx}) => {
   return (
     <>
@@ -8,8 +9,8 @@ const TableHeaderRow = ({headerCells, drivers, sx}) => {
         <TableCell
           sx={sx}
           key={Math.random() * 100}
-        >
-          {!drivers ? cell : cell.label}
+          >
+            {!drivers ? cell : cell.label}
         </TableCell>
       ))}
     </>

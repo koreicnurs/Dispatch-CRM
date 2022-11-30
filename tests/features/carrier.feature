@@ -17,6 +17,7 @@
     То я нажимаю на кнопку "add"
     Если я напишу данные:
       | title       | SWCS         |
+      | phoneNumber | 333333333    |
       | mc          | 1234         |
       | dot         | 126          |
       | fedid       | 88-237       |
@@ -24,7 +25,7 @@
     Затем нажимаю на "Create"
     То я вижу "Carrier created!"
 
-   @registerCarrierFailed
+  @registerCarrierFailed
   Сценарий: Регистрация нового Carrier не прошла
     Допустим я захожу на страницу "login"
     Если я введу данные:
@@ -36,6 +37,7 @@
     То я нажимаю на кнопку "add"
     Если я напишу данные:
       | title       | BAHAWAY         |
+      | phoneNumber | 333333333       |
       | mc          | 1180196         |
       | dot         | 3537967         |
       | fedid       | 83-3826233      |

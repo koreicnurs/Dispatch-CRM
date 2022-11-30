@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "NODE_ENV=test jest --testTimeout=5000 --detectOpenHandles",
+    "pretest": "NODE_ENV=test node fixtures.js",
     "start": "node index.js",
     "dev": "nodemon index.js",
     "seed": "node fixtures.js"
@@ -24,5 +25,15 @@
     "nanoid": "^3.3.4",
     "node-telegram-bot-api": "^0.60.0",
     "nodemon": "^2.0.20"
+  },
+  "devDependencies": {
+    "jest": "^29.3.1",
+    "supertest": "^6.3.1"
+  },
+  "jest" : {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   }
 }

@@ -192,11 +192,16 @@ const ViewAll = ({open, handleClose, trip}) => {
                   </Grid>
 
                   <Grid item width='100%'>
-                    <TextField
+                    {trip.driverId &&
+                      < TextField
                       label="Drivers"
                       name="driverId"
                       value={trip.driverId.name}
-                    />
+                      InputProps={{
+                      readOnly: true,
+                    }}
+                      />
+                    }
                   </Grid>
 
                   <Box sx={{display: 'flex', justifyContent: 'space-between', width: '100%', margin: '12px 0 12px 10px'}}>

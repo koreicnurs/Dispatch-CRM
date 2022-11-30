@@ -66,7 +66,7 @@ router.post('/', auth, cpUpload, async (req, res) => {
 
         const loadData = {
             loadCode,
-            driverId,
+            driverId: driverId ||null,
             dispatchId,
             price,
             miles,
@@ -103,41 +103,46 @@ router.post('/', auth, cpUpload, async (req, res) => {
 });
 
 router.put('/:id', auth, cpUpload, async (req, res) => {
-    try {
-        const roles = ['admin'];
-        const load = await Load.findOne({_id: req.params.id});
+  try {
+    const roles = ['admin'];
+    const load = await Load.findOne({_id: req.params.id});
 
-        if (!load) {
-            return res.status(404).send({message: 'Load not found!'});
-        }
+    if (!load) {
+      return res.status(404).send({message: 'Load not found!'});
+    }
 
-        if (load.status === 'finished' || load.status === 'cancel') {
-            if (!roles.includes(req.user.role)) {
-                return res.status(403).send({message: 'You do not have permission to edit!'});
-            }
-        }
+    if (load.status === 'finished' || load.status === 'cancel') {
+      if (!roles.includes(req.user.role)) {
+        return res.status(403).send({message: 'You do not have permission to edit!'});
+      }
+    }
 
-        const {loadCode, driverId, dispatchId, price, miles, rpm, datePU, dateDEL, pu, del, status, comment, timeToPU, timeToDel} = req.body;
-        const loadData = {
-            loadCode,
-            driverId,
-            dispatchId,
-            price,
-            miles,
-            rpm,
-            datePU: new Date(datePU).toLocaleDateString('en-Us'),
-            dateDEL: new Date(dateDEL).toLocaleDateString('en-Us'),
-            timeToPU,
-            timeToDel,
-            pu,
-            del,
-            status,
-            comment: comment || '',
-        };
+    const {loadCode, driverId, dispatchId, price, miles, rpm, datePU, dateDEL, pu, del, status, comment, timeToPU, timeToDel} = req.body;
 
-        if (new Date(loadData.datePU) > new Date(loadData.dateDEL)) {
-            return res.status(400).send({message: 'DEL date cannot be earlier than PU date!'});
-        }
+    if (!driverId && (status === 'transit' || status === 'finished')) {
+      return res.status(401).send('The status of the load without driver cannot be changed!');
+    }
+
+    const loadData = {
+      loadCode,
+      driverId: driverId || null,
+      dispatchId,
+      price,
+      miles,
+      rpm,
+      datePU: new Date(datePU).toLocaleDateString('en-Us'),
+      dateDEL: new Date(dateDEL).toLocaleDateString('en-Us'),
+      timeToPU,
+      timeToDel,
+      pu,
+      del,
+      status,
+      comment: comment || '',
+    };
+
+    if (new Date(loadData.datePU) > new Date(loadData.dateDEL)) {
+      return res.status(400).send({message: 'DEL date cannot be earlier than PU date!'});
+    }
 
     if (req.files.BOL) {
       if (load.BOL) {
@@ -156,9 +161,9 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
 
     res.send(updateLoad);
 
-    } catch (e) {
-      res.status(400).send(e);
-    }
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 router.put('/status/:id', auth, async (req, res) => {
@@ -167,6 +172,10 @@ router.put('/status/:id', auth, async (req, res) => {
 
     if (!load) {
       return res.status(404).send({message: 'Load not found!'});
+    }
+
+    if (!load.driverId) {
+      return res.status(403).send({message: 'The status of the load without driver cannot be changed!'});
     }
 
     if (load.status === 'upcoming') {

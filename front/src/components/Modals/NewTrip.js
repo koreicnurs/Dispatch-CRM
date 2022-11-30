@@ -132,7 +132,7 @@ const NewTrip = ({open, handleClose, editedTrip, trips}) => {
       setFinDate(editedTrip.dateDEL);
       setTrip({
         loadCode: editedTrip.loadCode,
-        driverId: editedTrip.driverId._id,
+        driverId: editedTrip.driverId ? editedTrip.driverId._id : '',
         dispatchId: editedTrip.dispatchId._id,
         price: +editedTrip.price,
         miles: +editedTrip.miles,
@@ -417,7 +417,7 @@ const NewTrip = ({open, handleClose, editedTrip, trips}) => {
                   value={trip.driverId}
                   onChange={inputChangeHandler}
                   variant="object"
-                  required={true}
+                  required={false}
                   error={getFieldError("driverId")}
                   driver={true}
                 />

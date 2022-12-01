@@ -239,6 +239,8 @@ const run = async () => {
     pu: 'Shepherd, KY',
     del: 'Pittsburg, PA',
     status: 'transit',
+    BOL: 'fixtures/BOL1.pdf',
+    RC: 'fixtures/RC1.pdf',
   }, {
     loadCode: 'T-151F5454FEG',
     driverId: kubaDriver._id,
@@ -267,6 +269,8 @@ const run = async () => {
     pu: 'New-York, NY',
     del: 'Chicago, IL',
     status: 'finished',
+    BOL: 'fixtures/BOL2.pdf',
+    RC: 'fixtures/RC2.pdf',
   }, {
     loadCode: 'T-12FEF4E5F',
     dispatchId: user2._id,
@@ -294,6 +298,8 @@ const run = async () => {
     pu: 'Houston, TX',
     del: 'New Orleans, LA',
     status: 'transit',
+    BOL: 'fixtures/BOL1.pdf',
+    RC: 'fixtures/RC1.pdf',
   }, {
     loadCode: 'T-D1EF45SD1C',
     driverId: askhatDriver._id,
@@ -308,6 +314,8 @@ const run = async () => {
     pu: 'New-York, NY',
     del: 'Seattle, WS',
     status: 'finished',
+    BOL: 'fixtures/BOL2.pdf',
+    RC: 'fixtures/RC2.pdf',
   },{
     loadCode: 'T-D1EF78SD1C',
     dispatchId: user2._id,

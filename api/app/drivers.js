@@ -46,7 +46,6 @@ router.get('/carrier', auth, permit('carrier'), async (req, res) => {
       .find({companyId: req.user.companyId}).populate('companyId', 'title');
 
     res.send(drivers);
-    console.log(drivers);
   } catch (e) {
     res.sendStatus(500);
   }

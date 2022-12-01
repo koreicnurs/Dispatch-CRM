@@ -62,6 +62,7 @@ describe('Testing \'drivers\' route', () => {
       const res = await request(app)
         .get('/drivers')
         .set({Authorization: user.token});
+      // console.log(res.body);
       expect(res.statusCode).toBe(200);
     });
   });
@@ -69,40 +70,109 @@ describe('Testing \'drivers\' route', () => {
   describe('create a new driver', () => {
     createDriver();
   });
-  //
-  //
-  //
-  // describe('change carrier', () => {
-  //   it('carrier should successfully change', async () => {
-  //     const res = await request(app)
-  //       .put('/carriers/' + carrier._id.toString())
-  //       .set({Authorization: user.token})
-  //       .send({
-  //         title: 'Test Carrier Changed',
-  //         mc: '11111',
-  //         dot: '22222',
-  //         fedid: '33333',
-  //         phoneNumber: '+355123456788',
-  //         description: 'test changed'
-  //       });
-  //
-  //     expect(res.statusCode).toBe(200);
-  //     expect(res.body.title).toBe('Test Carrier Changed');
-  //     expect(res.body.description).toBe('test changed');
-  //   });
-  // });
-  //
-  //
-  //
-  // describe('get carrier by id', () => {
-  //   it('carrier should be found by id', async () => {
-  //     const res = await request(app)
-  //       .get('/carriers/' + carrier._id.toString())
-  //       .set({Authorization: user.token});
-  //
-  //     expect(res.statusCode).toBe(200);
-  //   });
-  // });
+
+
+  describe('get all drivers of carrier', () => {
+    getUser('bahaway@gmail.com', 'bahaway');
+
+    it('should get array of all drivers', async () => {
+      const res = await request(app)
+        .get('/drivers/carrier')
+        .set({Authorization: user.token});
+      expect(res.statusCode).toBe(200);
+    });
+  });
+
+
+  describe('get driver by id', () => {
+    getUser('admin@gmail.com', 'admin');
+
+    it('should get driver data', async () => {
+      const res = await request(app)
+        .get('/drivers/' + driver._id.toString())
+        .set({Authorization: user.token});
+
+      expect(res.statusCode).toBe(200);
+    });
+  });
+
+  describe('get all drivers of carrier', () => {
+    if (user === null) getUser('bahaway@gmail.com', 'bahaway');
+    getCarrier();
+
+    it('driver should successfully create', async () => {
+      const res = await request(app)
+        .post('/drivers/carrier')
+        .set({Authorization: user.token})
+        .send({
+          email: 'user555@gmail.com',
+          name: 'John',
+          phoneNumber: '+355123456777',
+          companyId: carriers[0]._id.toString(),
+          status: 'upcoming',
+          description: JSON.stringify({
+            address: 'US, NY, Manhattan c., str. 1, h. 34',
+            DOB: '15.12.1988',
+            info: 'Lorem ipsum dolor sit amet',
+            reference: 'reliable'
+          })
+        });
+      expect(res.statusCode).toBe(200);
+      expect(res.body.email).toBe('user555@gmail.com');
+      expect(res.body.name).toBe('John');
+      driver = res.body;
+    });
+  });
+
+  describe('changing driver data', () => {
+    it('should edit driver', async () => {
+      const res = await request(app)
+        .put('/drivers/' + driver._id.toString())
+        .set({Authorization: user.token})
+        .send({
+          email: 'askhat555@gmail.com',
+          name: 'Jack',
+          phoneNumber: '+355973456777',
+          companyId: carriers[2]._id.toString(),
+          status: 'upcoming',
+          description: JSON.stringify({
+            address: 'US, NY, Manhattan c., str. 1, h. 34',
+            DOB: '15.12.1988',
+            info: 'Lorem ipsum dolor sit amet',
+            reference: 'reliable'
+          })
+        });
+      expect(res.statusCode).toBe(200);
+      expect(res.body.phoneNumber).toBe('+355973456777');
+      expect(res.body.name).toBe('Jack');
+    });
+  });
+
+
+  describe('changing driver data by Carrier', () => {
+    getUser('bahaway@gmail.com', 'bahaway');
+    it('should edit driver by Carrier', async () => {
+      const res = await request(app)
+        .put('/drivers/' + driver._id.toString())
+        .set({Authorization: user.token})
+        .send({
+          email: 'askhat999@gmail.com',
+          name: 'Kevin',
+          phoneNumber: '+355973459977',
+          companyId: carriers[2]._id.toString(),
+          status: 'upcoming',
+          description: JSON.stringify({
+            address: 'US, NY, Manhattan c., str. 1, h. 34',
+            DOB: '15.12.1988',
+            info: 'Lorem ipsum dolor sit amet',
+            reference: 'reliable'
+          })
+        });
+      expect(res.statusCode).toBe(200);
+      expect(res.body.phoneNumber).toBe('+355973459977');
+      expect(res.body.name).toBe('Kevin');
+    });
+  });
 
 });
 

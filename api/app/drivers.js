@@ -46,6 +46,7 @@ router.get('/carrier', auth, permit('carrier'), async (req, res) => {
       .find({companyId: req.user.companyId}).populate('companyId', 'title');
 
     res.send(drivers);
+    console.log(drivers);
   } catch (e) {
     res.sendStatus(500);
   }
@@ -88,7 +89,6 @@ router.post('/', auth, upload.single('license'), async (req, res) => {
       license: req.file ? 'uploads/' + req.file.filename : null,
     };
 
-    console.log(driverData)
 
     if (driverData.status === 'off') {
       driverData.currentStatus = 'off';

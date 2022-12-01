@@ -50,6 +50,7 @@ const run = async () => {
 
   const [admin, user, user2, bahCarrier] = await User.create({
     email: 'admin@gmail.com',
+    telegramId: '',
     password: 'admin',
     role: 'admin',
     token: nanoid(),
@@ -58,6 +59,7 @@ const run = async () => {
     isWorking: true
   }, {
     email: 'user@gmail.com',
+    telegramId: '',
     password: 'user',
     role: 'user',
     token: nanoid(),
@@ -67,6 +69,7 @@ const run = async () => {
     isWorking: true
   }, {
     email: 'user2@gmail.com',
+    telegramId: '',
     password: 'user2',
     role: 'user',
     token: nanoid(),
@@ -258,7 +261,7 @@ const run = async () => {
     timeToDel: '19:16',
     pu: 'New-York, NY',
     del: 'Chicago, IL',
-    status: 'finished',
+    status: 'upcoming',
   }, {
     loadCode: 'T-12FEF4E5F',
     dispatchId: user2._id,

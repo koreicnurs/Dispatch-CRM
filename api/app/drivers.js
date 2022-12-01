@@ -88,6 +88,8 @@ router.post('/', auth, upload.single('license'), async (req, res) => {
       license: req.file ? 'uploads/' + req.file.filename : null,
     };
 
+    console.log(driverData)
+
     if (driverData.status === 'off') {
       driverData.currentStatus = 'off';
     }

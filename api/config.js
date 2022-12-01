@@ -7,7 +7,6 @@ let port = 8000;
 
 if(process.env.NODE_ENV === 'test') {
     dbURL = 'mongodb://localhost/dispatchers-test';
-    port = 8010;
 }
 
 

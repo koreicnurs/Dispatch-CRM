@@ -29,9 +29,11 @@ app.use('/brokers', brokers);
 const run = async () => {
     await mongoose.connect(config.mongo.db, config.mongo.options);
 
-    app.listen(config.port, () => {
-        console.log(`Server started on ${config.port} port!`);
-    });
+    if(process.env.NODE_ENV !== 'test') {
+        app.listen(config.port, () => {
+            console.log(`Server started on ${config.port} port!`);
+        });
+    }
 
     exitHook(() => {
         mongoose.disconnect();

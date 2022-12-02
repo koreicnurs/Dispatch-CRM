@@ -13,6 +13,7 @@ describe('Testing \'drivers\' route', () => {
   let carriers = null;
   let driversData = null;
 
+
   const getUser = (email, password) => {
     it('user should successfully login', async () => {
       const res = await request(app)
@@ -75,13 +76,12 @@ describe('Testing \'drivers\' route', () => {
         .get('/drivers')
         .set({Authorization: user.token});
       expect(res.statusCode).toBe(200);
+
     });
   });
 
   describe('create a new driver', () => {
-    // let sinonSpy = sinon.spy();
     createDriver();
-    // expect(sinonSpy).called.should.be.true;
   });
 
   describe('get all drivers of carrier', () => {

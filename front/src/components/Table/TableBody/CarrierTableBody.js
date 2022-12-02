@@ -3,7 +3,7 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import EditCarrier from "../../Modals/EditCarrier";
 
-const CarrierTableBody = ({carriers}) => {
+const CarrierTableBody = ({columns, carriers}) => {
   return (
     <>
       {carriers.map(carrier => (
@@ -14,14 +14,14 @@ const CarrierTableBody = ({carriers}) => {
             cursor: "pointer", ":active": {background: '#f0f2fe'}
           }}
         >
-          <TableCell component="th" scope="row" sx={{fontSize: "12px"}}>
-            {carrier.title}
-          </TableCell>
-          <TableCell sx={{fontSize: "12px"}}>{carrier.phoneNumber}</TableCell>
-          <TableCell sx={{fontSize: "12px"}}>{carrier.mc}</TableCell>
-          <TableCell sx={{fontSize: "12px"}}>{carrier.dot}</TableCell>
-          <TableCell sx={{fontSize: "12px"}}>{carrier.fedid}</TableCell>
-          <EditCarrier carrier={carrier}/>
+          {columns.map(column => {
+            let value = carrier[column.key];
+            if (column.innerKey) {
+              value = value[column.innerKey];
+            }
+            return <TableCell sx={{fontSize: "12px"}} key={column.key + column.innerKey}>{value}</TableCell>;
+          })}
+          <EditCarrier carrierID={carrier._id}/>
         </TableRow>
       ))}
     </>

@@ -2,18 +2,22 @@ const request = require("supertest");
 const app = require("../index");
 const mongoose = require("mongoose");
 
+let number = new Date().valueOf().toString().slice(2)*1;
+let uniqueEmail = new Date().valueOf().toString().slice(9)*1;
+
+
 describe('Testing \'drivers\' route', () => {
 
   let user = null;
   let driver = null;
   let carriers = null;
+  let driversData = null;
 
   const getUser = (email, password) => {
     it('user should successfully login', async () => {
       const res = await request(app)
         .post('/users/sessions')
         .send({email, password});
-
       expect(res.statusCode).toBe(200);
       user = res.body;
     });
@@ -26,6 +30,14 @@ describe('Testing \'drivers\' route', () => {
       carriers = res.body
     });
   };
+  const getDriver = async() => {
+    it('should get array of all drivers', async () => {
+      const res = await request(app)
+        .get('/drivers')
+        .set({Authorization: user.token});
+      driversData = res.body;
+    });
+  };
 
   const createDriver = () => {
     if (user === null) getUser('admin@gmail.com', 'admin');
@@ -36,9 +48,9 @@ describe('Testing \'drivers\' route', () => {
         .post('/drivers')
         .set({Authorization: user.token})
         .send({
-          email: 'user441@gmail.com',
-          name: 'Luke',
-          phoneNumber: '+355123456788',
+          email: `user${uniqueEmail}@gmail.com`,
+          name: 'Kusya',
+          phoneNumber: `+3${number}`,
           companyId: carriers[1]._id.toString(),
           status: 'upcoming',
           description: JSON.stringify({
@@ -49,8 +61,8 @@ describe('Testing \'drivers\' route', () => {
           })
         });
       expect(res.statusCode).toBe(200);
-      expect(res.body.email).toBe('user441@gmail.com');
-      expect(res.body.name).toBe('Luke');
+      expect(res.body.phoneNumber).toBe(`+3${number}`);
+      expect(res.body.name).toBe('Kusya');
       driver = res.body;
     });
   };
@@ -62,19 +74,18 @@ describe('Testing \'drivers\' route', () => {
       const res = await request(app)
         .get('/drivers')
         .set({Authorization: user.token});
-      // console.log(res.body);
       expect(res.statusCode).toBe(200);
     });
   });
 
   describe('create a new driver', () => {
+    // let sinonSpy = sinon.spy();
     createDriver();
+    // expect(sinonSpy).called.should.be.true;
   });
-
 
   describe('get all drivers of carrier', () => {
     getUser('bahaway@gmail.com', 'bahaway');
-
     it('should get array of all drivers', async () => {
       const res = await request(app)
         .get('/drivers/carrier')
@@ -86,12 +97,11 @@ describe('Testing \'drivers\' route', () => {
 
   describe('get driver by id', () => {
     getUser('admin@gmail.com', 'admin');
-
+    getDriver();
     it('should get driver data', async () => {
       const res = await request(app)
-        .get('/drivers/' + driver._id.toString())
-        .set({Authorization: user.token});
-
+      .get('/drivers/' + driversData[1]._id.toString())
+      .set({Authorization: user.token});
       expect(res.statusCode).toBe(200);
     });
   });
@@ -100,34 +110,22 @@ describe('Testing \'drivers\' route', () => {
     if (user === null) getUser('bahaway@gmail.com', 'bahaway');
     getCarrier();
 
-    it('driver should successfully create', async () => {
+    it('getting all drivers of carrier', async () => {
       const res = await request(app)
-        .post('/drivers/carrier')
+        .get('/drivers/carrier')
         .set({Authorization: user.token})
-        .send({
-          email: 'user555@gmail.com',
-          name: 'John',
-          phoneNumber: '+355123456777',
-          companyId: carriers[0]._id.toString(),
-          status: 'upcoming',
-          description: JSON.stringify({
-            address: 'US, NY, Manhattan c., str. 1, h. 34',
-            DOB: '15.12.1988',
-            info: 'Lorem ipsum dolor sit amet',
-            reference: 'reliable'
-          })
-        });
+
       expect(res.statusCode).toBe(200);
-      expect(res.body.email).toBe('user555@gmail.com');
-      expect(res.body.name).toBe('John');
-      driver = res.body;
     });
   });
 
   describe('changing driver data', () => {
+    if (user === null) getUser('admin@gmail.com', 'admin');
+    getDriver();
+    getCarrier();
     it('should edit driver', async () => {
       const res = await request(app)
-        .put('/drivers/' + driver._id.toString())
+        .put('/drivers/' + driversData[0]._id.toString())
         .set({Authorization: user.token})
         .send({
           email: 'askhat555@gmail.com',
@@ -151,12 +149,14 @@ describe('Testing \'drivers\' route', () => {
 
   describe('changing driver data by Carrier', () => {
     getUser('bahaway@gmail.com', 'bahaway');
+    getDriver();
+    getCarrier();
     it('should edit driver by Carrier', async () => {
       const res = await request(app)
-        .put('/drivers/' + driver._id.toString())
+        .put('/drivers/' + driversData[0]._id.toString())
         .set({Authorization: user.token})
         .send({
-          email: 'askhat999@gmail.com',
+          email: 'umot9@gmail.com',
           name: 'Kevin',
           phoneNumber: '+355973459977',
           companyId: carriers[2]._id.toString(),
@@ -169,8 +169,9 @@ describe('Testing \'drivers\' route', () => {
           })
         });
       expect(res.statusCode).toBe(200);
-      expect(res.body.phoneNumber).toBe('+355973459977');
       expect(res.body.name).toBe('Kevin');
+      expect(res.body.phoneNumber).toBe('+355973459977');
+
     });
   });
 

@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const request = require('supertest');
 const app = require("../index");
-const Driver = require("../models/Driver");
 
 const TRIPS_STATUSES = ['upcoming', 'transit', 'finished'];
 
@@ -11,8 +10,15 @@ describe('Testing \'loads\' route', () => {
   let driver = null;
   let load = null;
 
-  const getDriver = async () => {
-    driver = await Driver.findOne({email: 'kuba@gmail.com'});
+  const getDriver = () => {
+    it('should get successfully driver', async () => {
+      const res = await request(app)
+        .get('/drivers')
+        .set({Authorization: user.token})
+      expect(res.statusCode).toBe(200);
+
+      driver = res.body[0];
+    });
   };
 
   const getUser = (email, password) => {
@@ -28,10 +34,9 @@ describe('Testing \'loads\' route', () => {
 
   const createLoad = () => {
     getUser('user@gmail.com', 'user');
+    getDriver();
 
     it('load should successfully create', async () => {
-      await getDriver();
-
       const res = await request(app)
         .post('/loads')
         .set({Authorization: user.token})
@@ -50,13 +55,9 @@ describe('Testing \'loads\' route', () => {
           del: "Bosadton, MA",
           comment: "test comment",
         });
-      // console.log(formData);
-      // console.log(driver);
-      console.log(res.error);
-      // console.log(res.error);
-      // expect(res.statusCode).toBe(200);
-      // expect(res.body.loadCode).toBe('T-3K17LSM9');
-      // expect(res.body.status).toBe('upcoming');
+      expect(res.statusCode).toBe(200);
+      expect(res.body.loadCode).toBe('T-3K17LSM9');
+      expect(res.body.status).toBe('upcoming');
       load = res.body;
     });
   };

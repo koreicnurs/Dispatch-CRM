@@ -9,6 +9,10 @@ if(process.env.NODE_ENV === 'test') {
     dbURL = 'mongodb://localhost/dispatchers-test';
 }
 
+if(process.env.NODE_ENV === 'test-front') {
+    dbURL = 'mongodb://localhost/dispatchers-test';
+    port = 8010;
+}
 
 module.exports = {
     rootPath,

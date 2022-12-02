@@ -3,13 +3,20 @@ import {useDispatch, useSelector} from "react-redux";
 import {Grid} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {fetchCarriersRequest} from "../../store/actions/carriersActions";
-import NewCarrier from "../../components/Modals/NewCarrier";
+import AddCarrier from "../../components/Modals/AddCarrier";
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
 import InnerTable from "../../components/Table/InnerTable";
 import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import CarrierTableBody from "../../components/Table/TableBody/CarrierTableBody";
 
-const headerTitles = ["Company", "Phone number", "MC", "DOT", "FED-ID"];
+const columns = [
+  {key: 'title', label: 'Company'},
+  {key: 'phoneNumber', label: 'Phone Number'},
+  {key: 'mc', label: 'MC'},
+  {key: 'dot', label: 'DOT'},
+  {key: 'fedid', label: 'FED-ID'},
+];
+
 
 const Carriers = () => {
   const dispatch = useDispatch();
@@ -28,15 +35,17 @@ const Carriers = () => {
           </Typography>
         </Grid>
         <Grid container item flexDirection="row" justifyContent="space-between" alignItems="center" paddingRight="15px">
-          <NewCarrier/>
+          <AddCarrier/>
         </Grid>
 
         <InnerTable
-          header={<TableHeaderRow headerCells={headerTitles} sx={{fontSize: "12px", fontWeight: "bold"}}/>}
+          header={<TableHeaderRow headerCells={columns} data={true} sx={{fontSize: "12px", fontWeight: "bold"}}/>}
           body={
-          <CarrierTableBody
+            <CarrierTableBody
+              columns={columns}
               carriers={carriers}
-          />}
+            />
+          }
         />
 
       </InnerContainer>

@@ -6,7 +6,7 @@ const Broker = require('../models/Broker');
 
 router.get('/', auth,  async (req, res) => {
   try {
-    const brokers = await Broker.find();
+    const brokers = await Broker.find().populate('companiesContract');
     
     res.send(brokers);
   } catch (e) {
@@ -45,7 +45,7 @@ router.put('/:id', auth, permit('admin', 'user'), async (req, res) => {
       return res.status(404).send('Broker not found');
     }
 
-    await Broker.findByIdAndUpdate(brokerId, brokerData);
+    await Broker.findOneAndUpdate({_id: brokerId}, brokerData);
 
     const updatedBroker = await Broker.findById(brokerId);
     return res.send(updatedBroker);

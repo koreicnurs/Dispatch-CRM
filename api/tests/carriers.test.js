@@ -73,7 +73,6 @@ describe('Testing \'carriers\' route', () => {
           phoneNumber: '+355123456788',
           description: 'test changed'
         });
-
       expect(res.statusCode).toBe(200);
       expect(res.body.title).toBe('Test Carrier Changed');
       expect(res.body.description).toBe('test changed');

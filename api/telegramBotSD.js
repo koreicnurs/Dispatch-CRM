@@ -106,29 +106,30 @@ Example => <b>dispatch@gmail.com</b>`
 
         await bot.on('callback_query', async (msg) => {
             const driver = await Driver.findOne({telegramId: msg.from.id});
+            const load = await Load.findOne({driverId: driver.id});
 
             if (msg.data === 'confirm') {
-                const load = await Load.find({driverId: driver.id});
                 await bot.sendMessage(driver.telegramId, 'Can you write how much time u need to PU trip');
             }
 
             if (msg.data === 'cancel') {
-                const load = await Load.find({driverId: driver.id});
-                const telegramIdUser = await User.findOne({dispatchId: load[0].dispatchId});
-                await bot.sendMessage(telegramIdUser.telegramId, `driver refused load ${load[0].id}`);
+                const telegramIdUser = await User.findById({_id: load.dispatchId});
+                if(telegramIdUser && telegramIdUser.telegramId) {
+                    await bot.sendMessage(telegramIdUser.telegramId, `driver refused load ${load.id}`);
+                }
             }
 
             if (msg.data === 'transit') {
-                const load = await Load.find({driverId: driver.id});
-                await Load.findByIdAndUpdate({_id: load[0].id}, {status: 'transit'});
+                await Load.findByIdAndUpdate({_id: load.id}, {status: 'transit'});
                 await bot.sendMessage(driver.telegramId, 'Put button finish for delivered a load', keyboardTripDelivered);
             }
 
             if (msg.data === 'finish') {
-                const load = await Load.find({driverId: driver.id});
-                const dispatcherId = await User.findOne({dispatchId: load[0].dispatchId});
-                console.log(dispatcherId);
-                // await bot.sendMessage(telegramIdUser.telegramId, `driver ${driver.id} finish a load ${load[0].id}`);
+                const dispatcherId = await User.findById({_id: load.dispatchId});
+                // console.log(dispatcherId);
+                if(dispatcherId && dispatcherId.telegramId) {
+                    await bot.sendMessage(dispatcherId.telegramId, `driver ${driver.id} finish a load ${load.id}`);
+                }
             }
         });
 

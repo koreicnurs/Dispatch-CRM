@@ -45,9 +45,9 @@ router.put('/:id', auth, permit('admin', 'user'), async (req, res) => {
       return res.status(404).send('Broker not found');
     }
 
-    await Broker.findOneAndUpdate({_id: brokerId}, brokerData);
+    const updatedBroker = await Broker.findOneAndUpdate({_id: brokerId}, brokerData, {new: true,
+      runValidators: true});
 
-    const updatedBroker = await Broker.findById(brokerId);
     return res.send(updatedBroker);
   } catch (e) {
     res.sendStatus(500);

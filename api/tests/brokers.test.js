@@ -3,9 +3,11 @@ const request = require('supertest');
 const app = require("../index");
 
 describe('Testing \'brokers\' route', () => {
-  let user = null;
-  let broker = null;
-  let carriers = null;
+  let user;
+  let broker;
+  let carriers;
+  let brokers;
+  let number = new Date().valueOf().toString().slice(2)*1;
 
   const getUser = (email, password) => {
     it('should login user', async () => {
@@ -27,9 +29,19 @@ describe('Testing \'brokers\' route', () => {
     });
   };
 
+  const getBrokers = () => {
+    it('should return an array of all brokers', async () => {
+      const res = await request(app)
+        .get('/brokers')
+        .set({Authorization: user.token});
+      brokers = res.body;
+    });
+  };
+
   const createBroker = () => {
-    if (user === null) getUser('user@gmail.com', 'user');
-    if (carriers === null) getCarriers();
+    getUser('user@gmail.com', 'user');
+    getCarriers();
+    getBrokers();
 
     it('should create broker', async () => {
       const res = await request(app)
@@ -38,7 +50,7 @@ describe('Testing \'brokers\' route', () => {
         .send({
           name: 'Test broker name',
           phoneNumber: '+99655555000',
-          mc: 'Test broker mc',
+          mc: number,
           description: 'Test broker description',
           companiesContract: carriers[0]._id.toString()
         });
@@ -46,7 +58,7 @@ describe('Testing \'brokers\' route', () => {
       expect(res.statusCode).toBe(200);
       expect(res.body.name).toBe('Test broker name');
       expect(res.body.phoneNumber).toEqual(['+99655555000']);
-      expect(res.body.mc).toBe('Test broker mc');
+      expect(res.body.mc).toBe(number.toString());
       expect(res.body.description).toBe('Test broker description');
       expect(res.body.companiesContract).toEqual([carriers[0]._id.toString()]);
       broker = res.body;
@@ -69,10 +81,13 @@ describe('Testing \'brokers\' route', () => {
   });
 
   describe('edit broker', () => {
-    if (broker === null) createBroker();
+    getUser('user@gmail.com', 'user');
+    getCarriers();
+    getBrokers();
+
     it('should edit broker', async () => {
       const res = await request(app)
-        .put('/brokers/' + broker._id.toString())
+        .put('/brokers/' + brokers[0]._id.toString())
         .set({Authorization: user.token})
         .send({
           name: 'Changed test broker name',
@@ -81,6 +96,7 @@ describe('Testing \'brokers\' route', () => {
           description: 'Changed Test broker description',
           companiesContract: carriers[1]._id.toString()
         });
+
       expect(res.statusCode).toBe(200);
       expect(res.body.name).toBe('Changed test broker name');
       expect(res.body.phoneNumber).toEqual(['+99655555001']);
@@ -91,11 +107,13 @@ describe('Testing \'brokers\' route', () => {
   });
 
   describe('delete broker', () => {
-    if (broker === null) createBroker();
+    getUser('user@gmail.com', 'user');
+    getCarriers();
+    getBrokers();
 
     it('should delete broker', async () => {
       const res = await request(app)
-        .delete('/brokers/' + broker._id.toString())
+        .delete('/brokers/' + brokers[0]._id.toString())
         .set({Authorization: user.token});
 
       expect(res.statusCode).toBe(200);

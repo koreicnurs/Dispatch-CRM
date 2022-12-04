@@ -55,6 +55,7 @@ const run = async () => {
     token: nanoid(),
     displayName: 'Admin',
     avatar: 'fixtures/admin.png',
+    phoneNumber: '+267●5350811',
     isWorking: true
   }, {
     email: 'user@gmail.com',
@@ -80,6 +81,7 @@ const run = async () => {
     token: nanoid(),
     displayName: 'BAHAWAY',
     companyId: bahawayCarrier._id,
+    phoneNumber: '+267●5350812',
     isWorking: true
   }, {
     email: 'safeway@gmail.com',
@@ -96,9 +98,10 @@ const run = async () => {
     mirbekDriver, bekmuratDriver, makenDriver] = await Driver.create({
     email: 'umot@gmail.com',
     name: 'Umot',
-    phoneNumber: '+267●5350802',
+    phoneNumber: '+267●5350808',
     companyId: bahawayCarrier._id,
     status: 'in transit',
+    currentStatus: 'driving',
     telegramId: '',
     description: {
       address: 'US, LA, Avalon c., str. 1, h. 45',
@@ -124,7 +127,8 @@ const run = async () => {
     name: 'Timur',
     phoneNumber: '+323●7454492',
     companyId: safewayCargoCarrier._id,
-    status: 'off/home',
+    status: 'off',
+    currentStatus: 'off',
     telegramId: '',
     description: {
       address: 'US, IL, Chicago c., str. 1, h. 4',
@@ -150,7 +154,8 @@ const run = async () => {
     name: 'Bakdoolot',
     phoneNumber: '+630●6702075',
     companyId: safewayCargoCarrier._id,
-    status: 'n/a',
+    status: 'in tr/upc',
+    currentStatus: 'rest',
     telegramId: '',
     description: {
       address: 'US, IL, Chicago c., str. 10, h. 48',
@@ -163,7 +168,8 @@ const run = async () => {
     name: 'Askhat',
     phoneNumber: '+312●6840690',
     companyId: turanExpressCarrier._id,
-    status: 'sleep',
+    status: 'off',
+    currentStatus: 'off',
     telegramId: '',
     description: {
       address: 'US, NY, New-York c., 5 Avenue, h. 48',
@@ -182,6 +188,7 @@ const run = async () => {
     phoneNumber: '+773●6913604',
     companyId: turanExpressCarrier._id,
     status: 'in tr/upc',
+    currentStatus: 'driving',
     telegramId: '',
     description: {
       address: 'US, NY, New-York c., str. 56, h. 48',
@@ -208,6 +215,7 @@ const run = async () => {
     phoneNumber: '+347●4941314',
     companyId: tumarExpressCarrier._id,
     status: 'in transit',
+    currentStatus: 'rest',
     telegramId: '',
     description: {
       address: 'US, TX, Houston c., str. 45, h. 12, ap. 12',
@@ -231,6 +239,8 @@ const run = async () => {
     pu: 'Shepherd, KY',
     del: 'Pittsburg, PA',
     status: 'transit',
+    BOL: 'fixtures/BOL1.pdf',
+    RC: 'fixtures/RC1.pdf',
   }, {
     loadCode: 'T-151F5454FEG',
     driverId: kubaDriver._id,
@@ -259,9 +269,10 @@ const run = async () => {
     pu: 'New-York, NY',
     del: 'Chicago, IL',
     status: 'finished',
+    BOL: 'fixtures/BOL2.pdf',
+    RC: 'fixtures/RC2.pdf',
   }, {
     loadCode: 'T-12FEF4E5F',
-    driverId: keldibekDriver._id,
     dispatchId: user2._id,
     price: 2500,
     miles: 500,
@@ -287,6 +298,8 @@ const run = async () => {
     pu: 'Houston, TX',
     del: 'New Orleans, LA',
     status: 'transit',
+    BOL: 'fixtures/BOL1.pdf',
+    RC: 'fixtures/RC1.pdf',
   }, {
     loadCode: 'T-D1EF45SD1C',
     driverId: askhatDriver._id,
@@ -301,6 +314,21 @@ const run = async () => {
     pu: 'New-York, NY',
     del: 'Seattle, WS',
     status: 'finished',
+    BOL: 'fixtures/BOL2.pdf',
+    RC: 'fixtures/RC2.pdf',
+  },{
+    loadCode: 'T-D1EF78SD1C',
+    dispatchId: user2._id,
+    price: 1500,
+    miles: 500,
+    rpm: 3,
+    datePU: '11/1/2022',
+    dateDEL: '11/3/2022',
+    timeToPU: '1:0',
+    timeToDel: '25:0',
+    pu: 'Bronx, NY',
+    del: 'Gulfport, MS',
+    status: 'cancel',
   });
   
   await Learning.create(
@@ -322,27 +350,23 @@ const run = async () => {
   await Broker.create(
     {
       name: 'Azamat',
-      author: user._id,
       phoneNumber: ['+99655555555', '+2678480704'],
       mc: 'Lorem1',
       description: 'Lorem ipsum dolor sit amet',
       companiesContract: [bahawayCarrier._id],
     }, {
       name: 'Aibek',
-      author: user._id,
       phoneNumber: ['+2678892567'],
       mc: 'Lorem2',
       description: 'Consectetur adipiscing elit',
       companiesContract: [bahawayCarrier._id],
     }, {
       name: 'Nurbek',
-      author: user._id,
       phoneNumber: ['+9293525578', '+9294884446'],
       mc: 'Lorem3',
       companiesContract: [bahawayCarrier._id],
     }, {
       name: 'Adilet',
-      author: user2._id,
       phoneNumber: ['+996999523214', '+7678480704', '+3232523146'],
       mc: 'Lorem4',
       description: 'Convallis convallis tellus id interdum velit laoreet id donec ultrices',

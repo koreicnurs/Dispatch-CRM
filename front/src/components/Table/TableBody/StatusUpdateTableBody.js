@@ -1,31 +1,30 @@
 import React from 'react';
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import EditCarrier from "../../Modals/EditCarrier";
+import {TableCell, TableRow} from "@mui/material";
 
-const CarrierTableBody = ({columns, carriers}) => {
+const StatusUpdateTableBody = ({columns, filteredData}) => {
+
   return (
     <>
-      {carriers.map(carrier => (
+      {filteredData.map(driver => (
         <TableRow
-          key={carrier._id}
+          key={driver._id}
           sx={{
             '&:last-child td, &:last-child th': {border: 0}, background: "white",
             cursor: "pointer", ":active": {background: '#f0f2fe'}
           }}
         >
           {columns.map(column => {
-            let value = carrier[column.key];
+            let value = driver[column.key];
             if (column.innerKey) {
               value = value[column.innerKey];
             }
             return <TableCell sx={{fontSize: "12px"}} key={column.key + column.innerKey}>{value}</TableCell>;
           })}
-          <EditCarrier carrierID={carrier._id}/>
         </TableRow>
-      ))}
+      ))
+      }
     </>
   );
 };
 
-export default CarrierTableBody;
+export default StatusUpdateTableBody;

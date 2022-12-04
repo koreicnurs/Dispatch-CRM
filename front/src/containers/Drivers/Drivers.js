@@ -57,7 +57,6 @@ const columns = [
   {key: 'name', label: 'Name'},
   {key: 'phoneNumber', label: 'Phone Number'},
   {key: 'companyId', label: 'Carriers', innerKey: 'title'},
-  {key: 'status', label: 'Status'},
   {key: 'description', label: 'Address', innerKey: 'address'},
   {key: 'description', label: 'DOB', innerKey: 'DOB'},
   {key: 'description', label: 'Info', innerKey: 'info'},
@@ -112,7 +111,7 @@ const Drivers = () => {
       </Grid>
 
       <InnerTable
-        header={<TableHeaderRow headerCells={columns} drivers={true} sx={{fontSize: "12px", fontWeight: "bold"}}/>}
+        header={<TableHeaderRow headerCells={columns} data={true} sx={{fontSize: "12px", fontWeight: "bold"}}/>}
         body={
           <DriverTableBody
             columns={columns}

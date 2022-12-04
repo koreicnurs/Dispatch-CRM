@@ -5,21 +5,9 @@ const app = require("../index");
 const TRIPS_STATUSES = ['upcoming', 'transit', 'finished'];
 
 describe('Testing \'loads\' route', () => {
-
   let user = null;
-  let driver = null;
+  let drivers;
   let load = null;
-
-  const getDriver = () => {
-    it('should get successfully driver', async () => {
-      const res = await request(app)
-        .get('/drivers')
-        .set({Authorization: user.token})
-      expect(res.statusCode).toBe(200);
-
-      driver = res.body[0];
-    });
-  };
 
   const getUser = (email, password) => {
     it('user should successfully login', async () => {
@@ -32,8 +20,17 @@ describe('Testing \'loads\' route', () => {
     });
   };
 
+  const getDriver = async() => {
+    it('should get array of all drivers', async () => {
+      const res = await request(app)
+        .get('/drivers')
+        .set({Authorization: user.token});
+      drivers = res.body;
+    });
+  };
+
   const createLoad = () => {
-    getUser('user@gmail.com', 'user');
+    if (user === null) getUser('user@gmail.com', 'user');
     getDriver();
 
     it('load should successfully create', async () => {
@@ -42,7 +39,7 @@ describe('Testing \'loads\' route', () => {
         .set({Authorization: user.token})
         .send({
           loadCode: "T-3K17LSM9",
-          driverId: driver._id.toString(),
+          driverId: drivers[0]._id.toString(),
           dispatchId: user._id,
           price: 2400,
           miles: 800,

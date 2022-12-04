@@ -22,7 +22,7 @@
       | dot         | 126          |
       | fedid       | 88-237       |
       | description | test company |
-    Затем нажимаю на "Create"
+    Затем нажимаю на "Save"
     То я вижу "Carrier created!"
 
   @registerCarrierFailed
@@ -42,5 +42,5 @@
       | dot         | 3537967         |
       | fedid       | 83-3826233      |
       | description | test company #1 |
-    Затем нажимаю на "Create"
+    Затем нажимаю на "Save"
     То я вижу "Carrier creation failed!"

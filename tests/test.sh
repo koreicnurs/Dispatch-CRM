@@ -18,10 +18,10 @@ echo '# API'
 cd ../api
 
 echo '# Running fixtures'
-NODE_ENV=test npm run seed
+NODE_ENV=test-front npm run seed
 
 echo '# Running API server in test mode'
-pm2 start "NODE_ENV=test npm run dev" --name="api-test"
+pm2 start "NODE_ENV=test-front npm run dev" --name="api-test"
 
 echo '# Running frontend in test mode'
 

@@ -140,7 +140,7 @@ const StatusUpdate = () => {
         </Grid>
 
         <InnerTable
-          header={<TableHeaderRow headerCells={columns} drivers={true} sx={{fontSize: "12px", fontWeight: "bold"}}/>}
+          header={<TableHeaderRow headerCells={columns} data={true} sx={{fontSize: "12px", fontWeight: "bold"}}/>}
           body={
             <StatusUpdateTableBody
               columns={columns}

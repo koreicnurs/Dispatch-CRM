@@ -43,4 +43,4 @@
       | fedid       | 83-3826233       |
       | description | test company New |
     Затем нажимаю на "Save"
-    То я вижу "You have successfully edited a carrier!"
+    То я вижу "Carrier edit is failed!"

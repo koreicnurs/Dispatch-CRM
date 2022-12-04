@@ -9,7 +9,7 @@ const loads = require('./app/loads');
 const learnings = require('./app/learnings');
 const brokers = require('./app/brokers');
 const config = require('./config');
-const bot = require("./telegramBotSD");
+// const bot = require("./telegramBotSD");
 
 const app = express();
 

@@ -5,7 +5,9 @@ const app = require("../index");
 const TRIPS_STATUSES = ['upcoming', 'transit', 'finished'];
 
 describe('Testing \'loads\' route', () => {
+  let randomLoadCode = new Date().valueOf().toString().slice(2) * 1;
   let user = null;
+  let admin = null;
   let drivers;
   let load = null;
 
@@ -16,11 +18,12 @@ describe('Testing \'loads\' route', () => {
         .send({email, password});
 
       expect(res.statusCode).toBe(200);
-      user = res.body;
+
+      email === 'admin@gmail.com' ? admin = res.body : user = res.body;
     });
   };
 
-  const getDriver = async() => {
+  const getDrivers = async () => {
     it('should get array of all drivers', async () => {
       const res = await request(app)
         .get('/drivers')
@@ -31,14 +34,14 @@ describe('Testing \'loads\' route', () => {
 
   const createLoad = () => {
     if (user === null) getUser('user@gmail.com', 'user');
-    getDriver();
+    getDrivers();
 
     it('load should successfully create', async () => {
       const res = await request(app)
         .post('/loads')
         .set({Authorization: user.token})
         .send({
-          loadCode: "T-3K17LSM9",
+          loadCode: randomLoadCode,
           driverId: drivers[0]._id.toString(),
           dispatchId: user._id,
           price: 2400,
@@ -53,7 +56,7 @@ describe('Testing \'loads\' route', () => {
           comment: "test comment",
         });
       expect(res.statusCode).toBe(200);
-      expect(res.body.loadCode).toBe('T-3K17LSM9');
+      expect(res.body.price).toBe(2400);
       expect(res.body.status).toBe('upcoming');
       load = res.body;
     });
@@ -85,6 +88,90 @@ describe('Testing \'loads\' route', () => {
 
   describe('create a new load', () => {
     createLoad();
+  });
+
+  describe('change load', () => {
+    getUser('admin@gmail.com', 'admin');
+    getUser('user@gmail.com', 'user');
+
+    it('load should successfully update', async () => {
+      const res = await request(app)
+        .put('/loads/' + load._id)
+        .set({Authorization: admin.token})
+        .send({
+          loadCode: randomLoadCode,
+          driverId: drivers[1]._id.toString(),
+          dispatchId: user._id,
+          price: 2800,
+          miles: 1400,
+          rpm: 2,
+          datePU: "12/15/2022",
+          dateDEL: "12/22/2022",
+          timeToPU: "9:30",
+          timeToDel: "04:00",
+          pu: "Pitsburg, PA",
+          del: "Boston, MA",
+          comment: "updated test comment",
+          status: "transit",
+        });
+      expect(res.statusCode).toBe(200);
+      expect(res.body.price).toBe(2800);
+      expect(res.body.status).toBe('transit');
+    });
+  });
+
+  describe('change status', () => {
+    getUser('user@gmail.com', 'user');
+
+    it('status should successfully change', async () => {
+      const res = await request(app)
+        .put('/loads/status/' + load._id)
+        .set({Authorization: user.token});
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body[0].status).toBe('transit');
+    });
+  });
+
+  describe('cancel load', () => {
+    getUser('user@gmail.com', 'user');
+
+    it('load should successfully cancel', async () => {
+      const res = await request(app)
+        .put('/loads/cancel/' + load._id)
+        .set({Authorization: user.token});
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body.status).toBe('finished');
+    });
+  });
+
+  describe('change load comment', () => {
+    getUser('user@gmail.com', 'user');
+
+    it('load should successfully change', async () => {
+      const res = await request(app)
+        .put('/loads/comment/' + load._id)
+        .set({Authorization: user.token})
+        .send({comment: "changed comment"});
+
+      expect(res.statusCode).toBe(200);
+      expect(res.text).toBe('Comment added successfully');
+    });
+  });
+
+  describe('change load attachment', () => {
+    getUser('user@gmail.com', 'user');
+
+    it('load attachment should successfully change', async () => {
+      const res = await request(app)
+        .put('/loads/attachment/' + load._id)
+        .set({Authorization: user.token})
+        .attach('BOL', 'public/fixtures/BOL1.pdf')
+        .attach('RC', 'public/fixtures/RC1.pdf')
+
+      expect(res.statusCode).toBe(200);
+    });
   });
 
 });

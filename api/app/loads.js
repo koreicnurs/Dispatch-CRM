@@ -86,10 +86,10 @@ router.post('/', auth, cpUpload, async (req, res) => {
             return res.status(400).send({message: 'DEL date cannot be earlier than PU date!'});
         }
 
-    if (req.files.BOL) {
+    if (req.files?.BOL) {
       loadData.BOL = 'public/uploads/' + req.files['BOL'][0].filename;
     }
-    if (req.files.RC) {
+    if (req.files?.RC) {
       loadData.RC = 'public/uploads/' + req.files['RC'][0].filename;
     }
 
@@ -144,13 +144,13 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
       return res.status(400).send({message: 'DEL date cannot be earlier than PU date!'});
     }
 
-    if (req.files.BOL) {
+    if (req.files?.BOL) {
       if (load.BOL) {
         fs.unlinkSync(load.BOL)
       }
       loadData.BOL = 'public/uploads/' + req.files['BOL'][0].filename;
     }
-    if (req.files.RC) {
+    if (req.files?.RC) {
       if (load.RC) {
         fs.unlinkSync(load.RC)
       }
@@ -238,20 +238,20 @@ router.put('/attachment/:id', auth, cpUpload, async (req, res) => {
 
     const loadData = {RC: '',  BOL: ''};
 
-    if (req.files.BOL) {
+    if (req.files?.BOL) {
       if (load.BOL) {
         fs.unlinkSync(load.BOL)
       }
       loadData.BOL = 'public/uploads/' + req.files['BOL'][0].filename;
     }
-    if (req.files.RC) {
+    if (req.files?.RC) {
       if (load.RC) {
         fs.unlinkSync(load.RC)
       }
       loadData.RC = 'public/uploads/' + req.files['RC'][0].filename;
     }
 
-    const updatedLoad = await Load.findByIdAndUpdate(req.params.id, loadData);
+    const updatedLoad = await Load.findByIdAndUpdate(req.params.id, loadData, {new: true});
 
     res.send(updatedLoad);
   } catch (e) {

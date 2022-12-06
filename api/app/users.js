@@ -78,19 +78,23 @@ router.post('/sessions', async (req,  res) => {
   const {email, password} = req.body;
   
   if (!email || !password) {
-    return res.status(400).send('Data not valid');
+    return res.status(400).send('Data not valid!');
   }
   
   const user = await User.findOne({email});
   
   if (!user) {
-    return res.status(401).send({message: 'Credentials are wrong!'});
+    return res.status(401).send('Credentials are wrong!');
   }
   
   const isMatch = await user.checkPassword(password);
   
   if (!isMatch) {
-    return res.status(401).send('Credentials are wrong');
+    return res.status(401).send('Credentials are wrong!');
+  }
+  
+  if (!user.isWorking) {
+    return res.status(404).send('User not found!');
   }
   
   try {

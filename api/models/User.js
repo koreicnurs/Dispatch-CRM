@@ -71,7 +71,8 @@ const UserSchema = new Schema({
   isWorking: {
     type: String,
     required: true,
-    enum: ['active', 'inactive']
+    enum: ['active', 'disabled'],
+    default: 'active'
   }
 });
 

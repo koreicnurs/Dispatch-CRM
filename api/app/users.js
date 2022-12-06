@@ -120,7 +120,7 @@ router.put('/', auth, upload.single('avatar'), async (req, res) => {
                 return res.status(403).send('You can make changes only for dispatchers!');
             }
             if(status === 'false') {
-              user.isWorking = 'inactive';
+              user.isWorking = 'disabled';
             } else if (status === 'true') {
               user.isWorking = 'active';
             }

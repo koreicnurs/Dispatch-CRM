@@ -73,7 +73,7 @@ const run = async () => {
     token: nanoid(),
     displayName: 'User2',
     phoneNumber: '+267●5350802',
-    isWorking: 'inactive'
+    isWorking: 'disabled'
   }, {
     email: 'bahaway@gmail.com',
     password: 'bahaway',

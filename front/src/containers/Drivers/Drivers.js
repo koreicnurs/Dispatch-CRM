@@ -76,7 +76,7 @@ const Drivers = () => {
 
   const { filteredData} = useTableSearch({
     searchVal,
-    drivers
+    data: drivers
   });
 
 

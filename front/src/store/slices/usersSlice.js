@@ -12,7 +12,9 @@ export const initialState = {
     changeLoading: false,
     changeError: null,
     createLoading: false,
-    createError: null
+    createError: null,
+    changeStatusLoading: false,
+    changeStatusError: null
 };
 
 const usersSlice = createSlice({
@@ -80,11 +82,24 @@ const usersSlice = createSlice({
         },
         createDispatcherSuccess(state) {
             state.createLoading = false;
+            state.createError = null;
         },
         createDispatcherFailure(state, action) {
-            state.createLoading =false;
+            state.createLoading = false;
             state.createError = action.payload;
         },
+
+        changeStatusRequest(state) {
+            state.changeStatusLoading = true;
+            state.changeStatusError = null;
+        },
+        changeStatusSuccess(state) {
+            state.changeStatusLoading = false;
+        },
+        changeStatusFailure(state, action) {
+            state.changeStatusLoading = false;
+            state.changeStatusError = action.payload;
+        }
     }
 });
 

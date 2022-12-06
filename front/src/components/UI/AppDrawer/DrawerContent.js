@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo} from 'react';
 import {List, ListItemButton, ListItemText, styled} from "@mui/material";
 import {Link} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {logoutRequest} from "../../../store/actions/usersActions";
 
 const StyledList = styled(List)(({theme}) => ({
@@ -28,6 +28,7 @@ const DrawerContent = () => {
         {title: 'Carriers', route: '/carriers'},
         {title: 'Drivers', route: '/drivers'},
         {title: 'My Profile', route: '/my_profile'},
+        {title: 'Dispatchers', route: '/dispatchers'},
     ], []);
 
     const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -38,6 +39,8 @@ const DrawerContent = () => {
         setSelectedIndex(index);
     }, [dispatch, menuItems]);
 
+    const user = useSelector(state => state.users.user);
+
     const handleListItemClick = (index) => {
         setSelectedIndex(index);
         if (index === menuItems.length){
@@ -45,17 +48,29 @@ const DrawerContent = () => {
         }
     };
 
+    const listItem = (title, index, route) => (
+      <ListItemButton key={title}
+                      component={Link} to={route}
+                      selected={selectedIndex === index}
+                      onClick={() => handleListItemClick(index)}
+      >
+          <ListItemText primaryTypographyProps={{fontWeight: '700'}} primary={title}/>
+      </ListItemButton>
+    );
+
     return (
         <StyledList>
-            {menuItems.map((text, index) => (
-                <ListItemButton key={text.title}
-                                component={Link} to={text.route}
-                                selected={selectedIndex === index}
-                                onClick={() => handleListItemClick(index)}
-                >
-                    <ListItemText primaryTypographyProps={{fontWeight: '700'}} primary={text.title}/>
-                </ListItemButton>
-            ))}
+            {menuItems.map((text, index) => {
+                if (text.title !== "Dispatchers") {
+                    return listItem(text.title, index, text.route);
+                } else {
+                    if (user.role === "admin") {
+                        return listItem(text.title, index, text.route);
+                    } else {
+                        return null;
+                    }
+                }
+            })}
             <ListItemButton
                             component={Link} to="/login"
                             selected={selectedIndex === menuItems.length}

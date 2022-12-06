@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const uniqueValidator = require('mongoose-unique-validator');
 
 const validatePhoneNumber = value => {
   const pattern = /^\+(?:[0-9]●?){6,14}[0-9]$/;
@@ -12,11 +13,6 @@ const BrokerSchema = new Schema({
     type: String,
     required: true
   },
-  author: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-  },
   phoneNumber: [{
     type: String,
     required: true,
@@ -26,7 +22,8 @@ const BrokerSchema = new Schema({
   }],
   mc: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   description: String,
   companiesContract: [{
@@ -36,5 +33,6 @@ const BrokerSchema = new Schema({
   }]
 });
 
+BrokerSchema.plugin(uniqueValidator, {message: 'This Broker is already registered'});
 const Broker = mongoose.model('Broker', BrokerSchema);
 module.exports = Broker;

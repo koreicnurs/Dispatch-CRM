@@ -16,6 +16,7 @@ import FileInput from "../UI/Form/FileInput/FileInput";
 import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
 import {changeUserRequest} from "../../store/actions/usersActions";
 import PasswordInput from "../UI/Form/PasswordInput/PasswordInput";
+import defaultAvatar from "../../assets/default-avatar.png";
 
 const Profile = ({user, error}) => {
   const dispatch = useDispatch();
@@ -44,9 +45,17 @@ const Profile = ({user, error}) => {
       displayName: user.displayName,
       avatar: user.avatar
     });
-    setCurrentAvatar({
-      avatarImg: apiUrl + "/" + user.avatar,
-    })
+
+    if(user.avatar) {
+      setCurrentAvatar({
+        avatarImg: apiUrl + "/" + user.avatar,
+      });
+    } else {
+      setCurrentAvatar({
+        avatarImg: defaultAvatar,
+      });
+    }
+
   }, [user]);
 
   const inputChangeHandler = e => {

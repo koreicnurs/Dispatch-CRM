@@ -16,16 +16,16 @@
     Допустим я открываю страницу "carriers"
     То я нажимаю на кнопку "add"
     Если я напишу данные:
-      | title       | SWCS          |
-      | phoneNumber | +611234567890 |
-      | mc          | 1234          |
-      | dot         | 126           |
-      | fedid       | 88-237        |
-      | description | test company  |
-    Затем нажимаю на "Create"
+      | title       | SWCS         |
+      | phoneNumber | 333333333    |
+      | mc          | 1234         |
+      | dot         | 126          |
+      | fedid       | 88-237       |
+      | description | test company |
+    Затем нажимаю на "Save"
     То я вижу "Carrier created!"
 
-   @registerCarrierFailed
+  @registerCarrierFailed
   Сценарий: Регистрация нового Carrier не прошла
     Допустим я захожу на страницу "login"
     Если я введу данные:
@@ -37,10 +37,10 @@
     То я нажимаю на кнопку "add"
     Если я напишу данные:
       | title       | BAHAWAY         |
-      | phoneNumber | +611234567890   |
+      | phoneNumber | 333333333       |
       | mc          | 1180196         |
       | dot         | 3537967         |
       | fedid       | 83-3826233      |
       | description | test company #1 |
-    Затем нажимаю на "Create"
+    Затем нажимаю на "Save"
     То я вижу "Carrier creation failed!"

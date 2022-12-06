@@ -16,6 +16,7 @@ const validatePhoneNumber = value => {
   if (!pattern.test(value)) return false;
 };
 
+
 const DescriptionSchema = new Schema({
   address: {
     type: String,
@@ -65,7 +66,11 @@ const DriverSchema = new Schema({
   status: {
     type: String,
     required: true,
-    enum: ['in transit', 'upcoming', 'off/home', 'n/a', 'sleep', 'ready', 'in tr/upc'],
+    enum: ['in transit', 'upcoming', 'ready', 'in tr/upc', 'off'],
+  },
+  currentStatus: {
+    type: String,
+    enum: ['driving', 'rest', 'emergency', 'off'],
   },
   description: DescriptionSchema,
   pickUp: String,
@@ -78,6 +83,8 @@ const DriverSchema = new Schema({
 
 DriverSchema.plugin(uniqueValidator, { message: 'Error, expected {PATH} to be unique.' });
 DriverSchema.plugin(idValidator, {message : 'Bad ID value for {PATH}',});
+
+
 
 const Driver = mongoose.model('Driver', DriverSchema);
 module.exports = Driver;

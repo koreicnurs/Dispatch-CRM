@@ -83,21 +83,27 @@ const Carriers = () => {
             Carriers
           </Typography>
         </Grid>
-        <Grid container item flexDirection="row" justifyContent="space-between" alignItems="center" paddingRight="15px">
-          <AddCarrier/>
-        </Grid>
+        <Grid
+          item
+          container
+          spacing={2}
+          justifyContent="space-between">
+          <Grid padding="15px">
+            <AddCarrier/>
+          </Grid>
   
-        <Grid>
-          <SearchStyle>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search"
-              inputProps={{ 'aria-label': 'search' }}
-              onChange={e => setSearchVal(e.target.value)}
-            />
-          </SearchStyle>
+          <Grid>
+            <SearchStyle>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search"
+                inputProps={{ 'aria-label': 'search' }}
+                onChange={e => setSearchVal(e.target.value)}
+              />
+            </SearchStyle>
+          </Grid>
         </Grid>
 
         <InnerTable

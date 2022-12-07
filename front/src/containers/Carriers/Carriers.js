@@ -72,7 +72,7 @@ const Carriers = () => {
   
   const { filteredData} = useTableSearch({
     searchVal,
-    drivers: carriers
+    data: carriers
   });
 
   return (

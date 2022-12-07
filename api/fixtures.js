@@ -20,28 +20,28 @@ const run = async () => {
 
   const [bahawayCarrier, safewayCargoCarrier, turanExpressCarrier, tumarExpressCarrier] = await Carrier.create({
     title: 'BAHAWAY',
-    phoneNumber: '+611234567890',
+    phoneNumber: '+611●234567890',
     mc: '1180196',
     dot: '3537967',
     fedid: '83-3826233',
     description: 'test company #1'
   }, {
     title: 'SAFEWAY CARGO',
-    phoneNumber: '+431234567890',
+    phoneNumber: '+431●234567890',
     mc: '1296697',
     dot: '3703312',
     fedid: '87-113019',
     description: 'test company #2'
   }, {
     title: 'TURAN EXPRESS',
-    phoneNumber: '+994123456789',
+    phoneNumber: '+994●123456789',
     mc: '1256775',
     dot: '3648632',
     fedid: '84-2388341',
     description: 'test company #3'
   }, {
     title: 'TUMAR EXPRESS',
-    phoneNumber: '+355123456789',
+    phoneNumber: '+355●123456789',
     mc: '918995',
     dot: '2638087',
     fedid: '47-4067936',
@@ -350,25 +350,25 @@ const run = async () => {
   await Broker.create(
     {
       name: 'Azamat',
-      phoneNumber: ['+99655555555', '+2678480704'],
-      mc: 'Lorem1',
+      phoneNumber: ['+996●3592261', '+267●8480704'],
+      mc: '225863',
       description: 'Lorem ipsum dolor sit amet',
-      companiesContract: [bahawayCarrier._id],
+      companiesContract: [bahawayCarrier._id, safewayCargoCarrier._id, turanExpressCarrier._id]
     }, {
       name: 'Aibek',
-      phoneNumber: ['+2678892567'],
-      mc: 'Lorem2',
+      phoneNumber: ['+347●8548314'],
+      mc: '238164',
       description: 'Consectetur adipiscing elit',
       companiesContract: [bahawayCarrier._id],
     }, {
       name: 'Nurbek',
-      phoneNumber: ['+9293525578', '+9294884446'],
-      mc: 'Lorem3',
-      companiesContract: [bahawayCarrier._id],
+      phoneNumber: ['+929●3525578', '+929●4884446'],
+      mc: '216579',
+      companiesContract: [bahawayCarrier._id, tumarExpressCarrier._id],
     }, {
       name: 'Adilet',
-      phoneNumber: ['+996999523214', '+7678480704', '+3232523146'],
-      mc: 'Lorem4',
+      phoneNumber: ['+996●5995232', '+767●8480704', '+323●2523146'],
+      mc: '953268',
       description: 'Convallis convallis tellus id interdum velit laoreet id donec ultrices',
       companiesContract: [bahawayCarrier._id],
     }

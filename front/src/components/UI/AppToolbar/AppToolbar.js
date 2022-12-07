@@ -1,17 +1,31 @@
-import React from 'react';
-import {useSelector} from "react-redux";
+import React, {useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
 import 'react-toastify/dist/ReactToastify.css';
 import {ToastContainer} from "react-toastify";
-import {AppBar, Avatar, Grid, Stack, Toolbar, Typography} from "@mui/material";
+import {AppBar, Avatar, Button, Grid, ListItemIcon, Menu, Stack, Toolbar, Typography} from "@mui/material";
 import {DRAWER_WIDTH} from "../../../constants";
 import {apiUrl} from "../../../config";
 import defaultAvatar from "../../../assets/default-avatar.png";
+import MenuItem from '@mui/material/MenuItem';
+import Logout from '@mui/icons-material/Logout';
+import PersonIcon from '@mui/icons-material/Person';
+import {Link} from 'react-router-dom';
+import {logoutRequest} from '../../../store/actions/usersActions';
 
 const AppToolbar = () => {
+    const dispatch = useDispatch();
     const user = useSelector(state => state.users.user);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+    
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     let avatarImage = defaultAvatar;
-
     if (user.avatar) {
         avatarImage = apiUrl + '/' + user.avatar;
     }
@@ -26,13 +40,46 @@ const AppToolbar = () => {
             <Toolbar>
                 <Grid container justifyContent="flex-end" alignItems="center">
                     <Grid item>
-                        <Stack direction="row" spacing={1} color="inherit">
-                            <Avatar alt={user.displayName} src={avatarImage}
-                                    sx={{width: 32, height: 32, mr: 1}}/>
-                            <Typography variant="button" noWrap>
-                                Hello, {user.displayName}
-                            </Typography>
-                        </Stack>
+                        <div>
+                            <Button
+                              id="basic-button"
+                              aria-controls={open ? 'basic-menu' : undefined}
+                              aria-haspopup="true"
+                              aria-expanded={open ? 'true' : undefined}
+                              onClick={handleClick}
+                              sx={{padding: 0}}
+                            >
+                                <Stack direction="row" spacing={1} color="inherit">
+                                    <Avatar alt={user.displayName} src={avatarImage}
+                                            sx={{width: 32, height: 32, mr: 1}}/>
+                                    <Typography variant="button" noWrap>
+                                        Hello, {user.displayName}
+                                    </Typography>
+                                </Stack>
+                            </Button>
+                            <Menu
+                              id="basic-menu"
+                              anchorEl={anchorEl}
+                              open={open}
+                              onClose={handleClose}
+                              MenuListProps={{
+                                  'aria-labelledby': 'basic-button',
+                              }}
+                            >
+                                <MenuItem onClick={handleClose} component={Link} to={'/my-profile'}>
+                                    <ListItemIcon>
+                                        <PersonIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    My Profile
+                                </MenuItem>
+                                <MenuItem onClick={() => dispatch(logoutRequest())}>
+                                    <ListItemIcon>
+                                        <Logout fontSize="small" />
+                                    </ListItemIcon>
+                                    Sign Out
+                                </MenuItem>
+                            </Menu>
+                        </div>
                     </Grid>
                 </Grid>
             </Toolbar>

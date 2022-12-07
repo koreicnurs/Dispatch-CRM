@@ -99,7 +99,7 @@ const StatusUpdate = () => {
 
   const { filteredData} = useTableSearch({
     searchVal,
-    drivers
+    data: drivers
   });
 
   //uncomment for DataGrid

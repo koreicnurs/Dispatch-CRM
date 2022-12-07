@@ -38,7 +38,7 @@ router.post('/', upload.single('avatar'), async (req, res) => {
       displayName,
       phoneNumber,
       role,
-      isWorking: true,
+      isWorking: 'active',
       avatar: req.file ? 'uploads/' + req.file.filename : null,
     };
     const user = new User(userData);
@@ -60,7 +60,7 @@ router.post('/dispatchers', auth, permit('admin'), upload.single('avatar'), asyn
       password,
       displayName,
       phoneNumber,
-      isWorking: true,
+      isWorking: 'active',
       avatar: req.file ? 'uploads/' + req.file.filename : null,
     };
     const user = new User(userData);
@@ -78,19 +78,23 @@ router.post('/sessions', async (req,  res) => {
   const {email, password} = req.body;
   
   if (!email || !password) {
-    return res.status(400).send('Data not valid');
+    return res.status(400).send('Data not valid!');
   }
   
   const user = await User.findOne({email});
   
   if (!user) {
-    return res.status(401).send({message: 'Credentials are wrong!'});
+    return res.status(401).send('Credentials are wrong!');
   }
   
   const isMatch = await user.checkPassword(password);
   
   if (!isMatch) {
-    return res.status(401).send('Credentials are wrong');
+    return res.status(401).send('Credentials are wrong!');
+  }
+  
+  if (!user.isWorking) {
+    return res.status(404).send('User not found!');
   }
   
   try {
@@ -119,7 +123,12 @@ router.put('/', auth, upload.single('avatar'), async (req, res) => {
             if (user.role !== 'user') {
                 return res.status(403).send('You can make changes only for dispatchers!');
             }
-            user.isWorking = status;
+            if(status === 'false') {
+              user.isWorking = 'disabled';
+            } else if (status === 'true') {
+              user.isWorking = 'active';
+            }
+
             await user.save();
             return res.send(user);
         }

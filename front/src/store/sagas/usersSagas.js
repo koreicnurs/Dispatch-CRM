@@ -29,7 +29,7 @@ export function* loginUserSaga({payload: userData}) {
         yield put(addNotification({message: 'Successfully log in!', variant: 'success'}));
         yield put(historyReplace('/loads?status=upcoming'));
     } catch (e) {
-        yield put(loginFailure(e.response.data));
+        yield put(loginFailure(e.response && e.response.data));
     }
 }
 

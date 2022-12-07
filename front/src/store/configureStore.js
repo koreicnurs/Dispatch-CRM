@@ -39,7 +39,7 @@ axiosApi.interceptors.request.use(config => {
 });
 
 axiosApi.interceptors.response.use(res => res, e => {
-    if (!e.response.data) {
+    if (!e.response) {
         e.response = {data: {global: 'No internet!'}};
     }
 

@@ -65,7 +65,7 @@ const Login = () => {
 
                 {error && (
                     <Alert severity="error" className={classes.alert}>
-                        Error! {error.message}
+                        Error! {error.global ? error.global : error}
                     </Alert>
                 )}
 

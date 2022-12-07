@@ -66,7 +66,7 @@ const AppToolbar = () => {
                                   'aria-labelledby': 'basic-button',
                               }}
                             >
-                                <MenuItem onClick={handleClose} component={Link} to={'/my_profile'}>
+                                <MenuItem onClick={handleClose} component={Link} to={'/my-profile'}>
                                     <ListItemIcon>
                                         <PersonIcon fontSize="small" />
                                     </ListItemIcon>

@@ -22,7 +22,7 @@ const DrawerContent = () => {
     const dispatch = useDispatch();
 
     const menuItems = useMemo(() => [
-        {title:'Status Update', route:  '/status_update'},
+        {title:'Status Update', route:  '/status-update'},
         {title:'Trips', route:  '/loads/?status=upcoming'},
         {title: 'Carriers', route: '/carriers'},
         {title: 'Drivers', route: '/drivers'},

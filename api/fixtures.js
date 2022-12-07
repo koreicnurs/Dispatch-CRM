@@ -56,7 +56,7 @@ const run = async () => {
     displayName: 'Admin',
     avatar: 'fixtures/admin.png',
     phoneNumber: '+267●5350811',
-    isWorking: true
+    isWorking: 'active'
   }, {
     email: 'user@gmail.com',
     password: 'user',
@@ -65,7 +65,7 @@ const run = async () => {
     displayName: 'User',
     avatar: 'fixtures/user.png',
     phoneNumber: '+267●5350801',
-    isWorking: true
+    isWorking: 'active'
   }, {
     email: 'user2@gmail.com',
     password: 'user2',
@@ -73,7 +73,7 @@ const run = async () => {
     token: nanoid(),
     displayName: 'User2',
     phoneNumber: '+267●5350802',
-    isWorking: false
+    isWorking: 'disabled'
   }, {
     email: 'bahaway@gmail.com',
     password: 'bahaway',
@@ -82,7 +82,7 @@ const run = async () => {
     displayName: 'BAHAWAY',
     companyId: bahawayCarrier._id,
     phoneNumber: '+267●5350812',
-    isWorking: true
+    isWorking: 'active'
   }, {
     email: 'safeway@gmail.com',
     password: 'safeway',
@@ -91,7 +91,7 @@ const run = async () => {
     displayName: 'SAFEWAY CARGO',
     companyId: safewayCargoCarrier._id,
     phoneNumber: '+267●5350803',
-    isWorking: true
+    isWorking: 'active'
   });
 
   const [umotDriver, kubaDriver, timurDriver, keldibekDriver, bakdoolotDriver, askhatDriver,

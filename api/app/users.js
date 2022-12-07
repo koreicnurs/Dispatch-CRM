@@ -38,7 +38,7 @@ router.post('/', upload.single('avatar'), async (req, res) => {
       displayName,
       phoneNumber,
       role,
-      isWorking: true,
+      isWorking: 'active',
       avatar: req.file ? 'uploads/' + req.file.filename : null,
     };
     const user = new User(userData);
@@ -60,7 +60,7 @@ router.post('/dispatchers', auth, permit('admin'), upload.single('avatar'), asyn
       password,
       displayName,
       phoneNumber,
-      isWorking: true,
+      isWorking: 'active',
       avatar: req.file ? 'uploads/' + req.file.filename : null,
     };
     const user = new User(userData);
@@ -119,7 +119,12 @@ router.put('/', auth, upload.single('avatar'), async (req, res) => {
             if (user.role !== 'user') {
                 return res.status(403).send('You can make changes only for dispatchers!');
             }
-            user.isWorking = status;
+            if(status === 'false') {
+              user.isWorking = 'disabled';
+            } else if (status === 'true') {
+              user.isWorking = 'active';
+            }
+
             await user.save();
             return res.send(user);
         }

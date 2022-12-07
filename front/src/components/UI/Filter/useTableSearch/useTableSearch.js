@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 
-const UseTableSearch = ({ searchVal, drivers }) => {
+const UseTableSearch = ({ searchVal, data }) => {
 
   const [filteredData, setFilteredData] = useState([]);
   const [origData, setOrigData] = useState([]);
@@ -19,16 +19,16 @@ const UseTableSearch = ({ searchVal, drivers }) => {
     };
 
     const fetchData = async () => {
-      setOrigData(drivers);
-      setFilteredData(drivers);
-      const searchInd = drivers.map(user => {
+      setOrigData(data);
+      setFilteredData(data);
+      const searchInd = data.map(user => {
         const allValues = crawl(user);
         return { allValues: allValues.toString() };
       });
       setSearchIndex(searchInd);
     };
     fetchData();
-  }, [drivers]);
+  }, [data]);
 
   useEffect(() => {
     if (searchVal) {

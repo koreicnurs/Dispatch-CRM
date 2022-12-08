@@ -67,6 +67,7 @@ export function* deleteBroker({payload: id}) {
     try {
         yield axiosApi.delete('/brokers/' + id);
         yield put(deleteBrokerSuccess());
+        yield put(fetchBrokersRequest());
         yield put(addNotification({message: 'You have successfully deleted a broker!', variant: 'success'}));
     } catch (e) {
         yield put(deleteBrokerFailure(e.response.data));

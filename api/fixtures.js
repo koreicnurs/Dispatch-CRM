@@ -20,28 +20,28 @@ const run = async () => {
 
   const [bahawayCarrier, safewayCargoCarrier, turanExpressCarrier, tumarExpressCarrier] = await Carrier.create({
     title: 'BAHAWAY',
-    phoneNumber: '+611●234567890',
+    phoneNumber: '+611234567890',
     mc: '1180196',
     dot: '3537967',
     fedid: '83-3826233',
     description: 'test company #1'
   }, {
     title: 'SAFEWAY CARGO',
-    phoneNumber: '+431●234567890',
+    phoneNumber: '+431234567890',
     mc: '1296697',
     dot: '3703312',
     fedid: '87-113019',
     description: 'test company #2'
   }, {
     title: 'TURAN EXPRESS',
-    phoneNumber: '+994●123456789',
+    phoneNumber: '+994123456789',
     mc: '1256775',
     dot: '3648632',
     fedid: '84-2388341',
     description: 'test company #3'
   }, {
     title: 'TUMAR EXPRESS',
-    phoneNumber: '+355●123456789',
+    phoneNumber: '+355123456789',
     mc: '918995',
     dot: '2638087',
     fedid: '47-4067936',
@@ -55,7 +55,7 @@ const run = async () => {
     token: nanoid(),
     displayName: 'Admin',
     avatar: 'fixtures/admin.png',
-    phoneNumber: '+267●5350811',
+    phoneNumber: '+2675350811',
     isWorking: true
   }, {
     email: 'user@gmail.com',
@@ -64,7 +64,7 @@ const run = async () => {
     token: nanoid(),
     displayName: 'User',
     avatar: 'fixtures/user.png',
-    phoneNumber: '+267●5350801',
+    phoneNumber: '+2675350801',
     isWorking: true
   }, {
     email: 'user2@gmail.com',
@@ -72,7 +72,7 @@ const run = async () => {
     role: 'user',
     token: nanoid(),
     displayName: 'User2',
-    phoneNumber: '+267●5350802',
+    phoneNumber: '+2675350802',
     isWorking: false
   }, {
     email: 'bahaway@gmail.com',
@@ -81,7 +81,7 @@ const run = async () => {
     token: nanoid(),
     displayName: 'BAHAWAY',
     companyId: bahawayCarrier._id,
-    phoneNumber: '+267●5350812',
+    phoneNumber: '+2675350812',
     isWorking: true
   }, {
     email: 'safeway@gmail.com',
@@ -90,7 +90,7 @@ const run = async () => {
     token: nanoid(),
     displayName: 'SAFEWAY CARGO',
     companyId: safewayCargoCarrier._id,
-    phoneNumber: '+267●5350803',
+    phoneNumber: '+2675350803',
     isWorking: true
   });
 
@@ -98,7 +98,7 @@ const run = async () => {
     mirbekDriver, bekmuratDriver, makenDriver] = await Driver.create({
     email: 'umot@gmail.com',
     name: 'Umot',
-    phoneNumber: '+267●5350808',
+    phoneNumber: '+2675350808',
     companyId: bahawayCarrier._id,
     status: 'in transit',
     currentStatus: 'driving',
@@ -112,7 +112,7 @@ const run = async () => {
   }, {
     email: 'kuba@gmail.com',
     name: 'Kuba',
-    phoneNumber: '+929●3774446',
+    phoneNumber: '+9293774446',
     companyId: bahawayCarrier._id,
     status: 'upcoming',
     telegramId: '',
@@ -125,7 +125,7 @@ const run = async () => {
   }, {
     email: 'timur@gmail.com',
     name: 'Timur',
-    phoneNumber: '+323●7454492',
+    phoneNumber: '+3237454492',
     companyId: safewayCargoCarrier._id,
     status: 'off',
     currentStatus: 'off',
@@ -139,7 +139,7 @@ const run = async () => {
   }, {
     email: 'keldibek@gmail.com',
     name: 'Keldibek',
-    phoneNumber: '+513●8081130',
+    phoneNumber: '+5138081130',
     companyId: safewayCargoCarrier._id,
     status: 'ready',
     telegramId: '',
@@ -152,7 +152,7 @@ const run = async () => {
   }, {
     email: 'bakdoolot@gmail.com',
     name: 'Bakdoolot',
-    phoneNumber: '+630●6702075',
+    phoneNumber: '+6306702075',
     companyId: safewayCargoCarrier._id,
     status: 'in tr/upc',
     currentStatus: 'rest',
@@ -166,7 +166,7 @@ const run = async () => {
   }, {
     email: 'askhat@gmail.com',
     name: 'Askhat',
-    phoneNumber: '+312●6840690',
+    phoneNumber: '+3126840690',
     companyId: turanExpressCarrier._id,
     status: 'off',
     currentStatus: 'off',
@@ -185,7 +185,7 @@ const run = async () => {
   }, {
     email: 'mirbek@gmail.com',
     name: 'Mirbek',
-    phoneNumber: '+773●6913604',
+    phoneNumber: '+7736913604',
     companyId: turanExpressCarrier._id,
     status: 'in tr/upc',
     currentStatus: 'driving',
@@ -199,7 +199,7 @@ const run = async () => {
   }, {
     email: 'bekmurat@gmail.com',
     name: 'Bekmurat',
-    phoneNumber: '+773●9466304',
+    phoneNumber: '+7739466304',
     companyId: tumarExpressCarrier._id,
     status: 'ready',
     telegramId: '',
@@ -212,7 +212,7 @@ const run = async () => {
   }, {
     email: 'maken@gmail.com',
     name: 'Maken',
-    phoneNumber: '+347●4941314',
+    phoneNumber: '+3474941314',
     companyId: tumarExpressCarrier._id,
     status: 'in transit',
     currentStatus: 'rest',
@@ -350,24 +350,24 @@ const run = async () => {
   await Broker.create(
     {
       name: 'Azamat',
-      phoneNumber: ['+996●3592261', '+267●8480704'],
+      phoneNumber: ['+9963592261', '+2678480704'],
       mc: '225863',
       description: 'Lorem ipsum dolor sit amet',
       companiesContract: [bahawayCarrier._id, safewayCargoCarrier._id, turanExpressCarrier._id]
     }, {
       name: 'Aibek',
-      phoneNumber: ['+347●8548314'],
+      phoneNumber: ['+3478548314'],
       mc: '238164',
       description: 'Consectetur adipiscing elit',
       companiesContract: [bahawayCarrier._id],
     }, {
       name: 'Nurbek',
-      phoneNumber: ['+929●3525578', '+929●4884446'],
+      phoneNumber: ['+9293525578', '+9294884446'],
       mc: '216579',
       companiesContract: [bahawayCarrier._id, tumarExpressCarrier._id],
     }, {
       name: 'Adilet',
-      phoneNumber: ['+996●5995232', '+767●8480704', '+323●2523146'],
+      phoneNumber: ['+9965995232', '+7678480704', '+3232523146'],
       mc: '953268',
       description: 'Convallis convallis tellus id interdum velit laoreet id donec ultrices',
       companiesContract: [bahawayCarrier._id],

@@ -1,22 +1,17 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
+import {useDispatch} from "react-redux";
 import {Box, Collapse, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Typography} from "@mui/material";
 import {Delete, KeyboardArrowDown, KeyboardArrowUp} from "@mui/icons-material";
 import EditBroker from "../../Modals/EditBroker";
-// import {useDispatch} from "react-redux";
-// import {deleteBrokerRequest, fetchBrokersRequest} from "../../../store/actions/brokersActions";
+import {deleteBrokerRequest} from "../../../store/actions/brokersActions";
 
 const BrokerTableBodyRow = ({broker, columns}) => {
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
 
-    // useEffect(() => {
-    //     dispatch(fetchBrokersRequest());
-    // }, [dispatch, broker]);
-    //
-    // const onDelete = async (id) => {
-    //     await dispatch(deleteBrokerRequest(id));
-    //     await dispatch(fetchBrokersRequest());
-    // };
+    const onDelete = async (id) => {
+        await dispatch(deleteBrokerRequest(id));
+    };
 
     return (
         <>
@@ -30,10 +25,6 @@ const BrokerTableBodyRow = ({broker, columns}) => {
                         {open ? <KeyboardArrowUp/> : <KeyboardArrowDown/>}
                     </IconButton>
                 </TableCell>
-                {/*<TableCell>{broker.name}</TableCell>*/}
-                {/*<TableCell>{broker.phoneNumber}</TableCell>*/}
-                {/*<TableCell>{broker.mc}</TableCell>*/}
-                {/*<TableCell>{broker.description}</TableCell>*/}
 
                 {columns.map(column => {
                     if (column.key === 'companiesContract' || column.key === 'arrow') {
@@ -52,7 +43,7 @@ const BrokerTableBodyRow = ({broker, columns}) => {
                 <EditBroker brokerID={broker._id}/>
                 <TableCell>
                     <IconButton color="primary"
-                                // onClick={()=>onDelete(broker._id)}
+                                onClick={() => onDelete(broker._id)}
                     >
                         <Delete/>
                     </IconButton>

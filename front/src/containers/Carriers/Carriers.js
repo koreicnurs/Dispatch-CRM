@@ -57,6 +57,7 @@ const columns = [
   {key: 'mc', label: 'MC'},
   {key: 'dot', label: 'DOT'},
   {key: 'fedid', label: 'FED-ID'},
+  {key: 'description', label: 'Description'}
 ];
 
 

@@ -167,7 +167,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
 
     setEditModal(true);
     dispatch(clearCreateTripErrorRequest());
-  }}, [dispatch, isEdit, tripID, trips]);
+  }}, [dispatch, isEdit, tripID, trips, trip]);
 
   const [startDate, setStartDate] = useState(null);
   const [finDate, setFinDate] = useState(null);

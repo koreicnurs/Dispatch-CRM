@@ -302,7 +302,7 @@ const run = async () => {
     timeToDel: '18:0',
     pu: 'New-York, NY',
     del: 'Seattle, WS',
-    status: 'finished',
+    status: 'upcoming',
   },{
     loadCode: 'T-D1EF78SD1C',
     dispatchId: user2._id,

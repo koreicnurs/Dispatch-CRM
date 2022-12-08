@@ -73,6 +73,11 @@ const LoadSchema = new Schema({
         default: 'upcoming',
         enum: ['upcoming', 'transit', 'finished', 'cancel'],
     },
+    finishConfirmed: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
     BOL: String,
     RC: String,
     comment: String

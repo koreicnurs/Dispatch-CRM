@@ -259,4 +259,23 @@ router.put('/attachment/:id', auth, cpUpload, async (req, res) => {
   }
 });
 
+router.put('/confirm/:id', auth, permit('admin', 'user'), async (req, res) => {
+  try {
+    const load = await Load.findOne({_id: req.params.id});
+    
+    if (!load) {
+      return res.status(404).send({message: 'Load not found!'});
+    }
+    
+    if (!(load.status === 'finished')) {
+      return res.status(403).send({message: 'It is an unfinished load!'});
+    }
+    
+    await Load.findByIdAndUpdate(req.params.id, {finishConfirmed: true});
+    res.send('Load changed successfully!');
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
 module.exports = router;

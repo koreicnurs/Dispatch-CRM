@@ -38,10 +38,11 @@ const DispatcherTableBody = ({dispatchers, switchHandler}) => {
               handleChange={switchHandler}
               id={dispatcher._id}
               name="isWorking"
-              checked={dispatcher.isWorking}
-              label={dispatcher.isWorking ? "Active" : "Inactive"}
+              checked={dispatcher.isWorking === 'active'}
+              label={dispatcher.isWorking=== 'active' ? 'Active' : 'Disabled'}
             />
           </TableCell>
+          <TableCell sx={{color: 'transparent'}}>{dispatcher.isWorking}</TableCell>
         </TableRow>
       ))}
     </>

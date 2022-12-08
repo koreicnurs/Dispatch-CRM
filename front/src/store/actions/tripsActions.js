@@ -28,5 +28,8 @@ export const {
   addAttachmentRequest,
   addAttachmentSuccess,
   addAttachmentFailure,
+  confirmTripsRequest,
+  confirmTripsSuccess,
+  confirmTripsFailure,
   clearCreateTripErrorRequest
 } = tripsSlice.actions;

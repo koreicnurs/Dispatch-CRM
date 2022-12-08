@@ -272,7 +272,7 @@ router.put('/confirm/:id', auth, permit('admin', 'user'), async (req, res) => {
     }
     
     await Load.findByIdAndUpdate(req.params.id, {finishConfirmed: true});
-    res.send('Load changed successfully!');
+    res.send('Trip confirmed!');
   } catch (e) {
     res.status(400).send(e);
   }

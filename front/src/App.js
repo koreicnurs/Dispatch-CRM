@@ -44,7 +44,7 @@ const App = () => {
                 <ProtectedRoute
                     isAllowed={user?.role !== 'carrier'}
                     redirectTo="/login"
-                    path="/status_update"
+                    path="/status-update"
                     component={StatusUpdate}
                 />
                 <ProtectedRoute
@@ -68,7 +68,7 @@ const App = () => {
                 <ProtectedRoute
                   isAllowed={user}
                   redirectTo="/login"
-                  path="/my_profile"
+                  path="/my-profile"
                   component={MyProfile}
                 />
                 <RoleProtectedRoute

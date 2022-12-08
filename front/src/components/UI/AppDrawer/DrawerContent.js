@@ -2,7 +2,6 @@ import React, {useEffect, useMemo} from 'react';
 import {List, ListItemButton, ListItemText, styled} from "@mui/material";
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {logoutRequest} from "../../../store/actions/usersActions";
 
 const StyledList = styled(List)(({theme}) => ({
     color: theme.palette.primary.main,
@@ -58,9 +57,6 @@ const DrawerContent = () => {
 
     const handleListItemClick = (index) => {
         setSelectedIndex(index);
-        if (index === menuItems.length){
-            dispatch(logoutRequest());
-        }
     };
 
     const listItem = (title, index, route) => (
@@ -86,13 +82,6 @@ const DrawerContent = () => {
                     }
                 }
             })}
-            <ListItemButton
-                            component={Link} to="/login"
-                            selected={selectedIndex === menuItems.length}
-                            onClick={() => handleListItemClick(menuItems.length)}
-            >
-                <ListItemText primaryTypographyProps={{fontWeight: '700'}} primary='Sign Out'/>
-            </ListItemButton>
         </StyledList>
     );
 };

@@ -33,7 +33,7 @@ export function* loginUserSaga({payload: userData}) {
             yield put(historyReplace('/carrier-loads'));
         }
     } catch (e) {
-        yield put(loginFailure(e.response.data));
+        yield put(loginFailure(e.response && e.response.data));
     }
 }
 

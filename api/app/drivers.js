@@ -47,16 +47,17 @@ router.get('/', auth, async (req, res) => {
           "readyTime" : 1,
           "notes" : 1,
           "license" : 1,
+          "driversCount" : {"$size": "$drivers"},
           "order" : {
             "$cond" : {
               if : {"$eq" : ["$status", "ready"]}, then: 0,
               else : {"$cond" : {
                   if : {"$eq" : ["$status", "in transit"]}, then: 1,
                   else: {"$cond" : {
-                      if : {"$eq" : ["$status", "upcoming"]}, then: 2,
+                      if : {"$eq" : ["$status", "upcoming"]}, then: 3,
                       else: {"$cond" : {
-                          if : {"$eq" : ["$status", "in tr/upc"]}, then: 1,
-                          else: 3
+                          if : {"$eq" : ["$status", "in tr/upc"]}, then: 2,
+                          else: 4
                         }
                       }
                     }
@@ -67,7 +68,7 @@ router.get('/', auth, async (req, res) => {
           }
         }
       };
-      const sort = {"$sort" : {"companyId" : 1, "order" : 1}};
+      const sort = {"$sort" : {"driversCount" : -1, "companyId": 1, "order" : 1}};
       const project = {"$project" : {
           "_id": 1,
           "telegramId" : 1,
@@ -85,8 +86,16 @@ router.get('/', auth, async (req, res) => {
           "notes" : 1,
           "license" : 1,
         }};
+      const lookup = {"$lookup":
+          {
+            from: "drivers",
+            localField: "companyId",
+            foreignField: "companyId",
+            as: "drivers"
+          }
+      };
 
-      const drivers = await Driver.aggregate([order, sort, project]);
+      const drivers = await Driver.aggregate([lookup, order, sort, project]);
 
       await Carrier.populate(drivers, {
         path: "companyId",

@@ -93,8 +93,8 @@ router.post('/sessions', async (req,  res) => {
     return res.status(401).send('Credentials are wrong!');
   }
   
-  if (!user.isWorking) {
-    return res.status(404).send('User not found!');
+  if (user.isWorking === 'disabled') {
+    return res.status(401).send('Credentials are wrong!');
   }
   
   try {

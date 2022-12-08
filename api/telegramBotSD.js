@@ -15,7 +15,37 @@ const tripsStatus = {
     upcoming: "upcoming",
 }
 
+const driversStatus = {
+    driving: "driving",
+    rest: "rest",
+    emergency: "emergency",
+    off: "off",
+}
+
 module.exports = driversBot = () => {
+
+    const keyboardDriverStatus = {
+        reply_markup: JSON.stringify({
+            inline_keyboard: [
+                [{
+                    text: 'Driving',
+                    callback_data: driversStatus.driving
+                }],
+                [{
+                    text: 'Rest',
+                    callback_data: driversStatus.rest
+                }],
+                [{
+                    text: 'Emergency',
+                    callback_data: driversStatus.emergency
+                }],
+                [{
+                    text: 'Off',
+                    callback_data: driversStatus.off
+                }]
+            ],
+        })
+    };
 
     const keyboardTripDelivered = {
         reply_markup: JSON.stringify({
@@ -131,6 +161,15 @@ module.exports = driversBot = () => {
                 console.log(e);
             }
         }
+
+        if (text === '/status') {
+            try {
+                const driver = await Driver.findOne({telegramId: msg.from.id});
+                await bot.sendMessage(driver.telegramId, 'Пожалуйста выберете свой статус\nDriving - вы в пути\nRest - вы отдыхаете\nEmergency - технические или какие другие проблемы\nOff - вы берете выходной', keyboardDriverStatus);
+            } catch (e) {
+                console.log(e);
+            }
+        }
     });
 
     bot.on('callback_query', async (msg) => {
@@ -154,8 +193,12 @@ module.exports = driversBot = () => {
 
             if (msg.data === tripsStatus.transit) {
                 if (load.status === tripsStatus.upcoming) {
-                    await Load.findByIdAndUpdate({_id: load.id}, {status: 'transit'});
-                    await bot.sendMessage(driver.telegramId, `Пожалуйста нажмите на кнопку FINISH тока, когда как вы доставите груз - ${load.loadCode}`, keyboardTripDelivered);
+                    try {
+                        await Load.findByIdAndUpdate({_id: load.id}, {status: 'transit'});
+                        await bot.sendMessage(driver.telegramId, `Пожалуйста нажмите на кнопку FINISH тока, когда как вы доставите груз - ${load.loadCode}`, keyboardTripDelivered);
+                    } catch (e) {
+                        console.log(e);
+                    }
                 } else {
                     await bot.sendMessage(driver.telegramId, `Ваш статус груза ${tripsStatus.transit}`);
                 }
@@ -168,6 +211,10 @@ module.exports = driversBot = () => {
                 } else {
                     await bot.sendMessage(driver.telegramId, `Что то пошло не так =( обратитесь в компанию`);
                 }
+            }
+
+            if (msg.data === driversStatus.driving) {
+
             }
         } catch (e) {
             console.log(e);

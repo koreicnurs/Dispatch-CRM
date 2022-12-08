@@ -206,7 +206,7 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
     if (isAdd) {
       dispatch(addDriverRequest(formData));
     } else {
-      dispatch(updateDriverRequest({id: driverId, data: formData}));
+      dispatch(updateDriverRequest({id: driverId, data: formData, user}));
     }
   };
 

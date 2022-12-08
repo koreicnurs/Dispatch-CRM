@@ -65,7 +65,11 @@ export function* updateDriver({payload}) {
   try {
     yield axiosApi.put('/drivers/' + payload.id, payload.data);
     yield put(updateDriverSuccess());
-    yield put(fetchDriversRequest());
+    if(payload.user.role === 'carrier') {
+      yield put(fetchDriversByCarrierRequest());
+    } else {
+      yield put(fetchDriversRequest());
+    }
     yield put(addNotification({message: 'You have successfully updated a driver!', variant: 'success'}));
   } catch (e) {
     yield put(updateDriverFailure(e.response.data));

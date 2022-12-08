@@ -68,7 +68,6 @@ const Drivers = () => {
 
   const dispatch = useDispatch();
   const drivers = useSelector(state => state.drivers.drivers);
-  const driversByCarrier = useSelector(state => state.drivers.driversByCarrier);
   const user = useSelector(state => state.users.user);
 
   useEffect(() => {
@@ -83,7 +82,7 @@ const Drivers = () => {
 
   const { filteredData} = useTableSearch({
     searchVal,
-    drivers: user.role === 'carrier' ? driversByCarrier : drivers
+    drivers
   });
 
 

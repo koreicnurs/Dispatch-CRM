@@ -6,7 +6,6 @@ const driversSlice = createSlice({
   name,
   initialState: {
     drivers: [],
-    driversByCarrier: [],
     driver: null,
     loading: false,
     error: null,
@@ -36,7 +35,7 @@ const driversSlice = createSlice({
     },
     fetchDriversByCarrierSuccess(state, {payload: drivers}) {
       state.loading = false;
-      state.driversByCarrier = drivers;
+      state.drivers = drivers;
     },
     fetchDriversByCarrierFailure(state, {payload: error}) {
       state.loading = false;
@@ -61,6 +60,7 @@ const driversSlice = createSlice({
     },
     addDriverSuccess(state) {
       state.addDriverLoading = false;
+      state.addDriverError = null;
     },
     addDriverFailure(state, action) {
       state.addDriverLoading = false;
@@ -73,6 +73,7 @@ const driversSlice = createSlice({
     },
     updateDriverSuccess(state) {
       state.editDriverLoading = false;
+      state.editDriverError = null;
     },
     updateDriverFailure(state, {payload: error}) {
       state.editDriverLoading = false;

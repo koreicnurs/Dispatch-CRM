@@ -9,6 +9,7 @@ import Drivers from "./containers/Drivers/Drivers";
 import Brokers from "./containers/Brokers/Brokers";
 import MyProfile from "./containers/MyProfile/MyProfile";
 import Dispatchers from "./containers/Dispatchers/Dispatchers";
+import CarrierTrips from "./containers/CarrierTrips/CarrierTrips";
 
 const ProtectedRoute = ({isAllowed, redirectTo, ...props}) => {
     return isAllowed ?
@@ -42,19 +43,19 @@ const App = () => {
                     component={Trips}
                 />
                 <ProtectedRoute
-                    isAllowed={user}
+                    isAllowed={user?.role !== 'carrier'}
                     redirectTo="/login"
-                    path="/status_update"
+                    path="/status-update"
                     component={StatusUpdate}
                 />
                 <ProtectedRoute
-                    isAllowed={user}
+                    isAllowed={user?.role !== 'carrier'}
                     redirectTo="/login"
                     path="/loads"
                     component={Trips}
                 />
                 <ProtectedRoute
-                  isAllowed={user}
+                  isAllowed={user?.role !== 'carrier'}
                   redirectTo="/login"
                   path="/carriers"
                   component={Carriers}
@@ -74,7 +75,7 @@ const App = () => {
                 <ProtectedRoute
                   isAllowed={user}
                   redirectTo="/login"
-                  path="/my_profile"
+                  path="/my-profile"
                   component={MyProfile}
                 />
                 <RoleProtectedRoute
@@ -82,6 +83,12 @@ const App = () => {
                   redirectTo="/login"
                   path="/dispatchers"
                   component={Dispatchers}
+                />
+                <ProtectedRoute
+                  isAllowed={user?.role === 'carrier'}
+                  redirectTo="/login"
+                  path="/carrier-loads"
+                  component={CarrierTrips}
                 />
                 <Route path="/login" component={Login}/>
             </Switch>

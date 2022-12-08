@@ -10,6 +10,7 @@ import useTableSearch from "../../components/UI/Filter/useTableSearch/useTableSe
 import InnerTable from "../../components/Table/InnerTable";
 import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import StatusUpdateTableBody from "../../components/Table/TableBody/StatusUpdateTableBody";
+import {statusInterval} from "../../config";
 
 //uncomment for DataGrid
 // const columns = [
@@ -86,14 +87,19 @@ const StatusUpdate = () => {
     const drivers = useSelector(state => state.drivers.drivers);
 
     useEffect(() => {
+      dispatch(fetchDriversRequest());
+      const interval = setInterval(() => {
         dispatch(fetchDriversRequest());
+      }, statusInterval);
+      return () => clearInterval(interval);
+
     }, [dispatch]);
 
   const [searchVal, setSearchVal] = useState(null);
 
   const { filteredData} = useTableSearch({
     searchVal,
-    drivers
+    data: drivers
   });
 
   //uncomment for DataGrid

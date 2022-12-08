@@ -11,6 +11,8 @@ import InnerTable from "../../components/Table/InnerTable";
 import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import StatusUpdateTableBody from "../../components/Table/TableBody/StatusUpdateTableBody";
 import {statusInterval} from "../../config";
+import {fetchCarriersRequest} from "../../store/actions/carriersActions";
+import InlineFormSelect from "../../components/UI/Form/FormSelect/InlineFormSelect";
 
 //uncomment for DataGrid
 // const columns = [
@@ -85,6 +87,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const StatusUpdate = () => {
     const dispatch = useDispatch();
     const drivers = useSelector(state => state.drivers.drivers);
+    const carriers = useSelector(state => state.carriers.carriers);
 
     useEffect(() => {
       dispatch(fetchDriversRequest());
@@ -94,6 +97,10 @@ const StatusUpdate = () => {
       return () => clearInterval(interval);
 
     }, [dispatch]);
+
+    useEffect(() => {
+      dispatch(fetchCarriersRequest());
+    }, [dispatch])
 
   const [searchVal, setSearchVal] = useState(null);
 
@@ -154,6 +161,15 @@ const StatusUpdate = () => {
             />
           }
         />
+        <Grid item>
+          test
+          <InlineFormSelect
+            options={carriers}
+            label="Carriers"
+            title="title"
+          />
+        </Grid>
+
 
         {/*<div style={{height: '100vh', width: '100%'}}>*/}
         {/*  <DataGrid*/}

@@ -28,15 +28,13 @@ const DrawerContent = () => {
         menu = [
             {title: 'Drivers', route: '/drivers'},
             {title: 'My Trips', route: '/carrier-loads'},
-            {title: 'My Profile', route: '/my_profile'},
         ]
     } else {
         menu = [
-            {title:'Status Update', route:  '/status_update'},
+            {title:'Status Update', route:  '/status-update'},
             {title:'Trips', route:  '/loads/?status=upcoming'},
             {title: 'Carriers', route: '/carriers'},
             {title: 'Drivers', route: '/drivers'},
-            {title: 'My Profile', route: '/my_profile'},
             {title: 'Dispatchers', route: '/dispatchers'},
         ]
     }

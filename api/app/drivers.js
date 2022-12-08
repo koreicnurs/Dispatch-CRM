@@ -22,6 +22,18 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage});
 
+router.get('/carrier', auth, permit('carrier'), async (req, res) => {
+  try {
+    const drivers = await Driver
+      .find({companyId: req.user.companyId}).populate('companyId', 'title');
+
+    res.send(drivers);
+  } catch (e) {
+    res.sendStatus(500);
+  }
+});
+
+
 router.get('/', auth, async (req, res) => {
   try {
     if (req.query.carrier) {
@@ -40,16 +52,7 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-router.get('/carrier', auth, permit('carrier'), async (req, res) => {
-  try {
-    const drivers = await Driver
-      .find({companyId: req.user.companyId}).populate('companyId', 'title');
 
-    res.send(drivers);
-  } catch (e) {
-    res.sendStatus(500);
-  }
-});
 
 router.get('/:id', async (req, res) => {
   try {

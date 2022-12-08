@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Fade, FormHelperText, Grid, Modal, Typography} from "@mui/material";
+import {Fade, FormHelperText, Grid, Modal, TextField, Typography} from "@mui/material";
 import Box from "@mui/material/Box";
 import {MuiTelInput} from "mui-tel-input";
 import {useDispatch, useSelector} from "react-redux";
@@ -50,6 +50,8 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
   const newError = useSelector(state => state.drivers.addDriverError);
   const editError = useSelector(state => state.drivers.editDriverError);
   const carriers = useSelector(state => state.carriers.carriers);
+  const user = useSelector(state => state.users.user);
+
 
   const [newModal, setNewModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
@@ -100,7 +102,9 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
     // eslint-disable-next-line
   }, [drivers]);
 
-  const openCloseModal = emailDriver => {
+
+
+  const openCloseModal = driverEmail => {
     if (isAdd) {
       setNewData({
         email: '',
@@ -119,8 +123,7 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
       setNewModal(true);
       dispatch(clearDriverErrors());
     } else if (!isAdd) {
-      const driver = drivers.filter(item => item.email === emailDriver)[0];
-
+      const driver = drivers.filter(item => item.email === driverEmail)[0];
       setDriverId(driver._id);
 
       setEditedData({
@@ -188,6 +191,10 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
 
     const formData = new FormData();
 
+    if(user.role === 'carrier'){
+      newData.companyId = user.companyId
+    }
+
     Object.keys(isAdd ? newData : editedData).forEach(key => {
       if (key === 'description') {
         formData.append(key, JSON.stringify(isAdd ? newData[key] : editedData[key]));
@@ -210,6 +217,7 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
       return undefined;
     }
   };
+
 
   return (
     <>
@@ -294,16 +302,28 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
                     justifyContent="space-between"
                   >
                     <Grid item width="49.5%">
-                      <FormSelect
-                        label={'Carriers'}
-                        name={'companyId'}
-                        array={carriers}
-                        value={isAdd ? newData.companyId : editedData.companyId}
-                        onChange={inputChangeHandler}
-                        required={true}
-                        variant={'object'}
-                        error={getFieldError('companyId')}
-                      />
+                      {user.role === 'carrier'
+                        ? <TextField
+                          name={"carrier"}
+                          label={"Carriers"}
+                          value={carriers.find(item => item._id === user.companyId)?.title}
+                          className={classes.field}
+                          InputProps={{
+                            readOnly: true,
+                          }}
+                        />
+                        : <FormSelect
+                          label={'Carriers'}
+                          name={'companyId'}
+                          array={carriers}
+                          value={isAdd ? newData.companyId : editedData.companyId}
+                          onChange={inputChangeHandler}
+                          required={true}
+                          variant={'object'}
+                          error={getFieldError('companyId')}
+                        />
+                      }
+
                     </Grid>
                     <Grid item width="49.5%">
                       <FormSelect

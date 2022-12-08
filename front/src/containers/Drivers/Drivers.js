@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Grid, Typography} from '@mui/material';
-import {fetchDriversRequest} from '../../store/actions/driversActions';
+import {fetchDriversByCarrierRequest, fetchDriversRequest} from '../../store/actions/driversActions';
 import AddDriver from "../../components/Modals/AddDriver";
 import InnerTable from "../../components/Table/InnerTable";
 import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
@@ -68,15 +68,22 @@ const Drivers = () => {
 
   const dispatch = useDispatch();
   const drivers = useSelector(state => state.drivers.drivers);
+  const driversByCarrier = useSelector(state => state.drivers.driversByCarrier);
+  const user = useSelector(state => state.users.user);
 
   useEffect(() => {
-    dispatch(fetchDriversRequest());
-  }, [dispatch]);
+    if (user.role !== 'carrier') {
+      dispatch(fetchDriversRequest());
+    } else {
+      dispatch(fetchDriversByCarrierRequest());
+    }
+  }, [dispatch, user.role]);
+
 
 
   const { filteredData} = useTableSearch({
     searchVal,
-    drivers
+    drivers: user.role === 'carrier' ? driversByCarrier : drivers
   });
 
 

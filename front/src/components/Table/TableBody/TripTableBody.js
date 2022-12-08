@@ -45,24 +45,30 @@ const TripTableBody = (props) => {
             <TableCell sx={{fontSize: "14px", fontWeight: 'bold'}}>
               {trip.driverId?.name || 'n/a'}
             </TableCell>
-            <TableCell sx={{fontSize: "12px"}}>test</TableCell>
+            {
+              user.role !== 'carrier'
+              ? <>
+                  <TableCell sx={{fontSize: "12px"}}>test</TableCell>
 
-            <TableCell sx={{fontSize: "12px"}}>
-              {trip.dispatchId.displayName}
-            </TableCell>
+                  <TableCell sx={{fontSize: "12px"}}>
+                    {trip.dispatchId.displayName}
+                  </TableCell>
 
-            <TableCell sx={{fontSize: "12px"}}>
-              <MenuBtn
-                user={user}
-                trip={trip}
-                sendTrip={sendTrip}
-                cancelTripHandler={cancelTripHandler}
-                editTripHandler={editTripHandler}
-                attachFileHandler={attachFileHandler}
-                leaveCommentHandler={leaveCommentHandler}
-                viewAllHandler={viewAllHandler}
-              />
-            </TableCell>
+                  <TableCell sx={{fontSize: "12px"}}>
+                    <MenuBtn
+                      user={user}
+                      trip={trip}
+                      sendTrip={sendTrip}
+                      cancelTripHandler={cancelTripHandler}
+                      editTripHandler={editTripHandler}
+                      attachFileHandler={attachFileHandler}
+                      leaveCommentHandler={leaveCommentHandler}
+                      viewAllHandler={viewAllHandler}
+                    />
+                  </TableCell>
+                </>
+              : null
+            }
 
           </TableRow>
         ))

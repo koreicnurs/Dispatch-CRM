@@ -267,8 +267,8 @@ router.put('/confirm/:id', auth, permit('admin', 'user'), async (req, res) => {
       return res.status(404).send({message: 'Load not found!'});
     }
     
-    if (!(load.status === 'finished')) {
-      return res.status(403).send({message: 'It is an unfinished load!'});
+    if (!(load.status === 'finished') || load.finishConfirmed) {
+      return res.status(403).send({message: 'Only finished and unconfirmed trips can be confirmed!'});
     }
     
     await Load.findByIdAndUpdate(req.params.id, {finishConfirmed: true});

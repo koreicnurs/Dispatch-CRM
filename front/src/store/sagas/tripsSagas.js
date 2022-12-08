@@ -136,9 +136,11 @@ export function* cancelTrip({payload}) {
 
 export function* confirmTrip({payload: id}) {
   try {
-    yield axiosApi.put(`/confirm${id}`);
+    yield axiosApi.put(`/loads/confirm/${id}`);
     yield put(confirmTripsSuccess());
     yield put(addNotification({message: 'Trip confirmed!', variant: 'success'}));
+    const response = yield axiosApi('/loads?status=finished');
+    yield put(fetchTripsSuccess(response.data));
   } catch (e) {
     yield put(confirmTripsFailure(e.response.data));
     yield put(addNotification({message: 'Trip confirming failed!', variant: 'error'}));

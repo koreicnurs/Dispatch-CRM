@@ -237,5 +237,21 @@ Then('я вижу текст об ошибке редактирования {str
 });
 
 
+/* Filter drivers */
+
+Then('я ввожу данные в поле поиска', () => {
+  I.click(`//input[@placeholder="Search"]`);
+});
+
+When('я введу следующие данные {string}', text => {
+  I.fillField('search', text);
+});
+
+Then('я вижу водителя с данными {string}', text => {
+  I.see(text);
+  I.wait(1);
+});
+
+
 
 

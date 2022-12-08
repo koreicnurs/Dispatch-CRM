@@ -1,18 +1,30 @@
 import {put, takeEvery} from "redux-saga/effects";
 import {
-  addAttachmentFailure, addAttachmentRequest,
+  addAttachmentFailure,
+  addAttachmentRequest,
   addAttachmentSuccess,
   addCommentFailure,
-  addCommentRequest, addCommentSuccess,
-  cancelTripFailure, cancelTripRequest,
+  addCommentRequest,
+  addCommentSuccess,
+  cancelTripFailure,
+  cancelTripRequest,
   cancelTripSuccess,
-  changeTripStatusFailure, changeTripStatusRequest,
+  changeTripStatusFailure,
+  changeTripStatusRequest,
   changeTripStatusSuccess,
-  createTripFailure, createTripRequest,
-  createTripSuccess, editTripFailure, editTripRequest, editTripSuccess, fetchTripFailure, fetchTripRequest,
+  createTripFailure,
+  createTripRequest,
+  createTripSuccess,
+  editTripFailure,
+  editTripRequest,
+  editTripSuccess,
+  fetchTripFailure,
+  fetchTripRequest, fetchTripsByCarrierFailure, fetchTripsByCarrierRequest,
+  fetchTripsByCarrierSuccess,
   fetchTripsFailure,
   fetchTripsRequest,
-  fetchTripsSuccess, fetchTripSuccess
+  fetchTripsSuccess,
+  fetchTripSuccess
 } from "../actions/tripsActions";
 import {addNotification} from "../actions/notifierActions";
 import axiosApi from "../../axiosApi";
@@ -23,6 +35,16 @@ export function* fetchTrips({payload: value}) {
       yield put(fetchTripsSuccess(response.data));
   } catch (e) {
     yield put(fetchTripsFailure(e.response.error));
+    yield put(addNotification({message: 'Trips fetch failed!', variant: 'error'}));
+  }
+}
+
+export function* fetchTripsByCarrier() {
+  try{
+    const response = yield axiosApi('/loads/carrier');
+    yield put(fetchTripsByCarrierSuccess(response.data));
+  } catch (e) {
+    yield put(fetchTripsByCarrierFailure(e.response.error));
     yield put(addNotification({message: 'Trips fetch failed!', variant: 'error'}));
   }
 }
@@ -109,6 +131,7 @@ export function* cancelTrip({payload}) {
 
 const tripsSagas = [
   takeEvery(fetchTripsRequest, fetchTrips),
+  takeEvery(fetchTripsByCarrierRequest, fetchTripsByCarrier),
   takeEvery(createTripRequest, createTrip),
   takeEvery(changeTripStatusRequest, changeTripStatus),
   takeEvery(cancelTripRequest, cancelTrip),

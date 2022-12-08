@@ -27,9 +27,13 @@ export function* loginUserSaga({payload: userData}) {
         const response = yield axiosApi.post('/users/sessions', userData);
         yield put(loginSuccess(response.data));
         yield put(addNotification({message: 'Successfully log in!', variant: 'success'}));
-        yield put(historyReplace('/loads?status=upcoming'));
+        if (response.data.role !== 'carrier') {
+            yield put(historyReplace('/loads?status=upcoming'));
+        } else {
+            yield put(historyReplace('/carrier-loads'));
+        }
     } catch (e) {
-        yield put(loginFailure(e.response.data));
+        yield put(loginFailure(e.response && e.response.data));
     }
 }
 

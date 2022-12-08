@@ -22,6 +22,18 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage});
 
+router.get('/carrier', auth, permit('carrier'), async (req, res) => {
+  try {
+    const drivers = await Driver
+      .find({companyId: req.user.companyId}).populate('companyId', 'title');
+
+    res.send(drivers);
+  } catch (e) {
+    res.sendStatus(500);
+  }
+});
+
+
 router.get('/', auth, async (req, res) => {
   try {
     if (req.query.carrier) {
@@ -40,16 +52,7 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-router.get('/carrier', auth, permit('carrier'), async (req, res) => {
-  try {
-    const drivers = await Driver
-      .find({companyId: req.user.companyId}).populate('companyId', 'title');
 
-    res.send(drivers);
-  } catch (e) {
-    res.sendStatus(500);
-  }
-});
 
 router.get('/:id', async (req, res) => {
   try {
@@ -87,7 +90,14 @@ router.post('/', auth, upload.single('license'), async (req, res) => {
       description: JSON.parse(description),
       license: req.file ? 'uploads/' + req.file.filename : null,
     };
+
+
+    if (driverData.status === 'off') {
+      driverData.currentStatus = 'off';
+    }
+
     const driver = new Driver(driverData);
+
 
     await driver.save();
     res.send(driver);
@@ -111,6 +121,10 @@ router.post('/carrier', auth, permit('carrier'), upload.single('license'), async
     };
     const driver = new Driver(driverData);
 
+    if (driverData.status === 'off') {
+      driverData.currentStatus = 'off';
+    }
+
     await driver.save();
     res.send(driver);
   } catch (e) {
@@ -121,7 +135,7 @@ router.post('/carrier', auth, permit('carrier'), upload.single('license'), async
 router.put('/:id', auth, upload.single('license'), async (req, res) => {
   try {
     const {email, name, phoneNumber, companyId, status, description, pickUp,
-      delivery, ETA, readyTime, notes} = req.body;
+      delivery, ETA, readyTime, notes, currentStatus} = req.body;
 
     const duplicatedEmail = await User.findOne({email});
 
@@ -143,12 +157,18 @@ router.put('/:id', auth, upload.single('license'), async (req, res) => {
     driver.phoneNumber = phoneNumber;
     driver.companyId = companyId;
     driver.status = status;
+    driver.currentStatus = currentStatus;
     driver.description = JSON.parse(description);
     driver.pickUp = pickUp;
     driver.delivery = delivery;
     driver.ETA = ETA;
     driver.readyTime = readyTime;
     driver.notes = notes;
+
+    if (status === 'off') {
+      driver.currentStatus = 'off';
+    }
+
 
     await driver.save();
     res.send(driver);
@@ -178,6 +198,10 @@ router.put('/carrier/:id', auth, permit('carrier'), upload.single('license'), as
     driver.ETA = ETA;
     driver.readyTime = readyTime;
     driver.notes = notes;
+
+    if (status === 'off') {
+      driver.currentStatus = 'off';
+    }
 
     await driver.save();
     res.send(driver);

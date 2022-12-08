@@ -9,7 +9,7 @@ const loads = require('./app/loads');
 const learnings = require('./app/learnings');
 const brokers = require('./app/brokers');
 const config = require('./config');
-const bot = require("./telegramBotSD");
+// const bot = require("./telegramBotSD");
 
 const app = express();
 
@@ -29,9 +29,11 @@ app.use('/brokers', brokers);
 const run = async () => {
     await mongoose.connect(config.mongo.db, config.mongo.options);
 
-    app.listen(config.port, () => {
-        console.log(`Server started on ${config.port} port!`);
-    });
+    if(process.env.NODE_ENV !== 'test') {
+        app.listen(config.port, () => {
+            console.log(`Server started on ${config.port} port!`);
+        });
+    }
 
     exitHook(() => {
         mongoose.disconnect();
@@ -39,6 +41,8 @@ const run = async () => {
     });
 };
 
-bot();
+// bot();
 
 run().catch(e => console.log(e));
+
+module.exports = app;

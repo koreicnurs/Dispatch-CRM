@@ -80,6 +80,7 @@ const NewDispatcher = ({dispatcherRole}) => {
       formData.append(key, dispatcherData[key]);
     });
     await dispatch(createDispatcherRequest(formData));
+    modalCloseHandler();
   };
 
   return (

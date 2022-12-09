@@ -377,4 +377,4 @@ const run = async () => {
   await mongoose.connection.close();
 };
 
-run().catch(console.error);
+run().catch(console.error); 

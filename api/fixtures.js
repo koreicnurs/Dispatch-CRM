@@ -50,16 +50,15 @@ const run = async () => {
 
   const [admin, user, user2, bahCarrier] = await User.create({
     email: 'admin@gmail.com',
-    telegramId: '',
     password: 'admin',
     role: 'admin',
     token: nanoid(),
     displayName: 'Admin',
     avatar: 'fixtures/admin.png',
+    phoneNumber: '+267●5350811',
     isWorking: 'active'
   }, {
     email: 'user@gmail.com',
-    telegramId: '',
     password: 'user',
     role: 'user',
     token: nanoid(),
@@ -69,13 +68,12 @@ const run = async () => {
     isWorking: 'active'
   }, {
     email: 'user2@gmail.com',
-    telegramId: '',
     password: 'user2',
     role: 'user',
     token: nanoid(),
     displayName: 'User2',
     phoneNumber: '+267●5350802',
-    isWorking: 'active'
+    isWorking: 'disabled'
   }, {
     email: 'bahaway@gmail.com',
     password: 'bahaway',
@@ -83,6 +81,7 @@ const run = async () => {
     token: nanoid(),
     displayName: 'BAHAWAY',
     companyId: bahawayCarrier._id,
+    phoneNumber: '+267●5350812',
     isWorking: 'active'
   }, {
     email: 'safeway@gmail.com',
@@ -99,7 +98,7 @@ const run = async () => {
     mirbekDriver, bekmuratDriver, makenDriver] = await Driver.create({
     email: 'umot@gmail.com',
     name: 'Umot',
-    phoneNumber: '+267●5350802',
+    phoneNumber: '+267●5350808',
     companyId: bahawayCarrier._id,
     status: 'in transit',
     currentStatus: 'driving',
@@ -116,7 +115,6 @@ const run = async () => {
     phoneNumber: '+929●3774446',
     companyId: bahawayCarrier._id,
     status: 'upcoming',
-    currentStatus: 'driving',
     telegramId: '',
     description: {
       address: 'US, LA, Downey c., str. 1, h. 4',
@@ -129,7 +127,8 @@ const run = async () => {
     name: 'Timur',
     phoneNumber: '+323●7454492',
     companyId: safewayCargoCarrier._id,
-    status: 'ready',
+    status: 'off',
+    currentStatus: 'off',
     telegramId: '',
     description: {
       address: 'US, IL, Chicago c., str. 1, h. 4',
@@ -143,7 +142,6 @@ const run = async () => {
     phoneNumber: '+513●8081130',
     companyId: safewayCargoCarrier._id,
     status: 'ready',
-    currentStatus: 'driving',
     telegramId: '',
     description: {
       address: 'US, IL, Chicago c., str. 1, h. 48',
@@ -156,7 +154,8 @@ const run = async () => {
     name: 'Bakdoolot',
     phoneNumber: '+630●6702075',
     companyId: safewayCargoCarrier._id,
-    status: 'ready',
+    status: 'in tr/upc',
+    currentStatus: 'rest',
     telegramId: '',
     description: {
       address: 'US, IL, Chicago c., str. 10, h. 48',
@@ -170,6 +169,7 @@ const run = async () => {
     phoneNumber: '+312●6840690',
     companyId: turanExpressCarrier._id,
     status: 'off',
+    currentStatus: 'off',
     telegramId: '',
     description: {
       address: 'US, NY, New-York c., 5 Avenue, h. 48',
@@ -188,6 +188,7 @@ const run = async () => {
     phoneNumber: '+773●6913604',
     companyId: turanExpressCarrier._id,
     status: 'in tr/upc',
+    currentStatus: 'driving',
     telegramId: '',
     description: {
       address: 'US, NY, New-York c., str. 56, h. 48',
@@ -214,6 +215,7 @@ const run = async () => {
     phoneNumber: '+347●4941314',
     companyId: tumarExpressCarrier._id,
     status: 'in transit',
+    currentStatus: 'rest',
     telegramId: '',
     description: {
       address: 'US, TX, Houston c., str. 45, h. 12, ap. 12',
@@ -237,6 +239,8 @@ const run = async () => {
     pu: 'Shepherd, KY',
     del: 'Pittsburg, PA',
     status: 'transit',
+    BOL: 'fixtures/BOL1.pdf',
+    RC: 'fixtures/RC1.pdf',
   }, {
     loadCode: 'T-151F5454FEG',
     driverId: kubaDriver._id,
@@ -264,7 +268,9 @@ const run = async () => {
     timeToDel: '19:16',
     pu: 'New-York, NY',
     del: 'Chicago, IL',
-    status: 'upcoming',
+    status: 'finished',
+    BOL: 'fixtures/BOL2.pdf',
+    RC: 'fixtures/RC2.pdf',
   }, {
     loadCode: 'T-12FEF4E5F',
     dispatchId: user2._id,
@@ -292,6 +298,8 @@ const run = async () => {
     pu: 'Houston, TX',
     del: 'New Orleans, LA',
     status: 'transit',
+    BOL: 'fixtures/BOL1.pdf',
+    RC: 'fixtures/RC1.pdf',
   }, {
     loadCode: 'T-D1EF45SD1C',
     driverId: askhatDriver._id,
@@ -305,7 +313,9 @@ const run = async () => {
     timeToDel: '18:0',
     pu: 'New-York, NY',
     del: 'Seattle, WS',
-    status: 'upcoming',
+    status: 'finished',
+    BOL: 'fixtures/BOL2.pdf',
+    RC: 'fixtures/RC2.pdf',
   },{
     loadCode: 'T-D1EF78SD1C',
     dispatchId: user2._id,
@@ -340,27 +350,23 @@ const run = async () => {
   await Broker.create(
     {
       name: 'Azamat',
-      author: user._id,
       phoneNumber: ['+99655555555', '+2678480704'],
       mc: 'Lorem1',
       description: 'Lorem ipsum dolor sit amet',
       companiesContract: [bahawayCarrier._id],
     }, {
       name: 'Aibek',
-      author: user._id,
       phoneNumber: ['+2678892567'],
       mc: 'Lorem2',
       description: 'Consectetur adipiscing elit',
       companiesContract: [bahawayCarrier._id],
     }, {
       name: 'Nurbek',
-      author: user._id,
       phoneNumber: ['+9293525578', '+9294884446'],
       mc: 'Lorem3',
       companiesContract: [bahawayCarrier._id],
     }, {
       name: 'Adilet',
-      author: user2._id,
       phoneNumber: ['+996999523214', '+7678480704', '+3232523146'],
       mc: 'Lorem4',
       description: 'Convallis convallis tellus id interdum velit laoreet id donec ultrices',
@@ -371,4 +377,4 @@ const run = async () => {
   await mongoose.connection.close();
 };
 
-run().catch(console.error);
+run().catch(console.error); 

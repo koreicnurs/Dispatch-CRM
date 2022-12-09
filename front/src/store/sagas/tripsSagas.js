@@ -12,6 +12,8 @@ import {
   changeTripStatusFailure,
   changeTripStatusRequest,
   changeTripStatusSuccess,
+  confirmTripsFailure, confirmTripsRequest,
+  confirmTripsSuccess,
   createTripFailure,
   createTripRequest,
   createTripSuccess,
@@ -19,7 +21,9 @@ import {
   editTripRequest,
   editTripSuccess,
   fetchTripFailure,
-  fetchTripRequest, fetchTripsByCarrierFailure, fetchTripsByCarrierRequest,
+  fetchTripRequest,
+  fetchTripsByCarrierFailure,
+  fetchTripsByCarrierRequest,
   fetchTripsByCarrierSuccess,
   fetchTripsFailure,
   fetchTripsRequest,
@@ -129,6 +133,20 @@ export function* cancelTrip({payload}) {
   }
 }
 
+
+export function* confirmTrip({payload: id}) {
+  try {
+    yield axiosApi.put(`/loads/confirm/${id}`);
+    yield put(confirmTripsSuccess());
+    yield put(addNotification({message: 'Trip confirmed!', variant: 'success'}));
+    const response = yield axiosApi('/loads?status=finished');
+    yield put(fetchTripsSuccess(response.data));
+  } catch (e) {
+    yield put(confirmTripsFailure(e.response.data));
+    yield put(addNotification({message: 'Trip confirming failed!', variant: 'error'}));
+  }
+}
+
 const tripsSagas = [
   takeEvery(fetchTripsRequest, fetchTrips),
   takeEvery(fetchTripsByCarrierRequest, fetchTripsByCarrier),
@@ -139,6 +157,7 @@ const tripsSagas = [
   takeEvery(editTripRequest, editTrip),
   takeEvery(addCommentRequest, addComment),
   takeEvery(addAttachmentRequest, addAttachment),
+  takeEvery(confirmTripsRequest, confirmTrip),
 ];
 
 export default tripsSagas;

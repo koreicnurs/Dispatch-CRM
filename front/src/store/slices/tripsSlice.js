@@ -126,6 +126,18 @@ const tripsSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+  
+    confirmTripsRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    confirmTripsSuccess(state) {
+      state.loading = false;
+    },
+    confirmTripsFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
 
     clearCreateTripErrorRequest(state) {
       state.createTripError = null;

@@ -2,7 +2,7 @@ import React from 'react';
 import {IconButton, Menu, MenuItem} from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-const MenuBtn = ({trip, sendTrip, cancelTripHandler, editTripHandler, attachFileHandler, leaveCommentHandler, viewAllHandler, user}) => {
+const MenuBtn = ({trip, sendTrip, cancelTripHandler, editTripHandler, attachFileHandler, leaveCommentHandler, viewAllHandler, confirmTrip, user}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -42,6 +42,7 @@ const MenuBtn = ({trip, sendTrip, cancelTripHandler, editTripHandler, attachFile
           : <div>
               <MenuItem onClick={() => [attachFileHandler(trip._id), handleClose()]}>Attach</MenuItem>
               <MenuItem onClick={() => [leaveCommentHandler(trip._id), handleClose()]}>Leave a comment</MenuItem>
+              {(trip.status === 'finished' && !trip.finishConfirmed) ? <MenuItem onClick={() => [confirmTrip(trip._id), handleClose()]}>Confirm</MenuItem> : null}
               <MenuItem onClick={() => [viewAllHandler(trip._id), handleClose()]}>View all</MenuItem>
             </div>
         }

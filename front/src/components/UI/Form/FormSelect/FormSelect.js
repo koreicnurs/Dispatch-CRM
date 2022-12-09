@@ -6,16 +6,17 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import {FormHelperText, Grid} from '@mui/material';
 
-const FormSelect = ({array, value, onChange, label, required, name, variant, error, driver}) => {
+const FormSelect = ({array, value, onChange, label, required, name, variant, error, driver, multiple}) => {
   return (
     <Grid item xs={12}>
-      <Box sx={{ minWidth: 120 }}>
+      <Box sx={{ minWidth: 50 }}>
         <FormControl fullWidth error={Boolean(error)}>
           <InputLabel required={required} id="demo-simple-select-label">{label}</InputLabel>
           <Select
             sx={{textAlign: 'left'}}
             labelId="demo-simple-select-label"
             id="demo-simple-select"
+            multiple={multiple}
             value={value}
             label={label}
             name={name}

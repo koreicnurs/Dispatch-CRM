@@ -1,16 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchDriversRequest} from "../../store/actions/driversActions";
-import {Grid, InputBase, styled} from "@mui/material";
+import {Grid, InputBase, styled, TableCell} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
 // import {DataGrid} from "@mui/x-data-grid";
 import useTableSearch from "../../components/UI/Filter/useTableSearch/useTableSearch";
 import InnerTable from "../../components/Table/InnerTable";
-import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import StatusUpdateTableBody from "../../components/Table/TableBody/StatusUpdateTableBody";
 import {statusInterval} from "../../config";
+import {fetchCarriersRequest} from "../../store/actions/carriersActions";
+import FormSelect from "../../components/UI/Form/FormSelect/FormSelect";
 
 //uncomment for DataGrid
 // const columns = [
@@ -39,6 +40,10 @@ const columns = [
     {key: 'notes', label: 'Notes'},
     {key: 'phoneNumber', label: 'Phone Number'},
 ];
+
+const statuses = ['Status','in transit', 'upcoming', 'ready', 'in tr/upc', 'off'];
+
+const tableHeaderStyle = {fontSize: "12px", fontWeight: "bold"};
 
 const SearchStyle = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -83,24 +88,108 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 const StatusUpdate = () => {
-    const dispatch = useDispatch();
-    const drivers = useSelector(state => state.drivers.drivers);
+  const dispatch = useDispatch();
+  const drivers = useSelector(state => state.drivers.drivers);
+  const carriers = useSelector(state => state.carriers.carriers);
+  const [currentDrivers, setCurrentDrivers] = useState([]);
+  const [carrierSelector, setCarrierSelector] = useState(["Carrier"]);
+  const [selectedCarrier, setSelectedCarrier] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState("Status");
 
-    useEffect(() => {
+  useEffect(() => {
+    dispatch(fetchDriversRequest());
+    const interval = setInterval(() => {
       dispatch(fetchDriversRequest());
-      const interval = setInterval(() => {
-        dispatch(fetchDriversRequest());
       }, statusInterval);
-      return () => clearInterval(interval);
-
+    return () => clearInterval(interval);
     }, [dispatch]);
 
-  const [searchVal, setSearchVal] = useState(null);
+  useEffect(() => {
+    if (selectedCarrier.length === 0 && selectedStatus === "Status") {
+      setCurrentDrivers(drivers);
+    } else if (selectedCarrier.length !== 0 || selectedStatus !== "Status") {
+      let driverFiltered = drivers;
+      if (selectedCarrier.length !== 0) {
+        driverFiltered = drivers.filter(driver => selectedCarrier.includes(driver.companyId.title));
+      }
+      if (selectedStatus !== "Status") {
+        driverFiltered = driverFiltered.filter(driver => selectedStatus.includes(driver.status));
+      }
+      setCurrentDrivers(driverFiltered);
+    }
 
-  const { filteredData} = useTableSearch({
-    searchVal,
-    data: drivers
-  });
+  }, [drivers, selectedCarrier, selectedStatus]);
+
+    useEffect(() => {
+      dispatch(fetchCarriersRequest());
+    }, [dispatch]);
+
+
+    useEffect(() => {
+      const carriersTitles = carriers.map(carrier => carrier.title);
+      setCarrierSelector(() => [...carriersTitles]);
+    }, [carriers]);
+
+    const selectCarrierHandler = event => {
+      const {
+        target: { value },
+      } = event;
+      setSelectedCarrier(
+        typeof value === 'string' ? value.split(',') : value,
+      );
+    };
+
+    const selectedStatusHandler = event => {
+      setSelectedStatus(event.target.value);
+    };
+
+    const tableHeader = (
+      <>
+        {carrierSelector.length !== null &&
+          <>
+            <TableCell sx={tableHeaderStyle}>
+              <FormSelect
+                label="Carriers"
+                multiple={true}
+                array={carrierSelector}
+                value={selectedCarrier}
+                onChange={selectCarrierHandler}
+                required={true}
+                variant="array"
+                driver={false}
+              />
+            </TableCell>
+            <TableCell sx={tableHeaderStyle}>Driver</TableCell>
+            <TableCell sx={tableHeaderStyle}>
+              <FormSelect
+                label="Status"
+                array={statuses}
+                value={selectedStatus}
+                onChange={selectedStatusHandler}
+                required={true}
+                variant="array"
+                driver={false}
+                def={selectedStatus}
+              />
+            </TableCell>
+            <TableCell sx={tableHeaderStyle}>Current Status</TableCell>
+            <TableCell sx={tableHeaderStyle}>PickUp</TableCell>
+            <TableCell sx={tableHeaderStyle}>Delivery</TableCell>
+            <TableCell sx={tableHeaderStyle}>ETA</TableCell>
+            <TableCell sx={tableHeaderStyle}>Ready time</TableCell>
+            <TableCell sx={tableHeaderStyle}>Notes</TableCell>
+            <TableCell sx={tableHeaderStyle}>Phone number</TableCell>
+          </>
+        }
+      </>
+    );
+
+    const [searchVal, setSearchVal] = useState(null);
+
+    const { filteredData} = useTableSearch({
+      searchVal,
+      data: currentDrivers
+    });
 
   //uncomment for DataGrid
   // const rows = drivers.map((row) => ({
@@ -146,7 +235,7 @@ const StatusUpdate = () => {
         </Grid>
 
         <InnerTable
-          header={<TableHeaderRow headerCells={columns} data={true} sx={{fontSize: "12px", fontWeight: "bold"}}/>}
+          header={tableHeader}
           body={
             <StatusUpdateTableBody
               columns={columns}
@@ -154,6 +243,7 @@ const StatusUpdate = () => {
             />
           }
         />
+
 
         {/*<div style={{height: '100vh', width: '100%'}}>*/}
         {/*  <DataGrid*/}

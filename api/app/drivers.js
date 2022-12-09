@@ -4,6 +4,7 @@ const {nanoid} = require('nanoid');
 const path = require('path');
 
 const Driver = require('../models/Driver');
+const Carrier = require('../models/Carrier');
 const User = require("../models/User");
 const auth = require('../middleware/auth');
 const config = require('../config');
@@ -42,7 +43,79 @@ router.get('/', auth, async (req, res) => {
 
       res.send(driversByCarrier);
     } else {
-      const drivers = await Driver.find().populate('companyId', 'title');
+      const order = {"$project" : {
+          "_id" : 1,
+          "telegramId" : 1,
+          "email" : 1,
+          "name" : 1,
+          "phoneNumber" : 1,
+          "companyId" : 1,
+          "status" : 1,
+          "currentStatus" : 1,
+          "description" : 1,
+          "pickUp" : 1,
+          "delivery" : 1,
+          "ETA" : 1,
+          "readyTime" : 1,
+          "notes" : 1,
+          "license" : 1,
+          "driversCount" : {"$size": "$drivers"},
+          "order" : {
+            "$cond" : {
+              if : {"$eq" : ["$status", "ready"]}, then: 0,
+              else : {"$cond" : {
+                  if : {"$eq" : ["$status", "in transit"]}, then: 1,
+                  else: {"$cond" : {
+                      if : {"$eq" : ["$status", "upcoming"]}, then: 3,
+                      else: {"$cond" : {
+                          if : {"$eq" : ["$status", "in tr/upc"]}, then: 2,
+                          else: 4
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      };
+      const sort = {"$sort" : {"driversCount" : -1, "companyId": 1, "order" : 1}};
+      const project = {"$project" : {
+          "_id": 1,
+          "telegramId" : 1,
+          "email" : 1,
+          "name" : 1,
+          "phoneNumber" : 1,
+          "companyId" : 1,
+          "status" : 1,
+          "currentStatus" : 1,
+          "description" : 1,
+          "pickUp" : 1,
+          "delivery" : 1,
+          "ETA" : 1,
+          "readyTime" : 1,
+          "notes" : 1,
+          "license" : 1,
+        }};
+      const lookup = {"$lookup":
+          {
+            from: "drivers",
+            localField: "companyId",
+            foreignField: "companyId",
+            as: "drivers"
+          }
+      };
+
+      const drivers = await Driver.aggregate([lookup, order, sort, project]);
+
+      await Carrier.populate(drivers, {
+        path: "companyId",
+        select: {
+          _id: 1,
+          title: 1
+        }
+      });
 
       res.send(drivers);
     }

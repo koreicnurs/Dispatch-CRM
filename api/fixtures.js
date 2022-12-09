@@ -347,32 +347,32 @@ const run = async () => {
       author: user2._id,
     }
   );
-  
+
   await Broker.create(
-    {
-      name: 'Azamat',
-      phoneNumber: ['+99655555555', '+2678480704'],
-      mc: 'Lorem1',
-      description: 'Lorem ipsum dolor sit amet',
-      companiesContract: [bahawayCarrier._id],
-    }, {
-      name: 'Aibek',
-      phoneNumber: ['+2678892567'],
-      mc: 'Lorem2',
-      description: 'Consectetur adipiscing elit',
-      companiesContract: [bahawayCarrier._id],
-    }, {
-      name: 'Nurbek',
-      phoneNumber: ['+9293525578', '+9294884446'],
-      mc: 'Lorem3',
-      companiesContract: [bahawayCarrier._id],
-    }, {
-      name: 'Adilet',
-      phoneNumber: ['+996999523214', '+7678480704', '+3232523146'],
-      mc: 'Lorem4',
-      description: 'Convallis convallis tellus id interdum velit laoreet id donec ultrices',
-      companiesContract: [bahawayCarrier._id],
-    }
+      {
+        name: 'Azamat',
+        phoneNumber: ['+9963592261', '+2678480704'],
+        mc: '225863',
+        description: 'Lorem ipsum dolor sit amet',
+        companiesContract: [bahawayCarrier._id, safewayCargoCarrier._id, turanExpressCarrier._id]
+      }, {
+        name: 'Aibek',
+        phoneNumber: ['+3478548314'],
+        mc: '238164',
+        description: 'Consectetur adipiscing elit',
+        companiesContract: [bahawayCarrier._id],
+      }, {
+        name: 'Nurbek',
+        phoneNumber: ['+1293525578', '+1294884446'],
+        mc: '216579',
+        companiesContract: [bahawayCarrier._id, tumarExpressCarrier._id],
+      }, {
+        name: 'Adilet',
+        phoneNumber: ['+9965995232', '+7678480704', '+3232523146'],
+        mc: '953268',
+        description: 'Convallis convallis tellus id interdum velit laoreet id donec ultrices',
+        companiesContract: [bahawayCarrier._id],
+      }
   );
   
   await mongoose.connection.close();

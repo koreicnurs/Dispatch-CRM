@@ -35,6 +35,7 @@ const DrawerContent = () => {
             {title:'Trips', route:  '/loads/?status=upcoming'},
             {title: 'Carriers', route: '/carriers'},
             {title: 'Drivers', route: '/drivers'},
+            {title: 'Brokers', route: '/brokers'},
             {title: 'Dispatchers', route: '/dispatchers'},
         ]
     }

@@ -70,7 +70,9 @@ const DriverSchema = new Schema({
   },
   currentStatus: {
     type: String,
-    enum: ['driving', 'rest', 'emergency', 'off'],
+    required: true,
+    default: 'null',
+    enum: ['driving', 'rest', 'emergency', 'off', 'null'],
   },
   description: DescriptionSchema,
   pickUp: String,

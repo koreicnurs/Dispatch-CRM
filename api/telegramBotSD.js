@@ -104,14 +104,14 @@ module.exports = driversBot = () => {
 
                 if (driver) {
                     await Driver.findByIdAndUpdate({_id: driver.id}, {telegramId: msg.from.id});
-                    return await bot.sendMessage(chatId, 'Вы зарегистрированы в телеграм боте\nТеперь вы можете смотреть, есть ли у вас новый заказ, если введете следущую команду => /load');
+                    return await bot.sendMessage(chatId, 'Вы зарегистрированы в телеграм боте\nУ вас имеются команды: /load и /status\n/status - введите для изменения вашего статуса\n/load - введите для просмотра нового груза');
                 }
 
                 if (user) {
                     await User.findByIdAndUpdate({_id: user.id}, {telegramId: msg.from.id});
                     return await bot.sendMessage(chatId, 'Вы зарегистрированы в телеграм боте, в этот чат будут приходить оповещения');
                 } else {
-                    return await bot.sendMessage(chatId, 'Вы не зарегистрированы в телеграм боте');
+                    return await bot.sendMessage(chatId, 'Вас нету в базе данных\nУбедитесь в правильности ввода рабочей почты');
                 }
 
             } catch (e) {
@@ -214,7 +214,46 @@ module.exports = driversBot = () => {
             }
 
             if (msg.data === driversStatus.driving) {
+                try {
+                    if (dispatcherId && dispatcherId.telegramId) {
+                        await Driver.findByIdAndUpdate({_id: driver.id}, {currentStatus: driversStatus.driving});
+                        await bot.sendMessage(driver.telegramId, `Ваш статус в дороге "Driving"`);
+                        await bot.sendMessage(dispatcherId.telegramId, `Водитель - ${driver.name} поменял статус на ${driversStatus.driving}\nВ пути с грузом - ${load.loadCode}`);
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+            }
 
+            if (msg.data === driversStatus.rest) {
+                try {
+                    if (dispatcherId && dispatcherId.telegramId) {
+                        await Driver.findByIdAndUpdate({_id: driver.id}, {currentStatus: driversStatus.rest});
+                        await bot.sendMessage(driver.telegramId, `Ваш статус в дороге "Rest"`);
+                        await bot.sendMessage(dispatcherId.telegramId, `Водитель - ${driver.name} поменял статус на ${driversStatus.rest}`);
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+
+            if (msg.data === driversStatus.emergency) {
+                try {
+                    if (dispatcherId && dispatcherId.telegramId) {
+                        await Driver.findByIdAndUpdate({_id: driver.id}, {currentStatus: driversStatus.emergency});
+                        await bot.sendMessage(driver.telegramId, `Ваш статус в дороге "Emergency"`);
+                        await bot.sendMessage(dispatcherId.telegramId, `Водитель - ${driver.name} поменял статус на ${driversStatus.emergency}`);
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+            }
+
+            if (msg.data === driversStatus.off) {
+                if (dispatcherId && dispatcherId.telegramId) {
+                    await bot.sendMessage(driver.telegramId, `Ваш статус в дороге "Off"\nОповещение было отправлено диспетчеру`);
+                    await bot.sendMessage(dispatcherId.telegramId, `Водитель - ${driver.name} хочет взять выходной`);
+                }
             }
         } catch (e) {
             console.log(e);

@@ -56,7 +56,7 @@ const run = async () => {
     token: nanoid(),
     displayName: 'Admin',
     avatar: 'fixtures/admin.png',
-    isWorking: true
+    isWorking: 'active'
   }, {
     email: 'user@gmail.com',
     telegramId: '',
@@ -66,7 +66,7 @@ const run = async () => {
     displayName: 'User',
     avatar: 'fixtures/user.png',
     phoneNumber: '+267●5350801',
-    isWorking: true
+    isWorking: 'active'
   }, {
     email: 'user2@gmail.com',
     telegramId: '',
@@ -75,7 +75,7 @@ const run = async () => {
     token: nanoid(),
     displayName: 'User2',
     phoneNumber: '+267●5350802',
-    isWorking: false
+    isWorking: 'active'
   }, {
     email: 'bahaway@gmail.com',
     password: 'bahaway',
@@ -83,7 +83,7 @@ const run = async () => {
     token: nanoid(),
     displayName: 'BAHAWAY',
     companyId: bahawayCarrier._id,
-    isWorking: true
+    isWorking: 'active'
   }, {
     email: 'safeway@gmail.com',
     password: 'safeway',
@@ -92,7 +92,7 @@ const run = async () => {
     displayName: 'SAFEWAY CARGO',
     companyId: safewayCargoCarrier._id,
     phoneNumber: '+267●5350803',
-    isWorking: true
+    isWorking: 'active'
   });
 
   const [umotDriver, kubaDriver, timurDriver, keldibekDriver, bakdoolotDriver, askhatDriver,
@@ -102,6 +102,7 @@ const run = async () => {
     phoneNumber: '+267●5350802',
     companyId: bahawayCarrier._id,
     status: 'in transit',
+    currentStatus: 'driving',
     telegramId: '',
     description: {
       address: 'US, LA, Avalon c., str. 1, h. 45',
@@ -115,6 +116,7 @@ const run = async () => {
     phoneNumber: '+929●3774446',
     companyId: bahawayCarrier._id,
     status: 'upcoming',
+    currentStatus: 'driving',
     telegramId: '',
     description: {
       address: 'US, LA, Downey c., str. 1, h. 4',
@@ -127,7 +129,7 @@ const run = async () => {
     name: 'Timur',
     phoneNumber: '+323●7454492',
     companyId: safewayCargoCarrier._id,
-    status: 'off/home',
+    status: 'ready',
     telegramId: '',
     description: {
       address: 'US, IL, Chicago c., str. 1, h. 4',
@@ -141,6 +143,7 @@ const run = async () => {
     phoneNumber: '+513●8081130',
     companyId: safewayCargoCarrier._id,
     status: 'ready',
+    currentStatus: 'driving',
     telegramId: '',
     description: {
       address: 'US, IL, Chicago c., str. 1, h. 48',
@@ -153,7 +156,7 @@ const run = async () => {
     name: 'Bakdoolot',
     phoneNumber: '+630●6702075',
     companyId: safewayCargoCarrier._id,
-    status: 'n/a',
+    status: 'ready',
     telegramId: '',
     description: {
       address: 'US, IL, Chicago c., str. 10, h. 48',
@@ -166,7 +169,7 @@ const run = async () => {
     name: 'Askhat',
     phoneNumber: '+312●6840690',
     companyId: turanExpressCarrier._id,
-    status: 'sleep',
+    status: 'off',
     telegramId: '',
     description: {
       address: 'US, NY, New-York c., 5 Avenue, h. 48',

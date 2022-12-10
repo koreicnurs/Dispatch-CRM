@@ -67,6 +67,7 @@ const BrokersModal = ({modalTitle, isAdd, brokerID}) => {
     };
 
     const [companiesContracts, setCompaniesContracts] = useState(['']);
+    const [availableCompanies, setAvailableCompanies] = useState([]);
 
     const addCompaniesContract = () => {
         setCompaniesContracts(prev => [
@@ -76,17 +77,44 @@ const BrokersModal = ({modalTitle, isAdd, brokerID}) => {
     };
 
     const deleteCompaniesContract = index => {
+        const target = companiesContracts[index]
+        if (target._id) {
+            setAvailableCompanies(prev => {
+                return [...prev, target]
+            })
+        }
+
         setCompaniesContracts([
             ...companiesContracts.slice(0, index),
             ...companiesContracts.slice(index + 1)
         ]);
     };
 
-    const companiesChangeHandler = (e, index) => {
+    const companiesChangeHandler = (e, index, oldValue) => {
+        let target = {};
+        carriers.forEach(c => {
+            if (c._id === e.target.value) {
+                target = c;
+            }
+        })
+
+        if (oldValue._id) {
+            setAvailableCompanies(prev => {
+                return [...prev, oldValue]
+            })
+        }
+
         setCompaniesContracts(prev => {
             const arr = [...prev];
-            arr[index] = e.target.value;
+            arr[index] = target;
             return arr;
+        });
+
+        setAvailableCompanies(prev => {
+            const arr = [...prev];
+            return arr.filter(i =>
+                i._id !== target._id
+            )
         });
     };
 
@@ -99,6 +127,10 @@ const BrokersModal = ({modalTitle, isAdd, brokerID}) => {
     useEffect(() => {
         dispatch(fetchCarriersRequest());
     }, [dispatch]);
+
+    useEffect(() => {
+        setAvailableCompanies(carriers);
+    }, [carriers]);
 
     useEffect(() => {
         if (newError === null) {
@@ -132,7 +164,10 @@ const BrokersModal = ({modalTitle, isAdd, brokerID}) => {
                 description: broker.description,
             });
             setPhoneNumbers(broker.phoneNumber);
-            setCompaniesContracts(broker.companiesContract.map(c => c._id));
+            setCompaniesContracts(broker.companiesContract);
+            setAvailableCompanies(carriers.filter(c => {
+                return broker.companiesContract.findIndex(i => c._id === i._id) === -1
+            }));
             setEditModal(true);
             dispatch(clearBrokersErrors());
         }
@@ -259,9 +294,9 @@ const BrokersModal = ({modalTitle, isAdd, brokerID}) => {
                                                         <FormSelect
                                                             label={'Carriers'}
                                                             name={'companiesContract'}
-                                                            array={carriers}
-                                                            value={company}
-                                                            onChange={e => companiesChangeHandler(e, index)}
+                                                            array={company._id ? [company, ...availableCompanies] : availableCompanies}
+                                                            value={company._id || ''}
+                                                            onChange={e => companiesChangeHandler(e, index, company)}
                                                             required={true}
                                                             variant={'object'}
                                                             error={getFieldError('companiesContract')}
@@ -270,7 +305,9 @@ const BrokersModal = ({modalTitle, isAdd, brokerID}) => {
                                                 </Grid>
 
                                                 <Grid key={index + company} item xs={1} mt={2}>
-                                                    <IconButton onClick={() => addCompaniesContract(index)} color="primary">
+                                                    <IconButton onClick={() => addCompaniesContract(index)}
+                                                                color="primary"
+                                                                disabled={availableCompanies.length === 0}>
                                                         <Add/>
                                                     </IconButton>
                                                 </Grid>

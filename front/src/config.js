@@ -5,3 +5,4 @@ if(process.env.REACT_APP_ENV === 'test') {
 }
 
 export const statusInterval = 1200000;
+

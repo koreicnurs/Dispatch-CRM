@@ -236,7 +236,6 @@ Then('я вижу текст об ошибке редактирования {str
   I.wait(1);
 });
 
-
 /* Filter drivers/dispatchers/carriers/statusUpdate */
 
 Then('я ввожу данные в поле поиска', () => {
@@ -251,7 +250,3 @@ Then('я вижу сущность с данными {string}', text => {
   I.see(text);
   I.wait(1);
 });
-
-
-
-

@@ -139,7 +139,7 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', auth, upload.single('license'), async (req, res) => {
   try {
-    const {email, name, phoneNumber, companyId, status, description} = req.body;
+    const {email, name, phoneNumber, companyId, description} = req.body;
 
     const duplicatedEmail = await User.findOne({email});
 
@@ -159,7 +159,6 @@ router.post('/', auth, upload.single('license'), async (req, res) => {
       name,
       phoneNumber,
       companyId,
-      status,
       description: JSON.parse(description),
       license: req.file ? 'uploads/' + req.file.filename : null,
     };
@@ -181,14 +180,13 @@ router.post('/', auth, upload.single('license'), async (req, res) => {
 
 router.post('/carrier', auth, permit('carrier'), upload.single('license'), async (req, res) => {
   try {
-    const {email, name, phoneNumber, status, description} = req.body;
+    const {email, name, phoneNumber, description} = req.body;
 
     const driverData = {
       email,
       name,
       phoneNumber,
       companyId: req.user.companyId,
-      status,
       description: JSON.parse(description),
       license: req.file ? 'uploads/' + req.file.filename : null,
     };

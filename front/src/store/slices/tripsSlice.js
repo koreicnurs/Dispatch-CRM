@@ -5,6 +5,7 @@ const name = 'trips';
 export const initialState = {
   trips: [],
   trip: null,
+  tripsByCarrier: [],
   loading: false,
   error: null,
   createTripError: null,
@@ -24,6 +25,19 @@ const tripsSlice = createSlice({
       state.trips = trips;
     },
     fetchTripsFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+    fetchTripsByCarrierRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    fetchTripsByCarrierSuccess(state, {payload: tripsByCarrier}) {
+      state.loading = false;
+      state.tripsByCarrier = tripsByCarrier;
+    },
+    fetchTripsByCarrierFailure(state, action) {
       state.loading = false;
       state.error = action.payload;
     },
@@ -109,6 +123,18 @@ const tripsSlice = createSlice({
       state.loading = false;
     },
     addAttachmentFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+  
+    confirmTripsRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    confirmTripsSuccess(state) {
+      state.loading = false;
+    },
+    confirmTripsFailure(state, action) {
       state.loading = false;
       state.error = action.payload;
     },

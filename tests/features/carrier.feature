@@ -44,3 +44,17 @@
       | description | test company #1 |
     Затем нажимаю на "Save"
     То я вижу "Carrier creation failed!"
+
+
+  @filterCarrier
+  Сценарий: Поиск Driver по введенным данным
+    Допустим я захожу на страницу "login"
+    Если я введу данные:
+      | email    | admin@gmail.com |
+      | password | admin           |
+    И нажимаю на кнопку "Sign In"
+    То я вижу текст "HELLO, ADMIN"
+    Допустим я открываю страницу "carriers"
+    То я ввожу данные в поле поиска
+    Если я введу следующие данные "Bahaway"
+    То я вижу сущность с данными "BAHAWAY"

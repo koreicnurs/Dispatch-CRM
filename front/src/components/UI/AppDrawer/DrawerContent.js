@@ -18,16 +18,30 @@ const StyledList = styled(List)(({theme}) => ({
     },
 }));
 
+let menu = [];
+
 const DrawerContent = () => {
     const dispatch = useDispatch();
+    const user = useSelector(state => state.users.user);
 
-    const menuItems = useMemo(() => [
-        {title:'Status Update', route:  '/status-update'},
-        {title:'Trips', route:  '/loads/?status=upcoming'},
-        {title: 'Carriers', route: '/carriers'},
-        {title: 'Drivers', route: '/drivers'},
-        {title: 'Dispatchers', route: '/dispatchers'},
-    ], []);
+    if (user.role === 'carrier') {
+        menu = [
+            {title: 'Drivers', route: '/drivers'},
+            {title: 'My Trips', route: '/carrier-loads'},
+        ]
+    } else {
+        menu = [
+            {title:'Status Update', route:  '/status-update'},
+            {title:'Trips', route:  '/loads/?status=upcoming'},
+            {title: 'Carriers', route: '/carriers'},
+            {title: 'Drivers', route: '/drivers'},
+            {title: 'Brokers', route: '/brokers'},
+            {title: 'Dispatchers', route: '/dispatchers'},
+        ]
+    }
+
+    let menuItems = useMemo(() => menu, []);
+
 
     const [selectedIndex, setSelectedIndex] = React.useState(0);
 
@@ -37,7 +51,8 @@ const DrawerContent = () => {
         setSelectedIndex(index);
     }, [dispatch, menuItems]);
 
-    const user = useSelector(state => state.users.user);
+
+
 
     const handleListItemClick = (index) => {
         setSelectedIndex(index);

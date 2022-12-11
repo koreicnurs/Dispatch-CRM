@@ -56,7 +56,8 @@ const run = async () => {
     displayName: 'Admin',
     avatar: 'fixtures/admin.png',
     phoneNumber: '+267●5350811',
-    isWorking: 'active'
+    isWorking: 'active',
+    telegramId: '',
   }, {
     email: 'user@gmail.com',
     password: 'user',
@@ -65,7 +66,8 @@ const run = async () => {
     displayName: 'User',
     avatar: 'fixtures/user.png',
     phoneNumber: '+267●5350801',
-    isWorking: 'active'
+    isWorking: 'active',
+    telegramId: '',
   }, {
     email: 'user2@gmail.com',
     password: 'user2',
@@ -73,7 +75,8 @@ const run = async () => {
     token: nanoid(),
     displayName: 'User2',
     phoneNumber: '+267●5350802',
-    isWorking: 'disabled'
+    isWorking: 'disabled',
+    telegramId: '',
   }, {
     email: 'bahaway@gmail.com',
     password: 'bahaway',
@@ -82,7 +85,8 @@ const run = async () => {
     displayName: 'BAHAWAY',
     companyId: bahawayCarrier._id,
     phoneNumber: '+267●5350812',
-    isWorking: 'active'
+    isWorking: 'active',
+    telegramId: '',
   }, {
     email: 'safeway@gmail.com',
     password: 'safeway',
@@ -91,14 +95,15 @@ const run = async () => {
     displayName: 'SAFEWAY CARGO',
     companyId: safewayCargoCarrier._id,
     phoneNumber: '+267●5350803',
-    isWorking: 'active'
+    isWorking: 'active',
+    telegramId: '',
   });
 
   const [umotDriver, kubaDriver, timurDriver, keldibekDriver, bakdoolotDriver, askhatDriver,
     mirbekDriver, bekmuratDriver, makenDriver] = await Driver.create({
     email: 'umot@gmail.com',
     name: 'Umot',
-    phoneNumber: '+267●5350808',
+    phoneNumber: '+2675350808',
     companyId: bahawayCarrier._id,
     status: 'in transit',
     currentStatus: 'driving',
@@ -112,7 +117,7 @@ const run = async () => {
   }, {
     email: 'kuba@gmail.com',
     name: 'Kuba',
-    phoneNumber: '+929●3774446',
+    phoneNumber: '+9293774446',
     companyId: bahawayCarrier._id,
     status: 'upcoming',
     telegramId: '',
@@ -125,10 +130,10 @@ const run = async () => {
   }, {
     email: 'timur@gmail.com',
     name: 'Timur',
-    phoneNumber: '+323●7454492',
+    phoneNumber: '+3237454492',
     companyId: safewayCargoCarrier._id,
     status: 'off',
-    currentStatus: 'off',
+    currentStatus: 'n/a',
     telegramId: '',
     description: {
       address: 'US, IL, Chicago c., str. 1, h. 4',
@@ -139,7 +144,7 @@ const run = async () => {
   }, {
     email: 'keldibek@gmail.com',
     name: 'Keldibek',
-    phoneNumber: '+513●8081130',
+    phoneNumber: '+5138081130',
     companyId: safewayCargoCarrier._id,
     status: 'ready',
     telegramId: '',
@@ -152,7 +157,7 @@ const run = async () => {
   }, {
     email: 'bakdoolot@gmail.com',
     name: 'Bakdoolot',
-    phoneNumber: '+630●6702075',
+    phoneNumber: '+6306702075',
     companyId: safewayCargoCarrier._id,
     status: 'in tr/upc',
     currentStatus: 'rest',
@@ -166,10 +171,10 @@ const run = async () => {
   }, {
     email: 'askhat@gmail.com',
     name: 'Askhat',
-    phoneNumber: '+312●6840690',
+    phoneNumber: '+3126840690',
     companyId: turanExpressCarrier._id,
     status: 'off',
-    currentStatus: 'off',
+    currentStatus: 'n/a',
     telegramId: '',
     description: {
       address: 'US, NY, New-York c., 5 Avenue, h. 48',
@@ -185,7 +190,7 @@ const run = async () => {
   }, {
     email: 'mirbek@gmail.com',
     name: 'Mirbek',
-    phoneNumber: '+773●6913604',
+    phoneNumber: '+7736913604',
     companyId: turanExpressCarrier._id,
     status: 'in tr/upc',
     currentStatus: 'driving',
@@ -199,7 +204,7 @@ const run = async () => {
   }, {
     email: 'bekmurat@gmail.com',
     name: 'Bekmurat',
-    phoneNumber: '+773●9466304',
+    phoneNumber: '+7739466304',
     companyId: tumarExpressCarrier._id,
     status: 'ready',
     telegramId: '',
@@ -212,7 +217,7 @@ const run = async () => {
   }, {
     email: 'maken@gmail.com',
     name: 'Maken',
-    phoneNumber: '+347●4941314',
+    phoneNumber: '+3474941314',
     companyId: tumarExpressCarrier._id,
     status: 'in transit',
     currentStatus: 'rest',
@@ -314,6 +319,7 @@ const run = async () => {
     pu: 'New-York, NY',
     del: 'Seattle, WS',
     status: 'finished',
+    finishConfirmed: true,
     BOL: 'fixtures/BOL2.pdf',
     RC: 'fixtures/RC2.pdf',
   },{
@@ -346,35 +352,35 @@ const run = async () => {
       author: user2._id,
     }
   );
-  
+
   await Broker.create(
-    {
-      name: 'Azamat',
-      phoneNumber: ['+99655555555', '+2678480704'],
-      mc: 'Lorem1',
-      description: 'Lorem ipsum dolor sit amet',
-      companiesContract: [bahawayCarrier._id],
-    }, {
-      name: 'Aibek',
-      phoneNumber: ['+2678892567'],
-      mc: 'Lorem2',
-      description: 'Consectetur adipiscing elit',
-      companiesContract: [bahawayCarrier._id],
-    }, {
-      name: 'Nurbek',
-      phoneNumber: ['+9293525578', '+9294884446'],
-      mc: 'Lorem3',
-      companiesContract: [bahawayCarrier._id],
-    }, {
-      name: 'Adilet',
-      phoneNumber: ['+996999523214', '+7678480704', '+3232523146'],
-      mc: 'Lorem4',
-      description: 'Convallis convallis tellus id interdum velit laoreet id donec ultrices',
-      companiesContract: [bahawayCarrier._id],
-    }
+      {
+        name: 'Azamat',
+        phoneNumber: ['+9963592261', '+2678480704'],
+        mc: '225863',
+        description: 'Lorem ipsum dolor sit amet',
+        companiesContract: [bahawayCarrier._id, safewayCargoCarrier._id, turanExpressCarrier._id]
+      }, {
+        name: 'Aibek',
+        phoneNumber: ['+3478548314'],
+        mc: '238164',
+        description: 'Consectetur adipiscing elit',
+        companiesContract: [bahawayCarrier._id],
+      }, {
+        name: 'Nurbek',
+        phoneNumber: ['+1293525578', '+1294884446'],
+        mc: '216579',
+        companiesContract: [bahawayCarrier._id, tumarExpressCarrier._id],
+      }, {
+        name: 'Adilet',
+        phoneNumber: ['+9965995232', '+7678480704', '+3232523146'],
+        mc: '953268',
+        description: 'Convallis convallis tellus id interdum velit laoreet id donec ultrices',
+        companiesContract: [bahawayCarrier._id],
+      }
   );
   
   await mongoose.connection.close();
 };
 
-run().catch(console.error);
+run().catch(console.error); 

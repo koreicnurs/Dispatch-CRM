@@ -4,6 +4,9 @@ export const {
   fetchTripsRequest,
   fetchTripsSuccess,
   fetchTripsFailure,
+  fetchTripsByCarrierRequest,
+  fetchTripsByCarrierSuccess,
+  fetchTripsByCarrierFailure,
   createTripRequest,
   createTripSuccess,
   createTripFailure,
@@ -25,5 +28,8 @@ export const {
   addAttachmentRequest,
   addAttachmentSuccess,
   addAttachmentFailure,
+  confirmTripsRequest,
+  confirmTripsSuccess,
+  confirmTripsFailure,
   clearCreateTripErrorRequest
 } = tripsSlice.actions;

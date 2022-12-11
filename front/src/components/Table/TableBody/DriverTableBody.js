@@ -3,7 +3,6 @@ import {TableCell, TableRow} from "@mui/material";
 import EditDriver from "../../Modals/EditDriver";
 
 const DriverTableBody = ({columns, filteredData}) => {
-
   return (
     <>
       {filteredData.map(driver => (

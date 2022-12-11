@@ -6,7 +6,7 @@ import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import {useDispatch, useSelector} from "react-redux";
 import {
   cancelTripRequest,
-  changeTripStatusRequest,
+  changeTripStatusRequest, confirmTripsRequest,
   fetchTripRequest,
   fetchTripsRequest
 } from "../../store/actions/tripsActions";
@@ -110,6 +110,10 @@ const Trips = ({history}) => {
     dispatch(fetchTripRequest(id));
     setComment(true);
   };
+  
+  const confirmTrip = id => {
+    dispatch(confirmTripsRequest(id));
+  };
 
   const viewAllHandler = id => {
     setEdit(false);
@@ -158,6 +162,7 @@ const Trips = ({history}) => {
                 editTripHandler={editTripHandler}
                 attachFileHandler={attachFileHandler}
                 leaveCommentHandler={leaveCommentHandler}
+                confirmTrip={confirmTrip}
                 viewAllHandler={viewAllHandler}
               />
             }

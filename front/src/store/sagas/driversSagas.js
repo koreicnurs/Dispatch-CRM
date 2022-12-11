@@ -28,9 +28,9 @@ export function* getDrivers() {
   }
 }
 
-export function* fetchDriversByCarrier({payload: id}) {
+export function* fetchDriversByCarrier() {
   try {
-    const response = yield axiosApi('/drivers?carrier=' + id);
+    const response = yield axiosApi('/drivers/carrier');
     yield put(fetchDriversByCarrierSuccess(response.data));
   } catch (e) {
     yield put(fetchDriversByCarrierFailure(e.response.data));
@@ -53,6 +53,7 @@ export function* addDriver(action) {
     yield axiosApi.post('/drivers', action.payload);
     yield put(addDriverSuccess());
     yield put(fetchDriversRequest());
+    yield put(fetchDriversByCarrierRequest());
     yield put(addNotification({message: 'You have successfully added a driver!', variant: 'success'}));
   } catch (e) {
     yield put(addDriverFailure(e.response && e.response.data));
@@ -64,7 +65,11 @@ export function* updateDriver({payload}) {
   try {
     yield axiosApi.put('/drivers/' + payload.id, payload.data);
     yield put(updateDriverSuccess());
-    yield put(fetchDriversRequest());
+    if(payload.user.role === 'carrier') {
+      yield put(fetchDriversByCarrierRequest());
+    } else {
+      yield put(fetchDriversRequest());
+    }
     yield put(addNotification({message: 'You have successfully updated a driver!', variant: 'success'}));
   } catch (e) {
     yield put(updateDriverFailure(e.response.data));

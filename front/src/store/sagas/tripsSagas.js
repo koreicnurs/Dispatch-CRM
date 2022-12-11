@@ -1,18 +1,34 @@
 import {put, takeEvery} from "redux-saga/effects";
 import {
-  addAttachmentFailure, addAttachmentRequest,
+  addAttachmentFailure,
+  addAttachmentRequest,
   addAttachmentSuccess,
   addCommentFailure,
-  addCommentRequest, addCommentSuccess,
-  cancelTripFailure, cancelTripRequest,
+  addCommentRequest,
+  addCommentSuccess,
+  cancelTripFailure,
+  cancelTripRequest,
   cancelTripSuccess,
-  changeTripStatusFailure, changeTripStatusRequest,
+  changeTripStatusFailure,
+  changeTripStatusRequest,
   changeTripStatusSuccess,
-  createTripFailure, createTripRequest,
-  createTripSuccess, editTripFailure, editTripRequest, editTripSuccess, fetchTripFailure, fetchTripRequest,
+  confirmTripsFailure, confirmTripsRequest,
+  confirmTripsSuccess,
+  createTripFailure,
+  createTripRequest,
+  createTripSuccess,
+  editTripFailure,
+  editTripRequest,
+  editTripSuccess,
+  fetchTripFailure,
+  fetchTripRequest,
+  fetchTripsByCarrierFailure,
+  fetchTripsByCarrierRequest,
+  fetchTripsByCarrierSuccess,
   fetchTripsFailure,
   fetchTripsRequest,
-  fetchTripsSuccess, fetchTripSuccess
+  fetchTripsSuccess,
+  fetchTripSuccess
 } from "../actions/tripsActions";
 import {addNotification} from "../actions/notifierActions";
 import axiosApi from "../../axiosApi";
@@ -23,6 +39,16 @@ export function* fetchTrips({payload: value}) {
       yield put(fetchTripsSuccess(response.data));
   } catch (e) {
     yield put(fetchTripsFailure(e.response.error));
+    yield put(addNotification({message: 'Trips fetch failed!', variant: 'error'}));
+  }
+}
+
+export function* fetchTripsByCarrier() {
+  try{
+    const response = yield axiosApi('/loads/carrier');
+    yield put(fetchTripsByCarrierSuccess(response.data));
+  } catch (e) {
+    yield put(fetchTripsByCarrierFailure(e.response.error));
     yield put(addNotification({message: 'Trips fetch failed!', variant: 'error'}));
   }
 }
@@ -107,8 +133,23 @@ export function* cancelTrip({payload}) {
   }
 }
 
+
+export function* confirmTrip({payload: id}) {
+  try {
+    yield axiosApi.put(`/loads/confirm/${id}`);
+    yield put(confirmTripsSuccess());
+    yield put(addNotification({message: 'Trip confirmed!', variant: 'success'}));
+    const response = yield axiosApi('/loads?status=finished');
+    yield put(fetchTripsSuccess(response.data));
+  } catch (e) {
+    yield put(confirmTripsFailure(e.response.data));
+    yield put(addNotification({message: 'Trip confirming failed!', variant: 'error'}));
+  }
+}
+
 const tripsSagas = [
   takeEvery(fetchTripsRequest, fetchTrips),
+  takeEvery(fetchTripsByCarrierRequest, fetchTripsByCarrier),
   takeEvery(createTripRequest, createTrip),
   takeEvery(changeTripStatusRequest, changeTripStatus),
   takeEvery(cancelTripRequest, cancelTrip),
@@ -116,6 +157,7 @@ const tripsSagas = [
   takeEvery(editTripRequest, editTrip),
   takeEvery(addCommentRequest, addComment),
   takeEvery(addAttachmentRequest, addAttachment),
+  takeEvery(confirmTripsRequest, confirmTrip),
 ];
 
 export default tripsSagas;

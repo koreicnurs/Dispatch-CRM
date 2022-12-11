@@ -14,6 +14,7 @@ const TripTableBody = (props) => {
     editTripHandler,
     leaveCommentHandler,
     attachFileHandler,
+    confirmTrip,
     viewAllHandler,
     user
   } = props;
@@ -24,7 +25,9 @@ const TripTableBody = (props) => {
         trips.map(trip => (
           <TableRow
             key={trip._id}
-            sx={{'&:last-child td, &:last-child th': {border: 0}, background: "white"}}>
+            sx={{'&:last-child td, &:last-child th': {border: 0},
+              background: (trip.status === 'finished' && !trip.finishConfirmed) ? "#cecece" : "white"
+          }}>
 
             <TableCell sx={{fontSize: "14px", fontWeight: 'bold'}}>{trip.loadCode}</TableCell>
             <TableCell sx={{fontSize: "14px", fontWeight: 'bold'}}>
@@ -45,24 +48,31 @@ const TripTableBody = (props) => {
             <TableCell sx={{fontSize: "14px", fontWeight: 'bold'}}>
               {trip.driverId?.name || 'n/a'}
             </TableCell>
-            <TableCell sx={{fontSize: "12px"}}>test</TableCell>
+            {
+              user.role !== 'carrier'
+              ? <>
+                  <TableCell sx={{fontSize: "12px"}}>test</TableCell>
 
-            <TableCell sx={{fontSize: "12px"}}>
-              {trip.dispatchId.displayName}
-            </TableCell>
+                  <TableCell sx={{fontSize: "12px"}}>
+                    {trip.dispatchId.displayName}
+                  </TableCell>
 
-            <TableCell sx={{fontSize: "12px"}}>
-              <MenuBtn
-                user={user}
-                trip={trip}
-                sendTrip={sendTrip}
-                cancelTripHandler={cancelTripHandler}
-                editTripHandler={editTripHandler}
-                attachFileHandler={attachFileHandler}
-                leaveCommentHandler={leaveCommentHandler}
-                viewAllHandler={viewAllHandler}
-              />
-            </TableCell>
+                  <TableCell sx={{fontSize: "12px"}}>
+                    <MenuBtn
+                      user={user}
+                      trip={trip}
+                      sendTrip={sendTrip}
+                      cancelTripHandler={cancelTripHandler}
+                      editTripHandler={editTripHandler}
+                      attachFileHandler={attachFileHandler}
+                      leaveCommentHandler={leaveCommentHandler}
+                      confirmTrip={confirmTrip}
+                      viewAllHandler={viewAllHandler}
+                    />
+                  </TableCell>
+                </>
+              : null
+            }
 
           </TableRow>
         ))

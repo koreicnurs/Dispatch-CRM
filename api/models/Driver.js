@@ -64,6 +64,7 @@ const DriverSchema = new Schema({
     required: true,
   },
   status: {
+    default: 'off',
     type: String,
     required: true,
     enum: ['in transit', 'upcoming', 'ready', 'in tr/upc', 'off'],
@@ -71,8 +72,8 @@ const DriverSchema = new Schema({
   currentStatus: {
     type: String,
     required: true,
-    default: 'null',
-    enum: ['driving', 'rest', 'emergency', 'off', 'null'],
+    default: 'n/a',
+    enum: ['driving', 'rest', 'emergency', 'n/a', 'null'],
   },
   description: DescriptionSchema,
   pickUp: String,

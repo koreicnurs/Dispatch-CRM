@@ -133,7 +133,7 @@ const run = async () => {
     phoneNumber: '+3237454492',
     companyId: safewayCargoCarrier._id,
     status: 'off',
-    currentStatus: 'off',
+    currentStatus: 'n/a',
     telegramId: '',
     description: {
       address: 'US, IL, Chicago c., str. 1, h. 4',
@@ -174,7 +174,7 @@ const run = async () => {
     phoneNumber: '+3126840690',
     companyId: turanExpressCarrier._id,
     status: 'off',
-    currentStatus: 'off',
+    currentStatus: 'n/a',
     telegramId: '',
     description: {
       address: 'US, NY, New-York c., 5 Avenue, h. 48',

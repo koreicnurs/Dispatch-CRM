@@ -63,7 +63,6 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
     name: '',
     phoneNumber: '',
     companyId: '',
-    status: '',
     description: {
       address: '',
       DOB: '',
@@ -89,8 +88,11 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
   });
 
   useEffect(() => {
-    dispatch(fetchCarriersRequest());
-  }, [dispatch]);
+    if(newModal || editModal) {
+      dispatch(fetchCarriersRequest());
+    }
+
+  }, [dispatch, newModal, editModal]);
 
   useEffect(() => {
     if (newError === null) {
@@ -111,7 +113,6 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
         name: '',
         phoneNumber: '',
         companyId: '',
-        status: '',
         description: {
           address: '',
           DOB: '',
@@ -301,7 +302,7 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
                     spacing={2}
                     justifyContent="space-between"
                   >
-                    <Grid item width="49.5%">
+                    <Grid item width={isAdd ? "100%" : "49.5%"}>
                       {user.role === 'carrier'
                         ? <TextField
                           name={"carrier"}
@@ -325,18 +326,20 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
                       }
 
                     </Grid>
-                    <Grid item width="49.5%">
-                      <FormSelect
-                        label={'Status'}
-                        name={'status'}
-                        array={DRIVER_STATUS}
-                        value={isAdd ? newData.status : editedData.status}
-                        onChange={inputChangeHandler}
-                        required={true}
-                        variant={'array'}
-                        error={getFieldError('status')}
-                      />
-                    </Grid>
+                    {!isAdd &&
+                      <Grid item width="49.5%">
+                        <FormSelect
+                          label={'Status'}
+                          name={'status'}
+                          array={DRIVER_STATUS}
+                          value={isAdd ? newData.status : editedData.status}
+                          onChange={inputChangeHandler}
+                          required={true}
+                          variant={'array'}
+                          error={getFieldError('status')}
+                        />
+                      </Grid>
+                    }
                   </Grid>
 
                   <Grid item xs={12}>

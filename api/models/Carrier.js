@@ -37,6 +37,7 @@ const CarrierSchema = new Schema({
     unique: true,
     validate: [{validator: validatePhoneNumber, message: 'Phone number is not valid!'}],
   },
+  document: String
 });
 
 CarrierSchema.plugin(uniqueValidator, {message: 'Error, expected {PATH} to be unique'});

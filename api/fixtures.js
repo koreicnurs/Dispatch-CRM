@@ -24,7 +24,8 @@ const run = async () => {
     mc: '1180196',
     dot: '3537967',
     fedid: '83-3826233',
-    description: 'test company #1'
+    description: 'test company #1',
+    document: 'fixtures/docs.pdf'
   }, {
     title: 'SAFEWAY CARGO',
     phoneNumber: '+431234567890',
@@ -38,14 +39,16 @@ const run = async () => {
     mc: '1256775',
     dot: '3648632',
     fedid: '84-2388341',
-    description: 'test company #3'
+    description: 'test company #3',
+    document: 'fixtures/docs.pdf'
   }, {
     title: 'TUMAR EXPRESS',
     phoneNumber: '+355123456789',
     mc: '918995',
     dot: '2638087',
     fedid: '47-4067936',
-    description: 'test company #4'
+    description: 'test company #4',
+    document: 'fixtures/docs.pdf'
   });
 
   const [admin, user, user2, bahCarrier] = await User.create({

@@ -1,4 +1,4 @@
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {Button, Grid, TextField} from "@mui/material";
 import {makeStyles} from "tss-react/mui";
 
@@ -8,11 +8,15 @@ const useStyles = makeStyles()(() => ({
     }
 }));
 
-const FileInput = ({onChange, name, label, required}) => {
+const FileInput = ({onChange, name, label, required, value}) => {
   const {classes} = useStyles();
   const inputRef = useRef();
 
   const [filename, setFilename] = useState('');
+
+  useEffect(() => {
+    if (value) setFilename(value);
+  }, [value]);
 
   const onFileChange = e => {
     if (e.target.files[0]) {

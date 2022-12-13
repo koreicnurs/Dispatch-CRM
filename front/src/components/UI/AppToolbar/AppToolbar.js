@@ -3,14 +3,15 @@ import {useDispatch, useSelector} from "react-redux";
 import 'react-toastify/dist/ReactToastify.css';
 import {ToastContainer} from "react-toastify";
 import {AppBar, Avatar, Button, Grid, ListItemIcon, Menu, Stack, Toolbar, Typography} from "@mui/material";
-import {DRAWER_WIDTH} from "../../../constants";
-import {apiUrl} from "../../../config";
-import defaultAvatar from "../../../assets/default-avatar.png";
 import MenuItem from '@mui/material/MenuItem';
 import Logout from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import {Link} from 'react-router-dom';
+import {DRAWER_WIDTH} from "../../../constants";
+import {apiUrl} from "../../../config";
+import defaultAvatar from "../../../assets/default-avatar.png";
 import {logoutRequest} from '../../../store/actions/usersActions';
+import {dropDownMenu} from "../../../config";
 
 const AppToolbar = () => {
     const dispatch = useDispatch();
@@ -66,12 +67,17 @@ const AppToolbar = () => {
                                   'aria-labelledby': 'basic-button',
                               }}
                             >
-                                <MenuItem onClick={handleClose} component={Link} to={'/my-profile'}>
-                                    <ListItemIcon>
-                                        <PersonIcon fontSize="small" />
-                                    </ListItemIcon>
-                                    My Profile
-                                </MenuItem>
+                                {
+                                    dropDownMenu(user.role).map(item => (
+                                      <MenuItem onClick={handleClose} component={Link} to={item.path}>
+                                          <ListItemIcon>
+                                              <PersonIcon fontSize="small" />
+                                          </ListItemIcon>
+                                          {item.title}
+                                      </MenuItem>
+                                    ))
+                                }
+
                                 <MenuItem onClick={() => dispatch(logoutRequest())}>
                                     <ListItemIcon>
                                         <Logout fontSize="small" />

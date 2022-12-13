@@ -10,6 +10,7 @@ import Brokers from "./containers/Brokers/Brokers";
 import MyProfile from "./containers/MyProfile/MyProfile";
 import Dispatchers from "./containers/Dispatchers/Dispatchers";
 import CarrierTrips from "./containers/CarrierTrips/CarrierTrips";
+import Administrators from "./containers/Administrators/Administrators";
 
 const ProtectedRoute = ({isAllowed, redirectTo, ...props}) => {
     return isAllowed ?
@@ -83,6 +84,12 @@ const App = () => {
                   redirectTo="/login"
                   path="/dispatchers"
                   component={Dispatchers}
+                />
+                <RoleProtectedRoute
+                  isAllowed={user}
+                  redirectTo="/login"
+                  path="/administrators"
+                  component={Administrators}
                 />
                 <ProtectedRoute
                   isAllowed={user?.role === 'carrier'}

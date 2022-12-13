@@ -78,7 +78,7 @@ const Dispatchers = () => {
   }, [users, filteredData]);
 
   const activeSwitcherHandler = async (e) => {
-    console.log(e.target.checked)
+
     const copyDispatchers = dispatchers.map(dispatcher => {
       if (dispatcher._id === e.target.id) {
         return {
@@ -134,7 +134,7 @@ const Dispatchers = () => {
           header={
           <TableHeaderRow
             headerCells={headerTitles}
-            data={true}
+            data={false}
             sx={{fontSize: "16px", fontWeight: "bold", textTransform: "uppercase"}}
           />
           }

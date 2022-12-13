@@ -1,5 +1,6 @@
 import React from 'react';
 import {TableCell, TableRow} from "@mui/material";
+import EditStatusUpdate from '../../Modals/StatusUpdate/EditStatusUpdate';
 
 const StatusUpdateTableBody = ({columns, filteredData}) => {
 
@@ -18,8 +19,9 @@ const StatusUpdateTableBody = ({columns, filteredData}) => {
             if (column.innerKey) {
               value = value[column.innerKey];
             }
-            return <TableCell sx={{fontSize: "12px"}} key={column.key + column.innerKey}>{value}</TableCell>;
+            return <TableCell sx={{fontSize: "12px", cursor: 'default'}} key={column.key + column.innerKey}>{value}</TableCell>;
           })}
+          <EditStatusUpdate driverEmail={driver.email}/>
         </TableRow>
       ))
       }

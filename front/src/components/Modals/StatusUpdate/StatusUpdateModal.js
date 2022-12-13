@@ -285,19 +285,6 @@ const StatusUpdateModal = ({driverEmail}) => {
                         error={getFieldError('ETA')}
                       />
                     </Grid>
-  
-                    {/*<Grid item width="49.5%">*/}
-                    {/*  <FormElement*/}
-                    {/*    type={'email'}*/}
-                    {/*    name={'email'}*/}
-                    {/*    label={'Email'}*/}
-                    {/*    value={editedData.email}*/}
-                    {/*    required={true}*/}
-                    {/*    onChange={inputChangeHandler}*/}
-                    {/*    error={getFieldError('email')}*/}
-                    {/*    disabled={true}*/}
-                    {/*  />*/}
-                    {/*</Grid>*/}
     
                     <Grid item width="49.5%">
                       <FormElement

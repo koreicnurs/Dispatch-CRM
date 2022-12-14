@@ -246,6 +246,10 @@ const run = async () => {
     status: 'transit',
     BOL: 'fixtures/BOL1.pdf',
     RC: 'fixtures/RC1.pdf',
+    comment: [{
+      authorId: user._id,
+      text: 'Lorem ipsum'
+    }]
   }, {
     loadCode: 'T-151F5454FEG',
     driverId: kubaDriver._id,
@@ -260,6 +264,13 @@ const run = async () => {
     pu: 'Pittsburg, PA',
     del: 'Boston, MA',
     status: 'cancel',
+    comment: [{
+      authorId: user._id,
+      text: 'Dolor sit amet, consectetur adipiscing elit'
+    }, {
+      authorId: user2._id,
+      text: 'Ipsum'
+    }]
   }, {
     loadCode: 'T-454GRG45R4G',
     driverId: timurDriver._id,
@@ -276,6 +287,16 @@ const run = async () => {
     status: 'finished',
     BOL: 'fixtures/BOL2.pdf',
     RC: 'fixtures/RC2.pdf',
+    comment: [{
+      authorId: user._id,
+      text: 'Dolor sit amet, consectetur adipiscing elit'
+    }, {
+      authorId: user2._id,
+      text: 'Ipsum'
+    }, {
+      authorId: user._id,
+      text: 'Labore et dolore magna aliqua. Rhoncus dolor purus non'
+    }]
   }, {
     loadCode: 'T-12FEF4E5F',
     dispatchId: user2._id,
@@ -289,6 +310,16 @@ const run = async () => {
     pu: 'Chicago, IL',
     del: 'Lafayette, LA',
     status: 'upcoming',
+    comment: [{
+      authorId: user2._id,
+      text: 'Et dolor sit amet, consectetur adipiscing elit'
+    }, {
+      authorId: admin._id,
+      text: 'Adipiscing elit'
+    }, {
+      authorId: user._id,
+      text: 'Rhoncus dolor purus non'
+    }]
   }, {
     loadCode: 'T-1FEFS12S',
     driverId: makenDriver._id,

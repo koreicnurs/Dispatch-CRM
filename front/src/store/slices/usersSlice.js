@@ -99,6 +99,19 @@ const usersSlice = createSlice({
         changeStatusFailure(state, action) {
             state.changeStatusLoading = false;
             state.changeStatusError = action.payload;
+        },
+
+        createUserCarrierRequest(state) {
+            state.createLoading = true;
+            state.createError = null;
+        },
+        createUserCarrierSuccess(state) {
+            state.createLoading = false;
+            state.createError = null;
+        },
+        createUserCarrierFailure(state, action) {
+            state.createLoading = false;
+            state.createError = action.payload;
         }
     }
 });

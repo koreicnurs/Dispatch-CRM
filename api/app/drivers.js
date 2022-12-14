@@ -165,7 +165,7 @@ router.post('/', auth, upload.single('license'), async (req, res) => {
 
 
     if (driverData.status === 'off') {
-      driverData.currentStatus = 'off';
+      driverData.currentStatus = 'n/a';
     }
 
     const driver = new Driver(driverData);
@@ -193,7 +193,7 @@ router.post('/carrier', auth, permit('carrier'), upload.single('license'), async
     const driver = new Driver(driverData);
 
     if (driverData.status === 'off') {
-      driverData.currentStatus = 'off';
+      driverData.currentStatus = 'n/a';
     }
 
     await driver.save();
@@ -236,10 +236,9 @@ router.put('/:id', auth, upload.single('license'), async (req, res) => {
     driver.readyTime = readyTime;
     driver.notes = notes;
 
-    if (status === 'off') {
-      driver.currentStatus = 'off';
+    if (status !== 'in transit' && status !== 'in tr/upc') {
+      driver.currentStatus = 'n/a';
     }
-
 
     await driver.save();
     res.send(driver);
@@ -271,7 +270,7 @@ router.put('/carrier/:id', auth, permit('carrier'), upload.single('license'), as
     driver.notes = notes;
 
     if (status === 'off') {
-      driver.currentStatus = 'off';
+      driver.currentStatus = 'n/a';
     }
 
     await driver.save();

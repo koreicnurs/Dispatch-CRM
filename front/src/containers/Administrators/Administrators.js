@@ -1,11 +1,12 @@
 import React from 'react';
 import {useSelector} from "react-redux";
-import AdminProfile from "../../components/Profile/AdminProfile";
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
 import NewDispatcher from "../../components/Modals/DispatcherModal/NewDispatcher";
 import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import UserTableBody from "../../components/Table/TableBody/UserTableBody";
 import InnerTable from "../../components/Table/InnerTable";
+import Typography from "@mui/material/Typography";
+import {Grid} from "@mui/material";
 
 const headerTitles = ["email", "name"];
 
@@ -17,6 +18,12 @@ const Administrators = () => {
     <InnerContainer>
       {user.role === "admin" &&
         <>
+          <Grid item sx={{paddingLeft: "15px"}}>
+            <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
+              Other admins
+            </Typography>
+          </Grid>
+
           <NewDispatcher dispatcherRole="admin"/>
 
           <InnerTable

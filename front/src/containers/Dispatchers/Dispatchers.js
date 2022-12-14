@@ -89,6 +89,7 @@ const Dispatchers = () => {
         return dispatcher;
       }
     });
+
     const dispatcher = copyDispatchers.find(dispatcher => dispatcher._id === e.target.id);
     await dispatch(changeStatusRequest(dispatcher));
     setDispatchers(copyDispatchers);

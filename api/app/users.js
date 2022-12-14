@@ -120,8 +120,8 @@ router.put('/', auth, upload.single('avatar'), async (req, res) => {
             if (!user) {
                 return res.status(404).send({message: 'User not found!'});
             }
-            if (user.role !== 'user') {
-                return res.status(403).send('You can make changes only for dispatchers!');
+            if (user.role === 'admin') {
+                return res.status(403).send('You can make changes only for dispatchers or carriers!');
             }
             if(status === 'false') {
               user.isWorking = 'disabled';

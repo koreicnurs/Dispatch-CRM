@@ -74,6 +74,30 @@ router.post('/dispatchers', auth, permit('admin'), upload.single('avatar'), asyn
   }
 });
 
+router.post('/user-carrier', auth, permit('admin'), upload.single('avatar'), async (req, res) => {
+  try {
+    const {email, password, displayName, companyId, phoneNumber} = req.body;
+
+    const userCarrierData = {
+      email,
+      password,
+      displayName,
+      companyId,
+      phoneNumber,
+      isWorking: 'active',
+      avatar: req.file ? 'uploads/' + req.file.filename : null,
+    };
+
+    const user = new User(userCarrierData);
+
+    user.generateToken();
+    await user.save();
+
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
 router.post('/sessions', async (req,  res) => {
   const {email, password} = req.body;
   

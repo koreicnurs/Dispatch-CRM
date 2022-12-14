@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import InnerContainer from "../InnerContainer/InnerContainer";
 import Typography from "@mui/material/Typography";
 import {Grid} from "@mui/material";
@@ -9,7 +9,6 @@ import {fetchUsersRequest} from "../../store/actions/usersActions";
 
 const AdminProfile = ({user, error}) => {
   const dispatch = useDispatch();
-  const users = useSelector(state => state.users.users);
 
   useEffect(() => {
     dispatch(fetchUsersRequest());

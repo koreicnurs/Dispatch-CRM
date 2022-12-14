@@ -69,7 +69,7 @@ const AppToolbar = () => {
                             >
                                 {
                                     dropDownMenu(user.role).map(item => (
-                                      <MenuItem onClick={handleClose} component={Link} to={item.path}>
+                                      <MenuItem onClick={handleClose} component={Link} to={item.path} key={item.id}>
                                           <ListItemIcon>
                                               <PersonIcon fontSize="small" />
                                           </ListItemIcon>

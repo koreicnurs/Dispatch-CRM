@@ -76,12 +76,13 @@ router.post('/dispatchers', auth, permit('admin'), upload.single('avatar'), asyn
 
 router.post('/user-carrier', auth, permit('admin'), upload.single('avatar'), async (req, res) => {
   try {
-    const {email, password, displayName, companyId, phoneNumber} = req.body;
+    const {email, password, displayName, role, companyId, phoneNumber} = req.body;
 
     const userCarrierData = {
       email,
       password,
       displayName,
+      role,
       companyId,
       phoneNumber,
       isWorking: 'active',
@@ -93,6 +94,7 @@ router.post('/user-carrier', auth, permit('admin'), upload.single('avatar'), asy
     user.generateToken();
     await user.save();
 
+    res.send(user);
   } catch (e) {
     res.status(400).send(e);
   }

@@ -92,8 +92,8 @@ const StatusUpdate = () => {
   const drivers = useSelector(state => state.drivers.drivers);
   const carriers = useSelector(state => state.carriers.carriers);
   const [currentDrivers, setCurrentDrivers] = useState([]);
-  const [carrierSelector, setCarrierSelector] = useState(["Carrier"]);
-  const [selectedCarrier, setSelectedCarrier] = useState([]);
+  const [carrierSelector, setCarrierSelector] = useState(["Carriers"]);
+  const [selectedCarrier, setSelectedCarrier] = useState(["All"]);
   const [selectedStatus, setSelectedStatus] = useState("Status");
 
   useEffect(() => {
@@ -110,7 +110,11 @@ const StatusUpdate = () => {
     } else if (selectedCarrier.length !== 0 || selectedStatus !== "Status") {
       let driverFiltered = drivers;
       if (selectedCarrier.length !== 0) {
-        driverFiltered = drivers.filter(driver => selectedCarrier.includes(driver.companyId.title));
+        if(selectedCarrier.includes("All")) {
+          setCurrentDrivers(driverFiltered);
+        } else {
+          driverFiltered = drivers.filter(driver => selectedCarrier.includes(driver.companyId.title));
+        }
       }
       if (selectedStatus !== "Status") {
         driverFiltered = driverFiltered.filter(driver => selectedStatus.includes(driver.status));
@@ -127,13 +131,14 @@ const StatusUpdate = () => {
 
     useEffect(() => {
       const carriersTitles = carriers.map(carrier => carrier.title);
-      setCarrierSelector(() => [...carriersTitles]);
+      setCarrierSelector(() => ["All",...carriersTitles]);
     }, [carriers]);
 
     const selectCarrierHandler = event => {
       const {
         target: { value },
       } = event;
+
       setSelectedCarrier(
         typeof value === 'string' ? value.split(',') : value,
       );

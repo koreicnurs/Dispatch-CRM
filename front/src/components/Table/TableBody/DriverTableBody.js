@@ -1,6 +1,7 @@
 import React from 'react';
 import {TableCell, TableRow} from "@mui/material";
 import EditDriver from "../../Modals/EditDriver";
+import ViewDocuments from "../../Modals/ViewDocuments";
 
 const DriverTableBody = ({columns, filteredData}) => {
   return (
@@ -9,9 +10,7 @@ const DriverTableBody = ({columns, filteredData}) => {
         <TableRow
           key={driver._id}
           sx={{
-            '&:last-child td, &:last-child th': {border: 0}, background: "white",
-            cursor: "pointer", ":active": {background: '#f0f2fe'}
-          }}
+            '&:last-child td, &:last-child th': {border: 0}, background: "white"}}
         >
           {columns.map(column => {
             let value = driver[column.key];
@@ -20,6 +19,7 @@ const DriverTableBody = ({columns, filteredData}) => {
             }
             return <TableCell sx={{fontSize: "12px"}} key={column.key + column.innerKey}>{value}</TableCell>;
           })}
+          <ViewDocuments license={driver.license}/>
           <EditDriver driverEmail={driver.email}/>
         </TableRow>
       ))}

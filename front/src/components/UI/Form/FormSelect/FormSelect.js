@@ -4,28 +4,54 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import {FormHelperText, Grid} from '@mui/material';
+import {FormHelperText, Grid, ListItemText} from '@mui/material';
+import {Checkbox} from "antd";
 
-const FormSelect = ({array, value, onChange, label, required, name, variant, error, driver, multiple}) => {
+const FormSelect = ({array, value, onChange, label, required, name, variant, error, driver, multiple, placeholder}) => {
   return (
     <Grid item xs={12}>
       <Box sx={{ minWidth: 50 }}>
         <FormControl fullWidth error={Boolean(error)}>
-          <InputLabel required={required} id="demo-simple-select-label">{label}</InputLabel>
+          {!multiple &&
+            <InputLabel required={required} id="demo-simple-select-label">{label}</InputLabel>
+          }
           <Select
+            displayEmpty
             sx={{textAlign: 'left'}}
-            labelId="demo-simple-select-label"
+            labelId={multiple ? null : "demo-simple-select-label"}
             id="demo-simple-select"
             multiple={multiple}
             value={value}
-            label={label}
+            label={label ? label : null}
             name={name}
             onChange={onChange}
             required={required}
+            renderValue={(selected) => {
+              if (multiple) {
+                if (selected.length === 0) {
+                  return <em>{placeholder}</em>;
+                }
+
+                return selected.join(', ');
+              } else {
+                return selected;
+              }
+            }}
           >
+              <MenuItem disabled value="">
+                <em>{placeholder}</em>
+              </MenuItem>
+
             {array.map((item, index) => {
               if (variant === 'array') {
-                return <MenuItem key={index} value={item}>{item}</MenuItem>
+                if (multiple) {
+                  return <MenuItem key={index} value={item}>
+                            <Checkbox checked={value.indexOf(item) > -1} />
+                            <ListItemText primary={item} sx={{paddingLeft: "5px"}}/>
+                          </MenuItem>
+                } else {
+                  return <MenuItem key={index} value={item}>{item}</MenuItem>
+                }
               }
               if (variant === 'object') {
                 return <MenuItem key={item._id} value={item._id}>{driver ? item.name : item.title}</MenuItem>

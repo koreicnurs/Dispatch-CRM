@@ -93,7 +93,7 @@ const StatusUpdate = () => {
   const carriers = useSelector(state => state.carriers.carriers);
   const [currentDrivers, setCurrentDrivers] = useState([]);
   const [carrierSelector, setCarrierSelector] = useState(["Carriers"]);
-  const [selectedCarrier, setSelectedCarrier] = useState(["All"]);
+  const [selectedCarrier, setSelectedCarrier] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("Status");
 
   useEffect(() => {
@@ -110,11 +110,7 @@ const StatusUpdate = () => {
     } else if (selectedCarrier.length !== 0 || selectedStatus !== "Status") {
       let driverFiltered = drivers;
       if (selectedCarrier.length !== 0) {
-        if(selectedCarrier.includes("All")) {
-          setCurrentDrivers(driverFiltered);
-        } else {
-          driverFiltered = drivers.filter(driver => selectedCarrier.includes(driver.companyId.title));
-        }
+        driverFiltered = drivers.filter(driver => selectedCarrier.includes(driver.companyId.title));
       }
       if (selectedStatus !== "Status") {
         driverFiltered = driverFiltered.filter(driver => selectedStatus.includes(driver.status));
@@ -131,7 +127,7 @@ const StatusUpdate = () => {
 
     useEffect(() => {
       const carriersTitles = carriers.map(carrier => carrier.title);
-      setCarrierSelector(() => ["All",...carriersTitles]);
+      setCarrierSelector(() => [...carriersTitles]);
     }, [carriers]);
 
     const selectCarrierHandler = event => {
@@ -154,7 +150,6 @@ const StatusUpdate = () => {
           <>
             <TableCell sx={tableHeaderStyle}>
               <FormSelect
-                label="Carriers"
                 multiple={true}
                 array={carrierSelector}
                 value={selectedCarrier}
@@ -162,6 +157,7 @@ const StatusUpdate = () => {
                 required={true}
                 variant="array"
                 driver={false}
+                placeholder="All companies"
               />
             </TableCell>
             <TableCell sx={tableHeaderStyle}>Driver</TableCell>

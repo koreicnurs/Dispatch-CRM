@@ -27,7 +27,13 @@ const cpUpload = upload.fields([{name: 'BOL', maxCount: 1}, {name: 'RC', maxCoun
 router.get('/', auth, async (req, res) => {
   try {
     if (req.query.status === 'finished' || req.query.status === 'cancel') {
-      const loads = await Load.find({status: {$in: ['finished', 'cancel']}}).populate('driverId', ['name', 'status']).populate('dispatchId', 'displayName');
+      const loads = await Load.find({status: {$in: ['finished', 'cancel']}}).populate('driverId', ['name', 'status']).populate('dispatchId', 'displayName').populate({
+        path : 'comment',
+        populate : {
+          path : 'authorId',
+          select: 'displayName'
+        }
+      });
       res.send(loads);
     } else {
       const loads = await Load.find(req.query).populate('driverId', ['name', 'status']).populate('dispatchId', 'displayName');
@@ -53,7 +59,13 @@ router.get('/carrier', auth, permit('carrier'), async (req, res) => {
 
 router.get('/:id', auth, async (req, res) => {
   try {
-    const load = await Load.findById(req.params.id).populate('driverId', 'name').populate('dispatchId', 'displayName');
+    const load = await Load.findById(req.params.id).populate('driverId', 'name').populate('dispatchId', 'displayName').populate({
+      path : 'comment',
+      populate : {
+        path : 'authorId',
+        select: 'displayName'
+      }
+    });
     res.send(load);
   } catch (e) {
     res.sendStatus(500);
@@ -79,7 +91,10 @@ router.post('/', auth, cpUpload, async (req, res) => {
             del,
             BOL: null,
             RC: null,
-            comment: comment || null,
+            comment: comment ? {
+              authorId: req.user._id,
+              text: comment
+            } : [],
         };
 
         if (new Date(loadData.datePU) > new Date(loadData.dateDEL)) {

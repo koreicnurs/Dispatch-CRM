@@ -12,6 +12,7 @@ import StatusUpdateTableBody from "../../components/Table/TableBody/StatusUpdate
 import {statusInterval} from "../../config";
 import {fetchCarriersRequest} from "../../store/actions/carriersActions";
 import FormSelect from "../../components/UI/Form/FormSelect/FormSelect";
+import AutocompleteSelect from "../../components/UI/Form/Autocomplete/AutocompleteSelect";
 
 //uncomment for DataGrid
 // const columns = [
@@ -117,7 +118,6 @@ const StatusUpdate = () => {
       }
       setCurrentDrivers(driverFiltered);
     }
-
   }, [drivers, selectedCarrier, selectedStatus]);
 
     useEffect(() => {
@@ -130,14 +130,16 @@ const StatusUpdate = () => {
       setCarrierSelector(() => [...carriersTitles]);
     }, [carriers]);
 
-    const selectCarrierHandler = event => {
-      const {
-        target: { value },
-      } = event;
-
-      setSelectedCarrier(
-        typeof value === 'string' ? value.split(',') : value,
-      );
+    const selectCarrierHandler = (event, newValue) => {
+      // const {
+      //   target: { value },
+      // } = event;
+      //
+      // setSelectedCarrier(
+      //   typeof value === 'string' ? value.split(',') : value,
+      // );
+      setSelectedCarrier([
+        ...newValue]);
     };
 
     const selectedStatusHandler = event => {
@@ -149,15 +151,22 @@ const StatusUpdate = () => {
         {carrierSelector.length !== null &&
           <>
             <TableCell sx={tableHeaderStyle}>
-              <FormSelect
-                multiple={true}
-                array={carrierSelector}
+              {/*<FormSelect*/}
+              {/*  multiple={true}*/}
+              {/*  array={carrierSelector}*/}
+              {/*  value={selectedCarrier}*/}
+              {/*  onChange={selectCarrierHandler}*/}
+              {/*  required={true}*/}
+              {/*  variant="array"*/}
+              {/*  driver={false}*/}
+              {/*  placeholder="All companies"*/}
+              {/*/>*/}
+
+              <AutocompleteSelect
+                options={carrierSelector}
                 value={selectedCarrier}
                 onChange={selectCarrierHandler}
-                required={true}
-                variant="array"
-                driver={false}
-                placeholder="All companies"
+                placeholder="Companies"
               />
             </TableCell>
             <TableCell sx={tableHeaderStyle}>Driver</TableCell>

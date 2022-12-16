@@ -74,6 +74,32 @@ router.post('/dispatchers', auth, permit('admin'), upload.single('avatar'), asyn
   }
 });
 
+router.post('/user-carrier', auth, permit('admin'), upload.single('avatar'), async (req, res) => {
+  try {
+    const {email, password, displayName, role, companyId, phoneNumber} = req.body;
+
+    const userCarrierData = {
+      email,
+      password,
+      displayName,
+      role,
+      companyId,
+      phoneNumber,
+      isWorking: 'active',
+      avatar: req.file ? 'uploads/' + req.file.filename : null,
+    };
+
+    const user = new User(userCarrierData);
+
+    user.generateToken();
+    await user.save();
+
+    res.send(user);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
 router.post('/sessions', async (req,  res) => {
   const {email, password} = req.body;
   
@@ -120,8 +146,8 @@ router.put('/', auth, upload.single('avatar'), async (req, res) => {
             if (!user) {
                 return res.status(404).send({message: 'User not found!'});
             }
-            if (user.role !== 'user') {
-                return res.status(403).send('You can make changes only for dispatchers!');
+            if (user.role === 'admin') {
+                return res.status(403).send('You can make changes only for dispatchers or carriers!');
             }
             if(status === 'false') {
               user.isWorking = 'disabled';

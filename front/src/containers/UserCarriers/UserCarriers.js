@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import InnerContainer from "../../components/InnerContainer/InnerContainer";
 import Typography from "@mui/material/Typography";
 import {Grid, InputBase, styled} from "@mui/material";
-import InnerContainer from "../../components/InnerContainer/InnerContainer";
-import InnerTable from "../../components/Table/InnerTable";
+import NewDispatcher from "../../components/Modals/DispatcherModal/NewDispatcher";
+import useTableSearch from "../../components/UI/Filter/useTableSearch/useTableSearch";
+import {useDispatch, useSelector} from "react-redux";
+import {changeStatusRequest, fetchUsersRequest} from "../../store/actions/usersActions";
+import SearchIcon from "@mui/icons-material/Search";
 import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import DispatcherTableBody from "../../components/Table/TableBody/DispatcherTableBody";
-import {changeStatusRequest, fetchUsersRequest} from "../../store/actions/usersActions";
-import NewDispatcher from "../../components/Modals/DispatcherModal/NewDispatcher";
-import SearchIcon from "@mui/icons-material/Search";
-import useTableSearch from "../../components/UI/Filter/useTableSearch/useTableSearch";
+import InnerTable from "../../components/Table/InnerTable";
 
 const SearchStyle = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -53,10 +53,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const headerTitles = ["avatar", "email", "name", "phone", "status"];
 
-const Dispatchers = () => {
+const UserCarriers = () => {
   const dispatch = useDispatch();
   const users = useSelector(state => state.users.users);
-  const [dispatchers, setDispatchers] = useState([]);
+  const [userCarriers, setUserCarriers] = useState([]);
   const [searchVal, setSearchVal] = useState(null);
 
   useEffect(() => {
@@ -65,21 +65,21 @@ const Dispatchers = () => {
 
   const { filteredData } = useTableSearch({
     searchVal,
-    data: dispatchers
+    data: userCarriers
   });
 
   useEffect(() => {
     if (users.length !== null) {
 
-      setDispatchers(() => (
-        users.filter(user => user.role === "user")
+      setUserCarriers(() => (
+        users.filter(user => user.role === "carrier")
       ));
     }
   }, [users, filteredData]);
 
   const activeSwitcherHandler = async (e) => {
 
-    const copyDispatchers = dispatchers.map(dispatcher => {
+    const copyUserCarrier = userCarriers.map(dispatcher => {
       if (dispatcher._id === e.target.id) {
         return {
           ...dispatcher,
@@ -90,63 +90,63 @@ const Dispatchers = () => {
       }
     });
 
-    const dispatcher = copyDispatchers.find(dispatcher => dispatcher._id === e.target.id);
-    await dispatch(changeStatusRequest(dispatcher));
-    setDispatchers(copyDispatchers);
+    const userCarrier = copyUserCarrier.find(carrier => carrier._id === e.target.id);
+    await dispatch(changeStatusRequest(userCarrier));
+    setUserCarriers(copyUserCarrier);
   };
 
-  return (
-    <>
-      <InnerContainer>
-        <Grid item sx={{paddingLeft: "15px"}}>
-          <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
-            Dispatchers
-          </Typography>
-        </Grid>
 
+
+  return (
+    <InnerContainer>
+      <Grid item sx={{paddingLeft: "15px"}}>
+        <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
+          Carriers
+        </Typography>
+      </Grid>
+
+      <Grid
+        item
+        container
+        spacing={2}
+        justifyContent="space-between"
+      >
         <Grid
           item
-          container
-          spacing={2}
-          justifyContent="space-between"
+          padding="15px"
         >
-          <Grid padding="15px">
-            <NewDispatcher
-              dispatcherRole="user"
-            />
-          </Grid>
-          <Grid>
-            <SearchStyle>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search"
-                inputProps={{ 'aria-label': 'search' }}
-                onChange={e => setSearchVal(e.target.value)}
-              />
-            </SearchStyle>
-          </Grid>
+          <NewDispatcher dispatcherRole="carrier"/>
         </Grid>
 
+        <Grid item>
+          <SearchStyle>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Search"
+              inputProps={{ 'aria-label': 'search' }}
+              onChange={e => setSearchVal(e.target.value)}
+            />
+          </SearchStyle>
+        </Grid>
+      </Grid>
 
-
-        <InnerTable
-          header={
+      <InnerTable
+        header={
           <TableHeaderRow
             headerCells={headerTitles}
             data={false}
             sx={{fontSize: "16px", fontWeight: "bold", textTransform: "uppercase"}}
           />
-          }
-          body={
+        }
+        body={
           <DispatcherTableBody dispatchers={filteredData} switchHandler={activeSwitcherHandler}/>
-          }
-        />
-
-      </InnerContainer>
-    </>
+        }
+      />
+      
+    </InnerContainer>
   );
 };
 
-export default Dispatchers;
+export default UserCarriers;

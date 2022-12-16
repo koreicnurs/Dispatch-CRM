@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Box, Fade, FormHelperText, Grid, Modal} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {useDispatch, useSelector} from "react-redux";
+import {MuiTelInput} from 'mui-tel-input';
 import FormElement from "../UI/Form/FormElement/FormElement";
 import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
 import EditButton from "../UI/Button/EditButton/EditButton";
@@ -11,7 +12,6 @@ import {
   editCarrierRequest,
   fetchCarriersRequest
 } from "../../store/actions/carriersActions";
-import {MuiTelInput} from 'mui-tel-input';
 import AddButton from "../UI/Button/AddButton/AddButton";
 import FileInput from "../UI/Form/FileInput/FileInput";
 

@@ -25,7 +25,7 @@ const run = async () => {
     dot: '3537967',
     fedid: '83-3826233',
     description: 'test company #1',
-    document: 'fixtures/docs.pdf'
+    document: 'fixtures/bahaway.pdf'
   }, {
     title: 'SAFEWAY CARGO',
     phoneNumber: '+431234567890',
@@ -40,7 +40,7 @@ const run = async () => {
     dot: '3648632',
     fedid: '84-2388341',
     description: 'test company #3',
-    document: 'fixtures/docs.pdf'
+    document: 'fixtures/turan.pdf'
   }, {
     title: 'TUMAR EXPRESS',
     phoneNumber: '+355123456789',
@@ -48,7 +48,7 @@ const run = async () => {
     dot: '2638087',
     fedid: '47-4067936',
     description: 'test company #4',
-    document: 'fixtures/docs.pdf'
+    document: 'fixtures/tumar.pdf'
   });
 
   const [admin, user, user2, bahCarrier] = await User.create({

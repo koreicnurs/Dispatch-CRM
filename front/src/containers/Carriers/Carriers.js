@@ -64,6 +64,7 @@ const columns = [
 
 const Carriers = () => {
   const [searchVal, setSearchVal] = useState(null);
+
   
   const dispatch = useDispatch();
   const carriers = useSelector(state => state.carriers.carriers);
@@ -80,6 +81,7 @@ const Carriers = () => {
   return (
     <>
       <InnerContainer>
+
         <Grid item sx={{paddingLeft: "15px"}}>
           <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
             Carriers
@@ -119,6 +121,7 @@ const Carriers = () => {
         />
 
       </InnerContainer>
+
     </>
   );
 };

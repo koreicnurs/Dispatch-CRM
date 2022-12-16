@@ -27,7 +27,11 @@ const cpUpload = upload.fields([{name: 'BOL', maxCount: 1}, {name: 'RC', maxCoun
 router.get('/', auth, async (req, res) => {
   try {
     if (req.query.status === 'finished' || req.query.status === 'cancel') {
-      const loads = await Load.find({status: {$in: ['finished', 'cancel']}}).populate('driverId', ['name', 'status']).populate('dispatchId', 'displayName').populate({
+      const loads = await Load.find({status: {$in: ['finished', 'cancel']}})
+        .populate('driverId', ['name', 'status'])
+        .populate('dispatchId', 'displayName')
+        .populate('brokerId', 'name')
+        .populate({
         path : 'comment',
         populate : {
           path : 'authorId',
@@ -36,7 +40,11 @@ router.get('/', auth, async (req, res) => {
       });
       res.send(loads);
     } else {
-      const loads = await Load.find(req.query).populate('driverId', ['name', 'status']).populate('dispatchId', 'displayName').populate({
+      const loads = await Load.find(req.query)
+        .populate('driverId', ['name', 'status'])
+        .populate('dispatchId', 'displayName')
+        .populate('brokerId', 'name')
+        .populate({
         path : 'comment',
         populate : {
           path : 'authorId',
@@ -56,7 +64,8 @@ router.get('/carrier', auth, permit('carrier'), async (req, res) => {
     const loads = await Load
       .find({status: {$in: ['finished', 'cancel']}, driverId: {$in: drivers}})
       .populate('driverId', 'name')
-      .populate('dispatchId', 'displayName');
+      .populate('dispatchId', 'displayName')
+      .populate('brokerId', 'name');
     res.send(loads);
   } catch (e) {
     res.sendStatus(500);
@@ -65,7 +74,11 @@ router.get('/carrier', auth, permit('carrier'), async (req, res) => {
 
 router.get('/:id', auth, async (req, res) => {
   try {
-    const load = await Load.findById(req.params.id).populate('driverId', 'name').populate('dispatchId', 'displayName').populate({
+    const load = await Load.findById(req.params.id)
+      .populate('driverId', 'name')
+      .populate('dispatchId', 'displayName')
+      .populate('brokerId', 'name')
+      .populate({
       path : 'comment',
       populate : {
         path : 'authorId',
@@ -79,33 +92,34 @@ router.get('/:id', auth, async (req, res) => {
 });
 
 router.post('/', auth, cpUpload, async (req, res) => {
-    try {
-        const {loadCode, driverId, dispatchId, price, miles, rpm, datePU, dateDEL, pu, del, comment, timeToPU, timeToDel} = req.body;
+  try {
+    const {loadCode, driverId, dispatchId, price, miles, rpm, datePU, dateDEL, pu, del, comment, timeToPU, timeToDel, brokerId} = req.body;
 
-        const loadData = {
-            loadCode,
-            driverId: driverId ||null,
-            dispatchId,
-            price,
-            miles,
-            rpm,
-            datePU: new Date(datePU).toLocaleDateString('en-Us'),
-            dateDEL: new Date(dateDEL).toLocaleDateString('en-Us'),
-            timeToDel,
-            timeToPU,
-            pu,
-            del,
-            BOL: null,
-            RC: null,
-            comment: comment.trim() !== '' ? {
-              authorId: req.user._id,
-              text: comment
-            } : [],
-        };
+    const loadData = {
+      loadCode,
+      driverId: driverId ||null,
+      dispatchId,
+      price,
+      miles,
+      rpm,
+      datePU: new Date(datePU).toLocaleDateString('en-Us'),
+      dateDEL: new Date(dateDEL).toLocaleDateString('en-Us'),
+      timeToDel,
+      timeToPU,
+      pu,
+      del,
+      BOL: null,
+      RC: null,
+      brokerId: brokerId || null,
+      comment: comment.trim() !== '' ? {
+        authorId: req.user._id,
+        text: comment
+      } : [],
+    };
 
-        if (new Date(loadData.datePU) > new Date(loadData.dateDEL)) {
-            return res.status(400).send({message: 'DEL date cannot be earlier than PU date!'});
-        }
+    if (new Date(loadData.datePU) > new Date(loadData.dateDEL)) {
+      return res.status(400).send({message: 'DEL date cannot be earlier than PU date!'});
+    }
 
     if (req.files?.BOL) {
       loadData.BOL = 'public/uploads/' + req.files['BOL'][0].filename;
@@ -138,7 +152,7 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
       }
     }
 
-    const {loadCode, driverId, dispatchId, price, miles, rpm, datePU, dateDEL, pu, del, status, comment, timeToPU, timeToDel} = req.body;
+    const {loadCode, driverId, dispatchId, price, miles, rpm, datePU, dateDEL, pu, del, status, comment, timeToPU, timeToDel, brokerId} = req.body;
 
     if (!driverId && (status === 'transit' || status === 'finished')) {
       return res.status(401).send('The status of the load without driver cannot be changed!');
@@ -164,6 +178,7 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
       pu,
       del,
       status,
+      brokerId: brokerId || null,
       comment: comment.trim() !== '' ? loadComment : load.comment,
     };
 
@@ -207,14 +222,14 @@ router.put('/status/:id', auth, async (req, res) => {
 
     if (load.status === 'upcoming') {
       await Load.findByIdAndUpdate(req.params.id, {status: 'transit'});
-      const loads = await Load.find({status: 'upcoming'}).populate('driverId', 'name').populate('dispatchId', 'displayName');
+      const loads = await Load.find({status: 'upcoming'}).populate('driverId', 'name').populate('dispatchId', 'displayName').populate('brokerId', 'name');
 
       res.send(loads);
     }
 
     if (load.status === 'transit') {
       await Load.findByIdAndUpdate(req.params.id, {status: 'finished'});
-      const loads = await Load.find({status: 'transit'}).populate('driverId', 'name').populate('dispatchId', 'displayName');
+      const loads = await Load.find({status: 'transit'}).populate('driverId', 'name').populate('dispatchId', 'displayName').populate('brokerId', 'name');
 
       res.send(loads);
     }
@@ -295,15 +310,15 @@ router.put('/attachment/:id', auth, cpUpload, async (req, res) => {
 router.put('/confirm/:id', auth, permit('admin', 'user'), async (req, res) => {
   try {
     const load = await Load.findOne({_id: req.params.id});
-    
+
     if (!load) {
       return res.status(404).send({message: 'Load not found!'});
     }
-    
+
     if (!(load.status === 'finished') || load.finishConfirmed) {
       return res.status(403).send({message: 'Only finished and unconfirmed trips can be confirmed!'});
     }
-    
+
     await Load.findByIdAndUpdate(req.params.id, {finishConfirmed: true});
     res.send('Trip confirmed!');
   } catch (e) {

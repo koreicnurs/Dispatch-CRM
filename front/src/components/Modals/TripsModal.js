@@ -14,6 +14,7 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {apiUrl} from "../../config";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
 import AddButton from "../UI/Button/AddButton/AddButton";
+import {fetchBrokersRequest} from "../../store/actions/brokersActions";
 import TripsComments from '../TripsComments/TripsComments';
 
 const style = {
@@ -51,7 +52,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
   const drivers = useSelector(state => state.drivers.drivers);
   const user = useSelector(state => state.users.user);
   const trip = useSelector(state => state.trips.trip);
-
+  const brokers = useSelector(state => state.brokers.brokers);
 
   const [newModal, setNewModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
@@ -77,6 +78,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
     comment: "",
     RC: "",
     BOL: "",
+    brokerId: "",
   });
   const [editedData, setEditedData] = useState({
     loadCode: "",
@@ -95,6 +97,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
     comment: "",
     RC: "",
     BOL: "",
+    brokerId: "",
   });
   
   const [commentArray, setCommentArray] = useState([]);
@@ -102,6 +105,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
   useEffect(() => {
     dispatch(fetchUsersRequest());
     dispatch(fetchDriversRequest());
+    dispatch(fetchBrokersRequest());
   }, [dispatch]);
 
   useEffect(() => {
@@ -113,7 +117,6 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
     }
     // eslint-disable-next-line
   }, [trips]);
-
 
   const openCloseModal = () => {
     if (isAdd) {
@@ -134,8 +137,10 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
         comment: "",
         RC: "",
         BOL: "",
+        brokerId: "",
       });
-
+      setStartDate(null);
+      setFinDate(null);
       setNewModal(true);
       dispatch(clearCreateTripErrorRequest());
     }
@@ -161,6 +166,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
       timeToDel: trip.timeToDel,
       RC: trip.RC || '',
       BOL: trip.BOL || '',
+      brokerId: trip.brokerId ? trip.brokerId._id : '',
     });
     
     setCommentArray(trip.comment);
@@ -305,7 +311,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                     </LocalizationProvider>
                   </Grid>
                 </Grid>
-  
+
                 <Grid
                   item
                   container
@@ -323,7 +329,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                       error={getFieldError('timeToPU')}
                     />
                   </Grid>
-  
+
                   <Grid item width="49.5%">
                     <FormElement
                       type={'timeToDel'}
@@ -435,13 +441,27 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                         inputProps={{min:0, step: '0.01'}}
                       />
                     </Grid>
+                    <Grid item width="49.5%">
+                      <FormSelect
+                          type={'string'}
+                          name={'brokerId'}
+                          label={'Broker'}
+                          value={isAdd ? newData.brokerId : editedData.brokerId}
+                          onChange={inputChangeHandler}
+                          error={getFieldError('brokerId')}
+                          driver={true}
+                          array={brokers}
+                          required={false}
+                          variant="object"
+                      />
+                    </Grid>
                   </Grid>
 
                   <FormSelect
                     type={'string'}
                     name={'driverId'}
                     label={'Driver'}
-                    value={isEdit ? editedData.driverId : ''}
+                    value={isAdd ? newData.driverId : editedData.driverId}
                     onChange={inputChangeHandler}
                     error={getFieldError('driverId')}
                     driver={true}

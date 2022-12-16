@@ -4,7 +4,7 @@ const idValidator = require('mongoose-id-validator');
 
 const validateDate = value => {
     const pattern = /^([1-9]|1[0-2])\/([1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/;
-    
+
     if (!pattern.test(value)) return false;
 };
 
@@ -80,6 +80,10 @@ const LoadSchema = new Schema({
     },
     BOL: String,
     RC: String,
+    brokerId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Broker'
+    },
     comment: [{
         authorId: {
             type: Schema.Types.ObjectId,

@@ -131,13 +131,6 @@ const StatusUpdate = () => {
     }, [carriers]);
 
     const selectCarrierHandler = (event, newValue) => {
-      // const {
-      //   target: { value },
-      // } = event;
-      //
-      // setSelectedCarrier(
-      //   typeof value === 'string' ? value.split(',') : value,
-      // );
       setSelectedCarrier([
         ...newValue]);
     };
@@ -151,17 +144,6 @@ const StatusUpdate = () => {
         {carrierSelector.length !== null &&
           <>
             <TableCell sx={tableHeaderStyle}>
-              {/*<FormSelect*/}
-              {/*  multiple={true}*/}
-              {/*  array={carrierSelector}*/}
-              {/*  value={selectedCarrier}*/}
-              {/*  onChange={selectCarrierHandler}*/}
-              {/*  required={true}*/}
-              {/*  variant="array"*/}
-              {/*  driver={false}*/}
-              {/*  placeholder="All companies"*/}
-              {/*/>*/}
-
               <AutocompleteSelect
                 options={carrierSelector}
                 value={selectedCarrier}

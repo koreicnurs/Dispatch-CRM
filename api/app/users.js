@@ -7,6 +7,7 @@ const User = require('../models/User');
 const config = require('../config');
 const auth = require('../middleware/auth');
 const permit = require("../middleware/permit");
+const mailTransporter = require("../mailTransporter");
 
 const router = express.Router();
 
@@ -41,7 +42,18 @@ router.post('/', upload.single('avatar'), async (req, res) => {
       isWorking: 'active',
       avatar: req.file ? 'uploads/' + req.file.filename : null,
     };
+
+    const mailOptions = {
+      from: config.mailServerOptions.auth.user,
+      to: email,
+      subject: "new user",
+      text: config.mailServerOptions.mailText(displayName, email, password),
+      html: config.mailServerOptions.mailHtml(displayName, email, password),
+    };
+
     const user = new User(userData);
+
+    await mailTransporter(mailOptions);
 
     user.generateToken();
     await user.save();

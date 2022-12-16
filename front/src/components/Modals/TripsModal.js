@@ -15,6 +15,7 @@ import {apiUrl} from "../../config";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
 import AddButton from "../UI/Button/AddButton/AddButton";
 import {fetchBrokersRequest} from "../../store/actions/brokersActions";
+import TripsComments from '../TripsComments/TripsComments';
 
 const style = {
   position: 'absolute',
@@ -42,7 +43,6 @@ const useStyles = makeStyles()(theme => ({
 
 
 const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
-
   const {classes} = useStyles();
   const dispatch = useDispatch();
   const trips = useSelector(state => state.trips.trips);
@@ -56,6 +56,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
 
   const [newModal, setNewModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  
   const [tripId, setTripId] = useState('');
 
   useEffect(() => setEditModal(isEdit), [isEdit])
@@ -79,7 +80,6 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
     BOL: "",
     brokerId: "",
   });
-
   const [editedData, setEditedData] = useState({
     loadCode: "",
     driverId: "",
@@ -99,6 +99,8 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
     BOL: "",
     brokerId: "",
   });
+  
+  const [commentArray, setCommentArray] = useState([]);
 
   useEffect(() => {
     dispatch(fetchUsersRequest());
@@ -159,15 +161,15 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
       pu: trip.pu,
       del: trip.del,
       status: trip.status,
-      comment: trip.comment ? trip.comment : '',
+      comment: '',
       timeToPU: trip.timeToPU,
       timeToDel: trip.timeToDel,
       RC: trip.RC || '',
       BOL: trip.BOL || '',
       brokerId: trip.brokerId ? trip.brokerId._id : '',
     });
-
-
+    
+    setCommentArray(trip.comment);
     setEditModal(true);
     dispatch(clearCreateTripErrorRequest());
   }}, [dispatch, isEdit, tripID, trips, trip]);
@@ -233,7 +235,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
       return undefined;
     }
   };
-
+  
   return (
     <>
       {isAdd
@@ -248,11 +250,10 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
       >
         <Fade in={isAdd ? newModal : editModal}>
           <Box sx={style}>
-            <Typography id="keep-mounted-modal-description" sx={{ mb: 2 }}>
+            <Typography variant={'h6'}>
               {modalTitle}
             </Typography>
-
-
+            
             <Grid
               container
               direction="column"
@@ -492,6 +493,10 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                       : null
                     }
                   </Box>
+                  
+                  <div style={{margin: '8px 0 0 8px', width: '100%'}}>
+                    <TripsComments commentArray={commentArray} user={user}/>
+                  </div>
 
                   <FormElement
                     onChange={inputChangeHandler}

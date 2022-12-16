@@ -125,8 +125,8 @@ const Trips = ({history}) => {
   return (
     <>
       <EditTrip tripID={trip?._id} isEdit={edit}/>
-      <NewComment handleClose={handleCloseCommentModal} open={openComment} id={commentTripId}/>
-      <ViewAll handleClose={handleCloseViewAllModal} open={viewAll} id={viewAllTripId} trip={trip}/>
+      <NewComment handleClose={handleCloseCommentModal} open={openComment} id={commentTripId} user={user}/>
+      <ViewAll handleClose={handleCloseViewAllModal} open={viewAll} id={viewAllTripId} trip={trip} user={user}/>
       <NewAttachment handleClose={handleCloseAttachmentModal} open={openAttachment} id={attachTripId}/>
 
       <InnerContainer>

@@ -27,10 +27,30 @@ const cpUpload = upload.fields([{name: 'BOL', maxCount: 1}, {name: 'RC', maxCoun
 router.get('/', auth, async (req, res) => {
   try {
     if (req.query.status === 'finished' || req.query.status === 'cancel') {
-      const loads = await Load.find({status: {$in: ['finished', 'cancel']}}).populate('driverId', ['name', 'status']).populate('dispatchId', 'displayName').populate('brokerId', 'name');
+      const loads = await Load.find({status: {$in: ['finished', 'cancel']}})
+        .populate('driverId', ['name', 'status'])
+        .populate('dispatchId', 'displayName')
+        .populate('brokerId', 'name')
+        .populate({
+        path : 'comment',
+        populate : {
+          path : 'authorId',
+          select: 'displayName'
+        }
+      });
       res.send(loads);
     } else {
-      const loads = await Load.find(req.query).populate('driverId', ['name', 'status']).populate('dispatchId', 'displayName').populate('brokerId', 'name');
+      const loads = await Load.find(req.query)
+        .populate('driverId', ['name', 'status'])
+        .populate('dispatchId', 'displayName')
+        .populate('brokerId', 'name')
+        .populate({
+        path : 'comment',
+        populate : {
+          path : 'authorId',
+          select: 'displayName'
+        }
+      });
       res.send(loads);
     }
   } catch (e) {
@@ -54,7 +74,17 @@ router.get('/carrier', auth, permit('carrier'), async (req, res) => {
 
 router.get('/:id', auth, async (req, res) => {
   try {
-    const load = await Load.findById(req.params.id).populate('driverId', 'name').populate('dispatchId', 'displayName').populate('brokerId', 'name');
+    const load = await Load.findById(req.params.id)
+      .populate('driverId', 'name')
+      .populate('dispatchId', 'displayName')
+      .populate('brokerId', 'name')
+      .populate({
+      path : 'comment',
+      populate : {
+        path : 'authorId',
+        select: 'displayName'
+      }
+    });
     res.send(load);
   } catch (e) {
     res.sendStatus(500);
@@ -80,8 +110,11 @@ router.post('/', auth, cpUpload, async (req, res) => {
       del,
       BOL: null,
       RC: null,
-      comment: comment || null,
       brokerId: brokerId || null,
+      comment: comment.trim() !== '' ? {
+        authorId: req.user._id,
+        text: comment
+      } : [],
     };
 
     if (new Date(loadData.datePU) > new Date(loadData.dateDEL)) {
@@ -125,6 +158,12 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
       return res.status(401).send('The status of the load without driver cannot be changed!');
     }
 
+    let loadComment = [...load.comment];
+    loadComment.push({
+      authorId: req.user._id,
+      text: comment
+    });
+    
     const loadData = {
       loadCode,
       driverId: driverId || null,
@@ -139,8 +178,8 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
       pu,
       del,
       status,
-      comment: comment || '',
       brokerId: brokerId || null,
+      comment: comment.trim() !== '' ? loadComment : load.comment,
     };
 
     if (new Date(loadData.datePU) > new Date(loadData.dateDEL)) {
@@ -218,13 +257,19 @@ router.put('/cancel/:id', auth, async (req, res) => {
 
 router.put('/comment/:id', auth, async (req, res) => {
   try {
+    const {comment} = req.body;
     const load = await Load.findOne({_id: req.params.id});
 
     if (!load) {
       return res.status(404).send({message: 'Load not found!'});
     }
-
-    await Load.findByIdAndUpdate(req.params.id, req.body);
+    let loadComment = [...load.comment];
+    loadComment.push({
+      authorId: req.user._id,
+      text: comment
+    });
+    const loadData = comment.trim() !== '' ? loadComment : load.comment;
+    await Load.findByIdAndUpdate(req.params.id, {comment: loadData});
     res.send('Comment added successfully');
     } catch (e) {
         res.status(400).send(e);

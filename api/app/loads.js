@@ -36,7 +36,13 @@ router.get('/', auth, async (req, res) => {
       });
       res.send(loads);
     } else {
-      const loads = await Load.find(req.query).populate('driverId', ['name', 'status']).populate('dispatchId', 'displayName');
+      const loads = await Load.find(req.query).populate('driverId', ['name', 'status']).populate('dispatchId', 'displayName').populate({
+        path : 'comment',
+        populate : {
+          path : 'authorId',
+          select: 'displayName'
+        }
+      });
       res.send(loads);
     }
   } catch (e) {
@@ -91,7 +97,7 @@ router.post('/', auth, cpUpload, async (req, res) => {
             del,
             BOL: null,
             RC: null,
-            comment: comment ? {
+            comment: comment.trim() !== '' ? {
               authorId: req.user._id,
               text: comment
             } : [],
@@ -138,6 +144,12 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
       return res.status(401).send('The status of the load without driver cannot be changed!');
     }
 
+    let loadComment = [...load.comment];
+    loadComment.push({
+      authorId: req.user._id,
+      text: comment
+    });
+    
     const loadData = {
       loadCode,
       driverId: driverId || null,
@@ -152,7 +164,7 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
       pu,
       del,
       status,
-      comment: comment || '',
+      comment: comment.trim() !== '' ? loadComment : load.comment,
     };
 
     if (new Date(loadData.datePU) > new Date(loadData.dateDEL)) {
@@ -230,13 +242,19 @@ router.put('/cancel/:id', auth, async (req, res) => {
 
 router.put('/comment/:id', auth, async (req, res) => {
   try {
+    const {comment} = req.body;
     const load = await Load.findOne({_id: req.params.id});
 
     if (!load) {
       return res.status(404).send({message: 'Load not found!'});
     }
-
-    await Load.findByIdAndUpdate(req.params.id, req.body);
+    let loadComment = [...load.comment];
+    loadComment.push({
+      authorId: req.user._id,
+      text: comment
+    });
+    const loadData = comment.trim() !== '' ? loadComment : load.comment;
+    await Load.findByIdAndUpdate(req.params.id, {comment: loadData});
     res.send('Comment added successfully');
     } catch (e) {
         res.status(400).send(e);

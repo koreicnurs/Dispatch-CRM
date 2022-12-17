@@ -153,7 +153,7 @@ router.post('/', auth, upload.single('license'), async (req, res) => {
       }
       throw error;
     }
-    
+
     const driverData = {
       email,
       name,
@@ -227,14 +227,18 @@ router.put('/:id', auth, upload.single('license'), async (req, res) => {
     driver.name = name;
     driver.phoneNumber = phoneNumber;
     driver.companyId = companyId;
-    driver.status = status;
-    driver.currentStatus = currentStatus;
     driver.description = JSON.parse(description);
     driver.pickUp = pickUp;
     driver.delivery = delivery;
     driver.ETA = ETA;
     driver.readyTime = readyTime;
     driver.notes = notes;
+    if (status) {
+        driver.status = status;
+    }
+    if (currentStatus){
+        driver.currentStatus = currentStatus;
+    }
 
     if (status !== 'in transit' && status !== 'in tr/upc') {
       driver.currentStatus = 'n/a';
@@ -261,13 +265,15 @@ router.put('/carrier/:id', auth, permit('carrier'), upload.single('license'), as
     driver.name = name;
     driver.phoneNumber = phoneNumber;
     driver.companyId = req.user.companyId;
-    driver.status = status;
     driver.description = JSON.parse(description);
     driver.pickUp = pickUp;
     driver.delivery = delivery;
     driver.ETA = ETA;
     driver.readyTime = readyTime;
     driver.notes = notes;
+    if (status) {
+        driver.status = status;
+    }
 
     if (status === 'off') {
       driver.currentStatus = 'n/a';

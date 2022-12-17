@@ -6,7 +6,7 @@ import DispatcherModal from "./DispatcherModal";
 import AddButton from "../../UI/Button/AddButton/AddButton";
 import {fetchCarriersRequest} from "../../../store/actions/carriersActions";
 
-const NewDispatcher = ({dispatcherRole}) => {
+const NewDispatcher = ({dispatcherRole, title}) => {
   const dispatch = useDispatch();
   const error = useSelector(state => state.users.createError);
   const loading = useSelector(state => state.users.createLoading);
@@ -77,6 +77,18 @@ const NewDispatcher = ({dispatcherRole}) => {
           avatar:  ""
         });
         break;
+
+      case "admin":
+        setDispatcherData({
+          email: "",
+          phoneNumber: "",
+          password: "",
+          role: dispatcherRole,
+          displayName: "",
+          avatar:  ""
+        });
+        break;
+
       case "carrier":
         setUserCarrierData({
           email: "",
@@ -101,6 +113,9 @@ const NewDispatcher = ({dispatcherRole}) => {
         case "user":
           setDispatcherData(prev => ({...prev, [name]: value}));
           break;
+        case "admin":
+          setDispatcherData(prev => ({...prev, [name]: value}));
+          break;
         case "carrier":
           setUserCarrierData(prev => ({...prev, [name]: value}));
           break;
@@ -110,6 +125,9 @@ const NewDispatcher = ({dispatcherRole}) => {
     } else {
       switch (dispatcherRole) {
         case "user":
+          setDispatcherData(prev => ({...prev, phoneNumber: e.replace(/ /g, '')}));
+          break;
+        case "admin":
           setDispatcherData(prev => ({...prev, phoneNumber: e.replace(/ /g, '')}));
           break;
         case "carrier":
@@ -127,6 +145,9 @@ const NewDispatcher = ({dispatcherRole}) => {
 
     switch (dispatcherRole) {
       case "user":
+        setDispatcherData(prev => ({...prev, [name]: file}));
+        break;
+      case "admin":
         setDispatcherData(prev => ({...prev, [name]: file}));
         break;
       case "carrier":
@@ -158,6 +179,13 @@ const NewDispatcher = ({dispatcherRole}) => {
         await dispatch(createDispatcherRequest(formData));
         break;
 
+      case "admin":
+        Object.keys(dispatcherData).forEach(key => {
+          formData.append(key, dispatcherData[key]);
+        });
+        await dispatch(createDispatcherRequest(formData));
+        break;
+
       case "carrier":
         Object.keys(userCarrierData).forEach(key => {
           formData.append(key, userCarrierData[key]);
@@ -176,9 +204,9 @@ const NewDispatcher = ({dispatcherRole}) => {
     <div>
       <AddButton click={() => setOpenCreate(!openCreate)}/>
       <DispatcherModal
-        title={dispatcherRole === "user" ? "New Dispatcher" : "New Carrier User"}
+        title={title}
         modal={openCreate}
-        dispatcher={dispatcherRole === "user" ? dispatcherData : userCarrierData}
+        dispatcher={dispatcherRole === "user" || "admin" ? dispatcherData : userCarrierData}
         modalHandler={modalCloseHandler}
         submitFormHandler={submitFormHandler}
         inputHandler={inputChangeHandler}

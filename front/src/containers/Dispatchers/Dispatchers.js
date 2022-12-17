@@ -113,6 +113,7 @@ const Dispatchers = () => {
           <Grid padding="15px">
             <NewDispatcher
               dispatcherRole="user"
+              title="New Dispatcher"
             />
           </Grid>
           <Grid>

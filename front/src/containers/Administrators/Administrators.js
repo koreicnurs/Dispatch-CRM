@@ -24,7 +24,7 @@ const Administrators = () => {
             </Typography>
           </Grid>
 
-          <NewDispatcher dispatcherRole="admin"/>
+          <NewDispatcher dispatcherRole="admin" title="New Administrator"/>
 
           <InnerTable
             header={

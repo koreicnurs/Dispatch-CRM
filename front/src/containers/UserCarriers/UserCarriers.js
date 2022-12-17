@@ -115,7 +115,7 @@ const UserCarriers = () => {
           item
           padding="15px"
         >
-          <NewDispatcher dispatcherRole="carrier"/>
+          <NewDispatcher dispatcherRole="carrier" title="New Carrier User"/>
         </Grid>
 
         <Grid item>

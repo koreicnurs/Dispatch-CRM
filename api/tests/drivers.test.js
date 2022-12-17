@@ -12,7 +12,8 @@ describe('Testing \'drivers\' route', () => {
   let driver = null;
   let carriers = null;
   let driversData = null;
-
+  let driverByCarrier = null;
+  let carrier = null;
 
   const getUser = (email, password) => {
     it('user should successfully login', async () => {
@@ -23,15 +24,23 @@ describe('Testing \'drivers\' route', () => {
       user = res.body;
     });
   };
-  const getCarrier = async() => {
+  const getCarriers = async() => {
     it('should get array of all carriers', async () => {
       const res = await request(app)
         .get('/carriers')
         .set({Authorization: user.token});
-      carriers = res.body
+      carriers = res.body;
     });
   };
-  const getDriver = async() => {
+  const getCarrier = async() => {
+    it('should get carrier', async () => {
+      const res = await request(app)
+        .get('/carriers')
+        .set({Authorization: user.token});
+      carrier = res.body.find(carrier => carrier.mc === '1180196')
+    });
+  };
+  const getDrivers = async() => {
     it('should get array of all drivers', async () => {
       const res = await request(app)
         .get('/drivers')
@@ -39,10 +48,19 @@ describe('Testing \'drivers\' route', () => {
       driversData = res.body;
     });
   };
+  const getDriver = async() => {
+    it('should get array of all drivers', async () => {
+      const res = await request(app)
+        .get('/drivers')
+        .set({Authorization: user.token});
+      driver = res.body.find(driver => driver.email === 'umot@gmail.com');
+    });
+  };
+
 
   const createDriver = () => {
     if (user === null) getUser('admin@gmail.com', 'admin');
-    getCarrier();
+    getCarriers();
 
     it('driver should successfully create', async () => {
       const res = await request(app)
@@ -97,7 +115,7 @@ describe('Testing \'drivers\' route', () => {
 
   describe('get driver by id', () => {
     getUser('admin@gmail.com', 'admin');
-    getDriver();
+    getDrivers();
     it('should get driver data', async () => {
       const res = await request(app)
       .get('/drivers/' + driversData[1]._id.toString())
@@ -108,7 +126,7 @@ describe('Testing \'drivers\' route', () => {
 
   describe('get all drivers of carrier', () => {
     if (user === null) getUser('bahaway@gmail.com', 'bahaway');
-    getCarrier();
+    getCarriers();
 
     it('getting all drivers of carrier', async () => {
       const res = await request(app)
@@ -125,13 +143,14 @@ describe('Testing \'drivers\' route', () => {
     getCarrier();
     it('should edit driver', async () => {
       const res = await request(app)
-        .put('/drivers/' + driversData[0]._id.toString())
+        .put('/drivers/' + driver._id.toString())
         .set({Authorization: user.token})
         .send({
-          email: 'askhat555@gmail.com',
-          name: 'Jack',
-          phoneNumber: '+355973456777',
-          companyId: carriers[2]._id.toString(),
+          email: 'umot@gmail.com',
+          name: 'Umot Test',
+          phoneNumber: '+355973456778',
+          companyId: carrier._id.toString(),
+          currentStatus: 'n/a',
           status: 'upcoming',
           description: JSON.stringify({
             address: 'US, NY, Manhattan c., str. 1, h. 34',
@@ -141,26 +160,33 @@ describe('Testing \'drivers\' route', () => {
           })
         });
       expect(res.statusCode).toBe(200);
-      expect(res.body.phoneNumber).toBe('+355973456777');
-      expect(res.body.name).toBe('Jack');
+      expect(res.body.phoneNumber).toBe('+355973456778');
+      expect(res.body.name).toBe('Umot Test');
     });
   });
 
-
   describe('changing driver data by Carrier', () => {
-    getUser('bahaway@gmail.com', 'bahaway');
-    getDriver();
-    getCarrier();
+
     it('should edit driver by Carrier', async () => {
+      const res2 = await request(app)
+        .post('/users/sessions')
+        .send({email: 'bahaway@gmail.com', password: 'bahaway'});
+      expect(res2.statusCode).toBe(200);
+      let carrier = res2.body;
+      const res1 = await request(app)
+        .get('/drivers/carrier')
+        .set({Authorization: carrier.token});
+      driverByCarrier = res1.body.find(driver => driver.email === 'umot@gmail.com');
       const res = await request(app)
-        .put('/drivers/' + driversData[0]._id.toString())
-        .set({Authorization: user.token})
+        .put('/drivers/' + driverByCarrier._id.toString())
+        .set({Authorization: carrier.token})
         .send({
-          email: 'umot9@gmail.com',
+          email: 'umot@gmail.com',
           name: 'Kevin',
-          phoneNumber: '+355973459977',
-          companyId: carriers[2]._id.toString(),
+          phoneNumber: '+355973459978',
+          companyId: carrier.companyId,
           status: 'upcoming',
+          currentStatus: 'n/a',
           description: JSON.stringify({
             address: 'US, NY, Manhattan c., str. 1, h. 34',
             DOB: '15.12.1988',
@@ -170,7 +196,7 @@ describe('Testing \'drivers\' route', () => {
         });
       expect(res.statusCode).toBe(200);
       expect(res.body.name).toBe('Kevin');
-      expect(res.body.phoneNumber).toBe('+355973459977');
+      expect(res.body.phoneNumber).toBe('+355973459978');
 
     });
   });

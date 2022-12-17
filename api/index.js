@@ -41,7 +41,7 @@ const run = async () => {
     });
 };
 
-// bot();
+bot();
 
 run().catch(e => console.log(e));
 

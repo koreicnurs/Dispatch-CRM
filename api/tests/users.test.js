@@ -19,15 +19,17 @@ describe('Testing \'users\' route', () => {
     });
   };
 
-  const getDispatcher = (email, password) => {
+  const getDispatchers = () => {
+    getUser('admin@gmail.com', 'admin');
     it('user should successfully login', async () => {
       const res = await request(app)
-        .post('/users/sessions')
-        .send({email, password});
+        .get('/users')
+        .set({Authorization: admin.token});
       expect(res.statusCode).toBe(200);
-      dispatcher = res.body;
+      dispatcher= res.body.find(dispatcher => dispatcher.email === 'user@gmail.com');
     });
   };
+
 
   describe('test of user login', () => {
     it('user should successfully login', async () => {
@@ -86,14 +88,8 @@ describe('Testing \'users\' route', () => {
   });
 
   describe('change dispatcher status', () => {
-    getUser('admin@gmail.com', 'admin' );
-    getDispatcher('user@gmail.com', 'user');
-
+    getDispatchers();
     it('should change \'isWorking\' to false', async () => {
-      const res1 = await request(app)
-        .get('/users')
-        .set({Authorization: admin.token});
-      let dispatcher = res1.body[0];
       const res = await request(app)
         .put('/users/?isWorking=false')
         .send(dispatcher)

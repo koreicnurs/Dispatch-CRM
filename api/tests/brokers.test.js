@@ -66,6 +66,7 @@ describe('Testing \'brokers\' route', () => {
   };
 
   describe('getting of all brokers', () => {
+
     getUser('user@gmail.com', 'user');
 
     it('should return an array of all brokers', async () => {
@@ -123,3 +124,5 @@ describe('Testing \'brokers\' route', () => {
 });
 
 afterAll(() => mongoose.disconnect());
+
+

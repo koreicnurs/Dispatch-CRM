@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test-front": "NODE_ENV=test-front npm run dev",
-    "test-api": "NODE_ENV=test jest --testTimeout=5000 --detectOpenHandles",
+    "test-api": "NODE_ENV=test node fixtures.js && NODE_ENV=test jest --testTimeout=5000 --detectOpenHandles",
     "pretest": "NODE_ENV=test node fixtures.js",
     "start": "node index.js",
     "dev": "nodemon index.js",

@@ -3,6 +3,8 @@ import {makeStyles} from "tss-react/mui";
 import {Box, Button, Grid, Modal, TextField} from "@mui/material";
 import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
 import {apiUrl} from "../../config";
+import TripsComments from '../TripsComments/TripsComments';
+import Typography from '@mui/material/Typography';
 
 const style = {
   position: 'absolute',
@@ -29,7 +31,7 @@ const useStyles = makeStyles()(theme => ({
 }));
 
 
-const ViewAll = ({open, handleClose, trip}) => {
+const ViewAll = ({open, handleClose, trip, user}) => {
   const {classes} = useStyles();
 
   return (
@@ -44,7 +46,9 @@ const ViewAll = ({open, handleClose, trip}) => {
         >
 
           <Box sx={style}>
-
+            <Typography variant={'h6'} mb={2}>
+              View All
+            </Typography>
             <Grid
               container
               direction="column"
@@ -219,24 +223,11 @@ const ViewAll = ({open, handleClose, trip}) => {
                       : null
                     }
                   </Box>
-
-                  {trip && trip.comment
-                    ? <Grid item width='100%'>
-                        <TextField
-                          name="comment"
-                          label="Comment"
-                          value={trip.comment}
-                          multiline={true}
-                          rows={2}
-                          InputProps={{
-                            readOnly: true,
-                          }}
-                          className={classes.field}
-                        />
-                      </Grid>
-                    : null
-                  }
-
+  
+                  <div style={{margin: '16px 0 0 16px', width: '100%'}}>
+                    <TripsComments commentArray={trip.comment} user={user}/>
+                  </div>
+                  
                   <Grid item xs={12} ml={'auto'}>
                     <Button fullWidth variant="contained" onClick={handleClose}>
                       Close

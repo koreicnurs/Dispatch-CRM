@@ -153,7 +153,7 @@ router.post('/', auth, upload.single('license'), async (req, res) => {
       }
       throw error;
     }
-    
+
     const driverData = {
       email,
       name,
@@ -165,7 +165,7 @@ router.post('/', auth, upload.single('license'), async (req, res) => {
 
 
     if (driverData.status === 'off') {
-      driverData.currentStatus = 'off';
+      driverData.currentStatus = 'n/a';
     }
 
     const driver = new Driver(driverData);
@@ -193,7 +193,7 @@ router.post('/carrier', auth, permit('carrier'), upload.single('license'), async
     const driver = new Driver(driverData);
 
     if (driverData.status === 'off') {
-      driverData.currentStatus = 'off';
+      driverData.currentStatus = 'n/a';
     }
 
     await driver.save();
@@ -227,19 +227,22 @@ router.put('/:id', auth, upload.single('license'), async (req, res) => {
     driver.name = name;
     driver.phoneNumber = phoneNumber;
     driver.companyId = companyId;
-    driver.status = status;
-    driver.currentStatus = currentStatus;
     driver.description = JSON.parse(description);
     driver.pickUp = pickUp;
     driver.delivery = delivery;
     driver.ETA = ETA;
     driver.readyTime = readyTime;
     driver.notes = notes;
-
-    if (status === 'off') {
-      driver.currentStatus = 'off';
+    if (status) {
+        driver.status = status;
+    }
+    if (currentStatus){
+        driver.currentStatus = currentStatus;
     }
 
+    if (status !== 'in transit' && status !== 'in tr/upc') {
+      driver.currentStatus = 'n/a';
+    }
 
     await driver.save();
     res.send(driver);
@@ -262,16 +265,18 @@ router.put('/carrier/:id', auth, permit('carrier'), upload.single('license'), as
     driver.name = name;
     driver.phoneNumber = phoneNumber;
     driver.companyId = req.user.companyId;
-    driver.status = status;
     driver.description = JSON.parse(description);
     driver.pickUp = pickUp;
     driver.delivery = delivery;
     driver.ETA = ETA;
     driver.readyTime = readyTime;
     driver.notes = notes;
+    if (status) {
+        driver.status = status;
+    }
 
     if (status === 'off') {
-      driver.currentStatus = 'off';
+      driver.currentStatus = 'n/a';
     }
 
     await driver.save();

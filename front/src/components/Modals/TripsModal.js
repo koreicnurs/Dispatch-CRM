@@ -14,6 +14,8 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {apiUrl} from "../../config";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
 import AddButton from "../UI/Button/AddButton/AddButton";
+import {fetchBrokersRequest} from "../../store/actions/brokersActions";
+import TripsComments from '../TripsComments/TripsComments';
 
 const style = {
   position: 'absolute',
@@ -41,7 +43,6 @@ const useStyles = makeStyles()(theme => ({
 
 
 const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
-
   const {classes} = useStyles();
   const dispatch = useDispatch();
   const trips = useSelector(state => state.trips.trips);
@@ -51,13 +52,11 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
   const drivers = useSelector(state => state.drivers.drivers);
   const user = useSelector(state => state.users.user);
   const trip = useSelector(state => state.trips.trip);
-
+  const brokers = useSelector(state => state.brokers.brokers);
 
   const [newModal, setNewModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
-
-
-
+  
   const [tripId, setTripId] = useState('');
 
   useEffect(() => setEditModal(isEdit), [isEdit])
@@ -79,8 +78,8 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
     comment: "",
     RC: "",
     BOL: "",
+    brokerId: "",
   });
-
   const [editedData, setEditedData] = useState({
     loadCode: "",
     driverId: "",
@@ -98,11 +97,15 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
     comment: "",
     RC: "",
     BOL: "",
+    brokerId: "",
   });
+  
+  const [commentArray, setCommentArray] = useState([]);
 
   useEffect(() => {
     dispatch(fetchUsersRequest());
     dispatch(fetchDriversRequest());
+    dispatch(fetchBrokersRequest());
   }, [dispatch]);
 
   useEffect(() => {
@@ -114,7 +117,6 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
     }
     // eslint-disable-next-line
   }, [trips]);
-
 
   const openCloseModal = () => {
     if (isAdd) {
@@ -135,8 +137,10 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
         comment: "",
         RC: "",
         BOL: "",
+        brokerId: "",
       });
-
+      setStartDate(null);
+      setFinDate(null);
       setNewModal(true);
       dispatch(clearCreateTripErrorRequest());
     }
@@ -157,14 +161,15 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
       pu: trip.pu,
       del: trip.del,
       status: trip.status,
-      comment: trip.comment ? trip.comment : '',
+      comment: '',
       timeToPU: trip.timeToPU,
       timeToDel: trip.timeToDel,
       RC: trip.RC || '',
       BOL: trip.BOL || '',
+      brokerId: trip.brokerId ? trip.brokerId._id : '',
     });
-
-
+    
+    setCommentArray(trip.comment);
     setEditModal(true);
     dispatch(clearCreateTripErrorRequest());
   }}, [dispatch, isEdit, tripID, trips, trip]);
@@ -230,10 +235,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
       return undefined;
     }
   };
-
-
-
-
+  
   return (
     <>
       {isAdd
@@ -248,11 +250,10 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
       >
         <Fade in={isAdd ? newModal : editModal}>
           <Box sx={style}>
-            <Typography id="keep-mounted-modal-description" sx={{ mb: 2 }}>
+            <Typography variant={'h6'}>
               {modalTitle}
             </Typography>
-
-
+            
             <Grid
               container
               direction="column"
@@ -310,7 +311,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                     </LocalizationProvider>
                   </Grid>
                 </Grid>
-  
+
                 <Grid
                   item
                   container
@@ -328,7 +329,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                       error={getFieldError('timeToPU')}
                     />
                   </Grid>
-  
+
                   <Grid item width="49.5%">
                     <FormElement
                       type={'timeToDel'}
@@ -440,13 +441,27 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                         inputProps={{min:0, step: '0.01'}}
                       />
                     </Grid>
+                    <Grid item width="49.5%">
+                      <FormSelect
+                          type={'string'}
+                          name={'brokerId'}
+                          label={'Broker'}
+                          value={isAdd ? newData.brokerId : editedData.brokerId}
+                          onChange={inputChangeHandler}
+                          error={getFieldError('brokerId')}
+                          driver={true}
+                          array={brokers}
+                          required={false}
+                          variant="object"
+                      />
+                    </Grid>
                   </Grid>
 
                   <FormSelect
                     type={'string'}
                     name={'driverId'}
                     label={'Driver'}
-                    value={isEdit ? editedData.driverId : ''}
+                    value={isAdd ? newData.driverId : editedData.driverId}
                     onChange={inputChangeHandler}
                     error={getFieldError('driverId')}
                     driver={true}
@@ -478,6 +493,10 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                       : null
                     }
                   </Box>
+                  
+                  <div style={{margin: '8px 0 0 8px', width: '100%'}}>
+                    <TripsComments commentArray={commentArray} user={user}/>
+                  </div>
 
                   <FormElement
                     onChange={inputChangeHandler}

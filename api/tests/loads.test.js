@@ -9,6 +9,7 @@ describe('Testing \'loads\' route', () => {
   let user = null;
   let admin = null;
   let drivers;
+  let brokers;
   let load = null;
 
   const getUser = (email, password) => {
@@ -32,9 +33,19 @@ describe('Testing \'loads\' route', () => {
     });
   };
 
+    const getBrokers = async () => {
+        it('should get array of all brokers', async () => {
+            const res = await request(app)
+                .get('/brokers')
+                .set({Authorization: user.token});
+            brokers = res.body;
+        });
+    };
+
   const createLoad = () => {
     if (user === null) getUser('user@gmail.com', 'user');
     getDrivers();
+    getBrokers();
 
     it('load should successfully create', async () => {
       const res = await request(app)
@@ -54,6 +65,7 @@ describe('Testing \'loads\' route', () => {
           pu: "Pitasdtsburg, PA",
           del: "Bosadton, MA",
           comment: "test comment",
+          brokerId: brokers[0]._id.toString(),
         });
       expect(res.statusCode).toBe(200);
       expect(res.body.price).toBe(2400);
@@ -113,6 +125,7 @@ describe('Testing \'loads\' route', () => {
           del: "Boston, MA",
           comment: "updated test comment",
           status: "transit",
+          brokerId: brokers[1]._id.toString(),
         });
       expect(res.statusCode).toBe(200);
       expect(res.body.price).toBe(2800);

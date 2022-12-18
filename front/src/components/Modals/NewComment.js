@@ -4,6 +4,7 @@ import {Box, Grid, Modal, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
 import {addCommentRequest, fetchTripRequest} from "../../store/actions/tripsActions";
+import TripsComments from '../TripsComments/TripsComments';
 
 const style = {
   position: 'absolute',
@@ -20,15 +21,16 @@ const style = {
 
 
 
-const NewComment = ({open, handleClose, id}) => {
+const NewComment = ({open, handleClose, id, user}) => {
   const dispatch = useDispatch();
   const trip = useSelector(state => state.trips.trip);
+  
   const [comment, setComment] = useState('');
+  const [commentArray, setCommentArray] = useState([]);
 
   const inputChangeHandler = e => {
     setComment(e.target.value);
   };
-
 
   useEffect(() => {
     if (id) {
@@ -39,7 +41,7 @@ const NewComment = ({open, handleClose, id}) => {
 
   useEffect(() => {
     if (trip && trip.comment) {
-      setComment(trip.comment);
+      setCommentArray(trip.comment);
     }
   }, [trip]);
 
@@ -62,12 +64,14 @@ const NewComment = ({open, handleClose, id}) => {
         >
 
           <Box sx={style}>
-            <Typography id="keep-mounted-modal-description" sx={{ mb: 2 }}>
+            <Typography variant={'h6'}>
               Comment
             </Typography>
+            <TripsComments commentArray={commentArray} user={user}/>
             <TextField
               id="outlined-multiline-static"
               multiline
+              label="Comment"
               value={comment}
               rows={4}
               onChange={inputChangeHandler}

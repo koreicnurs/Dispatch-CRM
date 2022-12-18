@@ -12,6 +12,7 @@ import StatusUpdateTableBody from "../../components/Table/TableBody/StatusUpdate
 import {statusInterval} from "../../config";
 import {fetchCarriersRequest} from "../../store/actions/carriersActions";
 import FormSelect from "../../components/UI/Form/FormSelect/FormSelect";
+import AutocompleteSelect from "../../components/UI/Form/Autocomplete/AutocompleteSelect";
 
 //uncomment for DataGrid
 // const columns = [
@@ -92,7 +93,7 @@ const StatusUpdate = () => {
   const drivers = useSelector(state => state.drivers.drivers);
   const carriers = useSelector(state => state.carriers.carriers);
   const [currentDrivers, setCurrentDrivers] = useState([]);
-  const [carrierSelector, setCarrierSelector] = useState(["Carrier"]);
+  const [carrierSelector, setCarrierSelector] = useState(["Carriers"]);
   const [selectedCarrier, setSelectedCarrier] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("Status");
 
@@ -117,7 +118,6 @@ const StatusUpdate = () => {
       }
       setCurrentDrivers(driverFiltered);
     }
-
   }, [drivers, selectedCarrier, selectedStatus]);
 
     useEffect(() => {
@@ -130,13 +130,9 @@ const StatusUpdate = () => {
       setCarrierSelector(() => [...carriersTitles]);
     }, [carriers]);
 
-    const selectCarrierHandler = event => {
-      const {
-        target: { value },
-      } = event;
-      setSelectedCarrier(
-        typeof value === 'string' ? value.split(',') : value,
-      );
+    const selectCarrierHandler = (event, newValue) => {
+      setSelectedCarrier([
+        ...newValue]);
     };
 
     const selectedStatusHandler = event => {
@@ -148,15 +144,11 @@ const StatusUpdate = () => {
         {carrierSelector.length !== null &&
           <>
             <TableCell sx={tableHeaderStyle}>
-              <FormSelect
-                label="Carriers"
-                multiple={true}
-                array={carrierSelector}
+              <AutocompleteSelect
+                options={carrierSelector}
                 value={selectedCarrier}
                 onChange={selectCarrierHandler}
-                required={true}
-                variant="array"
-                driver={false}
+                placeholder="Companies"
               />
             </TableCell>
             <TableCell sx={tableHeaderStyle}>Driver</TableCell>

@@ -9,7 +9,7 @@ import {
     changeUserSuccess,
     createDispatcherFailure,
     createDispatcherRequest,
-    createDispatcherSuccess,
+    createDispatcherSuccess, createUserCarrierFailure, createUserCarrierRequest, createUserCarrierSuccess,
     fetchUsersFailure,
     fetchUsersRequest,
     fetchUsersSuccess,
@@ -106,6 +106,19 @@ export function* changeStatus({payload: dispatcherData}) {
     }
 }
 
+export function* createUserCarrier({payload: userCarrierData}) {
+    try {
+        yield axiosApi.post('/users/user-carrier', userCarrierData);
+        yield put(createUserCarrierSuccess());
+        yield put(addNotification({message: 'Successfully created!', variant: 'success'}));
+        const response = yield axiosApi('/users');
+        yield put(fetchUsersSuccess(response.data));
+    } catch (e) {
+        yield put(addNotification({message: 'Creating failed!', variant: 'error'}));
+        yield put(createUserCarrierFailure(e.response.data));
+    }
+}
+
 const userSagas = [
     takeEvery(loginRequest, loginUserSaga),
     takeEvery(logoutRequest, logoutUserSaga),
@@ -113,7 +126,8 @@ const userSagas = [
     takeEvery(changeUserRequest, changeUserData),
     takeEvery(changeDispatcherRequest, changeDispatcherData),
     takeEvery(createDispatcherRequest, createDispatcher),
-    takeEvery(changeStatusRequest, changeStatus)
+    takeEvery(changeStatusRequest, changeStatus),
+    takeEvery(createUserCarrierRequest, createUserCarrier),
 ];
 
 export default userSagas;

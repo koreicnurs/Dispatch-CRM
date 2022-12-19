@@ -149,7 +149,7 @@ router.post('/', auth, cpUpload, async (req, res) => {
         if (driverId) {
             const driver = await Driver.findById({_id: driverId})
             if (driver.telegramId) {
-                return await bot.sendMessage(driverId.telegramId, `У вас есть новый груз ${loadCode}`);
+                return await bot.sendMessage(driver.telegramId, `У вас есть новый груз ${loadCode}У вас есть новый груз ${loadCode}\nНапишите команду /load чтобы получить полную информацию по грузу`);
             }
         }
 
@@ -241,10 +241,8 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
         }
         if (driverId) {
             const driver = await Driver.findById({_id: driverId});
-            console.log(driver);
             if (driver.telegramId) {
-                console.log(driver.telegramId);
-                return await bot.sendMessage(driverId.telegramId, `У вас есть новый груз ${loadCode}`);
+                return await bot.sendMessage(driver.telegramId, `У вас есть новый груз ${loadCode}\nНапишите команду /load чтобы получить полную информацию по грузу`);
             }
         }
 
@@ -301,7 +299,7 @@ router.put('/cancel/:id', auth, async (req, res) => {
         if (load.driverId) {
             const driver = await Driver.findById({_id: driverId})
             if (driver.telegramId) {
-                return await bot.sendMessage(driver.telegramId, 'Ваш груз был отменен');
+                return await bot.sendMessage(driver.telegramId, `Ваш груз был отменен ${load.loadCode}`);
             }
         }
 

@@ -18,17 +18,16 @@ const DriverTableBody = ({columns, filteredData}) => {
             if (column.innerKey) {
               value = value[column.innerKey];
             }
-            return <TableCell sx={{fontSize: "12px"}} key={column.key + column.innerKey}>{value}</TableCell>;
-          })}
-          <TableCell>
-            {driver.license &&
+            if (column.key === 'license' && driver.license){
+              value =
                 <a href={apiUrl + '/' + driver.license} target="_blank" rel="noreferrer">
                   <IconButton color="primary">
                     <Description/>
                   </IconButton>
                 </a>
             }
-          </TableCell>
+            return <TableCell sx={{fontSize: "12px"}} key={column.key + column.innerKey}>{value}</TableCell>;
+          })}
           <EditDriver driverEmail={driver.email}/>
         </TableRow>
       ))}

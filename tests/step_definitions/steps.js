@@ -43,6 +43,15 @@ When('я напишу данные:', table => {
   });
 });
 
+Then('нажму на кнопку выбора документа {string}', buttonText => {
+  I.click(`//form//button[contains(text(), "${buttonText}")]`);
+});
+
+Then('выбираю нужный файл для документа {string}', file => {
+  I.attachFile("input[type='file']", file);
+  I.wait(1);
+});
+
 Then('нажимаю на {string}', buttonText => {
   I.click(`//form//button[contains(text(), "${buttonText}")]`);
 

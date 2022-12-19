@@ -102,7 +102,6 @@ const CarriersModal = ({modalTitle, isAdd, carrierID}) => {
 
       setEditModal(true);
       dispatch(clearCarriersErrors());
-      console.log(editedData);
     }
   };
 
@@ -141,12 +140,6 @@ const CarriersModal = ({modalTitle, isAdd, carrierID}) => {
     } else {
       dispatch(editCarrierRequest({id: carrierId, data: formData}));
     }
-
-    // if (isAdd) {
-    //   dispatch(createCarrierRequest(newData));
-    // } else {
-    //   dispatch(editCarrierRequest({id: carrierId, data: editedData}));
-    // }
   };
 
   const getFieldError = fieldName => {
@@ -258,7 +251,7 @@ const CarriersModal = ({modalTitle, isAdd, carrierID}) => {
                       <FileInput
                         label={'Document'}
                         name={'document'}
-                        value={isAdd ? newData.document : editedData.document}
+                        value={isAdd ? newData.document.value : editedData.document}
                         onChange={fileChangeHandler}
                       />
                     </Grid>

@@ -15,14 +15,14 @@ const FileInput = ({onChange, name, label, required, value}) => {
   const [filename, setFilename] = useState('');
 
   useEffect(() => {
-    if (value) setFilename(value);
+    if (value) setFilename(value || value.name);
   }, [value]);
 
   const onFileChange = e => {
     if (e.target.files[0]) {
       setFilename(e.target.files[0].name);
     } else {
-      setFilename('');
+      setFilename(value || value.name || '');
     }
 
     onChange(e);

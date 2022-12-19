@@ -1,7 +1,8 @@
 import React from 'react';
-import {TableCell, TableRow} from "@mui/material";
+import {IconButton, TableCell, TableRow} from "@mui/material";
 import EditDriver from "../../Modals/EditDriver";
-import ViewDocuments from "../../Modals/ViewDocuments";
+import {apiUrl} from "../../../config";
+import {Description} from "@mui/icons-material";
 
 const DriverTableBody = ({columns, filteredData}) => {
   return (
@@ -19,7 +20,15 @@ const DriverTableBody = ({columns, filteredData}) => {
             }
             return <TableCell sx={{fontSize: "12px"}} key={column.key + column.innerKey}>{value}</TableCell>;
           })}
-          <ViewDocuments license={driver.license}/>
+          <TableCell>
+            {driver.license &&
+                <a href={apiUrl + '/' + driver.license} target="_blank" rel="noreferrer">
+                  <IconButton color="primary">
+                    <Description/>
+                  </IconButton>
+                </a>
+            }
+          </TableCell>
           <EditDriver driverEmail={driver.email}/>
         </TableRow>
       ))}

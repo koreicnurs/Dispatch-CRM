@@ -125,8 +125,8 @@ const Trips = ({history}) => {
   return (
     <>
       <EditTrip tripID={trip?._id} isEdit={edit}/>
-      <NewComment handleClose={handleCloseCommentModal} open={openComment} id={commentTripId}/>
-      <ViewAll handleClose={handleCloseViewAllModal} open={viewAll} id={viewAllTripId} trip={trip}/>
+      <NewComment handleClose={handleCloseCommentModal} open={openComment} id={commentTripId} user={user}/>
+      <ViewAll handleClose={handleCloseViewAllModal} open={viewAll} id={viewAllTripId} trip={trip} user={user}/>
       <NewAttachment handleClose={handleCloseAttachmentModal} open={openAttachment} id={attachTripId}/>
 
       <InnerContainer>
@@ -144,7 +144,7 @@ const Trips = ({history}) => {
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
               <Tab label="Upcoming" component={Link} to='/loads?status=upcoming' {...a11yProps(0)} />
               <Tab label="In Transit" component={Link} to='/loads?status=transit' {...a11yProps(1)} />
-              <Tab label="History" component={Link} to='/loads?status=finished' {...a11yProps(2)} />
+              <Tab label="History" component={Link} to={'/loads?status=finished'} {...a11yProps(2)} />
             </Tabs>
           </Box>
           <TabPanel

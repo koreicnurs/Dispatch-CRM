@@ -259,3 +259,21 @@ Then('я вижу сущность с данными {string}', text => {
   I.see(text);
   I.wait(1);
 });
+
+/* Brokers registration and editing tests */
+Then('нажимаю на кнопку редактирования брокера', () => {
+  I.click('//tr[1]/td[6]/div');
+  I.wait(1);
+});
+Then('нажимаю на кнопку добавления компании брокеру', () => {
+  I.click('//form/div/div[3]/div[2]/button');
+  I.wait(1);
+});
+Then('нажимаю на кнопку выбора компании брокеру', () => {
+  I.click('//form/div/div[4]/div/div');
+  I.wait(1);
+});
+Then('я не вижу текст {string}', text => {
+  I.dontSee(text, '//ul//li');
+  I.wait(1);
+});

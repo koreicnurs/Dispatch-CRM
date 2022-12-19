@@ -22,4 +22,25 @@ module.exports = {
         db: dbURL,
         options: {useNewUrlParser: true},
     },
+    mailServerOptions: {
+        service: "gmail",
+        auth: {
+            user: "dispatcheresdp@gmail.com",
+            pass: "jivalgiphbokrgkh"
+        },
+        mailText: (displayName, email, password) => {
+            return `Greetings, ${displayName}! You have been authorized! \n 
+            Your login: ${email}; \n 
+            Your password: ${password} \n
+            Please change your password after log in.`
+        },
+        mailHtml: (displayName, email, password) => {
+            return `<p>
+                    Greetings, <b>${displayName}</b>! You have been authorized!<br/>
+                    Your login: <b>${email}</b>;<br/> 
+                    Your password: <b>${password}</b><br/>
+                    Please change your password after log in.<br/>
+                    </p>`
+        }
+    }
 };

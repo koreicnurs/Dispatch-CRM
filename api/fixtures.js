@@ -111,6 +111,7 @@ const run = async () => {
     status: 'in transit',
     currentStatus: 'driving',
     telegramId: '',
+    license: 'fixtures/license.pdf',
     description: {
       address: 'US, LA, Avalon c., str. 1, h. 45',
       DOB: '15.12.1980',
@@ -124,6 +125,7 @@ const run = async () => {
     companyId: bahawayCarrier._id,
     status: 'upcoming',
     telegramId: '',
+    license: 'fixtures/license.pdf',
     description: {
       address: 'US, LA, Downey c., str. 1, h. 4',
       DOB: '5.04.1990',
@@ -138,6 +140,7 @@ const run = async () => {
     status: 'off',
     currentStatus: 'n/a',
     telegramId: '',
+    license: 'fixtures/license.pdf',
     description: {
       address: 'US, IL, Chicago c., str. 1, h. 4',
       DOB: '12.06.1988',
@@ -151,6 +154,7 @@ const run = async () => {
     companyId: safewayCargoCarrier._id,
     status: 'ready',
     telegramId: '',
+    license: 'fixtures/license.pdf',
     description: {
       address: 'US, IL, Chicago c., str. 1, h. 48',
       DOB: '30.08.1995',
@@ -165,6 +169,7 @@ const run = async () => {
     status: 'in tr/upc',
     currentStatus: 'rest',
     telegramId: '',
+    license: 'fixtures/license.pdf',
     description: {
       address: 'US, IL, Chicago c., str. 10, h. 48',
       DOB: '25.07.1993',
@@ -179,6 +184,7 @@ const run = async () => {
     status: 'off',
     currentStatus: 'n/a',
     telegramId: '',
+    license: 'fixtures/license.pdf',
     description: {
       address: 'US, NY, New-York c., 5 Avenue, h. 48',
       DOB: '18.12.2005',
@@ -211,6 +217,7 @@ const run = async () => {
     companyId: tumarExpressCarrier._id,
     status: 'ready',
     telegramId: '',
+    license: 'fixtures/license.pdf',
     description: {
       address: 'US, MS, Gulfport c., str. 4, h. 75, ap. 7',
       DOB: '22.02.1992',
@@ -225,6 +232,7 @@ const run = async () => {
     status: 'in transit',
     currentStatus: 'rest',
     telegramId: '',
+    license: 'fixtures/license.pdf',
     description: {
       address: 'US, TX, Houston c., str. 45, h. 12, ap. 12',
       DOB: '5.05.1995',

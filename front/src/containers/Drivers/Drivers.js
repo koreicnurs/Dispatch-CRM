@@ -61,6 +61,7 @@ const columns = [
   {key: 'description', label: 'DOB', innerKey: 'DOB'},
   {key: 'description', label: 'Info', innerKey: 'info'},
   {key: 'description', label: 'Reference', innerKey: 'reference'},
+  {key: 'license', label: 'License'},
 ];
 
 const Drivers = () => {

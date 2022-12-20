@@ -233,9 +233,12 @@ router.put('/:id', auth, upload.single('license'), async (req, res) => {
     driver.ETA = ETA;
     driver.readyTime = readyTime;
     driver.notes = notes;
+    driver.license = req.file ? 'uploads/' + req.file.filename : null;
+
     if (status) {
         driver.status = status;
     }
+
     if (currentStatus){
         driver.currentStatus = currentStatus;
     }

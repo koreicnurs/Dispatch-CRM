@@ -7,6 +7,7 @@ import FormElement from "../../UI/Form/FormElement/FormElement";
 import PasswordInput from "../../UI/Form/PasswordInput/PasswordInput";
 import FileInput from "../../UI/Form/FileInput/FileInput";
 import ButtonWithProgress from "../../UI/Button/ButtonWithProgress/ButtonWithProgress";
+import FormSelect from "../../UI/Form/FormSelect/FormSelect";
 
 const style = {
   position: 'absolute',
@@ -25,7 +26,7 @@ const useStyles = makeStyles()(() => ({
   }
 }));
 
-const DispatcherModal = ({modal, title, dispatcher, modalHandler, submitFormHandler, inputHandler, getFieldError, fileHandler, loading, buttonName, required}) => {
+const DispatcherModal = ({modal, title, dispatcher, modalHandler, submitFormHandler, inputHandler, getFieldError, fileHandler, loading, buttonName, required, role, carriers}) => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -60,6 +61,20 @@ const DispatcherModal = ({modal, title, dispatcher, modalHandler, submitFormHand
               error={getFieldError('email')}
               className={classes.field}
             />
+
+            {role === "carrier"
+              ? <FormSelect
+                label={'Carriers'}
+                name={'companyId'}
+                array={carriers}
+                value={dispatcher.companyId}
+                onChange={inputHandler}
+                required={true}
+                variant={'object'}
+                error={getFieldError('companyId')}
+              />
+              : null
+            }
 
             <FormElement
               onChange={inputHandler}
@@ -145,7 +160,9 @@ DispatcherModal.propsType = {
   getFieldError: PropTypes.func.isRequired,
   fileHandler: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
-  buttonName: PropTypes.string.isRequired
+  buttonName: PropTypes.string.isRequired,
+  role: PropTypes.string,
+  carriers: PropTypes.array
 }
 
 export default DispatcherModal;

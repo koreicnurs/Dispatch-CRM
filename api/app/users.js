@@ -7,6 +7,7 @@ const User = require('../models/User');
 const config = require('../config');
 const auth = require('../middleware/auth');
 const permit = require("../middleware/permit");
+const mailTransporter = require("../mailTransporter");
 
 const router = express.Router();
 
@@ -41,7 +42,18 @@ router.post('/', upload.single('avatar'), async (req, res) => {
       isWorking: 'active',
       avatar: req.file ? 'uploads/' + req.file.filename : null,
     };
+
+    const mailOptions = {
+      from: config.mailServerOptions.auth.user,
+      to: email,
+      subject: "new user",
+      text: config.mailServerOptions.mailText(displayName, email, password),
+      html: config.mailServerOptions.mailHtml(displayName, email, password),
+    };
+
     const user = new User(userData);
+
+    await mailTransporter(mailOptions);
 
     user.generateToken();
     await user.save();
@@ -64,6 +76,32 @@ router.post('/dispatchers', auth, permit('admin'), upload.single('avatar'), asyn
       avatar: req.file ? 'uploads/' + req.file.filename : null,
     };
     const user = new User(userData);
+
+    user.generateToken();
+    await user.save();
+
+    res.send(user);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
+router.post('/user-carrier', auth, permit('admin'), upload.single('avatar'), async (req, res) => {
+  try {
+    const {email, password, displayName, role, companyId, phoneNumber} = req.body;
+
+    const userCarrierData = {
+      email,
+      password,
+      displayName,
+      role,
+      companyId,
+      phoneNumber,
+      isWorking: 'active',
+      avatar: req.file ? 'uploads/' + req.file.filename : null,
+    };
+
+    const user = new User(userCarrierData);
 
     user.generateToken();
     await user.save();
@@ -120,8 +158,8 @@ router.put('/', auth, upload.single('avatar'), async (req, res) => {
             if (!user) {
                 return res.status(404).send({message: 'User not found!'});
             }
-            if (user.role !== 'user') {
-                return res.status(403).send('You can make changes only for dispatchers!');
+            if (user.role === 'admin') {
+                return res.status(403).send('You can make changes only for dispatchers or carriers!');
             }
             if(status === 'false') {
               user.isWorking = 'disabled';

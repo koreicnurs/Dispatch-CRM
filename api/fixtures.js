@@ -237,34 +237,34 @@ const run = async () => {
       reference: 'Responsible guy'
     }
   });
-
+  
   const [azamatBroker, aibekBroker, nurbekBroker, adiletBroker] = await Broker.create(
-      {
-        name: 'Azamat',
-        phoneNumber: ['+9963592261', '+2678480704'],
-        mc: '225863',
-        description: 'Lorem ipsum dolor sit amet',
-        companiesContract: [bahawayCarrier._id, safewayCargoCarrier._id, turanExpressCarrier._id]
-      }, {
-        name: 'Aibek',
-        phoneNumber: ['+3478548314'],
-        mc: '238164',
-        description: 'Consectetur adipiscing elit',
-        companiesContract: [bahawayCarrier._id],
-      }, {
-        name: 'Nurbek',
-        phoneNumber: ['+1293525578', '+1294884446'],
-        mc: '216579',
-        companiesContract: [bahawayCarrier._id, tumarExpressCarrier._id],
-      }, {
-        name: 'Adilet',
-        phoneNumber: ['+9965995232', '+7678480704', '+3232523146'],
-        mc: '953268',
-        description: 'Convallis convallis tellus id interdum velit laoreet id donec ultrices',
-        companiesContract: [bahawayCarrier._id],
-      }
+    {
+      name: 'Azamat',
+      phoneNumber: ['+9963592261', '+2678480704'],
+      mc: '225863',
+      description: 'Lorem ipsum dolor sit amet',
+      companiesContract: [bahawayCarrier._id, safewayCargoCarrier._id, turanExpressCarrier._id]
+    }, {
+      name: 'Aibek',
+      phoneNumber: ['+3478548314'],
+      mc: '238164',
+      description: 'Consectetur adipiscing elit',
+      companiesContract: [bahawayCarrier._id],
+    }, {
+      name: 'Nurbek',
+      phoneNumber: ['+1293525578', '+1294884446'],
+      mc: '216579',
+      companiesContract: [bahawayCarrier._id, tumarExpressCarrier._id],
+    }, {
+      name: 'Adilet',
+      phoneNumber: ['+9965995232', '+7678480704', '+3232523146'],
+      mc: '953268',
+      description: 'Convallis convallis tellus id interdum velit laoreet id donec ultrices',
+      companiesContract: [bahawayCarrier._id],
+    }
   );
-
+  
   await Load.create({
     loadCode: 'T-114K1J2M7',
     driverId: umotDriver._id,
@@ -282,6 +282,10 @@ const run = async () => {
     BOL: 'fixtures/BOL1.pdf',
     RC: 'fixtures/RC1.pdf',
     brokerId: azamatBroker._id,
+    comment: [{
+      authorId: user._id,
+      text: 'Lorem ipsum'
+    }]
   }, {
     loadCode: 'T-151F5454FEG',
     driverId: kubaDriver._id,
@@ -297,6 +301,13 @@ const run = async () => {
     del: 'Boston, MA',
     status: 'cancel',
     brokerId: aibekBroker._id,
+    comment: [{
+      authorId: user._id,
+      text: 'Dolor sit amet, consectetur adipiscing elit'
+    }, {
+      authorId: user2._id,
+      text: 'Ipsum'
+    }]
   }, {
     loadCode: 'T-454GRG45R4G',
     driverId: timurDriver._id,
@@ -314,6 +325,16 @@ const run = async () => {
     BOL: 'fixtures/BOL2.pdf',
     RC: 'fixtures/RC2.pdf',
     brokerId: nurbekBroker._id,
+    comment: [{
+      authorId: user._id,
+      text: 'Dolor sit amet, consectetur adipiscing elit'
+    }, {
+      authorId: user2._id,
+      text: 'Ipsum'
+    }, {
+      authorId: user._id,
+      text: 'Labore et dolore magna aliqua. Rhoncus dolor purus non'
+    }]
   }, {
     loadCode: 'T-12FEF4E5F',
     dispatchId: user2._id,
@@ -328,6 +349,16 @@ const run = async () => {
     del: 'Lafayette, LA',
     status: 'upcoming',
     brokerId: adiletBroker._id,
+    comment: [{
+      authorId: user2._id,
+      text: 'Et dolor sit amet, consectetur adipiscing elit'
+    }, {
+      authorId: admin._id,
+      text: 'Adipiscing elit'
+    }, {
+      authorId: user._id,
+      text: 'Rhoncus dolor purus non'
+    }]
   }, {
     loadCode: 'T-1FEFS12S',
     driverId: makenDriver._id,
@@ -396,3 +427,4 @@ const run = async () => {
 };
 
 run().catch(console.error);
+

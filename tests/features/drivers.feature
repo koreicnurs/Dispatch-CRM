@@ -26,9 +26,6 @@
     Затем нажимаю на выбор компании "Carriers"
     И нажимаю на компанию "BAHAWAY"
 
-    Затем нажимаю на выбор статуса "Status"
-    И нажимаю на статус "upcoming"
-
     Затем нажму на кнопку выбора лицензии "Browse"
     И выбираю нужный файл для лицензии "images/license.jpg"
 
@@ -49,16 +46,13 @@
     Если я введу данные в форму регистрации водителя:
       | email       | umot@gmail.com                   |
       | name        | Umot                             |
-      | phoneNumber | +267●5350802                     |
+      | phoneNumber | +2675350802                      |
       | address     | US, LA, Avalon c., str. 1, h. 45 |
       | DOB         | 15.12.1980                       |
       | info        | Lorem ipsum dolor sit amet       |
       | reference   | Punctual, decent                 |
     Затем нажимаю на выбор компании "Carriers"
     И нажимаю на компанию "BAHAWAY"
-
-    Затем нажимаю на выбор статуса "Status"
-    И нажимаю на статус "upcoming"
 
     Затем нажму на кнопку выбора лицензии "Browse"
     И выбираю нужный файл для лицензии "images/license.jpg"

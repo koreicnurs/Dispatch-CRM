@@ -6,7 +6,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {makeStyles} from "tss-react/mui";
 import FormElement from "../UI/Form/FormElement/FormElement";
 import FormSelect from "../UI/Form/FormSelect/FormSelect";
-import {DRIVER_STATUS} from "../../constants";
 import FileInput from "../UI/Form/FileInput/FileInput";
 import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
 import {fetchCarriersRequest} from "../../store/actions/carriersActions";
@@ -77,7 +76,6 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
     name: '',
     phoneNumber: '',
     companyId: '',
-    status: '',
     description: {
       address: '',
       DOB: '',
@@ -88,11 +86,8 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
   });
 
   useEffect(() => {
-    if(newModal || editModal) {
-      dispatch(fetchCarriersRequest());
-    }
-
-  }, [dispatch, newModal, editModal]);
+    dispatch(fetchCarriersRequest());
+  }, [dispatch]);
 
   useEffect(() => {
     if (newError === null) {
@@ -132,7 +127,6 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
         name: driver.name,
         phoneNumber: driver.phoneNumber,
         companyId: driver.companyId._id,
-        status: driver.status,
         description: {
           address: driver.description.address,
           DOB: driver.description.DOB,
@@ -296,13 +290,7 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
                     }}>{getFieldError('phoneNumber')}</FormHelperText>
                   </Grid>
 
-                  <Grid
-                    item
-                    container
-                    spacing={2}
-                    justifyContent="space-between"
-                  >
-                    <Grid item width={isAdd ? "100%" : "49.5%"}>
+                    <Grid item xs={12}>
                       {user.role === 'carrier'
                         ? <TextField
                           name={"carrier"}
@@ -324,22 +312,6 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
                           error={getFieldError('companyId')}
                         />
                       }
-
-                    </Grid>
-                    {!isAdd &&
-                      <Grid item width="49.5%">
-                        <FormSelect
-                          label={'Status'}
-                          name={'status'}
-                          array={DRIVER_STATUS}
-                          value={isAdd ? newData.status : editedData.status}
-                          onChange={inputChangeHandler}
-                          required={true}
-                          variant={'array'}
-                          error={getFieldError('status')}
-                        />
-                      </Grid>
-                    }
                   </Grid>
 
                   <Grid item xs={12}>

@@ -80,11 +80,21 @@ const LoadSchema = new Schema({
     },
     BOL: String,
     RC: String,
-    comment: String,
     brokerId: {
         type: Schema.Types.ObjectId,
         ref: 'Broker'
-    }
+    },
+    comment: [{
+        authorId: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        },
+        text: {
+            type: String,
+            required: true
+        }
+    }],
 });
 
 LoadSchema.plugin(uniqueValidator, {message: 'Error, expected {PATH} to be unique'});

@@ -40,6 +40,7 @@ describe('Testing \'carriers\' route', () => {
           fedid: uniqueFedID,
           description: 'test',
           phoneNumber: `+3${uniquePhoneNumber}`,
+          document: 'public/fixtures/bahaway.pdf'
         });
       expect(res.statusCode).toBe(200);
       expect(res.body.title).toBe(uniqueTitle.toString());
@@ -84,6 +85,7 @@ describe('Testing \'carriers\' route', () => {
           fedid: '33333',
           description: 'test changed',
           phoneNumber: '+355123456788',
+          document: 'public/fixtures/turan.pdf'
         });
       expect(res.statusCode).toBe(200);
       expect(res.body.title).toBe('Test Carrier Changed');

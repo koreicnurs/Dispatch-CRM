@@ -22,6 +22,9 @@
       | dot         | 126          |
       | fedid       | 88-237       |
       | description | test company |
+    Затем нажму на кнопку выбора документа "Browse"
+    И выбираю нужный файл для документа "images/doc.pdf"
+
     Затем нажимаю на "Save"
     То я вижу "Carrier created!"
 
@@ -42,6 +45,9 @@
       | dot         | 3537967         |
       | fedid       | 83-3826233      |
       | description | test company #1 |
+    Затем нажму на кнопку выбора документа "Browse"
+    И выбираю нужный файл для документа "images/doc.pdf"
+
     Затем нажимаю на "Save"
     То я вижу "Carrier creation failed!"
 

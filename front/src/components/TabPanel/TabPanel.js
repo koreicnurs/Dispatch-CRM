@@ -9,7 +9,7 @@ import TableContainer from "@mui/material/TableContainer";
 import {ChevronLeft, ChevronRight} from "@mui/icons-material";
 
 const TabPanel = (props) => {
-  const { children, value, index, header, body, history, ...other } = props;
+  const { children, value, index, header, body, history, goWeekBack, goWeekForward, week, ...other } = props;
   return (
     <div
       role="tabpanel"
@@ -23,15 +23,15 @@ const TabPanel = (props) => {
           {history === "?status=finished" &&
             <Grid container spacing={2} alignItems="center" justifyContent="center">
               <Grid item>
-                <IconButton>
+                <IconButton onClick={goWeekForward}>
                   <ChevronLeft fontSize="large"/>
                 </IconButton>
               </Grid>
               <Grid item>
-                <Typography>Test</Typography>
+                <Typography>{week}</Typography>
               </Grid>
               <Grid item>
-                <IconButton>
+                <IconButton onClick={goWeekBack}>
                   <ChevronRight fontSize="large"/>
                 </IconButton>
               </Grid>

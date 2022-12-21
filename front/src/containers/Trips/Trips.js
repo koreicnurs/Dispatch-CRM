@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import Typography from "@mui/material/Typography";
 import {Box, Grid, Tab, Tabs} from "@mui/material";
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
@@ -121,6 +121,42 @@ const Trips = ({history}) => {
     setViewAll(true);
   };
 
+  const [startWeek, setStartWeek] = useState();
+  const [endWeek, setEndWeek] = useState();
+
+  useEffect(() => {
+    const today = new Date();
+    const firstDay = today.getDate() - today.getDay();
+    const lastDay = firstDay + 6;
+    setStartWeek(new Date(today.setDate(firstDay)));
+    setEndWeek(new Date(today.setDate(lastDay)));
+  }, []);
+
+  const weekBack = () => {
+    const firstDay = startWeek.getDate() - 7;
+    const lastDay = endWeek.getDate() - 7;
+
+    setStartWeek(new Date(startWeek.setDate(firstDay)));
+    setEndWeek(new Date(endWeek.setDate(lastDay)));
+  };
+
+  const weekForward = () => {
+    const firstDay = startWeek.getDate() + 7;
+    const lastDay = endWeek.getDate() + 7;
+
+    setStartWeek(new Date(startWeek.setDate(firstDay)));
+    setEndWeek(new Date(endWeek.setDate(lastDay)));
+  };
+
+  const week = (start, end) => {
+    if (start && end) {
+      const textStart = `${start.toLocaleString('default', { month: 'short' })} ${start.getDate()} -`
+      const textEnd = ` ${end.getDate()}, ${end.getFullYear()}`;
+      return textStart + textEnd;
+    }
+  };
+
+  const weekRange = useMemo(() => week(startWeek, endWeek), [startWeek, endWeek]);
 
   return (
     <>
@@ -148,6 +184,9 @@ const Trips = ({history}) => {
             </Tabs>
           </Box>
           <TabPanel
+            goWeekBack={weekBack}
+            goWeekForward={weekForward}
+            week={weekRange}
             history={history.location.search}
             value={value}
             index={value}

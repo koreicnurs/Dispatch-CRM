@@ -37,7 +37,6 @@ const DescriptionSchema = new Schema({
 });
 
 const DriverSchema = new Schema({
-  telegramId: Number,
   email: {
     type: String,
     required: true,
@@ -64,16 +63,22 @@ const DriverSchema = new Schema({
     required: true,
   },
   status: {
-    default: 'off',
     type: String,
     required: true,
     enum: ['in transit', 'upcoming', 'ready', 'in tr/upc', 'off'],
+    default: 'off',
   },
   currentStatus: {
     type: String,
     required: true,
+    enum: ['driving', 'rest', 'emergency', 'n/a'],
     default: 'n/a',
-    enum: ['driving', 'rest', 'emergency', 'n/a', 'null'],
+  },
+  telegramId: {
+    type: Number,
+    required: true,
+    enum: [22],
+    default: 22
   },
   description: DescriptionSchema,
   pickUp: String,

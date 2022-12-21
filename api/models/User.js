@@ -58,7 +58,12 @@ const UserSchema = new Schema({
     required: this.role === 'carrier',
   },
   avatar:  String,
-  telegramId: Number,
+  telegramId: {
+    type: Number,
+    required: true,
+    enum: [11],
+    default: 11
+  },
   phoneNumber: {
     type: String,
     required: this.role === 'user',

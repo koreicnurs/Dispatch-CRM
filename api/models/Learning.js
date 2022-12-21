@@ -21,6 +21,26 @@ const LearningSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  text: {
+    type: String,
+    required: true,
+  },
+  learningCategory: {
+    type: Schema.Types.ObjectId,
+    ref: 'LearningCategory',
+    required: true,
+  },
+  comment: [{
+    authorId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
+    text: {
+      type: String,
+      required: true
+    }
+  }]
 });
 
 LearningSchema.plugin(idValidator, {message: 'Bad ID value for {PATH}'});

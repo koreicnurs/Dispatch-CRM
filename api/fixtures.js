@@ -7,6 +7,7 @@ const Carrier = require('./models/Carrier');
 const Driver = require("./models/Driver");
 const Load = require("./models/Load");
 const Learning = require("./models/Learning");
+const LearningCategory = require("./models/LearningCategory");
 const Broker = require("./models/Broker");
 
 const run = async () => {
@@ -410,20 +411,55 @@ const run = async () => {
     status: 'cancel',
   });
 
+  const [trucksCategory, dispatchersMistakesCategory] = await LearningCategory.create(
+    {
+    title: 'Trucks'
+    }, {
+      title: 'Dispatchers Common Mistakes'
+    },
+  );
+
   await Learning.create(
     {
       title: 'Lorem Ipsum',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non',
-      author: user._id,
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit purus non',
+      author: admin._id,
+      date: Date.now,
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non',
+      learningCategory: trucksCategory._id,
+      comment: [{
+        authorId: user._id,
+        text: 'Lorem ipsum'
+      }, {
+        authorId: user2._id,
+        text: 'consectetur!!'
+      },]
     }, {
       title: 'Convallis convallis',
       description: 'Convallis convallis tellus id interdum velit laoreet id donec ultrices.',
-      author: user2._id,
+      author: admin._id,
+      date: Date.now,
+      text: 'Lorem ipsum dolor sit amet, tellus id interdum velit laoreet id donec  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non',
+      learningCategory: dispatchersMistakesCategory._id,
+      comment: [{
+        authorId: user._id,
+        text: 'Convallis convallis'
+      }, {
+        authorId: user2._id,
+        text: 'tellus id?!'
+      },]
     }, {
       title: 'Metus',
       description: 'Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.',
-      author: user2._id,
-    }
+      author: admin._id,
+      date: Date.now,
+      text: 'Metus vulputate eu scelerisqu Lorem ipsum dolor sit amet, tellus id interdum velit laoreet id donec  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non',
+      learningCategory: dispatchersMistakesCategory._id,
+      comment: [{
+        authorId: user._id,
+        text: 'imperdiet proin'
+      }]
+    },
   );
 
   await mongoose.connection.close();

@@ -19,19 +19,21 @@ describe('Testing \'learnings\' route', () => {
   };
 
   const createLearning = () => {
-    if (user === null) getUser('user@gmail.com', 'user');
+    if (user === null) getUser('admin@gmail.com', 'admin');
 
-    it('learning should successfully create', async () => {
+    it('should successfully create learning', async () => {
       const res = await request(app)
         .post('/learnings')
         .set({Authorization: user.token})
         .send({
           title: 'Test learning title',
-          description: 'Test learning description'
+          description: 'Test learning description',
+          text: 'Test learning text'
         });
       expect(res.statusCode).toBe(200);
       expect(res.body.title).toBe('Test learning title');
       expect(res.body.description).toBe('Test learning description');
+      expect(res.body.text).toBe('Test learning text');
       learning = res.body;
     });
   };

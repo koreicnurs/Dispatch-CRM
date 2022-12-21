@@ -19,7 +19,8 @@ const LearningSchema = new Schema({
   },
   date: {
     type: Date,
-    default: Date.now,
+    default: new Date().toISOString(),
+    required: true
   },
   text: {
     type: String,

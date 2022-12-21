@@ -18,7 +18,7 @@ router.get('/', auth, async (req, res) => {
 
 router.post('/', auth, permit('admin'), async (req, res) => {
   try {
-    const learningCategoryData = {title: req.body};
+    const learningCategoryData = {title: req.body.title};
 
     const learningCategory = new LearningCategory(learningCategoryData);
     await learningCategory.save();
@@ -28,3 +28,5 @@ router.post('/', auth, permit('admin'), async (req, res) => {
     res.status(400).send(e);
   }
 });
+
+module.exports = router;

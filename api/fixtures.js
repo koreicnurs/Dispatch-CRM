@@ -424,7 +424,6 @@ const run = async () => {
       title: 'Lorem Ipsum',
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit purus non',
       author: admin._id,
-      date: Date.now,
       text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non',
       learningCategory: trucksCategory._id,
       comment: [{
@@ -438,7 +437,6 @@ const run = async () => {
       title: 'Convallis convallis',
       description: 'Convallis convallis tellus id interdum velit laoreet id donec ultrices.',
       author: admin._id,
-      date: Date.now,
       text: 'Lorem ipsum dolor sit amet, tellus id interdum velit laoreet id donec  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non',
       learningCategory: dispatchersMistakesCategory._id,
       comment: [{
@@ -452,7 +450,6 @@ const run = async () => {
       title: 'Metus',
       description: 'Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.',
       author: admin._id,
-      date: Date.now,
       text: 'Metus vulputate eu scelerisqu Lorem ipsum dolor sit amet, tellus id interdum velit laoreet id donec  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non',
       learningCategory: dispatchersMistakesCategory._id,
       comment: [{

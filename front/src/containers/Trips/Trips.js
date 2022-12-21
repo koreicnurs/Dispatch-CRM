@@ -148,6 +148,7 @@ const Trips = ({history}) => {
             </Tabs>
           </Box>
           <TabPanel
+            history={history.location.search}
             value={value}
             index={value}
             header={<TableHeaderRow headerCells={headerTitles}/>}

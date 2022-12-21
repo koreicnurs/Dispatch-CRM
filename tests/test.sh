@@ -21,12 +21,12 @@ echo '# Running fixtures'
 NODE_ENV=test-front npm run seed
 
 echo '# Running API server in test mode'
-pm2 start "NODE_ENV=test-front npm run dev" --name="api-test"
+pm2 start "NODE_ENV=test-front npm run dev" --name="test-api"
 
 echo '# Running frontend in test mode'
 
 cd ../front
-pm2 start "npm run start-test" --name="frontend-test"
+pm2 start "npm run start-test" --name="test-front"
 
 while ! nc -z localhost 3010; do
     sleep 0.1

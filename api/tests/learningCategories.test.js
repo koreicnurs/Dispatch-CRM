@@ -34,7 +34,7 @@ describe('Testing \'learningCategories\' route', () => {
   describe('receiving all learning categories', () => {
     getUser('admin@gmail.com', 'admin');
 
-    it('should get array of all learning categories', async () => {
+    it('should return an array of all learning categories', async () => {
       const res = await request(app)
         .get('/learningCategories')
         .set({Authorization: user.token});

@@ -74,12 +74,7 @@ const DriverSchema = new Schema({
     enum: ['driving', 'rest', 'emergency', 'n/a'],
     default: 'n/a',
   },
-  telegramId: {
-    type: Number,
-    required: true,
-    enum: [22],
-    default: 22
-  },
+  telegramId: Number,
   description: DescriptionSchema,
   pickUp: String,
   delivery: String,

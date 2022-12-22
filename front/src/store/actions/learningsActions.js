@@ -3,5 +3,9 @@ import learningsSlice from "../slices/learningsSlice";
 export const {
   fetchLearningCategoriesRequest,
   fetchLearningCategoriesSuccess,
-  fetchLearningCategoriesFailure
+  fetchLearningCategoriesFailure,
+  addLearningCategoryRequest,
+  addLearningCategorySuccess,
+  addLearningCategoryFailure,
+  clearLearningCategoryErrors
 } = learningsSlice.actions;

@@ -24,6 +24,23 @@ const learningsSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+
+    addLearningCategoryRequest(state) {
+      state.addCategoryLoading = true;
+      state.addCategoryError = null;
+    },
+    addLearningCategorySuccess(state) {
+      state.addCategoryLoading = false;
+    },
+    addLearningCategoryFailure(state, action) {
+      state.addCategoryLoading = false;
+      state.addCategoryError = action.payload;
+    },
+
+    clearLearningCategoryErrors(state) {
+      state.addCategoryError = null;
+      state.error = null;
+    },
   }
 });
 

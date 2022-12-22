@@ -5,8 +5,8 @@ import Typography from "@mui/material/Typography";
 import SearchIcon from '@mui/icons-material/Search';
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
 import useTableSearch from '../../components/UI/Filter/useTableSearch/useTableSearch';
-import AddLearning from "../../components/Modals/AddLearning";
 import {fetchLearningCategoriesRequest} from "../../store/actions/learningsActions";
+import AddLearningCategory from "../../components/Modals/AddLearningCategory";
 
 const SearchStyle = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -52,11 +52,11 @@ const CategoryStyle = styled('div')(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
   backgroundColor: '#fff',
   '&:hover': {
-    boxShadow: '2px 4px 4px -2px rgba(160, 174, 255, 0.5)',
+    boxShadow: '4px 6px 8px -2px rgba(160, 174, 255, 0.5)',
     cursor: 'pointer',
   },
-  margin: '10px 0',
-  maxWidth: '500px',
+  margin: '7px 0',
+  maxWidth: '550px',
   padding: theme.spacing(2),
 }));
 
@@ -89,12 +89,14 @@ const Learnings = () => {
           item
           container
           spacing={2}
-          justifyContent="space-between">
-          {user?.role === 'admin' &&
-            <Grid padding="15px">
-              <AddLearning/>
-            </Grid>
-          }
+          justifyContent="space-between"
+        >
+
+          <Grid padding="15px">
+            {user?.role === 'admin' &&
+            <AddLearningCategory/>
+            }
+          </Grid>
 
           <Grid>
             <SearchStyle>
@@ -110,15 +112,18 @@ const Learnings = () => {
           </Grid>
         </Grid>
 
-        <Box padding='45px 30px'>
-          <Typography variant="h6" fontWeight="bold" textTransform="uppercase" marginBottom="35px">
-            Learning Categories
+        <Box padding='0 30px'>
+          <Typography variant="h6" fontWeight="bold" textTransform="uppercase" marginBottom={'10px'}>
+            Categories
           </Typography>
-          {filteredData.map(cat => (
-            <CategoryStyle>
-              <Typography>{cat.title}</Typography>
-            </CategoryStyle>
-          ))}
+          <Box height='65vh' sx={{overflowY: 'scroll'}}>
+            {filteredData.map(cat => (
+              <CategoryStyle key={cat._id}>
+                <Typography>{cat.title}</Typography>
+              </CategoryStyle>
+            ))}
+          </Box>
+
         </Box>
 
       </InnerContainer>

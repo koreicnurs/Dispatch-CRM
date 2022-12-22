@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {Grid, InputBase, styled} from "@mui/material";
+import {Box, Grid, InputBase, styled} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import SearchIcon from '@mui/icons-material/Search';
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
@@ -48,15 +48,17 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-// const columns = [
-//   {key: 'title', label: 'Company'},
-//   {key: 'phoneNumber', label: 'Phone Number'},
-//   {key: 'mc', label: 'MC'},
-//   {key: 'dot', label: 'DOT'},
-//   {key: 'fedid', label: 'FED-ID'},
-//   {key: 'document', label: 'Document'},
-//   {key: 'description', label: 'Description'}
-// ];
+const CategoryStyle = styled('div')(({ theme }) => ({
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: '#fff',
+  '&:hover': {
+    boxShadow: '2px 4px 4px -2px rgba(160, 174, 255, 0.5)',
+    cursor: 'pointer',
+  },
+  margin: '10px 0',
+  maxWidth: '500px',
+  padding: theme.spacing(2),
+}));
 
 const Learnings = () => {
   const [searchVal, setSearchVal] = useState(null);
@@ -71,7 +73,7 @@ const Learnings = () => {
 
   const { filteredData} = useTableSearch({
     searchVal,
-    data: carriers
+    data: categories
   });
 
   return (
@@ -88,9 +90,11 @@ const Learnings = () => {
           container
           spacing={2}
           justifyContent="space-between">
-          <Grid padding="15px">
-            <AddLearning/>
-          </Grid>
+          {user?.role === 'admin' &&
+            <Grid padding="15px">
+              <AddLearning/>
+            </Grid>
+          }
 
           <Grid>
             <SearchStyle>
@@ -106,15 +110,16 @@ const Learnings = () => {
           </Grid>
         </Grid>
 
-        {/*<InnerTable*/}
-        {/*  header={<TableHeaderRow headerCells={columns} data={true} sx={{fontSize: "12px", fontWeight: "bold"}}/>}*/}
-        {/*  body={*/}
-        {/*    <CarrierTableBody*/}
-        {/*      columns={columns}*/}
-        {/*      carriers={filteredData}*/}
-        {/*    />*/}
-        {/*  }*/}
-        {/*/>*/}
+        <Box padding='45px 30px'>
+          <Typography variant="h6" fontWeight="bold" textTransform="uppercase" marginBottom="35px">
+            Learning Categories
+          </Typography>
+          {filteredData.map(cat => (
+            <CategoryStyle>
+              <Typography>{cat.title}</Typography>
+            </CategoryStyle>
+          ))}
+        </Box>
 
       </InnerContainer>
 

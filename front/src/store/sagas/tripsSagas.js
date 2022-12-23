@@ -28,7 +28,7 @@ import {
   fetchTripsFailure,
   fetchTripsRequest,
   fetchTripsSuccess,
-  fetchTripSuccess
+  fetchTripSuccess, fetchWeekTripsFailure, fetchWeekTripsRequest, fetchWeekTripsSuccess
 } from "../actions/tripsActions";
 import {addNotification} from "../actions/notifierActions";
 import axiosApi from "../../axiosApi";
@@ -147,6 +147,16 @@ export function* confirmTrip({payload: id}) {
   }
 }
 
+export function* fetchWeekTrips({payload}) {
+  try {
+    const response = yield axiosApi('/loads/' + payload.value, {params: {...payload.week}});
+    yield put(fetchWeekTripsSuccess(response.data));
+  } catch (e) {
+    yield put(fetchWeekTripsFailure(e.response.error))
+    yield put(addNotification({message: 'Trips fetch failed!', variant: 'error'}));
+  }
+}
+
 const tripsSagas = [
   takeEvery(fetchTripsRequest, fetchTrips),
   takeEvery(fetchTripsByCarrierRequest, fetchTripsByCarrier),
@@ -158,6 +168,7 @@ const tripsSagas = [
   takeEvery(addCommentRequest, addComment),
   takeEvery(addAttachmentRequest, addAttachment),
   takeEvery(confirmTripsRequest, confirmTrip),
+  takeEvery(fetchWeekTripsRequest, fetchWeekTrips)
 ];
 
 export default tripsSagas;

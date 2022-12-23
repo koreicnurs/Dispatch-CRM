@@ -199,7 +199,7 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
     });
 
     if (isAdd) {
-      dispatch(addDriverRequest(formData));
+      dispatch(addDriverRequest({data: formData, user}));
     } else {
       dispatch(updateDriverRequest({id: driverId, data: formData, user}));
     }

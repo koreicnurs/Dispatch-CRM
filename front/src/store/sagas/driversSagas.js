@@ -48,12 +48,15 @@ export function* fetchDriver({payload: id}) {
   }
 }
 
-export function* addDriver(action) {
+export function* addDriver({payload}) {
   try {
-    yield axiosApi.post('/drivers', action.payload);
+    yield axiosApi.post('/drivers', payload.data);
     yield put(addDriverSuccess());
-    yield put(fetchDriversRequest());
-    yield put(fetchDriversByCarrierRequest());
+    if(payload.user.role === 'carrier') {
+      yield put(fetchDriversByCarrierRequest());
+    } else {
+      yield put(fetchDriversRequest());
+    }
     yield put(addNotification({message: 'You have successfully added a driver!', variant: 'success'}));
   } catch (e) {
     yield put(addDriverFailure(e.response && e.response.data));

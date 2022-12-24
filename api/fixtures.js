@@ -118,7 +118,12 @@ const run = async () => {
       DOB: '15.12.1980',
       info: 'Lorem ipsum dolor sit amet',
       reference: 'Punctual, decent'
-    }
+    },
+    pickUp: 'Shepherd, KY',
+    delivery: 'Pittsburg, PA',
+    ETA: '10:00',
+    readyTime: '11/09/2022',
+    notes: 'bla bla',
   }, {
     email: 'kuba@gmail.com',
     name: 'Kuba',
@@ -176,7 +181,12 @@ const run = async () => {
       DOB: '25.07.1993',
       info: 'lorem',
       reference: 'Professional with all required skills'
-    }
+    },
+    pickUp: 'New-York, NY',
+    delivery: 'Chicago, IL',
+    ETA: '10:00',
+    readyTime: '11/09/2022',
+    notes: 'bla bla',
   }, {
     email: 'askhat@gmail.com',
     name: 'Askhat',
@@ -192,11 +202,6 @@ const run = async () => {
       info: 'Lorem ipsum dolor sit amet',
       reference: 'Needs to gain more experience'
     },
-    pickUp: 'Ohio',
-    delivery: 'Pennsylvania',
-    ETA: '04:00',
-    readyTime: '15.11.2022',
-    notes: 'bla bla',
   }, {
     email: 'mirbek@gmail.com',
     name: 'Mirbek',
@@ -210,7 +215,12 @@ const run = async () => {
       DOB: '3.01.1996',
       info: 'lorem',
       reference: 'Positive guy'
-    }
+    },
+    pickUp: 'Tulsa, OK',
+    delivery: 'Chicago, IL',
+    ETA: '10:00',
+    readyTime: '11/09/2022',
+    notes: 'bla bla',
   }, {
     email: 'bekmurat@gmail.com',
     name: 'Bekmurat',
@@ -239,7 +249,12 @@ const run = async () => {
       DOB: '5.05.1995',
       info: 'lorem',
       reference: 'Responsible guy'
-    }
+    },
+    pickUp: 'Houston, TX',
+    delivery: 'New Orleans, LA',
+    ETA: '10:00',
+    readyTime: '11/10/2022',
+    notes: 'bla bla',
   });
   
   const [azamatBroker, aibekBroker, nurbekBroker, adiletBroker] = await Broker.create(
@@ -303,7 +318,7 @@ const run = async () => {
     timeToDel: '15:16',
     pu: 'Pittsburg, PA',
     del: 'Boston, MA',
-    status: 'cancel',
+    status: 'upcoming',
     brokerId: aibekBroker._id,
     comment: [{
       authorId: user._id,
@@ -339,6 +354,90 @@ const run = async () => {
       authorId: user._id,
       text: 'Labore et dolore magna aliqua. Rhoncus dolor purus non'
     }]
+  }, {
+    loadCode: 'T-1285KK458',
+    driverId: bakdoolotDriver._id,
+    dispatchId: user._id,
+    price: 1750,
+    miles: 700,
+    rpm: 2.5,
+    datePU: '11/5/2022',
+    dateDEL: '11/8/2022',
+    timeToPU: '3:16',
+    timeToDel: '19:16',
+    pu: 'New-York, NY',
+    del: 'Chicago, IL',
+    status: 'transit',
+    BOL: 'fixtures/BOL2.pdf',
+    RC: 'fixtures/RC2.pdf',
+    brokerId: nurbekBroker._id,
+    comment: [{
+      authorId: user._id,
+      text: 'Dolor sit amet, consectetur adipiscing elit'
+    }, {
+      authorId: user2._id,
+      text: 'Ipsum'
+    }, {
+      authorId: user._id,
+      text: 'Labore et dolore magna aliqua. Rhoncus dolor purus non'
+    }]
+  }, {
+    loadCode: 'T-128HSTB88',
+    driverId: bakdoolotDriver._id,
+    dispatchId: user._id,
+    price: 1750,
+    miles: 700,
+    rpm: 2.5,
+    datePU: '11/9/2022',
+    dateDEL: '11/11/2022',
+    timeToPU: '3:16',
+    timeToDel: '19:16',
+    pu: 'Chicago, IL',
+    del: 'Boston, MS',
+    status: 'upcoming',
+    brokerId: nurbekBroker._id,
+  },{
+    loadCode: 'T-1285781258',
+    driverId: mirbekDriver._id,
+    dispatchId: user._id,
+    price: 1750,
+    miles: 700,
+    rpm: 2.5,
+    datePU: '11/8/2022',
+    dateDEL: '11/9/2022',
+    timeToPU: '3:16',
+    timeToDel: '19:16',
+    pu: 'Tulsa, OK',
+    del: 'Chicago, IL',
+    status: 'transit',
+    BOL: 'fixtures/BOL2.pdf',
+    RC: 'fixtures/RC2.pdf',
+    brokerId: nurbekBroker._id,
+    comment: [{
+      authorId: user._id,
+      text: 'Dolor sit amet, consectetur adipiscing elit'
+    }, {
+      authorId: user2._id,
+      text: 'Ipsum'
+    }, {
+      authorId: user._id,
+      text: 'Labore et dolore magna aliqua. Rhoncus dolor purus non'
+    }]
+  }, {
+    loadCode: 'T-128HSCB84',
+    driverId: mirbekDriver._id,
+    dispatchId: user._id,
+    price: 1750,
+    miles: 700,
+    rpm: 2.5,
+    datePU: '11/9/2022',
+    dateDEL: '11/11/2022',
+    timeToPU: '3:16',
+    timeToDel: '19:16',
+    pu: 'Chicago, IL',
+    del: 'Boston, MS',
+    status: 'upcoming',
+    brokerId: nurbekBroker._id,
   }, {
     loadCode: 'T-12FEF4E5F',
     dispatchId: user2._id,

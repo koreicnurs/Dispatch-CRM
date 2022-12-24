@@ -208,6 +208,7 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
             return res.status(401).send('The status of the load without driver cannot be changed!');
         }
 
+
         let loadComment = [...load.comment];
         loadComment.push({
             authorId: req.user._id,
@@ -252,6 +253,14 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
             const driver = await Driver.findById({_id: driverId});
             if (driver.telegramId) {
                 return await bot.sendMessage(driver.telegramId, `У вас есть новый груз ${loadCode}\nНапишите команду /load чтобы получить полную информацию по грузу`);
+            }
+            if (driverId !== load.driverId) {
+                const prevDriver = await Driver.findById({_id: load.driverId});
+                if (prevDriver.status === 'in tr/upc') {
+                    await Driver.findByIdAndUpdate(load.driverId, {status: 'in transit'});
+                } else if (prevDriver.status === 'upcoming') {
+                    await Driver.findByIdAndUpdate(load.driverId, {status: 'ready'});
+                }
             }
             if (driver.status === 'off') {
                 return res.status(403).send({message: 'The driver is not ready!'});

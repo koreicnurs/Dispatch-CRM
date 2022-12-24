@@ -39,14 +39,6 @@ const Trips = ({history}) => {
   const [startWeek, setStartWeek] = useState();
   const [endWeek, setEndWeek] = useState();
 
-  // useEffect(() => {
-  //   const today = new Date();
-  //   const firstDay = today.getDate() - today.getDay();
-  //   const lastDay = firstDay + 6;
-  //   setStartWeek(new Date(today.setDate(firstDay)));
-  //   setEndWeek(new Date(today.setDate(lastDay)));
-  // }, []);
-
   useEffect(() => {
     const today = new Date();
     const firstDay = today.getDate() - today.getDay() + 1;

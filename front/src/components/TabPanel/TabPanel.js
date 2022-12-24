@@ -23,7 +23,7 @@ const TabPanel = (props) => {
           {history === "?status=finished" &&
             <Grid container spacing={2} alignItems="center" justifyContent="center">
               <Grid item>
-                <IconButton onClick={goWeekForward}>
+                <IconButton onClick={goWeekBack}>
                   <ChevronLeft fontSize="large"/>
                 </IconButton>
               </Grid>
@@ -31,7 +31,7 @@ const TabPanel = (props) => {
                 <Typography>{week}</Typography>
               </Grid>
               <Grid item>
-                <IconButton onClick={goWeekBack}>
+                <IconButton onClick={goWeekForward}>
                   <ChevronRight fontSize="large"/>
                 </IconButton>
               </Grid>

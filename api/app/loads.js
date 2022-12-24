@@ -8,6 +8,8 @@ const permit = require("../middleware/permit");
 const config = require('../config');
 const Load = require("../models/Load");
 const Driver = require("../models/Driver");
+const User = require("../models/User");
+const Broker = require("../models/Broker");
 
 const TelegramApi = require('node-telegram-bot-api');
 const token = "936426396:AAEwbo64h7Nf3lEJ56bW1ZoA3plMlyPl9VQ";
@@ -38,18 +40,129 @@ const cpUpload = upload.fields([{name: 'BOL', maxCount: 1}, {name: 'RC', maxCoun
 
 router.get('/', auth, async (req, res) => {
     try {
+        const start = req.query.start;
+        const end = req.query.end;
         if (req.query.status === 'finished' || req.query.status === 'cancel') {
-            const loads = await Load.find({status: {$in: ['finished', 'cancel']}})
-                .populate('driverId', ['name', 'status'])
-                .populate('dispatchId', 'displayName')
-                .populate('brokerId', 'name')
-                .populate({
-                    path: 'comment',
-                    populate: {
-                        path: 'authorId',
-                        select: 'displayName'
+            let loads;
+            if (!start && !end) {
+                loads = await Load.find({status: {$in: ['finished', 'cancel']}})
+                  .populate('driverId', ['name', 'status'])
+                  .populate('dispatchId', 'displayName')
+                  .populate('brokerId', 'name')
+                  .populate({
+                      path: 'comment',
+                      populate: {
+                          path: 'authorId',
+                          select: 'displayName'
+                      }
+                  });
+            } else {
+                const startDay = new Date(start);
+                const endDay = new Date(end);
+
+
+                loads = await Load
+                  .aggregate([
+                      {
+                          $project : {
+                              loadCode: 1,
+                              driverId: 1,
+                              dispatchId: 1,
+                              price: 1,
+                              miles: 1,
+                              rpm: 1,
+                              datePU: 1,
+                              dateDEL: 1,
+                              timeToPU: 1,
+                              timeToDel: 1,
+                              pu: 1,
+                              del: 1,
+                              status: 1,
+                              finishConfirmed: 1,
+                              BOL: 1,
+                              RC: 1,
+                              brokerId: 1,
+                              comment: 1,
+                              date: {
+                                  $dateFromString: {
+                                      dateString: '$dateDEL',
+                                      onError: null
+                                  }
+                              }
+                          }
+                      },
+                      {
+                          $match: {
+                              status: {$in: ['finished', 'cancel']},
+                              date: {
+                                  $gte: startDay,
+                                  $lte: endDay
+                              }
+                          }
+                      },
+                      {
+                          $project : {
+                              loadCode: 1,
+                              driverId: 1,
+                              dispatchId: 1,
+                              price: 1,
+                              miles: 1,
+                              rpm: 1,
+                              datePU: 1,
+                              dateDEL: 1,
+                              timeToPU: 1,
+                              timeToDel: 1,
+                              pu: 1,
+                              del: 1,
+                              status: 1,
+                              finishConfirmed: 1,
+                              BOL: 1,
+                              RC: 1,
+                              brokerId: 1,
+                              comment: 1,
+                          }
+                      },
+                  ]);
+
+                await Driver.populate(loads, {
+                    path: "driverId",
+                    select: {
+                        _id: 1,
+                        name: 1,
+                        status: 1
                     }
                 });
+
+                await User.populate(loads, {
+                    path: "dispatcherId",
+                    select: {
+                        _id: 1,
+                        displayName: 1
+                    }
+                });
+
+                await Broker.populate(loads, {
+                    path: "brokerId",
+                    select: {
+                        _id: 1,
+                        name: 1
+                    }
+                });
+
+                await User.populate(loads, {
+                    path: "comments",
+                    populate: {
+                        path: "authorId",
+                        select: {
+                            _id: 1,
+                            displayName: 1
+                        }
+                    }
+                });
+            }
+
+
+
             res.send(loads);
         } else {
             const loads = await Load.find(req.query)

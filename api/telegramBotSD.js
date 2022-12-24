@@ -143,6 +143,8 @@ module.exports = driversBot = () => {
                     });
 
                     await bot.sendMessage(driver.telegramId, `Вы можете отклонить или принять заказ по грузу ${upcomingLoad.loadCode}\nЧтобы принять нажмите кнопку "Accept"\nЧтобы отклонить нажмите кнопку "Cancel"`, keyboardTripAccept);
+                } else {
+                    await bot.sendMessage(driver.telegramId, 'У вас нету новых грузов');
                 }
             } catch (e) {
                 console.log(e);
@@ -215,11 +217,9 @@ module.exports = driversBot = () => {
 
             if (msg.data === driversStatus.driving) {
                 try {
-                    if (dispatcherId && dispatcherId.telegramId) {
-                        await Driver.findByIdAndUpdate({_id: driver.id}, {currentStatus: driversStatus.driving});
-                        await bot.sendMessage(driver.telegramId, `Ваш статус в дороге "Driving"`);
-                        await bot.sendMessage(dispatcherId.telegramId, `Водитель - ${driver.name} поменял статус на ${driversStatus.driving}\nВ пути с грузом - ${load.loadCode}`);
-                    }
+                    await Driver.findByIdAndUpdate({_id: driver.id}, {currentStatus: driversStatus.driving});
+                    await bot.sendMessage(driver.telegramId, `Ваш статус в дороге "Driving"`);
+                    await bot.sendMessage(dispatcherId.telegramId, `Водитель - ${driver.name} поменял статус на ${driversStatus.driving}\nВ пути с грузом - ${load.loadCode}`);
                 } catch (e) {
                     console.log(e);
                 }
@@ -227,11 +227,9 @@ module.exports = driversBot = () => {
 
             if (msg.data === driversStatus.rest) {
                 try {
-                    if (dispatcherId && dispatcherId.telegramId) {
-                        await Driver.findByIdAndUpdate({_id: driver.id}, {currentStatus: driversStatus.rest});
-                        await bot.sendMessage(driver.telegramId, `Ваш статус в дороге "Rest"`);
-                        await bot.sendMessage(dispatcherId.telegramId, `Водитель - ${driver.name} поменял статус на ${driversStatus.rest}`);
-                    }
+                    await Driver.findByIdAndUpdate({_id: driver.id}, {currentStatus: driversStatus.rest});
+                    await bot.sendMessage(driver.telegramId, `Ваш статус в дороге "Rest"`);
+                    await bot.sendMessage(dispatcherId.telegramId, `Водитель - ${driver.name} поменял статус на ${driversStatus.rest}`);
                 } catch (e) {
                     console.log(e);
                 }
@@ -239,11 +237,9 @@ module.exports = driversBot = () => {
 
             if (msg.data === driversStatus.emergency) {
                 try {
-                    if (dispatcherId && dispatcherId.telegramId) {
-                        await Driver.findByIdAndUpdate({_id: driver.id}, {currentStatus: driversStatus.emergency});
-                        await bot.sendMessage(driver.telegramId, `Ваш статус в дороге "Emergency"`);
-                        await bot.sendMessage(dispatcherId.telegramId, `Водитель - ${driver.name} поменял статус на ${driversStatus.emergency}`);
-                    }
+                    await Driver.findByIdAndUpdate({_id: driver.id}, {currentStatus: driversStatus.emergency});
+                    await bot.sendMessage(driver.telegramId, `Ваш статус в дороге "Emergency"`);
+                    await bot.sendMessage(dispatcherId.telegramId, `Водитель - ${driver.name} поменял статус на ${driversStatus.emergency}`);
                 } catch (e) {
                     console.log(e);
                 }

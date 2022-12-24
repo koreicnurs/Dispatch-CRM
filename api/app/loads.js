@@ -26,6 +26,14 @@ const storage = multer.diskStorage({
     },
 });
 
+const statusDriver = {
+    ready: 'ready',
+    transit: 'in transit',
+    upcoming: 'upcoming',
+    trUpc: 'in tr/upc',
+    off: 'off',
+};
+
 const upload = multer({storage});
 
 const cpUpload = upload.fields([{name: 'BOL', maxCount: 1}, {name: 'RC', maxCount: 1}])
@@ -261,8 +269,12 @@ router.post('/', auth, cpUpload, async (req, res) => {
         }
         if (driverId) {
             const driver = await Driver.findById({_id: driverId})
+
+            if(driver.status !== 'ready') {
+
+            }
             if (driver.telegramId) {
-                return await bot.sendMessage(driver.telegramId, `У вас есть новый груз ${loadCode}У вас есть новый груз ${loadCode}\nНапишите команду /load чтобы получить полную информацию по грузу`);
+                await bot.sendMessage(driver.telegramId, `У вас есть новый груз ${loadCode}У вас есть новый груз ${loadCode}\nНапишите команду /load чтобы получить полную информацию по грузу`);
             }
         }
 
@@ -354,8 +366,12 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
         }
         if (driverId) {
             const driver = await Driver.findById({_id: driverId});
-            if (driver.telegramId) {
-                return await bot.sendMessage(driver.telegramId, `У вас есть новый груз ${loadCode}\nНапишите команду /load чтобы получить полную информацию по грузу`);
+            if(driver.status === statusDriver.ready) {
+                if (driver.telegramId) {
+                    await bot.sendMessage(driver.telegramId, `У вас есть новый груз ${loadCode}\nНапишите команду /load чтобы получить полную информацию по грузу`);
+                }
+            } else {
+                return res.status(400).send({message: 'Driver already have load!'});
             }
         }
 
@@ -412,7 +428,7 @@ router.put('/cancel/:id', auth, async (req, res) => {
         if (load.driverId) {
             const driver = await Driver.findById({_id: driverId})
             if (driver.telegramId) {
-                return await bot.sendMessage(driver.telegramId, `Ваш груз был отменен ${load.loadCode}`);
+                await bot.sendMessage(driver.telegramId, `Ваш груз был отменен ${load.loadCode}`);
             }
         }
 

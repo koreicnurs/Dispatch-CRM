@@ -152,6 +152,7 @@ describe('Testing \'drivers\' route', () => {
           companyId: carrier._id.toString(),
           currentStatus: 'n/a',
           status: 'upcoming',
+          telegramId: 122,
           description: JSON.stringify({
             address: 'US, NY, Manhattan c., str. 1, h. 34',
             DOB: '15.12.1988',
@@ -187,6 +188,7 @@ describe('Testing \'drivers\' route', () => {
           companyId: carrier.companyId,
           status: 'upcoming',
           currentStatus: 'n/a',
+          telegramId: 12421,
           description: JSON.stringify({
             address: 'US, NY, Manhattan c., str. 1, h. 34',
             DOB: '15.12.1988',

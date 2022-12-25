@@ -276,6 +276,15 @@ router.post('/', auth, cpUpload, async (req, res) => {
             if (driver.telegramId) {
                 await bot.sendMessage(driver.telegramId, `У вас есть новый груз ${loadCode}У вас есть новый груз ${loadCode}\nНапишите команду /load чтобы получить полную информацию по грузу`);
             }
+            if (driver.status === 'off') {
+                return res.status(403).send({message: 'The driver is not ready!'});
+            } else if (driver.status === 'in tr/upc') {
+                return res.status(403).send({message: 'The driver is in transit and has upcoming trip!'});
+            } else if (driver.status === 'in transit') {
+                await Driver.findByIdAndUpdate(driverId, {status: 'in tr/upc'});
+            } else {
+                await Driver.findByIdAndUpdate(driverId, {status: 'upcoming'});
+            }
         }
 
         const load = new Load(loadData);
@@ -323,6 +332,7 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
         if (!driverId && (status === 'transit' || status === 'finished')) {
             return res.status(401).send('The status of the load without driver cannot be changed!');
         }
+
 
         let loadComment = [...load.comment];
         loadComment.push({
@@ -373,6 +383,23 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
             } else {
                 return res.status(400).send({message: 'Driver already have load!'});
             }
+            if (driverId !== load.driverId) {
+                const prevDriver = await Driver.findById({_id: load.driverId});
+                if (prevDriver.status === 'in tr/upc') {
+                    await Driver.findByIdAndUpdate(load.driverId, {status: 'in transit'});
+                } else if (prevDriver.status === 'upcoming') {
+                    await Driver.findByIdAndUpdate(load.driverId, {status: 'ready'});
+                }
+            }
+            if (driver.status === 'off') {
+                return res.status(403).send({message: 'The driver is not ready!'});
+            } else if (driver.status === 'in tr/upc') {
+                return res.status(403).send({message: 'The driver is in transit and has upcoming trip!'});
+            } else if (driver.status === 'in transit') {
+                await Driver.findByIdAndUpdate(driverId, {status: 'in tr/upc'});
+            } else {
+                await Driver.findByIdAndUpdate(driverId, {status: 'upcoming'});
+            }
         }
 
         const updateLoad = await Load.findByIdAndUpdate(req.params.id, loadData, {new: true, runValidators: true});
@@ -396,14 +423,27 @@ router.put('/status/:id', auth, async (req, res) => {
             return res.status(403).send({message: 'The status of the load without driver cannot be changed!'});
         }
 
+        let driver = await Driver.findById({_id: load.driverId});
+
+        if (load.status === 'upcoming' && driver.status === 'in tr/upc') {
+            return res.status(403).send({message: 'The driver has not finished previous load yet!'});
+        }
+
         if (load.status === 'upcoming') {
             await Load.findByIdAndUpdate(req.params.id, {status: 'transit'});
             const loads = await Load.find({status: 'upcoming'}).populate('driverId', 'name').populate('dispatchId', 'displayName').populate('brokerId', 'name');
-
+            if (driver.status === 'upcoming') {
+                await Driver.findByIdAndUpdate(load.driverId, {status: 'in transit', pickUp: load.pu, delivery: load.del, currentStatus: 'driving'});
+            }
             res.send(loads);
         }
 
         if (load.status === 'transit') {
+            if (driver.status === 'in tr/upc') {
+                await Driver.findByIdAndUpdate(load.driverId, {status: 'upcoming', pickUp: '', delivery: '', currentStatus: 'n/a', ETA: ''});
+            } else if (driver.status === 'in transit') {
+                await Driver.findByIdAndUpdate(load.driverId, {status: 'ready', pickUp: '', delivery: '', currentStatus: 'n/a'});
+            }
             await Load.findByIdAndUpdate(req.params.id, {status: 'finished'});
             const loads = await Load.find({status: 'transit'}).populate('driverId', 'name').populate('dispatchId', 'displayName').populate('brokerId', 'name');
 
@@ -426,9 +466,18 @@ router.put('/cancel/:id', auth, async (req, res) => {
         const canceledLoad = await Load.findByIdAndUpdate(req.params.id, {status: 'cancel'});
 
         if (load.driverId) {
-            const driver = await Driver.findById({_id: driverId})
+            const driver = await Driver.findById({_id: load.driverId})
             if (driver.telegramId) {
                 await bot.sendMessage(driver.telegramId, `Ваш груз был отменен ${load.loadCode}`);
+            }
+            if (driver.status === 'in tr/upc' && load.status === 'upcoming') {
+                await Driver.findByIdAndUpdate(load.driverId, {status: 'in transit'});
+            } else if (driver.status === 'in tr/upc' && load.status === 'transit') {
+                await Driver.findByIdAndUpdate(load.driverId, {status: 'upcoming', pickUp: '', delivery: '', currentStatus: 'n/a'});
+            } else if (driver.status === 'in transit' && load.status === 'transit') {
+                await Driver.findByIdAndUpdate(load.driverId, {status: 'ready', pickUp: '', delivery: '', currentStatus: 'n/a', ETA: ''});
+            } else if (driver.status === 'upcoming' && load.status === 'upcoming') {
+                await Driver.findByIdAndUpdate(load.driverId, {status: 'ready', ETA: ''});
             }
         }
 

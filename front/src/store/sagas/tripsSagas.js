@@ -118,7 +118,7 @@ export function* changeTripStatus({payload}) {
     yield put(fetchTripsSuccess(response.data));
   } catch (e) {
     yield put(changeTripStatusFailure(e));
-    yield put(addNotification({message: 'Failed to change status', variant: 'error'}));
+    yield put(addNotification({message: e.response.data.message, variant: 'error'}));
   }
 }
 

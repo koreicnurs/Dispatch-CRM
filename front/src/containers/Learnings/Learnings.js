@@ -1,15 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {Grid, InputBase, styled} from "@mui/material";
+import {Box, Grid, InputBase, styled} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import {fetchCarriersRequest} from "../../store/actions/carriersActions";
-import AddCarrier from "../../components/Modals/AddCarrier";
-import InnerContainer from "../../components/InnerContainer/InnerContainer";
-import InnerTable from "../../components/Table/InnerTable";
-import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
-import CarrierTableBody from "../../components/Table/TableBody/CarrierTableBody";
 import SearchIcon from '@mui/icons-material/Search';
+import InnerContainer from "../../components/InnerContainer/InnerContainer";
 import useTableSearch from '../../components/UI/Filter/useTableSearch/useTableSearch';
+import {fetchLearningCategoriesRequest} from "../../store/actions/learningsActions";
+import AddLearningCategory from "../../components/Modals/AddLearningCategory";
 
 const SearchStyle = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -51,31 +48,32 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const columns = [
-  {key: 'title', label: 'Company'},
-  {key: 'phoneNumber', label: 'Phone Number'},
-  {key: 'mc', label: 'MC'},
-  {key: 'dot', label: 'DOT'},
-  {key: 'fedid', label: 'FED-ID'},
-  {key: 'document', label: 'Document'},
-  {key: 'description', label: 'Description'}
-];
+const CategoryStyle = styled('div')(({ theme }) => ({
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: '#fff',
+  '&:hover': {
+    boxShadow: '4px 6px 8px -2px rgba(160, 174, 255, 0.5)',
+    cursor: 'pointer',
+  },
+  margin: '7px 0',
+  maxWidth: '550px',
+  padding: theme.spacing(2),
+}));
 
-
-const Carriers = () => {
+const Learnings = () => {
   const [searchVal, setSearchVal] = useState(null);
 
-  
   const dispatch = useDispatch();
-  const carriers = useSelector(state => state.carriers.carriers);
+  const user = useSelector(state => state.users.user);
+  const categories = useSelector(state => state.learnings.categories);
 
   useEffect(() => {
-    dispatch(fetchCarriersRequest());
+    dispatch(fetchLearningCategoriesRequest());
   }, [dispatch]);
-  
+
   const { filteredData} = useTableSearch({
     searchVal,
-    data: carriers
+    data: categories
   });
 
   return (
@@ -84,18 +82,22 @@ const Carriers = () => {
 
         <Grid item sx={{paddingLeft: "15px"}}>
           <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
-            Carriers
+            Learnings
           </Typography>
         </Grid>
         <Grid
           item
           container
           spacing={2}
-          justifyContent="space-between">
+          justifyContent="space-between"
+        >
+
           <Grid padding="15px">
-            <AddCarrier/>
+            {user?.role === 'admin' &&
+            <AddLearningCategory/>
+            }
           </Grid>
-  
+
           <Grid>
             <SearchStyle>
               <SearchIconWrapper>
@@ -110,15 +112,19 @@ const Carriers = () => {
           </Grid>
         </Grid>
 
-        <InnerTable
-          header={<TableHeaderRow headerCells={columns} data={true} sx={{fontSize: "12px", fontWeight: "bold"}}/>}
-          body={
-            <CarrierTableBody
-              columns={columns}
-              carriers={filteredData}
-            />
-          }
-        />
+        <Box padding='0 30px'>
+          <Typography variant="h6" fontWeight="bold" textTransform="uppercase" marginBottom={'10px'}>
+            Categories
+          </Typography>
+          <Box height='65vh' sx={{overflowY: 'scroll'}}>
+            {filteredData.map(cat => (
+              <CategoryStyle key={cat._id}>
+                <Typography>{cat.title}</Typography>
+              </CategoryStyle>
+            ))}
+          </Box>
+
+        </Box>
 
       </InnerContainer>
 
@@ -126,4 +132,4 @@ const Carriers = () => {
   );
 };
 
-export default Carriers;
+export default Learnings;

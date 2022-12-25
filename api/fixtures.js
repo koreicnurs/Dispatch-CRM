@@ -7,6 +7,7 @@ const Carrier = require('./models/Carrier');
 const Driver = require("./models/Driver");
 const Load = require("./models/Load");
 const Learning = require("./models/Learning");
+const LearningCategory = require("./models/LearningCategory");
 const Broker = require("./models/Broker");
 
 const run = async () => {
@@ -24,7 +25,8 @@ const run = async () => {
     mc: '1180196',
     dot: '3537967',
     fedid: '83-3826233',
-    description: 'test company #1'
+    description: 'test company #1',
+    document: 'fixtures/bahaway.pdf'
   }, {
     title: 'SAFEWAY CARGO',
     phoneNumber: '+431234567890',
@@ -38,14 +40,16 @@ const run = async () => {
     mc: '1256775',
     dot: '3648632',
     fedid: '84-2388341',
-    description: 'test company #3'
+    description: 'test company #3',
+    document: 'fixtures/turan.pdf'
   }, {
     title: 'TUMAR EXPRESS',
     phoneNumber: '+355123456789',
     mc: '918995',
     dot: '2638087',
     fedid: '47-4067936',
-    description: 'test company #4'
+    description: 'test company #4',
+    document: 'fixtures/tumar.pdf'
   });
 
   const [admin, user, user2, bahCarrier] = await User.create({
@@ -108,12 +112,18 @@ const run = async () => {
     status: 'in transit',
     currentStatus: 'driving',
     telegramId: '',
+    license: 'fixtures/license.pdf',
     description: {
       address: 'US, LA, Avalon c., str. 1, h. 45',
       DOB: '15.12.1980',
       info: 'Lorem ipsum dolor sit amet',
       reference: 'Punctual, decent'
-    }
+    },
+    pickUp: 'Shepherd, KY',
+    delivery: 'Pittsburg, PA',
+    ETA: '10:00',
+    readyTime: '11/09/2022',
+    notes: 'bla bla',
   }, {
     email: 'kuba@gmail.com',
     name: 'Kuba',
@@ -121,6 +131,7 @@ const run = async () => {
     companyId: bahawayCarrier._id,
     status: 'upcoming',
     telegramId: '',
+    license: 'fixtures/license.pdf',
     description: {
       address: 'US, LA, Downey c., str. 1, h. 4',
       DOB: '5.04.1990',
@@ -135,6 +146,7 @@ const run = async () => {
     status: 'off',
     currentStatus: 'n/a',
     telegramId: '',
+    license: 'fixtures/license.pdf',
     description: {
       address: 'US, IL, Chicago c., str. 1, h. 4',
       DOB: '12.06.1988',
@@ -148,6 +160,7 @@ const run = async () => {
     companyId: safewayCargoCarrier._id,
     status: 'ready',
     telegramId: '',
+    license: 'fixtures/license.pdf',
     description: {
       address: 'US, IL, Chicago c., str. 1, h. 48',
       DOB: '30.08.1995',
@@ -162,12 +175,18 @@ const run = async () => {
     status: 'in tr/upc',
     currentStatus: 'rest',
     telegramId: '',
+    license: 'fixtures/license.pdf',
     description: {
       address: 'US, IL, Chicago c., str. 10, h. 48',
       DOB: '25.07.1993',
       info: 'lorem',
       reference: 'Professional with all required skills'
-    }
+    },
+    pickUp: 'New-York, NY',
+    delivery: 'Chicago, IL',
+    ETA: '10:00',
+    readyTime: '11/09/2022',
+    notes: 'bla bla',
   }, {
     email: 'askhat@gmail.com',
     name: 'Askhat',
@@ -176,17 +195,13 @@ const run = async () => {
     status: 'off',
     currentStatus: 'n/a',
     telegramId: '',
+    license: 'fixtures/license.pdf',
     description: {
       address: 'US, NY, New-York c., 5 Avenue, h. 48',
       DOB: '18.12.2005',
       info: 'Lorem ipsum dolor sit amet',
       reference: 'Needs to gain more experience'
     },
-    pickUp: 'Ohio',
-    delivery: 'Pennsylvania',
-    ETA: '04:00',
-    readyTime: '15.11.2022',
-    notes: 'bla bla',
   }, {
     email: 'mirbek@gmail.com',
     name: 'Mirbek',
@@ -200,7 +215,12 @@ const run = async () => {
       DOB: '3.01.1996',
       info: 'lorem',
       reference: 'Positive guy'
-    }
+    },
+    pickUp: 'Tulsa, OK',
+    delivery: 'Chicago, IL',
+    ETA: '10:00',
+    readyTime: '11/09/2022',
+    notes: 'bla bla',
   }, {
     email: 'bekmurat@gmail.com',
     name: 'Bekmurat',
@@ -208,6 +228,7 @@ const run = async () => {
     companyId: tumarExpressCarrier._id,
     status: 'ready',
     telegramId: '',
+    license: 'fixtures/license.pdf',
     description: {
       address: 'US, MS, Gulfport c., str. 4, h. 75, ap. 7',
       DOB: '22.02.1992',
@@ -222,12 +243,18 @@ const run = async () => {
     status: 'in transit',
     currentStatus: 'rest',
     telegramId: '',
+    license: 'fixtures/license.pdf',
     description: {
       address: 'US, TX, Houston c., str. 45, h. 12, ap. 12',
       DOB: '5.05.1995',
       info: 'lorem',
       reference: 'Responsible guy'
-    }
+    },
+    pickUp: 'Houston, TX',
+    delivery: 'New Orleans, LA',
+    ETA: '10:00',
+    readyTime: '11/10/2022',
+    notes: 'bla bla',
   });
   
   const [azamatBroker, aibekBroker, nurbekBroker, adiletBroker] = await Broker.create(
@@ -291,7 +318,7 @@ const run = async () => {
     timeToDel: '15:16',
     pu: 'Pittsburg, PA',
     del: 'Boston, MA',
-    status: 'cancel',
+    status: 'upcoming',
     brokerId: aibekBroker._id,
     comment: [{
       authorId: user._id,
@@ -327,6 +354,90 @@ const run = async () => {
       authorId: user._id,
       text: 'Labore et dolore magna aliqua. Rhoncus dolor purus non'
     }]
+  }, {
+    loadCode: 'T-1285KK458',
+    driverId: bakdoolotDriver._id,
+    dispatchId: user._id,
+    price: 1750,
+    miles: 700,
+    rpm: 2.5,
+    datePU: '11/5/2022',
+    dateDEL: '11/8/2022',
+    timeToPU: '3:16',
+    timeToDel: '19:16',
+    pu: 'New-York, NY',
+    del: 'Chicago, IL',
+    status: 'transit',
+    BOL: 'fixtures/BOL2.pdf',
+    RC: 'fixtures/RC2.pdf',
+    brokerId: nurbekBroker._id,
+    comment: [{
+      authorId: user._id,
+      text: 'Dolor sit amet, consectetur adipiscing elit'
+    }, {
+      authorId: user2._id,
+      text: 'Ipsum'
+    }, {
+      authorId: user._id,
+      text: 'Labore et dolore magna aliqua. Rhoncus dolor purus non'
+    }]
+  }, {
+    loadCode: 'T-128HSTB88',
+    driverId: bakdoolotDriver._id,
+    dispatchId: user._id,
+    price: 1750,
+    miles: 700,
+    rpm: 2.5,
+    datePU: '11/9/2022',
+    dateDEL: '11/11/2022',
+    timeToPU: '3:16',
+    timeToDel: '19:16',
+    pu: 'Chicago, IL',
+    del: 'Boston, MS',
+    status: 'upcoming',
+    brokerId: nurbekBroker._id,
+  },{
+    loadCode: 'T-1285781258',
+    driverId: mirbekDriver._id,
+    dispatchId: user._id,
+    price: 1750,
+    miles: 700,
+    rpm: 2.5,
+    datePU: '11/8/2022',
+    dateDEL: '11/9/2022',
+    timeToPU: '3:16',
+    timeToDel: '19:16',
+    pu: 'Tulsa, OK',
+    del: 'Chicago, IL',
+    status: 'transit',
+    BOL: 'fixtures/BOL2.pdf',
+    RC: 'fixtures/RC2.pdf',
+    brokerId: nurbekBroker._id,
+    comment: [{
+      authorId: user._id,
+      text: 'Dolor sit amet, consectetur adipiscing elit'
+    }, {
+      authorId: user2._id,
+      text: 'Ipsum'
+    }, {
+      authorId: user._id,
+      text: 'Labore et dolore magna aliqua. Rhoncus dolor purus non'
+    }]
+  }, {
+    loadCode: 'T-128HSCB84',
+    driverId: mirbekDriver._id,
+    dispatchId: user._id,
+    price: 1750,
+    miles: 700,
+    rpm: 2.5,
+    datePU: '11/9/2022',
+    dateDEL: '11/11/2022',
+    timeToPU: '3:16',
+    timeToDel: '19:16',
+    pu: 'Chicago, IL',
+    del: 'Boston, MS',
+    status: 'upcoming',
+    brokerId: nurbekBroker._id,
   }, {
     loadCode: 'T-12FEF4E5F',
     dispatchId: user2._id,
@@ -399,20 +510,52 @@ const run = async () => {
     status: 'cancel',
   });
 
+  const [trucksCategory, dispatchersMistakesCategory] = await LearningCategory.create(
+    {
+    title: 'Trucks'
+    }, {
+      title: 'Dispatchers Common Mistakes'
+    },
+  );
+
   await Learning.create(
     {
       title: 'Lorem Ipsum',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non',
-      author: user._id,
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit purus non',
+      author: admin._id,
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non',
+      learningCategory: trucksCategory._id,
+      comment: [{
+        authorId: user._id,
+        text: 'Lorem ipsum'
+      }, {
+        authorId: user2._id,
+        text: 'consectetur!!'
+      },]
     }, {
       title: 'Convallis convallis',
       description: 'Convallis convallis tellus id interdum velit laoreet id donec ultrices.',
-      author: user2._id,
+      author: admin._id,
+      text: 'Lorem ipsum dolor sit amet, tellus id interdum velit laoreet id donec  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non',
+      learningCategory: dispatchersMistakesCategory._id,
+      comment: [{
+        authorId: user._id,
+        text: 'Convallis convallis'
+      }, {
+        authorId: user2._id,
+        text: 'tellus id?!'
+      },]
     }, {
       title: 'Metus',
       description: 'Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.',
-      author: user2._id,
-    }
+      author: admin._id,
+      text: 'Metus vulputate eu scelerisqu Lorem ipsum dolor sit amet, tellus id interdum velit laoreet id donec  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non',
+      learningCategory: dispatchersMistakesCategory._id,
+      comment: [{
+        authorId: user._id,
+        text: 'imperdiet proin'
+      }]
+    },
   );
 
   await mongoose.connection.close();

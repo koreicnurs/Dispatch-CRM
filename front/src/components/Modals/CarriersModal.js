@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Box, Fade, FormHelperText, Grid, Modal} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {useDispatch, useSelector} from "react-redux";
+import {MuiTelInput} from 'mui-tel-input';
 import FormElement from "../UI/Form/FormElement/FormElement";
 import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
 import EditButton from "../UI/Button/EditButton/EditButton";
@@ -11,8 +12,8 @@ import {
   editCarrierRequest,
   fetchCarriersRequest
 } from "../../store/actions/carriersActions";
-import {MuiTelInput} from 'mui-tel-input';
 import AddButton from "../UI/Button/AddButton/AddButton";
+import FileInput from "../UI/Form/FileInput/FileInput";
 
 const style = {
   position: 'absolute',
@@ -25,16 +26,12 @@ const style = {
   padding: '20px'
 };
 
-
-
 const CarriersModal = ({modalTitle, isAdd, carrierID}) => {
-
   const dispatch = useDispatch();
   const carriers = useSelector(state => state.carriers.carriers);
   const editError = useSelector(state => state.carriers.editCarrierError);
   const newError = useSelector(state => state.carriers.addCarrierError);
   const loading = useSelector(state => state.carriers.loading);
-
 
   const [newModal, setNewModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
@@ -47,7 +44,8 @@ const CarriersModal = ({modalTitle, isAdd, carrierID}) => {
     dot: '',
     fedid: '',
     description: '',
-    phoneNumber: ''
+    phoneNumber: '',
+    document: ''
   });
 
   const [editedData, setEditedData] = useState({
@@ -56,7 +54,8 @@ const CarriersModal = ({modalTitle, isAdd, carrierID}) => {
     dot: '',
     fedid: '',
     description: '',
-    phoneNumber: ''
+    phoneNumber: '',
+    document: ''
   });
 
   useEffect(() => {
@@ -81,7 +80,8 @@ const CarriersModal = ({modalTitle, isAdd, carrierID}) => {
         dot: '',
         fedid: '',
         description: '',
-        phoneNumber: ''
+        phoneNumber: '',
+        document: ''
       });
 
       setNewModal(true);
@@ -97,6 +97,7 @@ const CarriersModal = ({modalTitle, isAdd, carrierID}) => {
         fedid: carrier.fedid,
         description: carrier.description,
         phoneNumber: carrier.phoneNumber,
+        document: carrier.document
       });
 
       setEditModal(true);
@@ -117,13 +118,27 @@ const CarriersModal = ({modalTitle, isAdd, carrierID}) => {
     }
   };
 
+  const fileChangeHandler = e => {
+    const name = e.target.name;
+    const file = e.target.files[0];
+
+    isAdd
+      ? setNewData(prev => ({...prev, [name]: file}))
+      : setEditedData(prev => ({...prev, [name]: file}));
+  };
 
   const submitFormHandler = async e => {
     e.preventDefault();
+
+    const formData = new FormData();
+    Object.keys(isAdd ? newData : editedData).forEach(key => {
+      formData.append(key, isAdd ? newData[key] : editedData[key]);
+    });
+
     if (isAdd) {
-      dispatch(createCarrierRequest(newData));
+      dispatch(createCarrierRequest(formData));
     } else {
-      dispatch(editCarrierRequest({id: carrierId, data: editedData}));
+      dispatch(editCarrierRequest({id: carrierId, data: formData}));
     }
   };
 
@@ -134,7 +149,6 @@ const CarriersModal = ({modalTitle, isAdd, carrierID}) => {
       return undefined;
     }
   };
-
 
   return (
     <>
@@ -200,7 +214,7 @@ const CarriersModal = ({modalTitle, isAdd, carrierID}) => {
                       }}>{getFieldError('phoneNumber')}</FormHelperText>
                     </Grid>
 
-                    <Grid item width='100%'>
+                    <Grid item width='50%'>
                       <FormElement
                         name={'mc'}
                         label={'MC'}
@@ -211,7 +225,7 @@ const CarriersModal = ({modalTitle, isAdd, carrierID}) => {
                       />
                     </Grid>
 
-                    <Grid item width='100%'>
+                    <Grid item width='50%'>
                       <FormElement
                         name={'dot'}
                         label={'DOT'}
@@ -230,6 +244,15 @@ const CarriersModal = ({modalTitle, isAdd, carrierID}) => {
                         required={true}
                         onChange={inputChangeHandler}
                         error={getFieldError('fedid')}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <FileInput
+                        label={'Document'}
+                        name={'document'}
+                        value={isAdd ? newData.document.value : editedData.document}
+                        onChange={fileChangeHandler}
                       />
                     </Grid>
 

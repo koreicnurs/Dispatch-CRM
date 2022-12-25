@@ -61,7 +61,6 @@ const run = async () => {
     avatar: 'fixtures/admin.png',
     phoneNumber: '+267●5350811',
     isWorking: 'active',
-    telegramId: '',
   }, {
     email: 'user@gmail.com',
     password: 'user',
@@ -71,7 +70,6 @@ const run = async () => {
     avatar: 'fixtures/user.png',
     phoneNumber: '+267●5350801',
     isWorking: 'active',
-    telegramId: '',
   }, {
     email: 'user2@gmail.com',
     password: 'user2',
@@ -80,7 +78,6 @@ const run = async () => {
     displayName: 'User2',
     phoneNumber: '+267●5350802',
     isWorking: 'disabled',
-    telegramId: '',
   }, {
     email: 'bahaway@gmail.com',
     password: 'bahaway',
@@ -90,7 +87,6 @@ const run = async () => {
     companyId: bahawayCarrier._id,
     phoneNumber: '+267●5350812',
     isWorking: 'active',
-    telegramId: '',
   }, {
     email: 'safeway@gmail.com',
     password: 'safeway',
@@ -100,7 +96,6 @@ const run = async () => {
     companyId: safewayCargoCarrier._id,
     phoneNumber: '+267●5350803',
     isWorking: 'active',
-    telegramId: '',
   });
 
   const [umotDriver, kubaDriver, timurDriver, keldibekDriver, bakdoolotDriver, askhatDriver,
@@ -111,7 +106,6 @@ const run = async () => {
     companyId: bahawayCarrier._id,
     status: 'in transit',
     currentStatus: 'driving',
-    telegramId: '',
     license: 'fixtures/license.pdf',
     description: {
       address: 'US, LA, Avalon c., str. 1, h. 45',
@@ -129,8 +123,7 @@ const run = async () => {
     name: 'Kuba',
     phoneNumber: '+9293774446',
     companyId: bahawayCarrier._id,
-    status: 'upcoming',
-    telegramId: '',
+    status: 'off',
     license: 'fixtures/license.pdf',
     description: {
       address: 'US, LA, Downey c., str. 1, h. 4',
@@ -143,9 +136,8 @@ const run = async () => {
     name: 'Timur',
     phoneNumber: '+3237454492',
     companyId: safewayCargoCarrier._id,
-    status: 'off',
-    currentStatus: 'n/a',
-    telegramId: '',
+    status: 'upcoming',
+    currentStatus: 'driving',
     license: 'fixtures/license.pdf',
     description: {
       address: 'US, IL, Chicago c., str. 1, h. 4',
@@ -159,7 +151,6 @@ const run = async () => {
     phoneNumber: '+5138081130',
     companyId: safewayCargoCarrier._id,
     status: 'ready',
-    telegramId: '',
     license: 'fixtures/license.pdf',
     description: {
       address: 'US, IL, Chicago c., str. 1, h. 48',
@@ -174,7 +165,6 @@ const run = async () => {
     companyId: safewayCargoCarrier._id,
     status: 'in tr/upc',
     currentStatus: 'rest',
-    telegramId: '',
     license: 'fixtures/license.pdf',
     description: {
       address: 'US, IL, Chicago c., str. 10, h. 48',
@@ -193,8 +183,6 @@ const run = async () => {
     phoneNumber: '+3126840690',
     companyId: turanExpressCarrier._id,
     status: 'off',
-    currentStatus: 'n/a',
-    telegramId: '',
     license: 'fixtures/license.pdf',
     description: {
       address: 'US, NY, New-York c., 5 Avenue, h. 48',
@@ -209,7 +197,6 @@ const run = async () => {
     companyId: turanExpressCarrier._id,
     status: 'in tr/upc',
     currentStatus: 'driving',
-    telegramId: '',
     description: {
       address: 'US, NY, New-York c., str. 56, h. 48',
       DOB: '3.01.1996',
@@ -227,7 +214,6 @@ const run = async () => {
     phoneNumber: '+7739466304',
     companyId: tumarExpressCarrier._id,
     status: 'ready',
-    telegramId: '',
     license: 'fixtures/license.pdf',
     description: {
       address: 'US, MS, Gulfport c., str. 4, h. 75, ap. 7',
@@ -242,7 +228,6 @@ const run = async () => {
     companyId: tumarExpressCarrier._id,
     status: 'in transit',
     currentStatus: 'rest',
-    telegramId: '',
     license: 'fixtures/license.pdf',
     description: {
       address: 'US, TX, Houston c., str. 45, h. 12, ap. 12',
@@ -287,7 +272,7 @@ const run = async () => {
   await Load.create({
     loadCode: 'T-114K1J2M7',
     driverId: umotDriver._id,
-    dispatchId: user._id,
+    dispatchId: user2._id,
     price: 1335.6,
     miles: 445.2,
     rpm: 3,
@@ -297,12 +282,12 @@ const run = async () => {
     timeToDel: '11:16',
     pu: 'Shepherd, KY',
     del: 'Pittsburg, PA',
-    status: 'transit',
+    status: 'upcoming',
     BOL: 'fixtures/BOL1.pdf',
     RC: 'fixtures/RC1.pdf',
     brokerId: azamatBroker._id,
     comment: [{
-      authorId: user._id,
+      authorId: user2._id,
       text: 'Lorem ipsum'
     }]
   }, {
@@ -340,7 +325,7 @@ const run = async () => {
     timeToDel: '19:16',
     pu: 'New-York, NY',
     del: 'Chicago, IL',
-    status: 'finished',
+    status: 'upcoming',
     BOL: 'fixtures/BOL2.pdf',
     RC: 'fixtures/RC2.pdf',
     brokerId: nurbekBroker._id,

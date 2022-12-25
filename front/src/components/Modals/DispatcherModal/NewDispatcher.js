@@ -206,7 +206,7 @@ const NewDispatcher = ({dispatcherRole, title}) => {
       <DispatcherModal
         title={title}
         modal={openCreate}
-        dispatcher={dispatcherRole === "user" || "admin" ? dispatcherData : userCarrierData}
+        dispatcher={dispatcherRole === "carrier" ? userCarrierData : dispatcherData}
         modalHandler={modalCloseHandler}
         submitFormHandler={submitFormHandler}
         inputHandler={inputChangeHandler}

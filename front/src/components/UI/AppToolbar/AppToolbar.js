@@ -33,7 +33,7 @@ const AppToolbar = () => {
     return (
         <AppBar
             position="fixed"
-            sx={{width: `calc(100% - ${DRAWER_WIDTH}px)`, ml: `${DRAWER_WIDTH}px`, mr: 3}}
+            sx={{width: `calc(100% - ${DRAWER_WIDTH}px)`, ml: `${DRAWER_WIDTH}px`, mr: 3, backgroundColor: `rgba(255, 255, 255, 0.5)`}}
             color="transparent"
             elevation={0}
         >

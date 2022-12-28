@@ -7,6 +7,7 @@ import InnerContainer from "../../components/InnerContainer/InnerContainer";
 import useTableSearch from '../../components/UI/Filter/useTableSearch/useTableSearch';
 import {fetchLearningCategoriesRequest} from "../../store/actions/learningsActions";
 import AddLearningCategory from "../../components/Modals/AddLearningCategory";
+import {Link} from "react-router-dom";
 
 const SearchStyle = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -119,7 +120,7 @@ const Learnings = () => {
           <Box height='65vh' sx={{overflowY: 'scroll'}}>
             {filteredData.map(cat => (
               <CategoryStyle key={cat._id}>
-                <Typography>{cat.title}</Typography>
+                <Typography component={Link} to={'learning?category=' + cat._id}>{cat.title}</Typography>
               </CategoryStyle>
             ))}
           </Box>

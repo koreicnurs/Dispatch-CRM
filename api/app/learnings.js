@@ -12,7 +12,10 @@ router.get('/', auth, async (req, res) => {
       return res.status(400).send('Learning Category should be received!');
     }
 
-    const learnings = await Learning.find({learningCategory: req.query.category}).populate('learningCategory');
+    const learnings = await Learning
+      .find({learningCategory: req.query.category}, 'title description author date learningCategory')
+      .populate('learningCategory')
+      .populate('author', 'displayName');
     
     res.send(learnings);
   } catch (e) {

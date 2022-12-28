@@ -6,6 +6,7 @@ const learningsSlice = createSlice({
   name,
   initialState: {
     categories: [],
+    category: [],
     loading: false,
     error: null,
     addCategoryLoading: false,
@@ -35,6 +36,19 @@ const learningsSlice = createSlice({
     addLearningCategoryFailure(state, action) {
       state.addCategoryLoading = false;
       state.addCategoryError = action.payload;
+    },
+
+    fetchLearningByCategoryRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    fetchLearningByCategorySuccess(state, action) {
+      state.loading = false;
+      state.category = action.payload;
+    },
+    fetchLearningByCategoryFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
     },
 
     clearLearningCategoryErrors(state) {

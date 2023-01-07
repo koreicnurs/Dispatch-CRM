@@ -3,19 +3,18 @@ import {useSelector} from "react-redux";
 import {Box, CssBaseline, Toolbar} from "@mui/material";
 import AppToolbar from "../AppToolbar/AppToolbar";
 import AppDrawer from "../AppDrawer/AppDrawer";
+import {DRAWER_WIDTH} from "../../../constants";
 
-const Layout = ({children}) => {
+const Layout = ({children, open}) => {
     const user = useSelector(state => state.users.user);
     const [toggle, setToggle] = useState(false);
 
     const handleDrawerOpen = () => {
         setToggle(true);
-        console.log(toggle);
     };
 
     const handleDrawerClose = () => {
         setToggle(false);
-        console.log(toggle);
     };
 
     return (
@@ -27,10 +26,35 @@ const Layout = ({children}) => {
                         <AppToolbar
                             burgerBtn={() => handleDrawerOpen()}
                         />
-                        <AppDrawer
+                        {toggle===false ? (<AppDrawer
+                            i={{
+                                display: 'none',
+                                width: DRAWER_WIDTH,
+                                flexShrink: 0,
+                                '& .MuiDrawer-paper': {
+                                    width: DRAWER_WIDTH,
+                                    boxSizing: 'border-box',
+                                    border: 0
+                                },
+                            }}
                             open={toggle}
                             close={() => handleDrawerClose()}
-                        />
+                        />)
+                            : (<AppDrawer
+                                i={{
+                                    width: DRAWER_WIDTH,
+                                    flexShrink: 0,
+                                    '& .MuiDrawer-paper': {
+                                        width: DRAWER_WIDTH,
+                                        boxSizing: 'border-box',
+                                        border: 0
+                                    },
+                                }}
+                                open={toggle}
+                                close={() => handleDrawerClose()}
+                            />)
+                        }
+
                     </>}
                 <Box
                     component="main"

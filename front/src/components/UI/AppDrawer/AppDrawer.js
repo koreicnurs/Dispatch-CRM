@@ -19,15 +19,7 @@ const AppDrawer = (props) => {
     return (
         <Drawer
             open={props.open}
-            sx={{
-                width: DRAWER_WIDTH,
-                flexShrink: 0,
-                '& .MuiDrawer-paper': {
-                    width: DRAWER_WIDTH,
-                    boxSizing: 'border-box',
-                    border: 0
-                },
-            }}
+            sx={props.i}
             variant="persistent"
             anchor="left"
         >

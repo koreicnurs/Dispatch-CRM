@@ -5,9 +5,9 @@ import AppToolbar from "../AppToolbar/AppToolbar";
 import AppDrawer from "../AppDrawer/AppDrawer";
 import {DRAWER_WIDTH} from "../../../constants";
 
-const Layout = ({children, open}) => {
+const Layout = ({children}) => {
     const user = useSelector(state => state.users.user);
-    const [toggle, setToggle] = useState(false);
+    const [toggle, setToggle] = useState(true);
 
     const handleDrawerOpen = () => {
         setToggle(true);
@@ -26,22 +26,23 @@ const Layout = ({children, open}) => {
                         <AppToolbar
                             burgerBtn={() => handleDrawerOpen()}
                         />
-                        {toggle===false ? (<AppDrawer
-                            i={{
-                                display: 'none',
-                                width: DRAWER_WIDTH,
-                                flexShrink: 0,
-                                '& .MuiDrawer-paper': {
+                        {toggle === false ? (<AppDrawer
+                                styleToggle={{
+                                    position: {md: 'static', xs: 'absolute'},
                                     width: DRAWER_WIDTH,
-                                    boxSizing: 'border-box',
-                                    border: 0
-                                },
-                            }}
-                            open={toggle}
-                            close={() => handleDrawerClose()}
-                        />)
+                                    flexShrink: 0,
+                                    '& .MuiDrawer-paper': {
+                                        width: DRAWER_WIDTH,
+                                        boxSizing: 'border-box',
+                                        border: 0
+                                    },
+                                }}
+                                open={toggle}
+                                close={() => handleDrawerClose()}
+                            />)
                             : (<AppDrawer
-                                i={{
+                                styleToggle={{
+                                    position: {md: 'static', xs: 'absolute'},
                                     width: DRAWER_WIDTH,
                                     flexShrink: 0,
                                     '& .MuiDrawer-paper': {

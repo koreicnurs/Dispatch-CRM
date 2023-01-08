@@ -1,6 +1,5 @@
 import React from 'react';
 import {Drawer, IconButton, styled, useTheme} from "@mui/material";
-import {DRAWER_WIDTH} from "../../../constants";
 import DrawerContent from "./DrawerContent";
 import Logo from "../Logo/Logo";
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -19,14 +18,19 @@ const AppDrawer = (props) => {
     return (
         <Drawer
             open={props.open}
-            sx={props.i}
-            variant="persistent"
+            sx={props.styleToggle}
+            variant='persistent'
             anchor="left"
         >
             <DrawerHeader
             >
                 <Logo/>
-                <IconButton onClick={props.close}>
+                <IconButton
+                    onClick={props.close}
+                    sx={{
+                        display: {sm: 'block', md: 'none'}
+                    }}
+                >
                     {theme.direction === 'ltr' ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
                 </IconButton>
             </DrawerHeader>

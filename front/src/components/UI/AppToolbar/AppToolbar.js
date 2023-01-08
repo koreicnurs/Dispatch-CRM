@@ -33,32 +33,43 @@ const AppToolbar = ({burgerBtn}) => {
     return (
         <AppBar
             position="fixed"
-            sx={{width: `calc(100% - ${DRAWER_WIDTH}px)`, ml: `${DRAWER_WIDTH}px`, mr: 3, backgroundColor: `rgba(255, 255, 255, 0.5)`}}
+            sx={{
+                width: `calc(100% - ${DRAWER_WIDTH}px)`,
+                ml: `${DRAWER_WIDTH}px`,
+                mr: 3,
+                backgroundColor: `rgba(255, 255, 255, 0.5)`
+                // display: 'flex',
+                // flexDirection: 'row',
+                // right: -50,
+                // mr: 8,
+                // backgroundColor: `rgba(255, 255, 255, 0.5)`,
+                // justifyContent: 'space-between',
+            }}
             color="transparent"
             elevation={0}
             open={open}
         >
+            <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={() => burgerBtn()}
+                edge="start"
+                sx={{mr: 2, ...({display: {sm: 'block', md: 'none'}})}}
+            >
+                <MenuIcon/>
+            </IconButton>
             <ToastContainer/>
             <Toolbar>
-                <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    onClick={() => burgerBtn()}
-                    edge="start"
-                    sx={{ mr: 2, ...(open && { display: 'none' }) }}
-                >
-                    <MenuIcon />
-                </IconButton>
                 <Grid container justifyContent="flex-end" alignItems="center">
                     <Grid item>
                         <div>
                             <Button
-                              id="basic-button"
-                              aria-controls={open ? 'basic-menu' : undefined}
-                              aria-haspopup="true"
-                              aria-expanded={open ? 'true' : undefined}
-                              onClick={handleClick}
-                              sx={{padding: 0}}
+                                id="basic-button"
+                                aria-controls={open ? 'basic-menu' : undefined}
+                                aria-haspopup="true"
+                                aria-expanded={open ? 'true' : undefined}
+                                onClick={handleClick}
+                                sx={{padding: 0}}
                             >
                                 <Stack direction="row" spacing={1} color="inherit">
                                     <Avatar alt={user.displayName} src={avatarImage}
@@ -69,28 +80,28 @@ const AppToolbar = ({burgerBtn}) => {
                                 </Stack>
                             </Button>
                             <Menu
-                              id="basic-menu"
-                              anchorEl={anchorEl}
-                              open={false}
-                              onClose={handleClose}
-                              MenuListProps={{
-                                  'aria-labelledby': 'basic-button',
-                              }}
+                                id="basic-menu"
+                                anchorEl={anchorEl}
+                                open={open}
+                                onClose={handleClose}
+                                MenuListProps={{
+                                    'aria-labelledby': 'basic-button',
+                                }}
                             >
                                 {
                                     dropDownMenu(user.role).map(item => (
-                                      <MenuItem onClick={handleClose} component={Link} to={item.path} key={item.id}>
-                                          <ListItemIcon>
-                                              <PersonIcon fontSize="small" />
-                                          </ListItemIcon>
-                                          {item.title}
-                                      </MenuItem>
+                                        <MenuItem onClick={handleClose} component={Link} to={item.path} key={item.id}>
+                                            <ListItemIcon>
+                                                <PersonIcon fontSize="small"/>
+                                            </ListItemIcon>
+                                            {item.title}
+                                        </MenuItem>
                                     ))
                                 }
 
                                 <MenuItem onClick={() => dispatch(logoutRequest())}>
                                     <ListItemIcon>
-                                        <Logout fontSize="small" />
+                                        <Logout fontSize="small"/>
                                     </ListItemIcon>
                                     Sign Out
                                 </MenuItem>

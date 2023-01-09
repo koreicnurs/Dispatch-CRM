@@ -34,16 +34,15 @@ const AppToolbar = ({burgerBtn}) => {
         <AppBar
             position="fixed"
             sx={{
-                width: `calc(100% - ${DRAWER_WIDTH}px)`,
-                ml: `${DRAWER_WIDTH}px`,
-                mr: 3,
-                backgroundColor: `rgba(255, 255, 255, 0.5)`
-                // display: 'flex',
-                // flexDirection: 'row',
-                // right: -50,
-                // mr: 8,
-                // backgroundColor: `rgba(255, 255, 255, 0.5)`,
-                // justifyContent: 'space-between',
+                // width: `calc(100% - ${DRAWER_WIDTH}px)`,
+                // ml: `${DRAWER_WIDTH}px`,
+                // mr: 3,
+                // backgroundColor: `rgba(255, 255, 255, 0.5)`
+                display: 'flex',
+                flexDirection: 'row',
+                margin: '0 0 0 100px',
+                backgroundColor: `rgba(255, 255, 255, 0.5)`,
+                justifyContent: 'space-between',
             }}
             color="transparent"
             elevation={0}
@@ -54,7 +53,7 @@ const AppToolbar = ({burgerBtn}) => {
                 aria-label="open drawer"
                 onClick={() => burgerBtn()}
                 edge="start"
-                sx={{mr: 2, ...({display: {sm: 'block', md: 'none'}})}}
+                sx={{mr: 2, ml: 0, ...({display: {sm: 'block', md: 'none'}})}}
             >
                 <MenuIcon/>
             </IconButton>

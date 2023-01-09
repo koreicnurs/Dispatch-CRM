@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Grid, TextField} from "@mui/material";
 
-const FormElement = ({name, value, onChange, label, error, type, required, inputProps, multiline, rows, className, variant, disabled}) => {
+const FormElement = ({name, value, onChange, label, error, type, required, inputProps, multiline, rows, className, variant, disabled, maxRows}) => {
     return (
         <Grid item xs={12} >
                 <TextField
@@ -19,6 +19,7 @@ const FormElement = ({name, value, onChange, label, error, type, required, input
                     inputProps={inputProps}
                     multiline={multiline}
                     rows={rows}
+                    maxRows={maxRows}
                     className={className}
                     variant={variant}
                 />

@@ -119,9 +119,9 @@ const Learnings = () => {
           </Typography>
           <Box height='65vh' sx={{overflowY: 'scroll'}}>
             {filteredData.map(cat => (
-              <CategoryStyle key={cat._id}>
-                <Typography component={Link} to={'learning?category=' + cat._id}>{cat.title}</Typography>
-              </CategoryStyle>
+              <Link to={'learning?category=' + cat._id} key={cat._id} style={{textDecoration: 'none', color: 'inherit'}}>
+                <CategoryStyle> {cat.title}</CategoryStyle>
+              </Link>
             ))}
           </Box>
 

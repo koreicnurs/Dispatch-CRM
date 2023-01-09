@@ -1,7 +1,9 @@
 import React from 'react';
-import {TableCell, TableRow} from "@mui/material";
+import {IconButton, TableCell, TableRow} from "@mui/material";
+import EditLearningArticle from "../../Modals/EditLearningArticle";
+import {Delete} from "@mui/icons-material";
 
-const LearningTableBody = ({columns, filteredData}) => {
+const LearningTableBody = ({columns, filteredData, user, onDelete}) => {
   return (
     <>
       {filteredData.map(article => (
@@ -22,7 +24,19 @@ const LearningTableBody = ({columns, filteredData}) => {
             }
             return <TableCell sx={{fontSize: "14px"}} key={column.key + column.innerKey}>{value}</TableCell>;
           })}
-          {/*<EditDriver driverEmail={driver.email}/>*/}
+          {user?.role === 'admin' &&
+            <>
+              <EditLearningArticle
+                articleID={article._id}
+                categoryID={article.learningCategory._id}
+              />
+              <TableCell>
+                <IconButton color="primary" onClick={() => onDelete(article._id)}>
+                  <Delete/>
+                </IconButton>
+              </TableCell>
+            </>
+          }
         </TableRow>
       ))}
     </>

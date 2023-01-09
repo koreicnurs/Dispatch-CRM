@@ -2,14 +2,14 @@ import React, {useEffect, useState} from 'react';
 import {Box, Grid, InputBase, styled} from "@mui/material";
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
 import Typography from "@mui/material/Typography";
-import AddLearningCategory from "../../components/Modals/AddLearningCategory";
 import SearchIcon from "@mui/icons-material/Search";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchLearningByCategoryRequest} from "../../store/actions/learningsActions";
+import {deleteLearningArticleRequest, fetchLearningByCategoryRequest} from "../../store/actions/learningsActions";
 import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import InnerTable from "../../components/Table/InnerTable";
 import LearningTableBody from "../../components/Table/TableBody/LearningTableBody";
 import useTableSearch from "../../components/UI/Filter/useTableSearch/useTableSearch";
+import AddLearningArticle from "../../components/Modals/AddLearningArticle";
 
 const SearchStyle = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -60,6 +60,7 @@ const columns = [
 
 const LearningCategory = ({location}) => {
   const [searchVal, setSearchVal] = useState(null);
+  const [categoryID, setCategoryID] = useState(null);
   const dispatch = useDispatch();
   const user = useSelector(state => state.users.user);
   const category = useSelector(state => state.learnings.category);
@@ -67,6 +68,7 @@ const LearningCategory = ({location}) => {
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.getAll('category');
+    setCategoryID(id[0]);
     dispatch(fetchLearningByCategoryRequest(id[0]));
   }, [dispatch, location.search]);
 
@@ -74,6 +76,11 @@ const LearningCategory = ({location}) => {
     searchVal,
     data: category
   });
+
+  const onDelete = async (id) => {
+    await dispatch(deleteLearningArticleRequest(id));
+    dispatch(fetchLearningByCategoryRequest(categoryID));
+  };
 
   return (
     <InnerContainer>
@@ -92,7 +99,7 @@ const LearningCategory = ({location}) => {
 
         <Grid padding="15px">
           {user?.role === 'admin' &&
-            <AddLearningCategory/>
+            <AddLearningArticle categoryID={categoryID}/>
           }
         </Grid>
 
@@ -125,6 +132,8 @@ const LearningCategory = ({location}) => {
                   <LearningTableBody
                     columns={columns}
                     filteredData={filteredData}
+                    user={user}
+                    onDelete={onDelete}
                   />
                 }
               />

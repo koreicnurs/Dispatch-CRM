@@ -2,9 +2,16 @@ import {put, takeEvery} from "redux-saga/effects";
 import axiosApi from "../../axiosApi";
 import {addNotification} from "../actions/notifierActions";
 import {
+  addLearningArticleFailure,
+  addLearningArticleRequest,
+  addLearningArticleSuccess,
   addLearningCategoryFailure,
   addLearningCategoryRequest,
-  addLearningCategorySuccess,
+  addLearningCategorySuccess, deleteLearningArticleFailure, deleteLearningArticleRequest,
+  deleteLearningArticleSuccess,
+  editLearningArticleFailure,
+  editLearningArticleRequest,
+  editLearningArticleSuccess,
   fetchLearningByCategoryFailure,
   fetchLearningByCategoryRequest,
   fetchLearningByCategorySuccess,
@@ -28,7 +35,7 @@ export function* addLearningCategory({payload: data}) {
     yield axiosApi.post('/learningCategories', data);
     yield put(addLearningCategorySuccess());
     yield put(addNotification({message: 'Learning Category is added!', variant: 'success'}));
-    yield put(fetchLearningCategoriesRequest());
+    // yield put(fetchLearningCategoriesRequest());
   } catch (e) {
     yield put(addLearningCategoryFailure(e.response.data));
     yield put(addNotification({message: 'Learning Category creation failed!', variant: 'error'}));
@@ -45,10 +52,46 @@ export function* fetchLearningByCategory({payload: id}) {
   }
 }
 
+export function* addLearningArticle({payload: data}) {
+  try {
+    yield axiosApi.post('/learnings', data);
+    yield put(addLearningArticleSuccess());
+    yield put(addNotification({message: 'Learning Article is added!', variant: 'success'}));
+  } catch (e) {
+    yield put(addLearningArticleFailure(e.response.data));
+    yield put(addNotification({message: 'Learning Article creation failed!', variant: 'error'}));
+  }
+}
+
+export function* editLearningArticle({payload}) {
+  try {
+    yield axiosApi.put('/learnings/' + payload.id, payload.data);
+    yield put(editLearningArticleSuccess());
+    yield put(addNotification({message: 'You have successfully edited an Article!', variant: 'success'}));
+  } catch (e) {
+    yield put(editLearningArticleFailure(e.response.data));
+    yield put(addNotification({message: 'Article editing failed!', variant: 'error'}));
+  }
+}
+
+export function* deleteLearningArticle({payload: id}) {
+  try {
+    yield axiosApi.delete('/learnings/' + id);
+    yield put(deleteLearningArticleSuccess());
+    yield put(addNotification({message: 'You have successfully deleted an Article!', variant: 'success'}));
+  } catch (e) {
+    yield put(deleteLearningArticleFailure(e.response.data));
+    yield put(addNotification({message: 'Article deleting failed!', variant: 'error'}));
+  }
+}
+
 const learningsSaga = [
   takeEvery(fetchLearningCategoriesRequest, fetchLearningCategories),
   takeEvery(addLearningCategoryRequest, addLearningCategory),
   takeEvery(fetchLearningByCategoryRequest, fetchLearningByCategory),
+  takeEvery(addLearningArticleRequest, addLearningArticle),
+  takeEvery(editLearningArticleRequest, editLearningArticle),
+  takeEvery(deleteLearningArticleRequest, deleteLearningArticle),
 ];
 
 export default learningsSaga;

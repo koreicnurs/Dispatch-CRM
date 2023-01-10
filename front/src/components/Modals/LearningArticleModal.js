@@ -99,9 +99,11 @@ const LearningArticleModal = ({modalTitle, isAdd, articleID, categoryID}) => {
 
     if (isAdd) {
       await dispatch(addLearningArticleRequest(newData));
+
       dispatch(fetchLearningByCategoryRequest(categoryID));
     } else {
       await dispatch(editLearningArticleRequest({id: articleID, data: editedData}));
+
       dispatch(fetchLearningByCategoryRequest(categoryID));
     }
   };

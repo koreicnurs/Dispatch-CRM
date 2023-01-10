@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const {nanoid} = require('nanoid');
 const path = require('path');
+const mongoose = require('mongoose');
 
 const Driver = require('../models/Driver');
 const Carrier = require('../models/Carrier');
@@ -33,7 +34,6 @@ router.get('/carrier', auth, permit('carrier'), async (req, res) => {
     res.sendStatus(500);
   }
 });
-
 
 router.get('/', auth, async (req, res) => {
   try {
@@ -125,7 +125,27 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-
+router.get('/:filter', async (req, res) => {
+  const filter = JSON.parse(req.params.filter);
+  const array = filter.carrier.map(item => (
+    mongoose.Types.ObjectId(item)
+  ));
+  let find;
+  if (filter.carrier.length === 0) {
+    find = {'status': filter.status};
+  } else if (filter.status === 'Status') {
+    find = {'companyId': { $in: array }};
+  } else {
+    find = {'companyId': { $in: array }, 'status': filter.status};
+  }
+  
+  try {
+    const load = await Driver.find(find).populate('companyId', 'title');
+    res.send(load);
+  } catch (e) {
+    res.sendStatus(500);
+  }
+});
 
 router.get('/:id', async (req, res) => {
   try {

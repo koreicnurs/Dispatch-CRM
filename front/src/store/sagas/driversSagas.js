@@ -19,9 +19,14 @@ import {
 } from "../actions/driversActions";
 import {addNotification} from "../actions/notifierActions";
 
-export function* getDrivers() {
+export function* getDrivers(action) {
   try {
-    const response = yield axiosApi('/drivers');
+    let response;
+    if (action.payload.carrier.length === 0 && action.payload.status === 'Status') {
+      response = yield axiosApi('/drivers');
+    } else {
+      response = yield axiosApi('/drivers/' + JSON.stringify(action.payload));
+    }
     yield put(fetchDriversSuccess(response.data));
   } catch (e) {
     yield put(fetchDriversFailure(e.response && e.response.data));

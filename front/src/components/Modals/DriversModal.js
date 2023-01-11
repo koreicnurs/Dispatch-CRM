@@ -86,8 +86,10 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
   });
 
   useEffect(() => {
-    dispatch(fetchCarriersRequest());
-  }, [dispatch]);
+    if (user.role !== 'carrier') {
+      dispatch(fetchCarriersRequest());
+    }
+  }, [dispatch, user.role]);
 
   useEffect(() => {
     if (newError === null) {
@@ -187,7 +189,7 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
     const formData = new FormData();
 
     if(user.role === 'carrier'){
-      newData.companyId = user.companyId
+      newData.companyId = user.companyId?._id;
     }
 
     Object.keys(isAdd ? newData : editedData).forEach(key => {
@@ -199,7 +201,7 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
     });
 
     if (isAdd) {
-      dispatch(addDriverRequest(formData));
+      dispatch(addDriverRequest({data: formData, user}));
     } else {
       dispatch(updateDriverRequest({id: driverId, data: formData, user}));
     }
@@ -295,8 +297,9 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
                         ? <TextField
                           name={"carrier"}
                           label={"Carriers"}
-                          value={carriers.find(item => item._id === user.companyId)?.title}
+                          value={user.companyId?.title}
                           className={classes.field}
+                          disabled
                           InputProps={{
                             readOnly: true,
                           }}

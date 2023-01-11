@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({storage});
 
-router.get('/', auth, permit('user', 'admin'), async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
     const carriers = await Carrier.find();
     res.send(carriers);

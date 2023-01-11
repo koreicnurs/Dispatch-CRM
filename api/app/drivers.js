@@ -37,7 +37,24 @@ router.get('/carrier', auth, permit('carrier'), async (req, res) => {
 
 router.get('/', auth, async (req, res) => {
   try {
-    if (req.query.carrier) {
+    if (req.query.status) {
+      const params = req.query;
+      const array = params.carrier ? params.carrier.map(item => (
+        mongoose.Types.ObjectId(item)
+      )) : null;
+      
+      let filter;
+      if (!Boolean(params.carrier)) {
+        filter = {'status': params.status};
+      } else if (params.status === 'Status') {
+        filter = {'companyId': { $in: array }};
+      } else {
+        filter = {'companyId': { $in: array }, 'status': params.status};
+      }
+  
+      const load = await Driver.find(filter).populate('companyId', 'title');
+      res.send(load);
+    } else if (req.query.carrier) {
       const driversByCarrier = await Driver
         .find({companyId: req.query.carrier}).populate('companyId', 'title');
 
@@ -120,28 +137,6 @@ router.get('/', auth, async (req, res) => {
       res.send(drivers);
     }
 
-  } catch (e) {
-    res.sendStatus(500);
-  }
-});
-
-router.get('/:filter', async (req, res) => {
-  const filter = JSON.parse(req.params.filter);
-  const array = filter.carrier.map(item => (
-    mongoose.Types.ObjectId(item)
-  ));
-  let find;
-  if (filter.carrier.length === 0) {
-    find = {'status': filter.status};
-  } else if (filter.status === 'Status') {
-    find = {'companyId': { $in: array }};
-  } else {
-    find = {'companyId': { $in: array }, 'status': filter.status};
-  }
-  
-  try {
-    const load = await Driver.find(find).populate('companyId', 'title');
-    res.send(load);
   } catch (e) {
     res.sendStatus(500);
   }

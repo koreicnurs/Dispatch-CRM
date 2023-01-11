@@ -81,7 +81,10 @@ const StatusUpdate = () => {
   const [selectedStatus, setSelectedStatus] = useState("Status");
 
   useEffect(() => {
-    dispatch(fetchDriversRequest({carrier: selectedCarrier, status: selectedStatus}));
+    dispatch(fetchDriversRequest({
+      carrier: [...selectedCarrier].map(item => item.id),
+      status: selectedStatus}
+    ));
     const interval = setInterval(() => {
       dispatch(fetchDriversRequest());
       }, statusInterval);

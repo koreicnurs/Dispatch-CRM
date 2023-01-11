@@ -25,7 +25,7 @@ export function* getDrivers(action) {
     if (action.payload.carrier.length === 0 && action.payload.status === 'Status') {
       response = yield axiosApi('/drivers');
     } else {
-      response = yield axiosApi('/drivers/' + JSON.stringify(action.payload));
+      response = yield axiosApi('/drivers/?status=' + action.payload.status, {params: {carrier: action.payload.carrier}});
     }
     yield put(fetchDriversSuccess(response.data));
   } catch (e) {

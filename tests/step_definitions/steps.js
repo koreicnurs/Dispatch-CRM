@@ -309,3 +309,78 @@ Then('я вижу текст о ошибке добавления новой к�
   I.see(text);
   I.wait(1);
 });
+
+/* Learning Article adding tests */
+Given('я открываю страницу базы знаний {string}', page => {
+  I.amOnPage('/' + page);
+});
+
+Then('нажимаю на категорию {string}', text => {
+  I.click(text);
+});
+
+Then('я нажимаю на кнопку открытия модального окна для формы добавления новой статьи {string}', buttonText => {
+  I.click(`[alt="${buttonText}"]`);
+});
+
+When('я введу данные в форму добавления новой статьи:', table => {
+  table.rows.forEach(row => {
+    const name = row.cells[0].value;
+    const value = row.cells[1].value;
+    I.fillField(name, value);
+  });
+});
+
+// Then('нажимаю на выбор категории для редактирования {string}', text => {
+//   I.click(`//div[contains(text(), "${text}")]`);
+//
+// });
+
+Then('нажимаю на выбор категории {string}', text => {
+  I.click(`//div//label[contains(text(), "${text}")]`);
+  I.wait(2);
+});
+
+// Then('нажимаю на категорию {string}', text => {
+//   I.click(`//ul//li[contains(text(), "${text}")]`);
+//   I.wait(1);
+// });
+
+Then('нажимаю на кнопку {string}', buttonText => {
+  I.click(`//form//button[contains(text(), "${buttonText}")]`);
+  I.wait(2);
+});
+
+Then('я вижу текст о успешном добавлении новой статьи {string}', text => {
+  I.see(text);
+  I.wait(2);
+});
+
+Then('я вижу текст о ошибке добавления новой статьи {string}', text => {
+  I.see(text);
+  I.wait(2);
+});
+
+// Then('нажимаю на кнопку редактирования статьи {string}', buttonText => {
+//   I.click(`//form//button[contains(text(), "${buttonText}")]`);
+//   I.wait(1);
+// });
+
+Then('нажимаю на кнопку редактирования статьи', () => {
+  I.click('//tr[1]/td[5]/div');
+  I.wait(1);
+});
+
+When('я введу данные в форму редактирования статьи:', table => {
+  table.rows.forEach(row => {
+    const name = row.cells[0].value;
+    const value = row.cells[1].value;
+    I.clearField(name);
+    I.fillField(name, value);
+  });
+});
+
+Then('нажимаю на кнопку удаления статьи', () => {
+  I.click('//tr[1]/td[6]/button');
+  I.wait(1);
+});

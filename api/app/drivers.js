@@ -233,4 +233,27 @@ router.put('/:id', auth, upload.single('license'), async (req, res) => {
   }
 });
 
+router.put('/status/:id', auth, async (req, res) => {
+  try {
+    const {status, ETA, readyTime, notes, currentStatus} = req.body;
+
+    const driver = await Driver.findById(req.params.id);
+
+    driver.ETA = ETA;
+    driver.readyTime = readyTime;
+    driver.notes = notes;
+    driver.status = status;
+    driver.currentStatus = currentStatus;
+
+    if (status !== 'in transit' && status !== 'in tr/upc') {
+      driver.currentStatus = 'n/a';
+    }
+
+    await driver.save();
+    res.send(driver);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
 module.exports = router;

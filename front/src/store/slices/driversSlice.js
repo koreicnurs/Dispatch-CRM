@@ -80,6 +80,19 @@ const driversSlice = createSlice({
       state.editDriverError = error;
     },
 
+    updateDriverStatusRequest(state) {
+      state.editDriverLoading = true;
+      state.editDriverError = null;
+    },
+    updateDriverStatusSuccess(state) {
+      state.editDriverLoading = false;
+      state.editDriverError = null;
+    },
+    updateDriverStatusFailure(state, {payload: error}) {
+      state.editDriverLoading = false;
+      state.editDriverError = error;
+    },
+
     clearDriverErrors(state) {
       state.addDriverError = null;
       state.editDriverError = null;

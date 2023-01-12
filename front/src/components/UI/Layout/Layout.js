@@ -59,7 +59,7 @@ const Layout = ({children}) => {
                     </>}
                 <Box
                     component="main"
-                    sx={{flexGrow: 1, mr: 3}}
+                    sx={{flexGrow: 1, width: '50%'}}
                 >
                     <Toolbar/>
                     {children}

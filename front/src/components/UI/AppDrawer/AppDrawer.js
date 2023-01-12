@@ -28,7 +28,8 @@ const AppDrawer = (props) => {
                 <IconButton
                     onClick={props.close}
                     sx={{
-                        display: {sm: 'block', md: 'none'}
+                        display: {sm: 'block', md: 'none'},
+                        color: 'rgba(89, 108, 180, 1)',
                     }}
                 >
                     {theme.direction === 'ltr' ? <ChevronLeftIcon/> : <ChevronRightIcon/>}

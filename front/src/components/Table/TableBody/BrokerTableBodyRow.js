@@ -16,7 +16,8 @@ const BrokerTableBodyRow = ({broker, columns}) => {
     return (
         <>
             <TableRow
-                sx={{'& > *': {borderBottom: 'unset', background: "white"}}}>
+                sx={{'& > *':
+                {borderBottom: 'unset', background: "white"}}}>
                 <TableCell>
                     <IconButton
                         size="small"
@@ -31,13 +32,36 @@ const BrokerTableBodyRow = ({broker, columns}) => {
                         return null;
                     }
                     if (column.key === 'phoneNumber') {
-                        return <TableCell key={column.key}>
+                        return <TableCell
+                            sx={{
+                                fontSize: '12px',
+                            }}
+                            key={column.key}>
                             {broker.phoneNumber.map((number) => (
-                                <Box key={number}>{number}</Box>
+                                <Box
+                                    sx={{
+                                        marginBottom: '5px',
+                                    }}
+                                    key={number}>{number}</Box>
                             ))}
                         </TableCell>
                     }
-                    return <TableCell key={column.key}>{broker[column.key]}</TableCell>;
+                    if (column.key === 'description') {
+                        return <TableCell
+                            sx={{
+                                fontSize: '12px',
+                                maxWidth: '350px',
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                textOverflow: 'ellipsis'
+                            }}
+                            key={column.key}>{broker[column.key]}</TableCell>;
+                    }
+                    return <TableCell
+                        sx={{
+                            fontSize: '12px',
+                        }}
+                        key={column.key}>{broker[column.key]}</TableCell>;
                 })}
 
                 <EditBroker brokerID={broker._id}/>

@@ -42,6 +42,10 @@ router.get('/', auth, async (req, res) => {
     try {
         const start = req.query.start;
         const end = req.query.end;
+
+        const limit = req.query.limit;
+        const skip = req.query.skip;
+
         if (req.query.status === 'finished' || req.query.status === 'cancel') {
             let loads;
             if (!start && !end) {
@@ -165,17 +169,48 @@ router.get('/', auth, async (req, res) => {
 
             res.send(loads);
         } else {
-            const loads = await Load.find(req.query)
-                .populate('driverId', ['name', 'status'])
-                .populate('dispatchId', 'displayName')
-                .populate('brokerId', 'name')
-                .populate({
-                    path: 'comment',
-                    populate: {
-                        path: 'authorId',
-                        select: 'displayName'
-                    }
-                });
+            // const loads = await Load.find(req.query)
+            //     .populate('driverId', ['name', 'status'])
+            //     .populate('dispatchId', 'displayName')
+            //     .populate('brokerId', 'name')
+            //     .populate({
+            //         path: 'comment',
+            //         populate: {
+            //             path: 'authorId',
+            //             select: 'displayName'
+            //         }
+            //     });
+
+            let loads;
+
+            if (!skip) {
+                loads = await Load.find(req.query)
+                  .limit(limit)
+                  .populate('driverId', ['name', 'status'])
+                    .populate('dispatchId', 'displayName')
+                    .populate('brokerId', 'name')
+                    .populate({
+                        path: 'comment',
+                        populate: {
+                            path: 'authorId',
+                            select: 'displayName'
+                        }
+                    });
+            } else {
+                loads = await Load.find(req.query)
+                  .skip(skip)
+                  .limit(limit)
+                  .populate('driverId', ['name', 'status'])
+                  .populate('dispatchId', 'displayName')
+                  .populate('brokerId', 'name')
+                  .populate({
+                      path: 'comment',
+                      populate: {
+                          path: 'authorId',
+                          select: 'displayName'
+                      }
+                  });
+            }
             res.send(loads);
         }
     } catch (e) {

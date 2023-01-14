@@ -35,6 +35,7 @@ export function* addLearningCategory({payload: data}) {
     yield axiosApi.post('/learningCategories', data);
     yield put(addLearningCategorySuccess());
     yield put(addNotification({message: 'Learning Category is added!', variant: 'success'}));
+    yield put(fetchLearningCategoriesRequest());
   } catch (e) {
     yield put(addLearningCategoryFailure(e.response.data));
     yield put(addNotification({message: 'Learning Category creation failed!', variant: 'error'}));

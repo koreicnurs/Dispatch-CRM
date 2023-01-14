@@ -16,5 +16,8 @@ export const {
   clearDriverErrors,
   updateDriverRequest,
   updateDriverSuccess,
-  updateDriverFailure
+  updateDriverFailure,
+  updateDriverStatusRequest,
+  updateDriverStatusSuccess,
+  updateDriverStatusFailure
 } = driversSlice.actions;

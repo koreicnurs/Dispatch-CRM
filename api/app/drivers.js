@@ -178,31 +178,6 @@ router.post('/', auth, upload.single('license'), async (req, res) => {
   }
 });
 
-router.post('/carrier', auth, permit('carrier'), upload.single('license'), async (req, res) => {
-  try {
-    const {email, name, phoneNumber, description} = req.body;
-
-    const driverData = {
-      email,
-      name,
-      phoneNumber,
-      companyId: req.user.companyId,
-      description: JSON.parse(description),
-      license: req.file ? 'uploads/' + req.file.filename : null,
-    };
-    const driver = new Driver(driverData);
-
-    if (driverData.status === 'off') {
-      driverData.currentStatus = 'n/a';
-    }
-
-    await driver.save();
-    res.send(driver);
-  } catch (e) {
-    res.status(400).send(e);
-  }
-});
-
 router.put('/:id', auth, upload.single('license'), async (req, res) => {
   try {
     const {email, name, phoneNumber, companyId, status, description, pickUp,
@@ -258,31 +233,19 @@ router.put('/:id', auth, upload.single('license'), async (req, res) => {
   }
 });
 
-router.put('/carrier/:id', auth, permit('carrier'), upload.single('license'), async (req, res) => {
+router.put('/status/:id', auth, async (req, res) => {
   try {
-    const {email, name, phoneNumber, status, description, pickUp,
-      delivery, ETA, readyTime, notes} = req.body;
+    const {status, ETA, readyTime, notes, currentStatus} = req.body;
 
-    const driver = await Driver.findOne({
-      _id: req.params.id,
-      companyId: req.user.companyId
-    });
+    const driver = await Driver.findById(req.params.id);
 
-    driver.email = email;
-    driver.name = name;
-    driver.phoneNumber = phoneNumber;
-    driver.companyId = req.user.companyId;
-    driver.description = JSON.parse(description);
-    driver.pickUp = pickUp;
-    driver.delivery = delivery;
     driver.ETA = ETA;
     driver.readyTime = readyTime;
     driver.notes = notes;
-    if (status) {
-        driver.status = status;
-    }
+    driver.status = status;
+    driver.currentStatus = currentStatus;
 
-    if (status === 'off') {
+    if (status !== 'in transit' && status !== 'in tr/upc') {
       driver.currentStatus = 'n/a';
     }
 

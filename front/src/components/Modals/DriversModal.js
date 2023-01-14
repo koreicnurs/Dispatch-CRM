@@ -116,6 +116,7 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
           info: '',
           reference: '',
         },
+        license: ''
       });
 
       setNewModal(true);
@@ -135,6 +136,7 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
           info: driver.description.info,
           reference: driver.description.reference,
         },
+        license: driver.license
       });
 
       setEditModal(true);
@@ -321,7 +323,9 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
                     <FileInput
                       label='License'
                       name='license'
+                      value={isAdd ? newData.license.value : editedData.license}
                       onChange={fileChangeHandler}
+                      accept={'.png, .jpg, .jpeg, .pdf'}
                     />
                   </Grid>
 

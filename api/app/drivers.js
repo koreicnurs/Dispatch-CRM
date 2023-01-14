@@ -21,7 +21,16 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({storage});
+const upload = multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        const ext = path.extname(file.originalname);
+        if(ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg' && ext !== '.pdf') {
+            return cb(new Error('Invalid file format'))
+        }
+        cb(null, true)
+    }
+});
 
 router.get('/carrier', auth, permit('carrier'), async (req, res) => {
   try {

@@ -65,9 +65,10 @@ export function* addLearningArticle({payload: data}) {
 
 export function* editLearningArticle({payload}) {
   try {
-    yield axiosApi.put('/learnings/' + payload.id, payload.data);
+    yield axiosApi.put('/learnings/' + payload.article, payload.data);
     yield put(editLearningArticleSuccess());
     yield put(addNotification({message: 'You have successfully edited an Article!', variant: 'success'}));
+    yield put(fetchLearningByCategoryRequest(payload.category));
   } catch (e) {
     yield put(editLearningArticleFailure(e.response.data));
     yield put(addNotification({message: 'Article editing failed!', variant: 'error'}));

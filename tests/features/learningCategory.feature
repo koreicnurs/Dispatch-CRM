@@ -59,8 +59,8 @@
     Допустим я открываю страницу "learnings"
     И нажимаю на категорию "Dispatch"
     То я нажимаю на кнопку "add"
-    Затем нажимаю на выбор категории "Category"
-    И нажимаю на категорию "Dispatch"
+#    Затем нажимаю на выбор категории "Category"
+#    И нажимаю на категорию "Dispatch"
     Если я напишу данные:
       | title       | test title       |
       | description | test description |
@@ -80,8 +80,8 @@
     Допустим я открываю страницу "learnings"
     И нажимаю на категорию "Dispatch"
     То я нажимаю на кнопку "add"
-    Затем нажимаю на выбор категории "Category"
-    И нажимаю на категорию "Dispatch"
+#    Затем нажимаю на выбор категории "Category"
+#    И нажимаю на категорию "Dispatch"
     Если я напишу данные:
       | title       | test title       |
       | description | test description |

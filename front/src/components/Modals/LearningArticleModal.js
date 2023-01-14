@@ -68,7 +68,7 @@ const LearningArticleModal = ({modalTitle, isAdd, articleID, categoryID}) => {
         title: '',
         description: '',
         text: '',
-        learningCategory: ''
+        learningCategory: categoryID
       });
 
       setNewModal(true);
@@ -102,9 +102,7 @@ const LearningArticleModal = ({modalTitle, isAdd, articleID, categoryID}) => {
 
       dispatch(fetchLearningByCategoryRequest(categoryID));
     } else {
-      await dispatch(editLearningArticleRequest({id: articleID, data: editedData}));
-
-      dispatch(fetchLearningByCategoryRequest(categoryID));
+      await dispatch(editLearningArticleRequest({article: articleID, data: editedData, category: categoryID}));
     }
   };
 
@@ -174,6 +172,7 @@ const LearningArticleModal = ({modalTitle, isAdd, articleID, categoryID}) => {
                         required={true}
                         array={categories}
                         variant="object"
+                        disabled={isAdd}
                       />
                     </Grid>
 

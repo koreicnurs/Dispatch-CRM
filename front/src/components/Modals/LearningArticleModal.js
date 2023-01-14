@@ -98,7 +98,7 @@ const LearningArticleModal = ({modalTitle, isAdd, articleID, categoryID}) => {
     e.preventDefault();
 
     if (isAdd) {
-      await dispatch(addLearningArticleRequest(newData));
+      await dispatch(addLearningArticleRequest({data: newData, category: categoryID}));
 
       dispatch(fetchLearningByCategoryRequest(categoryID));
     } else {

@@ -52,11 +52,12 @@ export function* fetchLearningByCategory({payload: id}) {
   }
 }
 
-export function* addLearningArticle({payload: data}) {
+export function* addLearningArticle({payload}) {
   try {
-    yield axiosApi.post('/learnings', data);
+    yield axiosApi.post('/learnings', payload.data);
     yield put(addLearningArticleSuccess());
     yield put(addNotification({message: 'Learning Article is added!', variant: 'success'}));
+    yield put(fetchLearningByCategoryRequest(payload.category));
   } catch (e) {
     yield put(addLearningArticleFailure(e.response.data));
     yield put(addNotification({message: 'Learning Article creation failed!', variant: 'error'}));

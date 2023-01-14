@@ -39,6 +39,11 @@ const Trips = ({history}) => {
   const [startWeek, setStartWeek] = useState();
   const [endWeek, setEndWeek] = useState();
 
+  const [limitation, setLimitation] = useState({
+    limit: 3,
+    skip: 0
+  })
+
   useEffect(() => {
     const today = new Date();
     const firstDay = today.getDate() - today.getDay() + 1;
@@ -53,7 +58,7 @@ const Trips = ({history}) => {
       }
       dispatch(fetchWeekTripsRequest({value: history.location.search, week: week}))
     } else {
-      dispatch(fetchTripsRequest(history.location.search));
+      dispatch(fetchTripsRequest({value: history.location.search, limitation: limitation}));
     }
 
     dispatch(fetchUsersRequest());

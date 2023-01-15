@@ -8,7 +8,7 @@ import FormElement from "../UI/Form/FormElement/FormElement";
 import FormSelect from "../UI/Form/FormSelect/FormSelect";
 import FileInput from "../UI/Form/FileInput/FileInput";
 import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
-import {fetchCarriersRequest} from "../../store/actions/carriersActions";
+
 import {
   addDriverRequest,
   clearDriverErrors,
@@ -86,12 +86,6 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
   });
 
   useEffect(() => {
-    if (user.role !== 'carrier') {
-      dispatch(fetchCarriersRequest());
-    }
-  }, [dispatch, user.role]);
-
-  useEffect(() => {
     if (newError === null) {
       setNewModal(false);
     }
@@ -116,6 +110,7 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
           info: '',
           reference: '',
         },
+        license: ''
       });
 
       setNewModal(true);
@@ -135,6 +130,7 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
           info: driver.description.info,
           reference: driver.description.reference,
         },
+        license: driver.license
       });
 
       setEditModal(true);
@@ -321,7 +317,9 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
                     <FileInput
                       label='License'
                       name='license'
+                      value={isAdd ? newData.license.value : editedData.license}
                       onChange={fileChangeHandler}
+                      accept={'.png, .jpg, .jpeg, .pdf'}
                     />
                   </Grid>
 

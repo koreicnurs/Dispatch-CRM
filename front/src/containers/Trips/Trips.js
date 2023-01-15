@@ -10,7 +10,6 @@ import {
   fetchTripRequest,
   fetchTripsRequest, fetchWeekTripsRequest
 } from "../../store/actions/tripsActions";
-import {fetchBrokersRequest} from "../../store/actions/brokersActions";
 import TripTableBody from "../../components/Table/TableBody/TripTableBody";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
 import TabPanel from "../../components/TabPanel/TabPanel";
@@ -21,6 +20,8 @@ import NewAttachment from "../../components/Modals/NewAttachment";
 import ViewAll from "../../components/Modals/ViewAll";
 import AddTrip from "../../components/Modals/AddTrip";
 import EditTrip from "../../components/Modals/EditTrip";
+import {showedItemCount} from "../../config";
+import {fetchBrokersRequest} from "../../store/actions/brokersActions";
 
 const headerTitles = [
   "Load ID", "PU Location", "DEL Location",
@@ -32,6 +33,7 @@ const Trips = ({history}) => {
   const dispatch = useDispatch();
   const trips = useSelector(state => state.trips.trips);
   const trip = useSelector(state => state.trips.trip);
+  const tripsCount = useSelector(state => state.trips.tripsCount);
 
   const drivers = useSelector(state => state.drivers.drivers);
   const users = useSelector(state => state.users.users);
@@ -39,6 +41,11 @@ const Trips = ({history}) => {
 
   const [startWeek, setStartWeek] = useState();
   const [endWeek, setEndWeek] = useState();
+
+  const [limitation, setLimitation] = useState({
+    limit: showedItemCount[0],
+    skip: 0
+  });
 
   useEffect(() => {
     const today = new Date();
@@ -54,13 +61,13 @@ const Trips = ({history}) => {
       }
       dispatch(fetchWeekTripsRequest({value: history.location.search, week: week}))
     } else {
-      dispatch(fetchTripsRequest(history.location.search));
+      dispatch(fetchTripsRequest({value: history.location.search, limitation: limitation}));
     }
 
     dispatch(fetchUsersRequest());
     dispatch(fetchDriversRequest());
     dispatch(fetchBrokersRequest());
-  }, [dispatch, history.location.search]);
+  }, [dispatch, history.location.search, limitation]);
 
   const [edit, setEdit] = useState(false);
 
@@ -196,6 +203,19 @@ const Trips = ({history}) => {
 
   const weekRange = useMemo(() => week(startWeek, endWeek), [startWeek, endWeek]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const changePage = (event, page) => {
+    const skip = (page - 1) * limitation.limit;
+    setLimitation({...limitation, skip: skip});
+    setCurrentPage(page);
+  };
+
+  const limitChangeHandler = e => {
+    setLimitation({...limitation, limit: e.target.value, skip: 0});
+    setCurrentPage(1);
+  }
+
   return (
     <>
       <EditTrip tripID={trip?._id} isEdit={edit}/>
@@ -224,6 +244,11 @@ const Trips = ({history}) => {
           <TabPanel
             goWeekBack={weekBack}
             goWeekForward={weekForward}
+            pageCount={tripsCount && Math.ceil(tripsCount / limitation.limit)}
+            changePage={changePage}
+            page={currentPage}
+            limitItem={limitation.limit}
+            changeLimit={limitChangeHandler}
             week={weekRange}
             history={history.location.search}
             value={value}

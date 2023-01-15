@@ -7,7 +7,7 @@ import Select from '@mui/material/Select';
 import {FormHelperText, Grid, ListItemText} from '@mui/material';
 import {Checkbox} from "antd";
 
-const FormSelect = ({array, value, onChange, label, required, name, variant, error, driver, multiple, disabled}) => {
+const FormSelect = ({array, value, onChange, label, required, name, variant, error, driver, multiple, disabled, height}) => {
   return (
     <Grid item xs={12}>
       <Box sx={{ minWidth: 50 }}>
@@ -17,7 +17,7 @@ const FormSelect = ({array, value, onChange, label, required, name, variant, err
           }
           <Select
             displayEmpty
-            sx={{textAlign: 'left'}}
+            sx={{textAlign: 'left', height: {height}}}
             labelId={multiple ? null : "demo-simple-select-label"}
             id="demo-simple-select"
             multiple={multiple}

@@ -1,8 +1,9 @@
 import React from 'react';
-import {Drawer, styled} from "@mui/material";
-import {DRAWER_WIDTH} from "../../../constants";
+import {Drawer, IconButton, styled, useTheme} from "@mui/material";
 import DrawerContent from "./DrawerContent";
 import Logo from "../Logo/Logo";
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronLeft';
 
 const DrawerHeader = styled('div')(({theme}) => ({
     display: 'flex',
@@ -11,23 +12,28 @@ const DrawerHeader = styled('div')(({theme}) => ({
     justifyContent: 'center',
 }));
 
-const AppDrawer = () => {
+const AppDrawer = (props) => {
+    const theme = useTheme();
+
     return (
         <Drawer
-            sx={{
-                width: DRAWER_WIDTH,
-                flexShrink: 0,
-                '& .MuiDrawer-paper': {
-                    width: DRAWER_WIDTH,
-                    boxSizing: 'border-box',
-                    border: 0
-                },
-            }}
-            variant="permanent"
+            open={props.open}
+            sx={props.styleToggle}
+            variant='persistent'
             anchor="left"
         >
-            <DrawerHeader>
+            <DrawerHeader
+            >
                 <Logo/>
+                <IconButton
+                    onClick={props.close}
+                    sx={{
+                        display: {sm: 'block', md: 'none'},
+                        color: 'rgba(89, 108, 180, 1)',
+                    }}
+                >
+                    {theme.direction === 'ltr' ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
+                </IconButton>
             </DrawerHeader>
             <DrawerContent/>
         </Drawer>

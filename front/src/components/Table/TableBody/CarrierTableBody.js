@@ -19,6 +19,27 @@ const CarrierTableBody = ({columns, carriers}) => {
             if (column.innerKey) {
               value = value[column.innerKey];
             }
+            if(column.key === 'description') {
+              return <TableCell
+                  sx={{
+                    fontSize: "12px",
+                    cursor: 'default',
+                    maxWidth: '150px',
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap',
+                    textOverflow: 'ellipsis'
+                  }} key={column.key + column.innerKey}>{value}
+              </TableCell>;
+            }
+            if(column.key === 'title') {
+              return <TableCell
+                  sx={{
+                    fontSize: "12px",
+                    cursor: 'default',
+                    minWidth: '150px',
+                  }} key={column.key + column.innerKey}>{value}
+              </TableCell>;
+            }
             if(column.key === 'document' && carrier[column.key]){
               value =
                 <a href={apiUrl + '/' + carrier.document} download={carrier.title} target="_blank" rel="noreferrer">

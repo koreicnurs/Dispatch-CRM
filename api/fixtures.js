@@ -495,11 +495,15 @@ const run = async () => {
     status: 'cancel',
   });
 
-  const [trucksCategory, dispatchersMistakesCategory] = await LearningCategory.create(
+  const [dispatchCategory, accountingCategory, safetyCategory, logbookCategory] = await LearningCategory.create(
     {
-    title: 'Trucks'
+      title: 'Dispatch'
     }, {
-      title: 'Dispatchers Common Mistakes'
+      title: 'Accounting'
+    }, {
+      title: 'Safety'
+    }, {
+      title: 'Logbook'
     },
   );
 
@@ -509,7 +513,7 @@ const run = async () => {
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit purus non',
       author: admin._id,
       text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non',
-      learningCategory: trucksCategory._id,
+      learningCategory: dispatchCategory._id,
       comment: [{
         authorId: user._id,
         text: 'Lorem ipsum'
@@ -522,7 +526,7 @@ const run = async () => {
       description: 'Convallis convallis tellus id interdum velit laoreet id donec ultrices.',
       author: admin._id,
       text: 'Lorem ipsum dolor sit amet, tellus id interdum velit laoreet id donec  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non',
-      learningCategory: dispatchersMistakesCategory._id,
+      learningCategory: dispatchCategory._id,
       comment: [{
         authorId: user._id,
         text: 'Convallis convallis'
@@ -535,11 +539,17 @@ const run = async () => {
       description: 'Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.',
       author: admin._id,
       text: 'Metus vulputate eu scelerisqu Lorem ipsum dolor sit amet, tellus id interdum velit laoreet id donec  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non',
-      learningCategory: dispatchersMistakesCategory._id,
+      learningCategory: accountingCategory._id,
       comment: [{
         authorId: user._id,
         text: 'imperdiet proin'
       }]
+    }, {
+      title: 'Melis imperdiet proin',
+      description: 'putate eu scelerisque felis imperdiet proin fermentum leo.',
+      author: admin._id,
+      text: 'vfdbc vfdffsd fcelerisqu Lorem ipsum dolor sit amet, tellus id interdum velit laoreet id donec  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non',
+      learningCategory: safetyCategory._id,
     },
   );
 

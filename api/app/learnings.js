@@ -12,7 +12,10 @@ router.get('/', auth, async (req, res) => {
       return res.status(400).send('Learning Category should be received!');
     }
 
-    const learnings = await Learning.find({learningCategory: req.query.category}).populate('learningCategory');
+    const learnings = await Learning
+      .find({learningCategory: req.query.category}, 'title description author date text  learningCategory')
+      .populate('learningCategory')
+      .populate('author', 'displayName');
     
     res.send(learnings);
   } catch (e) {
@@ -95,16 +98,9 @@ router.put('/:id', auth, permit('admin'), async (req, res) => {
 });
 
 router.delete('/:id', auth, permit('admin'), async (req, res) => {
-  const learningId = req.params.id;
   try {
-    const learning = await Learning.findById(learningId);
-    
-    if (!learning) {
-      return res.status(404).send('Learning not found');
-    }
-
-    await Learning.deleteOne({_id: learningId});
-    return res.send('Learning was deleted');
+    await Learning.findByIdAndDelete(req.params.id);
+    res.send('Learning is deleted successfully!');
   } catch (e) {
     res.sendStatus(500);
   }

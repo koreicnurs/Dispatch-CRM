@@ -1,15 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Fade, FormHelperText, Grid, Modal, Typography} from "@mui/material";
+import {Fade, Grid, Modal, Typography} from "@mui/material";
 import Box from "@mui/material/Box";
-import {MuiTelInput} from "mui-tel-input";
 import {useDispatch, useSelector} from "react-redux";
-import {makeStyles} from "tss-react/mui";
 import EditButton from '../../UI/Button/EditButton/EditButton';
 import FormElement from '../../UI/Form/FormElement/FormElement';
 import FormSelect from '../../UI/Form/FormSelect/FormSelect';
-import FileInput from '../../UI/Form/FileInput/FileInput';
 import ButtonWithProgress from '../../UI/Button/ButtonWithProgress/ButtonWithProgress';
-import {clearDriverErrors, updateDriverRequest} from '../../../store/actions/driversActions';
+import {clearDriverErrors, updateDriverStatusRequest} from '../../../store/actions/driversActions';
 import {DRIVER_CURRENT_STATUS, DRIVER_STATUS} from '../../../constants';
 
 const style = {

@@ -16,10 +16,13 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 800,
+    width: {xs: '80%', md: '70%'},
     bgcolor: 'background.paper',
     boxShadow: 24,
-    padding: '20px'
+    padding: '20px',
+    p: 4,
+    overflow: 'auto',
+    maxHeight: '600px',
 };
 
 const BrokersModal = ({modalTitle, isAdd, brokerID}) => {
@@ -221,7 +224,12 @@ const BrokersModal = ({modalTitle, isAdd, brokerID}) => {
                     <Box sx={style}>
                         <div>
                             <Grid>
-                                <Typography variant={'h6'}>
+                                <Typography
+                                    variant={'h6'}
+                                    sx={{
+                                        marginBottom: '20px'
+                                    }}
+                                >
                                     {modalTitle}
                                 </Typography>
 

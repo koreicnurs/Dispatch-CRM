@@ -21,6 +21,7 @@ import ViewAll from "../../components/Modals/ViewAll";
 import AddTrip from "../../components/Modals/AddTrip";
 import EditTrip from "../../components/Modals/EditTrip";
 import {showedItemCount} from "../../config";
+import {fetchBrokersRequest} from "../../store/actions/brokersActions";
 
 const headerTitles = [
   "Load ID", "PU Location", "DEL Location",
@@ -65,6 +66,7 @@ const Trips = ({history}) => {
 
     dispatch(fetchUsersRequest());
     dispatch(fetchDriversRequest());
+    dispatch(fetchBrokersRequest());
   }, [dispatch, history.location.search, limitation]);
 
   const [edit, setEdit] = useState(false);

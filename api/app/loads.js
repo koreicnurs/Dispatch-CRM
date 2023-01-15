@@ -169,18 +169,6 @@ router.get('/', auth, async (req, res) => {
 
             res.send(loads);
         } else {
-            // const loads = await Load.find(req.query)
-            //     .populate('driverId', ['name', 'status'])
-            //     .populate('dispatchId', 'displayName')
-            //     .populate('brokerId', 'name')
-            //     .populate({
-            //         path: 'comment',
-            //         populate: {
-            //             path: 'authorId',
-            //             select: 'displayName'
-            //         }
-            //     });
-
             let loads;
 
             if (!skip) {

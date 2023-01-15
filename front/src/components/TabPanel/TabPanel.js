@@ -49,7 +49,6 @@ const TabPanel = (props) => {
                   array={showedItemCount}
                   value={limitItem}
                   onChange={changeLimit}
-                  paddingY="10px"
                   height="30px"
                 />
               </Grid>

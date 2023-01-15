@@ -7,7 +7,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Logout from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import {Link} from 'react-router-dom';
-import {DRAWER_WIDTH} from "../../../constants";
 import {apiUrl, dropDownMenu} from "../../../config";
 import defaultAvatar from "../../../assets/default-avatar.png";
 import {logoutRequest} from '../../../store/actions/usersActions';

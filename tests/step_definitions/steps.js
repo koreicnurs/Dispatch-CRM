@@ -24,8 +24,6 @@ Then('я вижу текст {string}', text => {
  I.see(text);
 });
 
-// /* Carriers registration test */
-
 Given('я открываю страницу {string}', page => {
   I.amOnPage('/' + page);
   I.wait(2);
@@ -43,25 +41,25 @@ When('я напишу данные:', table => {
   });
 });
 
-// Then('нажму на кнопку выбора документа {string}', buttonText => {
-//   I.click(`//form//button[contains(text(), "${buttonText}")]`);
-// });
-//
-// Then('выбираю нужный файл для документа {string}', file => {
-//   I.attachFile("input[type='file']", file);
-//   I.wait(1);
-// });
-//
 Then('нажимаю на {string}', buttonText => {
   I.click(`//form//button[contains(text(), "${buttonText}")]`);
 
   I.wait(3);
 });
-//
-// Then('я вижу {string}', text => {
-//   I.see(text);
-// });
-//
+
+Then('нажму на кнопку выбора документа {string}', buttonText => {
+  I.click(`//form//button[contains(text(), "${buttonText}")]`);
+});
+
+Then('выбираю нужный файл для документа {string}', file => {
+  I.attachFile("input[type='file']", file);
+  I.wait(1);
+});
+
+Then('я вижу {string}', text => {
+  I.see(text);
+});
+
 // /* Drivers registration test */
 //
 // Given('я открываю страницу водителей {string}', page => {
@@ -247,19 +245,19 @@ Then('нажимаю на компанию {string}', companyName => {
 //
 // /* Filter drivers/dispatchers/carriers/statusUpdate/LearningCategory */
 //
-// Then('я ввожу данные в поле поиска', () => {
-//   I.click(`//input[@placeholder="Search"]`);
-// });
-//
-// When('я введу следующие данные {string}', text => {
-//   I.fillField('search', text);
-// });
-//
-// Then('я вижу сущность с данными {string}', text => {
-//   I.see(text);
-//   I.wait(1);
-// });
-//
+Then('я ввожу данные в поле поиска', () => {
+  I.click(`//input[@placeholder="Search"]`);
+});
+
+When('я введу следующие данные {string}', text => {
+  I.fillField('search', text);
+});
+
+Then('я вижу сущность с данными {string}', text => {
+  I.see(text);
+  I.wait(1);
+});
+
 // /* Brokers registration and editing tests */
 // Then('нажимаю на кнопку редактирования брокера', () => {
 //   I.click('//tr[1]/td[6]/div');

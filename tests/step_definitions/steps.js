@@ -260,10 +260,10 @@ When('я введу следующие данные {string}', text => {
 // });
 
 // /* Brokers registration and editing tests */
-// Then('нажимаю на кнопку редактирования брокера', () => {
-//   I.click('//tr[1]/td[6]/div');
-//   I.wait(4);
-// });
+Then('нажимаю на кнопку редактирования брокера', () => {
+  I.click('//tr[1]/td[6]/div');
+  I.wait(4);
+});
 // Then('нажимаю на кнопку добавления компании брокеру', () => {
 //   I.click('//form/div/div[3]/div[2]/button');
 //   I.wait(4);

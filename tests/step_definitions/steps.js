@@ -96,15 +96,15 @@ Then('нажимаю на компанию {string}', companyName => {
 //   I.wait(1);
 // });
 //
-// Then('нажму на кнопку выбора лицензии {string}', buttonText => {
-//   I.click(`//form//button[contains(text(), "${buttonText}")]`);
-// });
-//
-// Then('выбираю нужный файл для лицензии {string}', file => {
-//   I.attachFile("input[type='file']", file);
-//   I.wait(1);
-// });
-//
+Then('нажму на кнопку выбора лицензии {string}', buttonText => {
+  I.click(`//form//button[contains(text(), "${buttonText}")]`);
+});
+
+Then('выбираю нужный файл для лицензии {string}', file => {
+  I.attachFile("input[type='file']", file);
+  I.wait(1);
+});
+
 // Then('нажимаю на кнопку регистрации водителя {string}', buttonText => {
 //   I.click(`//form//button[contains(text(), "${buttonText}")]`);
 //   I.wait(1);

@@ -86,7 +86,7 @@ Then('нажимаю на выбор компании {string}', text => {
 
 Then('нажимаю на компанию {string}', companyName => {
   I.click(`//ul//li[${companyName}]`);
-  I.wait(1);
+  I.wait(2);
 });
 
 // Then('нажимаю на выбор статуса {string}', text => {

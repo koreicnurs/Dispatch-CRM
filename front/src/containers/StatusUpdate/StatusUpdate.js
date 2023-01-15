@@ -164,8 +164,12 @@ const StatusUpdate = () => {
               Status Update
           </Typography>
         </Grid>
-        <Grid item sx={{width: 350, marginLeft: 'auto', marginBottom: 3}}>
-          <SearchStyle>
+        <Grid item sx={{maxWidth: 350, marginLeft: {xs:'20px',sm:'auto'}, marginBottom: 3, marginRight: '20px'}}>
+          <SearchStyle
+              sx={{
+                width: '100%',
+              }}
+          >
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>

@@ -29,23 +29,23 @@ const TripTableBody = (props) => {
               background: (trip.status === 'finished' && !trip.finishConfirmed) ? "#cecece" : "white"
           }}>
 
-            <TableCell sx={{fontSize: "14px", fontWeight: 'bold'}}>{trip.loadCode}</TableCell>
-            <TableCell sx={{fontSize: "14px", fontWeight: 'bold'}}>
+            <TableCell sx={{fontSize: "12px", fontWeight: 'bold', minWidth: "150px"}}>{trip.loadCode}</TableCell>
+            <TableCell sx={{fontSize: "12px", fontWeight: 'bold', minWidth: "150px"}}>
               {trip.pu}
               <Box sx={{fontSize: "12px", fontWeight: 'normal'}}>{trip.datePU.substring(0, 10)}</Box>
               <Box sx={{fontSize: "12px", fontWeight: 'normal'}}>{trip.timeToPU}</Box>
             </TableCell>
-            <TableCell sx={{fontSize: "14px", fontWeight: 'bold'}}>
+            <TableCell sx={{fontSize: "12px", fontWeight: 'bold', minWidth: "150px"}}>
               {trip.del}
               <Box sx={{fontSize: "12px", fontWeight: 'normal'}}>{trip.dateDEL.substring(0, 10)}</Box>
               <Box sx={{fontSize: "12px", fontWeight: 'normal'}}>{trip.timeToDel}</Box>
             </TableCell>
             <TableCell sx={{fontSize: "12px"}}>{trip.miles}</TableCell>
-            <TableCell sx={{fontSize: "14px", fontWeight: 'bold'}}>
+            <TableCell sx={{fontSize: "12px", fontWeight: 'bold'}}>
               ${trip.price}
               <Box sx={{fontSize: "12px", fontWeight: 'normal'}}>${trip.rpm}/mi</Box>
             </TableCell>
-            <TableCell sx={{fontSize: "14px", fontWeight: 'bold'}}>
+            <TableCell sx={{fontSize: "12px", fontWeight: 'bold'}}>
               {trip.driverId?.name || 'n/a'}
             </TableCell>
             {

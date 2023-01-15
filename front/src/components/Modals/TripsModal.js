@@ -6,15 +6,12 @@ import Typography from "@mui/material/Typography";
 import FormElement from "../UI/Form/FormElement/FormElement";
 import FormSelect from "../UI/Form/FormSelect/FormSelect";
 import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
-import {fetchDriversRequest} from "../../store/actions/driversActions";
 import {clearCreateTripErrorRequest, createTripRequest, editTripRequest} from "../../store/actions/tripsActions";
 import FileInput from "../UI/Form/FileInput/FileInput";
 import {DesktopDatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {apiUrl} from "../../config";
-import {fetchUsersRequest} from "../../store/actions/usersActions";
 import AddButton from "../UI/Button/AddButton/AddButton";
-import {fetchBrokersRequest} from "../../store/actions/brokersActions";
 import TripsComments from '../TripsComments/TripsComments';
 
 const style = {
@@ -22,7 +19,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 800,
+  width: {xs: '80%', md: '70%'},
   maxHeight: 600,
   overflow: "auto",
   bgcolor: 'background.paper',
@@ -56,7 +53,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
 
   const [newModal, setNewModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
-  
+
   const [tripId, setTripId] = useState('');
 
   useEffect(() => setEditModal(isEdit), [isEdit])
@@ -99,14 +96,8 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
     BOL: "",
     brokerId: "",
   });
-  
-  const [commentArray, setCommentArray] = useState([]);
 
-  useEffect(() => {
-    dispatch(fetchUsersRequest());
-    dispatch(fetchDriversRequest());
-    dispatch(fetchBrokersRequest());
-  }, [dispatch]);
+  const [commentArray, setCommentArray] = useState([]);
 
   useEffect(() => {
     if (newError === null) {
@@ -168,7 +159,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
       BOL: trip.BOL || '',
       brokerId: trip.brokerId ? trip.brokerId._id : '',
     });
-    
+
     setCommentArray(trip.comment);
     setEditModal(true);
     dispatch(clearCreateTripErrorRequest());
@@ -235,7 +226,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
       return undefined;
     }
   };
-  
+
   return (
     <>
       {isAdd
@@ -253,7 +244,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
             <Typography variant={'h6'}>
               {modalTitle}
             </Typography>
-            
+
             <Grid
               container
               direction="column"
@@ -286,8 +277,9 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                     container
                     spacing={2}
                     justifyContent="space-between"
+                    flexDirection={{xs: 'column', md: 'row'}}
                   >
-                    <Grid item width="49.5%">
+                    <Grid item width={{xs: '100%', md: '49.5%'}}>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DesktopDatePicker
                           label="Loading date"
@@ -300,7 +292,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
 
                     </Grid>
 
-                  <Grid item width="49.5%">
+                  <Grid item width={{xs: '100%', md: '49.5%'}}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DesktopDatePicker
                         label="Arrival date"
@@ -317,8 +309,9 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                   container
                   spacing={2}
                   justifyContent="space-between"
+                  flexDirection={{xs: 'column', md: 'row'}}
                 >
-                  <Grid item width="49.5%">
+                  <Grid item width={{xs: '100%', md: '49.5%'}}>
                     <FormElement
                       type={'timeToPU'}
                       name={'timeToPU'}
@@ -330,7 +323,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                     />
                   </Grid>
 
-                  <Grid item width="49.5%">
+                  <Grid item width={{xs: '100%', md: '49.5%'}}>
                     <FormElement
                       type={'timeToDel'}
                       name={'timeToDel'}
@@ -359,8 +352,9 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                     container
                     spacing={2}
                     justifyContent="space-between"
+                    flexDirection={{xs: 'column', md: 'row'}}
                   >
-                    <Grid item width="49.5%">
+                    <Grid item width={{xs: '100%', md: '49.5%'}}>
                       <FormElement
                         type={'pu'}
                         name={'pu'}
@@ -373,7 +367,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                       />
                     </Grid>
 
-                    <Grid item width="49.5%">
+                    <Grid item width={{xs: '100%', md: '49.5%'}}>
                       <FormElement
                         type={'del'}
                         name={'del'}
@@ -392,8 +386,9 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                     container
                     spacing={2}
                     justifyContent="space-between"
+                    flexDirection={{xs: 'column', md: 'row'}}
                   >
-                    <Grid item width="49.5%">
+                    <Grid item width={{xs: '100%', md: '49.5%'}}>
                       <FormElement
                         type={'number'}
                         name={'miles'}
@@ -407,7 +402,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                       />
                     </Grid>
 
-                    <Grid item width="49.5%">
+                    <Grid item width={{xs: '100%', md: '49.5%'}}>
                       <FormElement
                         type={'number'}
                         name={'rpm'}
@@ -427,8 +422,9 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                     container
                     spacing={2}
                     justifyContent="space-between"
+                    flexDirection={{xs: 'column', md: 'row'}}
                   >
-                    <Grid item width="49.5%">
+                    <Grid item width={{xs: '100%', md: '49.5%'}}>
                       <FormElement
                         type={'number'}
                         name={'price'}
@@ -441,7 +437,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                         inputProps={{min:0, step: '0.01'}}
                       />
                     </Grid>
-                    <Grid item width="49.5%">
+                    <Grid item width={{xs: '100%', md: '49.5%'}}>
                       <FormSelect
                           type={'string'}
                           name={'brokerId'}
@@ -493,7 +489,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                       : null
                     }
                   </Box>
-                  
+
                   <div style={{margin: '8px 0 0 8px', width: '100%'}}>
                     <TripsComments commentArray={commentArray} user={user}/>
                   </div>
@@ -510,7 +506,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                     className={classes.field}
                   />
 
-                  <Grid item xs={6}>
+                  <Grid item sx={{width: {xs: '100%', md: '49.5%'}}}>
                     <ButtonWithProgress
                       loading={loading}
                       disabled={loading}
@@ -518,13 +514,12 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                       fullWidth
                       variant="contained"
                       color="primary"
-
                     >
                       Save
                     </ButtonWithProgress>
                   </Grid>
 
-                  <Grid item xs={6}>
+                  <Grid item xsx={{width: {xs: '100%', md: '49.5%'}}}>
                     <ButtonWithProgress
                       type="button"
                       fullWidth

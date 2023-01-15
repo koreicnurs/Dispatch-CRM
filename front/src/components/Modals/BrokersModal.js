@@ -9,17 +9,19 @@ import EditButton from "../UI/Button/EditButton/EditButton";
 import AddButton from "../UI/Button/AddButton/AddButton";
 import FormSelect from "../UI/Form/FormSelect/FormSelect";
 import {clearBrokersErrors, createBrokerRequest, editBrokerRequest} from "../../store/actions/brokersActions";
-import {fetchCarriersRequest} from "../../store/actions/carriersActions";
 
 const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 800,
+    width: {xs: '80%', md: '70%'},
     bgcolor: 'background.paper',
     boxShadow: 24,
-    padding: '20px'
+    padding: '20px',
+    p: 4,
+    overflow: 'auto',
+    maxHeight: '600px',
 };
 
 const BrokersModal = ({modalTitle, isAdd, brokerID}) => {
@@ -125,10 +127,6 @@ const BrokersModal = ({modalTitle, isAdd, brokerID}) => {
     });
 
     useEffect(() => {
-        dispatch(fetchCarriersRequest());
-    }, [dispatch]);
-
-    useEffect(() => {
         setAvailableCompanies(carriers);
     }, [carriers]);
 
@@ -221,7 +219,12 @@ const BrokersModal = ({modalTitle, isAdd, brokerID}) => {
                     <Box sx={style}>
                         <div>
                             <Grid>
-                                <Typography variant={'h6'}>
+                                <Typography
+                                    variant={'h6'}
+                                    sx={{
+                                        marginBottom: '20px'
+                                    }}
+                                >
                                     {modalTitle}
                                 </Typography>
 
@@ -344,7 +347,7 @@ const BrokersModal = ({modalTitle, isAdd, brokerID}) => {
                                         </Grid>
                                     </Grid>
 
-                                    <Grid item xs={6}>
+                                    <Grid item sx={{width: {xs: '100%', md: '49.5%'}}}>
                                         <ButtonWithProgress
                                             loading={loading}
                                             disabled={loading}
@@ -357,7 +360,7 @@ const BrokersModal = ({modalTitle, isAdd, brokerID}) => {
                                         </ButtonWithProgress>
                                     </Grid>
 
-                                    <Grid item xs={6}>
+                                    <Grid item sx={{width: {xs: '100%', md: '49.5%'}}}>
                                         <ButtonWithProgress
                                             type="button"
                                             fullWidth

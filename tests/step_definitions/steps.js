@@ -251,11 +251,12 @@ Then('я ввожу данные в поле поиска', () => {
 
 When('я введу следующие данные {string}', text => {
   I.fillField('search', text);
+  I.wait(2);
 });
 
 Then('я вижу сущность с данными {string}', text => {
   I.see(text);
-  I.wait(1);
+  I.wait(2);
 });
 
 // /* Brokers registration and editing tests */

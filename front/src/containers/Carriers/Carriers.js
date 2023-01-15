@@ -98,7 +98,7 @@ const Carriers = () => {
 
                     <Grid
                         sx={{
-                            margin: '0 20px 20px 40px'
+                            margin: '10px 20px 20px 40px'
                         }}
                     >
                         <SearchStyle

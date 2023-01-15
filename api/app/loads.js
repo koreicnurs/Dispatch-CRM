@@ -211,7 +211,17 @@ router.get('/', auth, async (req, res) => {
                       }
                   });
             }
-            res.send(loads);
+
+            let count;
+
+            if (req.query.status === 'upcoming') {
+                count = await Load.find({"status": "upcoming"}).count();
+            } else if (req.query.status === 'transit') {
+                count = await Load.find({"status": "transit"}).count();
+            }
+
+
+            res.send({loads: loads, count: count});
         }
     } catch (e) {
         res.sendStatus(500);

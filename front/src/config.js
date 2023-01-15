@@ -20,3 +20,5 @@ export const dropDownMenu = (role) => {
     return [{title: "My profile", path: "/my-profile", id: 1}];
   }
 };
+
+export const showedItemCount = [3, 5, 10, 25, 50, 100];

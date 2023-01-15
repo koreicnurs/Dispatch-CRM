@@ -4,6 +4,7 @@ const name = 'trips';
 
 export const initialState = {
   trips: [],
+  tripsCount: null,
   trip: null,
   tripsByCarrier: [],
   loading: false,
@@ -22,7 +23,8 @@ const tripsSlice = createSlice({
     },
     fetchTripsSuccess(state, {payload: trips}) {
       state.loading = false;
-      state.trips = trips;
+      state.trips = trips.loads;
+      state.tripsCount = trips.count;
     },
     fetchTripsFailure(state, action) {
       state.loading = false;

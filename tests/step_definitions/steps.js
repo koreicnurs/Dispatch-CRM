@@ -85,7 +85,7 @@ Then('нажимаю на выбор компании {string}', text => {
 });
 
 Then('нажимаю на компанию {string}', companyName => {
-  I.click(`//ul//li[contains(text(), "${companyName}")]`);
+  I.click(`//ul//li[${companyName}]`);
   I.wait(1);
 });
 

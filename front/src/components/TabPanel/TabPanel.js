@@ -55,7 +55,7 @@ const TabPanel = (props) => {
               <Grid item>
                 <Stack spacing={2} padding={"16px"}>
                   <Pagination
-                    count={pageCount}
+                    count={pageCount || 0}
                     size={"large"}
                     onChange={changePage}
                     page={page}

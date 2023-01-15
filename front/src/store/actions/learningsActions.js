@@ -7,5 +7,18 @@ export const {
   addLearningCategoryRequest,
   addLearningCategorySuccess,
   addLearningCategoryFailure,
-  clearLearningCategoryErrors
+  fetchLearningByCategoryRequest,
+  fetchLearningByCategorySuccess,
+  fetchLearningByCategoryFailure,
+  addLearningArticleRequest,
+  addLearningArticleSuccess,
+  addLearningArticleFailure,
+  editLearningArticleRequest,
+  editLearningArticleSuccess,
+  editLearningArticleFailure,
+  deleteLearningArticleRequest,
+  deleteLearningArticleSuccess,
+  deleteLearningArticleFailure,
+  clearLearningCategoryErrors,
+  clearLearningArticleErrors
 } = learningsSlice.actions;

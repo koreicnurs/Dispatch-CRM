@@ -26,7 +26,7 @@ describe('Testing \'users\' route', () => {
         .get('/users')
         .set({Authorization: admin.token});
       expect(res.statusCode).toBe(200);
-      dispatcher= res.body.find(dispatcher => dispatcher.email === 'user@gmail.com');
+      dispatcher= res.body.find(dispatcher => dispatcher.email === 'user3@gmail.com');
     });
   };
 

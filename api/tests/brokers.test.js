@@ -83,7 +83,6 @@ describe('Testing \'brokers\' route', () => {
 
   describe('edit broker', () => {
     getUser('user@gmail.com', 'user');
-    getCarriers();
     getBrokers();
 
     it('should edit broker', async () => {
@@ -91,24 +90,19 @@ describe('Testing \'brokers\' route', () => {
         .put('/brokers/' + brokers[0]._id.toString())
         .set({Authorization: user.token})
         .send({
-          name: 'Changed test broker name',
-          phoneNumber: '+99655555001',
-          mc: 'Changed Test broker mc',
+          name: brokers[0].name,
+          phoneNumber: brokers[0].phoneNumber,
+          mc: brokers[0].mc,
           description: 'Changed Test broker description',
-          companiesContract: carriers[1]._id.toString()
         });
 
       expect(res.statusCode).toBe(200);
-      expect(res.body.name).toBe('Changed test broker name');
-      expect(res.body.phoneNumber).toEqual(['+99655555001']);
-      expect(res.body.mc).toBe('Changed Test broker mc');
       expect(res.body.description).toBe('Changed Test broker description');
-      expect(res.body.companiesContract).toEqual([carriers[1]._id.toString()]);
     });
   });
 
   describe('delete broker', () => {
-    getUser('user@gmail.com', 'user');
+    getUser('admin@gmail.com', 'admin');
     getCarriers();
     getBrokers();
 

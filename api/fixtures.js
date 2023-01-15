@@ -79,6 +79,14 @@ const run = async () => {
     phoneNumber: '+267●5350802',
     isWorking: 'disabled',
   }, {
+      email: 'user3@gmail.com',
+      password: 'user3',
+      role: 'user',
+      token: nanoid(),
+      displayName: 'User3',
+      phoneNumber: '+267●5350810',
+      isWorking: 'active',
+    }, {
     email: 'bahaway@gmail.com',
     password: 'bahaway',
     role: 'carrier',

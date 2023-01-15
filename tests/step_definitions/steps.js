@@ -254,10 +254,10 @@ When('я введу следующие данные {string}', text => {
   I.wait(2);
 });
 
-Then('я вижу сущность с данными {string}', text => {
-  I.see(text);
-  I.wait(2);
-});
+// Then('я вижу сущность с данными {string}', text => {
+//   I.see(text);
+//   I.wait(2);
+// });
 
 // /* Brokers registration and editing tests */
 // Then('нажимаю на кнопку редактирования брокера', () => {

@@ -10,7 +10,6 @@ import {
   clearCarriersErrors,
   createCarrierRequest,
   editCarrierRequest,
-  fetchCarriersRequest
 } from "../../store/actions/carriersActions";
 import AddButton from "../UI/Button/AddButton/AddButton";
 import FileInput from "../UI/Form/FileInput/FileInput";
@@ -60,9 +59,6 @@ const CarriersModal = ({modalTitle, isAdd, carrierID}) => {
     document: ''
   });
 
-  useEffect(() => {
-    dispatch(fetchCarriersRequest());
-  }, [dispatch]);
 
   useEffect(() => {
     if (newError === null) {
@@ -260,6 +256,7 @@ const CarriersModal = ({modalTitle, isAdd, carrierID}) => {
                         name={'document'}
                         value={isAdd ? newData.document.value : editedData.document}
                         onChange={fileChangeHandler}
+                        accept={'.png, .jpg, .jpeg, .pdf'}
                       />
                     </Grid>
 

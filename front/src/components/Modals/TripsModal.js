@@ -6,15 +6,12 @@ import Typography from "@mui/material/Typography";
 import FormElement from "../UI/Form/FormElement/FormElement";
 import FormSelect from "../UI/Form/FormSelect/FormSelect";
 import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
-import {fetchDriversRequest} from "../../store/actions/driversActions";
 import {clearCreateTripErrorRequest, createTripRequest, editTripRequest} from "../../store/actions/tripsActions";
 import FileInput from "../UI/Form/FileInput/FileInput";
 import {DesktopDatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {apiUrl} from "../../config";
-import {fetchUsersRequest} from "../../store/actions/usersActions";
 import AddButton from "../UI/Button/AddButton/AddButton";
-import {fetchBrokersRequest} from "../../store/actions/brokersActions";
 import TripsComments from '../TripsComments/TripsComments';
 
 const style = {
@@ -101,12 +98,6 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
   });
 
   const [commentArray, setCommentArray] = useState([]);
-
-  useEffect(() => {
-    dispatch(fetchUsersRequest());
-    dispatch(fetchDriversRequest());
-    dispatch(fetchBrokersRequest());
-  }, [dispatch]);
 
   useEffect(() => {
     if (newError === null) {
@@ -470,30 +461,30 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                     onChange={inputChangeHandler}
                     error={getFieldError('driverId')}
                     driver={true}
-                    array={drivers}
+                    array={drivers.filter((driver) => {return driver.status === 'ready' || driver.status === 'in transit'})}
                     required={false}
                     variant="object"
                   />
 
                   <Grid item>
-                    <FileInput name="RC" label="RC file" onChange={fileChangeHandler} required={false}/>
+                    <FileInput name="RC" label="RC file" value={isAdd ? newData.RC : editedData.RC} onChange={fileChangeHandler} required={false} accept={'.png, .jpg, .jpeg, .pdf'}/>
                   </Grid>
 
                   <Grid item>
-                    <FileInput name="BOL" label="BOL file" onChange={fileChangeHandler} required={false}/>
+                    <FileInput name="BOL" label="BOL file" value={isAdd ? newData.BOL : editedData.BOL} onChange={fileChangeHandler} required={false} accept={'.png, .jpg, .jpeg, .pdf'}/>
                   </Grid>
 
                   <Box sx={{display: 'flex', justifyContent: 'space-between', width: '100%', margin: '12px 0 12px 10px'}}>
                     {editedData && editedData.RC
                       ? <ButtonWithProgress variant="contained" component="label">
-                          <a href={apiUrl + editedData.RC.slice(6)} target="_blank" download className={classes.link} rel="noreferrer">Download RC</a>
+                          <a href={apiUrl + '/' + editedData.RC} target="_blank" rel="noreferrer" className={classes.link}>Download RC</a>
                         </ButtonWithProgress>
                       : null
                     }
 
                     {editedData && editedData.BOL
                       ? <ButtonWithProgress variant="contained" component="label">
-                          <a href={apiUrl + editedData.BOL.slice(6)} target="_blank" download className={classes.link} rel="noreferrer">Download BOL</a>
+                          <a href={apiUrl + '/' + editedData.BOL} target="_blank" rel="noreferrer" className={classes.link}>Download BOL</a>
                         </ButtonWithProgress>
                       : null
                     }

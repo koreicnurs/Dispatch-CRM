@@ -97,7 +97,7 @@ const AppToolbar = ({burgerBtn}) => {
                                     ))
                                 }
 
-                                <MenuItem onClick={() => dispatch(logoutRequest())}>
+                                <MenuItem onClick={() => dispatch(logoutRequest())} component={Link} to={'/login'}>
                                     <ListItemIcon>
                                         <Logout fontSize="small"/>
                                     </ListItemIcon>

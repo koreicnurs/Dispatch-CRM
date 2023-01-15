@@ -397,7 +397,7 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
                                         </Grid>
                                     </Grid>
 
-                                    <Grid item xs={6}>
+                                    <Grid item sx={{width: {xs: '100%', md: '49.5%'}}}>
                                         <ButtonWithProgress
                                             loading={loading}
                                             disabled={loading}
@@ -410,7 +410,7 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
                                         </ButtonWithProgress>
                                     </Grid>
 
-                                    <Grid item xs={6}>
+                                    <Grid item sx={{width: {xs: '100%', md: '49.5%'}}}>
                                         <ButtonWithProgress
                                             type="button"
                                             fullWidth

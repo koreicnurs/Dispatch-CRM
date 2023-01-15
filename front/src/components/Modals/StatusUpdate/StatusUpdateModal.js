@@ -399,20 +399,10 @@ const StatusUpdateModal = ({driverEmail}) => {
                                             </Grid>
                                         </Grid>
                                     </Grid>
-                                    <Grid
-                                        item
-                                        container
-                                        spacing={2}
-                                        justifyContent='space-between'
-                                        flexDirection={{xs: 'column', md: 'row'}}
-                                    >
+
                                         <Grid
                                             item
-                                            sx={
-                                            {
-                                                maxWidth: {xs: '100%'},
-                                                width: {md: '49.5%'},
-                                            }}
+                                            sx={{width: {xs: '100%', md: '49.5%'}}}
                                         >
                                             <ButtonWithProgress
                                                 loading={editLoading}
@@ -423,17 +413,13 @@ const StatusUpdateModal = ({driverEmail}) => {
                                                 color="primary"
                                                 maxWitdh='100%'
                                             >
-                                                Save Changes
+                                                Save
                                             </ButtonWithProgress>
                                         </Grid>
 
                                         <Grid
                                             item
-                                            sx={
-                                                {
-                                                    maxWidth: {xs: '100%'},
-                                                    width: {md: '49.5%'},
-                                                }}
+                                            sx={{width: {xs: '100%', md: '49.5%'}}}
                                         >
                                             <ButtonWithProgress
                                                 type="button"
@@ -445,7 +431,7 @@ const StatusUpdateModal = ({driverEmail}) => {
                                                 Cancel
                                             </ButtonWithProgress>
                                         </Grid>
-                                    </Grid>
+
                                 </Grid>
                             </Grid>
                         </div>

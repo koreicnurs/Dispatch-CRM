@@ -20,10 +20,12 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 800,
+  width: {xs: '80%', md: '70%'},
   bgcolor: 'background.paper',
   boxShadow: 24,
-  padding: '20px'
+  padding: '20px',
+  overflow: 'auto',
+  maxHeight: '600px',
 };
 
 const CarriersModal = ({modalTitle, isAdd, carrierID}) => {
@@ -168,7 +170,12 @@ const CarriersModal = ({modalTitle, isAdd, carrierID}) => {
           <Box sx={style}>
             <div>
               <Grid>
-                <Typography variant={'h6'}>
+                <Typography
+                    variant={'h6'}
+                    sx={{
+                      marginBottom: '20px'
+                    }}
+                >
                   {modalTitle}
                 </Typography>
 
@@ -214,7 +221,7 @@ const CarriersModal = ({modalTitle, isAdd, carrierID}) => {
                       }}>{getFieldError('phoneNumber')}</FormHelperText>
                     </Grid>
 
-                    <Grid item width='50%'>
+                    <Grid item width={{xs: '100%', md: '49.5%'}}>
                       <FormElement
                         name={'mc'}
                         label={'MC'}
@@ -225,7 +232,7 @@ const CarriersModal = ({modalTitle, isAdd, carrierID}) => {
                       />
                     </Grid>
 
-                    <Grid item width='50%'>
+                    <Grid item width={{xs: '100%', md: '49.5%'}}>
                       <FormElement
                         name={'dot'}
                         label={'DOT'}

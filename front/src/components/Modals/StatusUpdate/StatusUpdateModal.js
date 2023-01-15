@@ -163,7 +163,12 @@ const StatusUpdateModal = ({driverEmail}) => {
                     <Box sx={style}>
                         <div>
                             <Grid>
-                                <Typography variant={'h6'}>
+                                <Typography
+                                    variant={'h6'}
+                                    sx={{
+                                        marginBottom: '20px'
+                                    }}
+                                >
                                     Edit driver
                                 </Typography>
 

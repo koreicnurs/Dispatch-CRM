@@ -13,6 +13,7 @@ import CarrierTrips from "./containers/CarrierTrips/CarrierTrips";
 import Administrators from "./containers/Administrators/Administrators";
 import UserCarriers from "./containers/UserCarriers/UserCarriers";
 import Learnings from "./containers/Learnings/Learnings";
+import LearningCategory from "./containers/LearningCategory/LearningCategory";
 
 const ProtectedRoute = ({isAllowed, redirectTo, ...props}) => {
     return isAllowed ?
@@ -80,6 +81,13 @@ const App = () => {
                   redirectTo="/login"
                   path="/learnings"
                   component={Learnings}
+                />
+                <ProtectedRoute
+                  isAllowed={user}
+                  redirectTo="/login"
+                  path="/learning"
+                  exact
+                  component={LearningCategory}
                 />
                 <ProtectedRoute
                   isAllowed={user}

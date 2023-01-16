@@ -33,9 +33,9 @@ import {
 import {addNotification} from "../actions/notifierActions";
 import axiosApi from "../../axiosApi";
 
-export function* fetchTrips({payload: value}) {
+export function* fetchTrips({payload}) {
   try{
-      const response = yield axiosApi('/loads/' + value);
+      const response = yield axiosApi('/loads/' + payload.value, {params: {...payload.limitation}});
       yield put(fetchTripsSuccess(response.data));
   } catch (e) {
     yield put(fetchTripsFailure(e.response.error));

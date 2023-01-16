@@ -11,119 +11,127 @@ import CarrierTableBody from "../../components/Table/TableBody/CarrierTableBody"
 import SearchIcon from '@mui/icons-material/Search';
 import useTableSearch from '../../components/UI/Filter/useTableSearch/useTableSearch';
 
-const SearchStyle = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: '#fff',
-  '&:hover': {
+const SearchStyle = styled('div')(({theme}) => ({
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
     backgroundColor: '#fff',
-  },
-  marginRight: theme.spacing(6),
-  marginLeft: 0,
-  marginTop: '25px',
-  width: '50%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
-  },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '50%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
+    '&:hover': {
+        backgroundColor: '#fff',
     },
-  },
+    marginRight: theme.spacing(6),
+    marginLeft: 0,
+    marginTop: '25px',
+    width: '50%',
+    [theme.breakpoints.up('sm')]: {
+        marginLeft: theme.spacing(3),
+        width: 'auto',
+    },
+}));
+
+const SearchIconWrapper = styled('div')(({theme}) => ({
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+}));
+
+const StyledInputBase = styled(InputBase)(({theme}) => ({
+    color: 'inherit',
+    '& .MuiInputBase-input': {
+        padding: theme.spacing(1, 1, 1, 0),
+        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+        transition: theme.transitions.create('width'),
+        width: '50%',
+        [theme.breakpoints.up('md')]: {
+            width: '20ch',
+        },
+    },
 }));
 
 const columns = [
-  {key: 'title', label: 'Company'},
-  {key: 'phoneNumber', label: 'Phone Number'},
-  {key: 'mc', label: 'MC'},
-  {key: 'dot', label: 'DOT'},
-  {key: 'fedid', label: 'FED-ID'},
-  {key: 'document', label: 'Document'},
-  {key: 'description', label: 'Description'}
+    {key: 'title', label: 'Company'},
+    {key: 'phoneNumber', label: 'Phone Number'},
+    {key: 'mc', label: 'MC'},
+    {key: 'dot', label: 'DOT'},
+    {key: 'fedid', label: 'FED-ID'},
+    {key: 'document', label: 'Document'},
+    {key: 'description', label: 'Description'}
 ];
 
 
 const Carriers = () => {
-  const [searchVal, setSearchVal] = useState(null);
+    const [searchVal, setSearchVal] = useState(null);
 
-  
-  const dispatch = useDispatch();
-  const carriers = useSelector(state => state.carriers.carriers);
 
-  useEffect(() => {
-    dispatch(fetchCarriersRequest());
-  }, [dispatch]);
-  
-  const { filteredData} = useTableSearch({
-    searchVal,
-    data: carriers
-  });
+    const dispatch = useDispatch();
+    const carriers = useSelector(state => state.carriers.carriers);
 
-  return (
-    <>
-      <InnerContainer>
+    useEffect(() => {
+        dispatch(fetchCarriersRequest());
+    }, [dispatch]);
 
-        <Grid item sx={{paddingLeft: "15px"}}>
-          <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
-            Carriers
-          </Typography>
-        </Grid>
-        <Grid
-          item
-          container
-          spacing={2}
-          justifyContent="space-between">
-          <Grid padding="15px">
-            <AddCarrier/>
-          </Grid>
-  
-          <Grid>
-            <SearchStyle>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search"
-                inputProps={{ 'aria-label': 'search' }}
-                onChange={e => setSearchVal(e.target.value)}
-              />
-            </SearchStyle>
-          </Grid>
-        </Grid>
+    const {filteredData} = useTableSearch({
+        searchVal,
+        data: carriers
+    });
 
-        <InnerTable
-          header={<TableHeaderRow headerCells={columns} data={true} sx={{fontSize: "12px", fontWeight: "bold"}}/>}
-          body={
-            <CarrierTableBody
-              columns={columns}
-              carriers={filteredData}
-            />
-          }
-        />
+    return (
+        <>
+            <InnerContainer>
 
-      </InnerContainer>
+                <Grid item sx={{paddingLeft: "15px"}}>
+                    <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
+                        Carriers
+                    </Typography>
+                </Grid>
+                <Grid
+                    item
+                    container
+                    spacing={2}
+                    justifyContent="space-between">
+                    <Grid padding="15px">
+                        <AddCarrier/>
+                    </Grid>
 
-    </>
-  );
+                    <Grid
+                        sx={{
+                            margin: '10px 20px 20px 40px'
+                        }}
+                    >
+                        <SearchStyle
+                            sx={{
+                                width: '100%',
+                            }}>
+                            <SearchIconWrapper>
+                                <SearchIcon/>
+                            </SearchIconWrapper>
+                            <StyledInputBase
+                                placeholder="Search"
+                                inputProps={{'aria-label': 'search'}}
+                                onChange={e => setSearchVal(e.target.value)}
+                            />
+                        </SearchStyle>
+                    </Grid>
+                </Grid>
+
+                <InnerTable
+                    header={<TableHeaderRow headerCells={columns} data={true}
+                                            sx={{fontSize: "12px", fontWeight: "bold"}}/>}
+                    body={
+                        <CarrierTableBody
+                            columns={columns}
+                            carriers={filteredData}
+                        />
+                    }
+                />
+
+            </InnerContainer>
+
+        </>
+    );
 };
 
 export default Carriers;

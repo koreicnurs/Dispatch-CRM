@@ -180,6 +180,27 @@ describe('Testing \'drivers\' route', () => {
     });
   });
 
+  describe('changing driver status', () => {
+    if (user === null) getUser('admin@gmail.com', 'admin');
+    getDriver();
+    it('should edit driver status', async () => {
+      const res = await request(app)
+        .put('/drivers/status/' + driver._id.toString())
+        .set({Authorization: user.token})
+        .send({
+          status: 'in transit',
+          currentStatus: 'rest',
+          ETA: '10:00',
+          readyTime: '10/02/2023'
+        });
+      expect(res.statusCode).toBe(200);
+      expect(res.body.status).toBe('in transit');
+      expect(res.body.currentStatus).toBe('rest');
+      expect(res.body.ETA).toBe('10:00');
+      expect(res.body.readyTime).toBe('10/02/2023');
+    });
+  });
+
   describe('changing driver data by Carrier', () => {
 
     it('should edit driver by Carrier', async () => {

@@ -105,8 +105,16 @@ const Drivers = () => {
         <Grid padding="15px">
           <AddDriver/>
         </Grid>
-        <Grid>
-          <SearchStyle>
+        <Grid
+            sx={{
+              margin: '8px 20px 20px 40px'
+            }}
+        >
+          <SearchStyle
+              sx={{
+                width: '100%',
+              }}
+          >
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>

@@ -64,6 +64,7 @@ export function* addDriver({payload}) {
     }
     yield put(addNotification({message: 'You have successfully added a driver!', variant: 'success'}));
   } catch (e) {
+    console.log(e)
     yield put(addDriverFailure(e.response && e.response.data));
     yield put(addNotification({message: 'Driver creation failed!', variant: 'error'}));
   }

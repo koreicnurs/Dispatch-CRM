@@ -30,10 +30,10 @@
     То я вижу текст "HELLO, ADMIN"
     Допустим я открываю страницу "brokers"
     И нажимаю на кнопку редактирования брокера
-    Если я введу данные:
-      | name        | Ali         |
-      | phoneNumber | +0333333333 |
-      | mc          | 238164      |
-      | description | test broker |
+    Если я введу новые данные:
+      | name        | Ali          |
+      | phoneNumber | ++0333333333 |
+      | mc          | 238164       |
+      | description | test broker  |
     Затем нажимаю на "Save"
     То я вижу "Broker edit is failed!"

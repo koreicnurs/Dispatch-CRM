@@ -46,7 +46,45 @@ router.get('/carrier', auth, permit('carrier'), async (req, res) => {
 
 router.get('/', auth, async (req, res) => {
   try {
-    if (req.query.status) {
+    if (req.query.filter) {
+      const params = req.query.filter;
+      const carriers = await Carrier.find();
+      const array = [];
+      carriers.map(item => {
+        if (item.title.includes(params.toUpperCase())) {
+          array.push(item._id)
+        }
+      });
+      const carriersId = req.query.carrier ? req.query.carrier.map(item => (
+        mongoose.Types.ObjectId(item)
+      )) : null;
+      const filterPart = {"$or": [
+          {email: {$regex: params}},
+          {companyId: { $in: array }},
+          {name: {$regex: params}},
+          {phoneNumber: {$regex: params}},
+          {status: {$regex: params}},
+          {currentStatus: {$regex: params}},
+          {pickUp: {$regex: params}},
+          {delivery: {$regex: params}},
+          {ETA: {$regex: params}},
+          {readyTime: {$regex: params}}
+        ]};
+    
+      let filter;
+      if (!Boolean(req.query.carrier) && req.query.status === 'Status') {
+        filter = filterPart;
+      } else if (!Boolean(req.query.carrier)) {
+        filter = {$and: [{status: req.query.status}, filterPart]};
+      } else if (req.query.status === 'Status') {
+        filter = {$and: [{companyId: { $in: carriersId }}, filterPart]};
+      } else if (Boolean(req.query.carrier) && req.query.status !== 'Status') {
+        filter = {$and: [{companyId: { $in: carriersId }, status: req.query.status}, filterPart]};
+      }
+    
+      const drivers = await Driver.find(filter).populate('companyId', 'title');
+      res.send(drivers);
+    } else if (req.query.status) {
       const params = req.query;
       const array = params.carrier ? params.carrier.map(item => (
         mongoose.Types.ObjectId(item)

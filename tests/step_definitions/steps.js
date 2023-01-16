@@ -126,14 +126,14 @@ Then('я нажимаю на кнопку открытия модального 
   I.click('//td//div');
 });
 //
-// When('я введу данные в форму редактирования водителя:', table => {
-//   table.rows.forEach(row => {
-//     const name = row.cells[0].value;
-//     const value = row.cells[1].value;
-//     I.clearField(name);
-//     I.fillField(name, value);
-//   });
-// });
+When('я введу новые данные:', table => {
+  table.rows.forEach(row => {
+    const name = row.cells[0].value;
+    const value = row.cells[1].value;
+    I.clearField(name);
+    I.fillField(name, value);
+  });
+});
 //
 // Then('нажимаю на выбор компании для редактирования', () => {
 //   I.click(`//form/div[3]/div/div/div/div/div`);
@@ -207,14 +207,14 @@ Then('прикрепляю в поле {string} файл {string}', (fieldName, 
 //
 // /* Trips upcoming/transit/history edit test */
 //
-// Then('нажимаю на кнопку, чтобы открыть форму редактирования данных о грузе', () => {
-//   I.click('//td//div//button');
-//   I.wait(1);
-// });
-// Then('я нажимаю на кнопку из списка {string}', edit => {
-//   I.click(`//div//li[contains(text(), "${edit}")]`);
-//   I.wait(1);
-// });
+Then('нажимаю на кнопку, чтобы открыть форму редактирования данных о грузе', () => {
+  I.click('//td//div//button');
+  I.wait(1);
+});
+Then('я нажимаю на кнопку из списка {string}', edit => {
+  I.click(`//div//li[contains(text(), "${edit}")]`);
+  I.wait(1);
+});
 // When('я напишу данные о грузе:', table => {
 //   table.rows.forEach(row => {
 //     const name = row.cells[0].value;
@@ -251,7 +251,7 @@ Then('я ввожу данные в поле поиска', () => {
 
 When('я введу следующие данные {string}', text => {
   I.fillField('search', text);
-  I.wait(2);
+  I.wait(3);
 });
 
 // Then('я вижу сущность с данными {string}', text => {

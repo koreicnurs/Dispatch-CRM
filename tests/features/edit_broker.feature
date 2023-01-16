@@ -15,7 +15,7 @@
     То я вижу текст "HELLO, ADMIN"
     Допустим я открываю страницу "brokers"
     И нажимаю на кнопку редактирования брокера
-    Если я введу данные:
+    Если я введу новые данные:
       | description | test broker edit |
     Затем нажимаю на "Save"
     То я вижу "You have successfully edited a broker!"

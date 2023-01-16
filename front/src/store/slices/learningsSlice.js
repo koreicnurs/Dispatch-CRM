@@ -7,6 +7,7 @@ const learningsSlice = createSlice({
   initialState: {
     categories: [],
     category: [],
+    article: null,
     loading: false,
     error: null,
     addCategoryLoading: false,
@@ -85,6 +86,19 @@ const learningsSlice = createSlice({
       state.articleLoading = false;
     },
     deleteLearningArticleFailure(state, action) {
+      state.articleLoading = false;
+      state.articleError = action.payload;
+    },
+
+    fetchLearningArticleRequest(state) {
+      state.articleLoading = true;
+      state.articleError = null;
+    },
+    fetchLearningArticleSuccess(state, action) {
+      state.articleLoading = false;
+      state.article = action.payload;
+    },
+    fetchLearningArticleFailure(state, action) {
       state.articleLoading = false;
       state.articleError = action.payload;
     },

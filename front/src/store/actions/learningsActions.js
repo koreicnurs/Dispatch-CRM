@@ -19,6 +19,9 @@ export const {
   deleteLearningArticleRequest,
   deleteLearningArticleSuccess,
   deleteLearningArticleFailure,
+  fetchLearningArticleRequest,
+  fetchLearningArticleSuccess,
+  fetchLearningArticleFailure,
   clearLearningCategoryErrors,
   clearLearningArticleErrors
 } = learningsSlice.actions;

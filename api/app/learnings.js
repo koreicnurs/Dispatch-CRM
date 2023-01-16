@@ -25,7 +25,11 @@ router.get('/', auth, async (req, res) => {
 
 router.get('/:id', auth, async (req, res) => {
   try {
-    const learning = await Learning.findById(req.params.id).populate('learningCategory');
+    const learning = await Learning
+      .findById(req.params.id)
+      .sort({datetime: -1})
+      .populate('learningCategory')
+      .populate('comments.authorId', 'displayName role');
 
     if (!learning) {
       return res.status(404).send('Learning not found');
@@ -67,7 +71,7 @@ router.post('/comment/:id', auth, async (req, res) => {
     }
     const {text} = req.body;
 
-    learning.comment.push({authorId: req.user._id, text});
+    learning.comments.push({authorId: req.user._id, text, datetime: new Date().toISOString()});
 
     await learning.save();
 

@@ -11,7 +11,7 @@ import {
   deleteLearningArticleSuccess,
   editLearningArticleFailure,
   editLearningArticleRequest,
-  editLearningArticleSuccess,
+  editLearningArticleSuccess, fetchLearningArticleFailure, fetchLearningArticleRequest, fetchLearningArticleSuccess,
   fetchLearningByCategoryFailure,
   fetchLearningByCategoryRequest,
   fetchLearningByCategorySuccess,
@@ -87,6 +87,16 @@ export function* deleteLearningArticle({payload: id}) {
   }
 }
 
+export function* fetchLearningArticle({payload: id}) {
+  try {
+    const response = yield axiosApi('/learnings/' + id);
+    yield put(fetchLearningArticleSuccess(response.data));
+  } catch (e) {
+    yield put(fetchLearningArticleFailure(e.response && e.response.data));
+    yield put(addNotification({message: 'Learning Article fetch failed!', variant: 'error'}));
+  }
+}
+
 const learningsSaga = [
   takeEvery(fetchLearningCategoriesRequest, fetchLearningCategories),
   takeEvery(addLearningCategoryRequest, addLearningCategory),
@@ -94,6 +104,7 @@ const learningsSaga = [
   takeEvery(addLearningArticleRequest, addLearningArticle),
   takeEvery(editLearningArticleRequest, editLearningArticle),
   takeEvery(deleteLearningArticleRequest, deleteLearningArticle),
+  takeEvery(fetchLearningArticleRequest, fetchLearningArticle),
 ];
 
 export default learningsSaga;

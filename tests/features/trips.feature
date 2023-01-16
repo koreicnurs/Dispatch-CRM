@@ -49,7 +49,6 @@
     Допустим я открываю страницу "loads/?status=upcoming"
     И я нажимаю на кнопку "add"
     Если я напишу данные:
-      | datePU    | 11/20/2022    |
-      | dateDEL   | 11/18/2022    |
+      | datePU    | 11   |
     Когда нажимаю на "Save"
     То я вижу "Trip creation failed!"

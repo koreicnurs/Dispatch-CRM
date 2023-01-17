@@ -15,7 +15,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 800,
+  width: {xs: '80%', md: '60%'},
   bgcolor: 'background.paper',
   boxShadow: 24,
   padding: '20px'
@@ -122,7 +122,7 @@ const DispatcherModal = ({modal, title, dispatcher, modalHandler, submitFormHand
 
             <Grid item xs={12} container spacing={1} justifyContent="space-between">
 
-              <Grid item xs={6}>
+              <Grid item sx={{width: {xs: '100%', md: '49.5%'}}}>
                 <ButtonWithProgress
                   loading={loading}
                   disabled={loading}
@@ -134,7 +134,7 @@ const DispatcherModal = ({modal, title, dispatcher, modalHandler, submitFormHand
                 </ButtonWithProgress>
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid item sx={{width: {xs: '100%', md: '49.5%'}}}>
                 <ButtonWithProgress
                   type="button"
                   fullWidth

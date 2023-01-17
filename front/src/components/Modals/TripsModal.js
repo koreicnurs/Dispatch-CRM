@@ -519,7 +519,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                     </ButtonWithProgress>
                   </Grid>
 
-                  <Grid item xsx={{width: {xs: '100%', md: '49.5%'}}}>
+                  <Grid item sx={{width: {xs: '100%', md: '49.5%'}}}>
                     <ButtonWithProgress
                       type="button"
                       fullWidth

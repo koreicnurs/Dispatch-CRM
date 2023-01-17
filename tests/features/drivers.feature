@@ -47,7 +47,7 @@
       | email       | umot@gmail.com                   |
       | name        | Umot                             |
       | phoneNumber | +2675350802                      |
-      | address     | US, LA, Avalon c., str. 1, h. 45 |
+      | address     | US, LA, Avalan c., str. 1, h. 45 |
       | DOB         | 15.12.1980                       |
       | info        | Lorem ipsum dolor sit amet       |
       | reference   | Punctual, decent                 |

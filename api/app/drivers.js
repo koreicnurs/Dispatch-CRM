@@ -49,6 +49,8 @@ router.get('/', auth, async (req, res) => {
     if (req.query.filter) {
       const params = req.query.filter;
       const carriers = await Carrier.find();
+      const regex = {$regex: params};
+      
       const array = [];
       carriers.map(item => {
         if (item.title.includes(params.toUpperCase())) {
@@ -58,19 +60,33 @@ router.get('/', auth, async (req, res) => {
       const carriersId = req.query.carrier ? req.query.carrier.map(item => (
         mongoose.Types.ObjectId(item)
       )) : null;
-      const filterPart = {"$or": [
-          {email: {$regex: params}},
+      
+      const filterPart = req.query.history !== 'drivers' ?
+        {"$or": [
+          {email: regex},
           {companyId: { $in: array }},
-          {name: {$regex: params}},
-          {phoneNumber: {$regex: params}},
-          {status: {$regex: params}},
-          {currentStatus: {$regex: params}},
-          {pickUp: {$regex: params}},
-          {delivery: {$regex: params}},
-          {ETA: {$regex: params}},
-          {readyTime: {$regex: params}}
-        ]};
-    
+          {name: regex},
+          {phoneNumber: regex},
+          {status: regex},
+          {currentStatus: regex},
+          {pickUp: regex},
+          {delivery: regex},
+          {ETA: regex},
+          {readyTime: regex},
+          {notes: regex}
+        ]} :
+        {"$or": [
+            {email: regex},
+            {companyId: { $in: array }},
+            {name: regex},
+            {phoneNumber: regex},
+            {'description.address': regex},
+            {'description.DOB': regex},
+            {'description.info': regex},
+            {'description.reference': regex},
+          ]
+        };
+      
       let filter;
       if (!Boolean(req.query.carrier) && req.query.status === 'Status') {
         filter = filterPart;

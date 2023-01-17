@@ -84,7 +84,8 @@ const StatusUpdate = () => {
     dispatch(fetchDriversRequest({
         carrier: [...selectedCarrier].map(item => item.id),
         status: selectedStatus,
-        filter: searchVal.replace(/[+*]/gi, '')
+        filter: searchVal.replace(/[+*]/gi, ''),
+        history: 'status-update'
       }
     ));
     const interval = setInterval(() => {

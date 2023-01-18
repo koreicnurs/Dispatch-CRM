@@ -103,6 +103,18 @@ const learningsSlice = createSlice({
       state.articleError = action.payload;
     },
 
+    addLearningCommentRequest(state) {
+      state.articleLoading = true;
+      state.articleError = null;
+    },
+    addLearningCommentSuccess(state) {
+      state.articleLoading = false;
+    },
+    addLearningCommentFailure(state, action) {
+      state.articleLoading = false;
+      state.articleError = action.payload;
+    },
+
     clearLearningCategoryErrors(state) {
       state.addCategoryError = null;
       state.error = null;

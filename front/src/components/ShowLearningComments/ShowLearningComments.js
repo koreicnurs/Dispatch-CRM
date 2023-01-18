@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 
 const ShowLearningComments = ({author, text, role, datetime}) => {
   return (
-    <Grid container sx={{background: 'white'}} mt={2} >
+    <Grid container sx={{background: 'white', borderRadius: '5px'}} my={2}>
       <Grid item fontSize='12px' xs={2}>
         <Typography variant="p" color="text.secondary">
           <b>{author}</b>

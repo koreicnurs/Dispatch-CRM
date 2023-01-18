@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {fetchLearningArticleRequest} from "../../store/actions/learningsActions";
-import {Box} from "@mui/material";
+import {addLearningCommentRequest, fetchLearningArticleRequest} from "../../store/actions/learningsActions";
+import {Box, Grid} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
 import ShowLearningComments from "../../components/ShowLearningComments/ShowLearningComments";
@@ -11,7 +11,6 @@ import ButtonWithProgress from "../../components/UI/Button/ButtonWithProgress/Bu
 const LearningArticle = ({match}) => {
   const dispatch = useDispatch();
   const article = useSelector(state => state.learnings.article);
-  const error = useSelector(state => state.learnings.articleError);
   const loading = useSelector(state => state.learnings.articleLoading);
 
   const [comment, setComment] = useState('');
@@ -24,14 +23,15 @@ const LearningArticle = ({match}) => {
     setComment(e.target.value);
   };
 
-  const onCommentSubmit = e => {
+  const onCommentSubmit = async e => {
     e.preventDefault();
+    await dispatch(addLearningCommentRequest({id: match.params.id, data: comment}));
     setComment('');
   };
 
   return article && (
     <InnerContainer >
-      <Box paddingX='30px' paddingTop='20px'>
+      <Box paddingX='30px' paddingTop='20px' maxWidth='80%' minWidth='300px'>
         <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
           {article.title}
         </Typography>
@@ -39,27 +39,46 @@ const LearningArticle = ({match}) => {
           {article.text}
         </Typography>
 
-        <Box pt='20px' maxWidth='80%' minWidth='270px'>
-          <form className="CommentForm" onSubmit={onCommentSubmit}>
-            <FormElement
-              type='text'
-              name='comment'
-              value={comment}
-              onChange={onCommentChange}
-              label='Add Your comment...'
-              required={true}
-            />
-            <ButtonWithProgress
-              loading={loading}
-              disabled={loading}
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{marginTop: '5px'}}
-            >
-              Send
-            </ButtonWithProgress>
-          </form>
+        <Box pt='20px'>
+          <Grid
+            component='form'
+            container
+            spacing={2}
+            onSubmit={onCommentSubmit}
+          >
+              <FormElement
+                type='text'
+                name='comment'
+                value={comment}
+                onChange={onCommentChange}
+                label='Add Your comment...'
+                required={true}
+                multiline
+                maxRows={10}
+              />
+              <Grid item sx={{width: '50%'}}>
+                <ButtonWithProgress
+                  loading={loading}
+                  disabled={loading}
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                >
+                  Save
+                </ButtonWithProgress>
+              </Grid>
+              <Grid item sx={{width: '50%'}}>
+                <ButtonWithProgress
+                  type="button"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  onClick={() => setComment('')}
+                >
+                  Cancel
+                </ButtonWithProgress>
+              </Grid>
+          </Grid>
 
           <h4> Comments </h4>
           {article.comments.map(comment => (

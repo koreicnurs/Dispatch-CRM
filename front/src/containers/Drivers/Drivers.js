@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Grid, Typography} from '@mui/material';
+import {Grid, InputBase, styled, Typography} from '@mui/material';
 import {fetchDriversByCarrierRequest, fetchDriversRequest} from '../../store/actions/driversActions';
 import {fetchCarriersRequest} from "../../store/actions/carriersActions";
 import AddDriver from "../../components/Modals/AddDriver";
@@ -9,8 +9,6 @@ import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import DriverTableBody from "../../components/Table/TableBody/DriverTableBody";
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
 import SearchIcon from "@mui/icons-material/Search";
-import {InputBase, styled} from "@mui/material";
-import useTableSearch from "../../components/UI/Filter/useTableSearch/useTableSearch";
 
 
 const SearchStyle = styled('div')(({ theme }) => ({
@@ -66,7 +64,7 @@ const columns = [
 ];
 
 const Drivers = () => {
-  const [searchVal, setSearchVal] = useState(null);
+  const [searchVal, setSearchVal] = useState('');
 
   const dispatch = useDispatch();
   const drivers = useSelector(state => state.drivers.drivers);
@@ -74,20 +72,21 @@ const Drivers = () => {
 
   useEffect(() => {
     if (user.role !== 'carrier') {
-      dispatch(fetchDriversRequest());
+      dispatch(fetchDriversRequest({
+        carrier: [],
+        status: 'Status',
+        filter: searchVal.replace(/[+*]/gi, ''),
+        history: 'drivers'
+      }));
       dispatch(fetchCarriersRequest());
     } else {
       dispatch(fetchDriversByCarrierRequest());
     }
-  }, [dispatch, user.role]);
-
-
-
-  const { filteredData} = useTableSearch({
-    searchVal,
-    data: drivers
-  });
-
+  }, [dispatch, user.role, searchVal]);
+  
+  const searchValHandler = e => {
+    setSearchVal((e.target.value).trim());
+  };
 
   return (
     <InnerContainer>
@@ -121,7 +120,7 @@ const Drivers = () => {
             <StyledInputBase
               placeholder="Search"
               inputProps={{ 'aria-label': 'search' }}
-              onChange={e => setSearchVal(e.target.value)}
+              onChange={searchValHandler}
             />
           </SearchStyle>
         </Grid>
@@ -132,7 +131,7 @@ const Drivers = () => {
         body={
           <DriverTableBody
             columns={columns}
-            filteredData={filteredData}
+            filteredData={drivers}
           />
         }
       />

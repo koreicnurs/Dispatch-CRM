@@ -5,7 +5,6 @@ import {Grid, InputBase, styled, TableCell} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
-import useTableSearch from "../../components/UI/Filter/useTableSearch/useTableSearch";
 import InnerTable from "../../components/Table/InnerTable";
 import StatusUpdateTableBody from "../../components/Table/TableBody/StatusUpdateTableBody";
 import {statusInterval} from "../../config";
@@ -79,17 +78,21 @@ const StatusUpdate = () => {
   const [carrierSelector, setCarrierSelector] = useState(["Carriers"]);
   const [selectedCarrier, setSelectedCarrier] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("Status");
-
+  const [searchVal, setSearchVal] = useState('');
+  
   useEffect(() => {
     dispatch(fetchDriversRequest({
-      carrier: [...selectedCarrier].map(item => item.id),
-      status: selectedStatus}
+        carrier: [...selectedCarrier].map(item => item.id),
+        status: selectedStatus,
+        filter: searchVal.replace(/[+*]/gi, ''),
+        history: 'status-update'
+      }
     ));
     const interval = setInterval(() => {
       dispatch(fetchDriversRequest());
-      }, statusInterval);
+    }, statusInterval);
     return () => clearInterval(interval);
-    }, [dispatch, selectedCarrier, selectedStatus]);
+  }, [dispatch, selectedCarrier, selectedStatus, searchVal]);
 
     useEffect(() => {
       dispatch(fetchCarriersRequest());
@@ -111,8 +114,12 @@ const StatusUpdate = () => {
     const selectedStatusHandler = event => {
       setSelectedStatus(event.target.value);
     };
-
-    const tableHeader = (
+  
+    const searchValHandler = e => {
+      setSearchVal((e.target.value).trim());
+    };
+  
+  const tableHeader = (
       <>
         {carrierSelector.length !== null &&
           <>
@@ -149,14 +156,6 @@ const StatusUpdate = () => {
       </>
     );
 
-    const [searchVal, setSearchVal] = useState(null);
-
-    const { filteredData} = useTableSearch({
-      searchVal,
-      data: drivers
-    });
-
-
     return (
       <InnerContainer>
         <Grid item sx={{paddingLeft: "15px"}}>
@@ -176,7 +175,7 @@ const StatusUpdate = () => {
             <StyledInputBase
               placeholder="Search"
               inputProps={{ 'aria-label': 'search' }}
-              onChange={e => setSearchVal(e.target.value)}
+              onChange={searchValHandler}
             />
           </SearchStyle>
         </Grid>
@@ -186,7 +185,7 @@ const StatusUpdate = () => {
           body={
             <StatusUpdateTableBody
               columns={columns}
-              filteredData={filteredData}
+              filteredData={drivers}
             />
           }
         />

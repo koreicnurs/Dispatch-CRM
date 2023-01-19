@@ -22,10 +22,13 @@ import {addNotification} from "../actions/notifierActions";
 export function* getDrivers(action) {
   try {
     let response;
-    if (!action.payload || (action.payload.carrier.length === 0 && action.payload.status === 'Status')) {
+    const {carrier, filter, status, history} = action.payload;
+    if ( filter) {
+      response = yield axiosApi('/drivers/?status=' +  status, {params: {carrier, filter, history}});
+    } else if (!action.payload || ( carrier.length === 0 &&  status === 'Status')) {
       response = yield axiosApi('/drivers');
     } else {
-      response = yield axiosApi('/drivers/?status=' + action.payload.status, {params: {carrier: action.payload.carrier}});
+      response = yield axiosApi('/drivers/?status=' + status, {params: {carrier:  carrier}});
     }
     yield put(fetchDriversSuccess(response.data));
   } catch (e) {
@@ -64,7 +67,6 @@ export function* addDriver({payload}) {
     }
     yield put(addNotification({message: 'You have successfully added a driver!', variant: 'success'}));
   } catch (e) {
-    console.log(e)
     yield put(addDriverFailure(e.response && e.response.data));
     yield put(addNotification({message: 'Driver creation failed!', variant: 'error'}));
   }

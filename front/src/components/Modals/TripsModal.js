@@ -98,6 +98,14 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
   });
 
   const [commentArray, setCommentArray] = useState([]);
+  
+  useEffect(() => {
+    if (isAdd) {
+      setNewData(prev => ({...prev, rpm: (newData.price / newData.miles).toFixed(2)}));
+    } else {
+      setEditedData(prev => ({...prev, rpm: (editedData.price / editedData.miles).toFixed(2)}));
+    }
+  }, [newData.price, newData.miles, editedData.price, editedData.miles, isAdd]);
 
   useEffect(() => {
     if (newError === null) {
@@ -406,10 +414,10 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                       <FormElement
                         type={'number'}
                         name={'rpm'}
+                        disabled
                         label={'Rate per mile'}
                         value={isAdd ? newData.rpm : editedData.rpm}
                         required={true}
-                        onChange={inputChangeHandler}
                         error={getFieldError('rpm')}
                         className={classes.field}
                         inputProps={{min:0, step: '0.01'}}

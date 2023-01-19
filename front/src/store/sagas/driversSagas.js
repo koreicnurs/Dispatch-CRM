@@ -58,6 +58,7 @@ export function* addDriver({payload}) {
     yield axiosApi.post('/drivers', payload.data);
     yield put(addDriverSuccess());
     if(payload.user.role === 'carrier') {
+      console.log(payload)
       yield put(fetchDriversByCarrierRequest());
     } else {
       yield put(fetchDriversRequest());

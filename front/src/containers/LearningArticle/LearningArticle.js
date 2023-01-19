@@ -3,7 +3,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {addLearningCommentRequest, fetchLearningArticleRequest} from "../../store/actions/learningsActions";
 import {Box, Grid} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import InnerContainer from "../../components/InnerContainer/InnerContainer";
 import ShowLearningComments from "../../components/ShowLearningComments/ShowLearningComments";
 import FormElement from "../../components/UI/Form/FormElement/FormElement";
 import ButtonWithProgress from "../../components/UI/Button/ButtonWithProgress/ButtonWithProgress";
@@ -30,7 +29,7 @@ const LearningArticle = ({match}) => {
   };
 
   return article && (
-    <InnerContainer >
+    <Box sx={{background: '#f0f2fe', paddingY: '15px'}}>
       <Box paddingX='30px' paddingTop='20px' maxWidth='80%' minWidth='300px'>
         <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
           {article.title}
@@ -79,7 +78,6 @@ const LearningArticle = ({match}) => {
                 </ButtonWithProgress>
               </Grid>
           </Grid>
-
           <h4> Comments </h4>
           {article.comments.map(comment => (
             <ShowLearningComments
@@ -92,7 +90,7 @@ const LearningArticle = ({match}) => {
           ))}
         </Box>
       </Box>
-    </InnerContainer>
+    </Box>
   );
 };
 

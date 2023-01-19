@@ -28,6 +28,11 @@ const headerTitles = [
   "MILES", "RATE", "Driver",
   "Dispatch Team", "Dispatch"
 ];
+const headerTitlesHistory = [
+  "Load ID", "PU Location", "DEL Location",
+  "MILES", "RATE", "Driver", "Broker",
+  "Dispatch Team", "Dispatch"
+];
 
 const Trips = ({history}) => {
   const dispatch = useDispatch();
@@ -253,7 +258,12 @@ const Trips = ({history}) => {
             history={history.location.search}
             value={value}
             index={value}
-            header={<TableHeaderRow headerCells={headerTitles}/>}
+            header={<TableHeaderRow
+              headerCells={headerTitles}
+            />}
+            headerHistory={<TableHeaderRow
+              headerCells={headerTitlesHistory}
+            />}
             body={
               <TripTableBody
                 user={user}

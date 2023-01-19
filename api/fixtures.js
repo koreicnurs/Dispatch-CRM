@@ -514,12 +514,14 @@ const run = async () => {
       author: admin._id,
       text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non',
       learningCategory: dispatchCategory._id,
-      comment: [{
+      comments: [{
         authorId: user._id,
-        text: 'Lorem ipsum'
+        text: 'Lorem ipsum',
+        datetime: "2022-12-28T06:56:35.310Z"
       }, {
         authorId: user2._id,
-        text: 'consectetur!!'
+        text: 'consectetur!!',
+        datetime: "2022-11-28T06:56:35.310Z"
       },]
     }, {
       title: 'Convallis convallis',
@@ -527,22 +529,27 @@ const run = async () => {
       author: admin._id,
       text: 'Lorem ipsum dolor sit amet, tellus id interdum velit laoreet id donec  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non',
       learningCategory: dispatchCategory._id,
-      comment: [{
-        authorId: user._id,
-        text: 'Convallis convallis'
-      }, {
-        authorId: user2._id,
-        text: 'tellus id?!'
-      },]
+      comments: [
+        {
+          authorId: user._id,
+          text: 'Convallis convallis',
+          datetime: "2022-11-28T06:56:35.310Z"
+        }, {
+          authorId: user2._id,
+          text: 'tellus id?!',
+          datetime: "2022-10-28T06:56:35.310Z"
+        },
+      ]
     }, {
       title: 'Metus',
       description: 'Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.',
       author: admin._id,
       text: 'Metus vulputate eu scelerisqu Lorem ipsum dolor sit amet, tellus id interdum velit laoreet id donec  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non',
       learningCategory: accountingCategory._id,
-      comment: [{
+      comments: [{
         authorId: user._id,
-        text: 'imperdiet proin'
+        text: 'imperdiet proin',
+        datetime: "2022-11-28T06:56:35.310Z"
       }]
     }, {
       title: 'Melis imperdiet proin',

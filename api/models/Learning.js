@@ -33,7 +33,7 @@ const LearningSchema = new Schema({
     ref: 'LearningCategory',
     required: true,
   },
-  comment: [{
+  comments: [{
     authorId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
@@ -41,6 +41,10 @@ const LearningSchema = new Schema({
     },
     text: {
       type: String,
+      required: true
+    },
+    datetime: {
+      type: Date,
       required: true
     }
   }]

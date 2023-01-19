@@ -79,6 +79,14 @@ const run = async () => {
     phoneNumber: '+267●5350802',
     isWorking: 'disabled',
   }, {
+      email: 'user3@gmail.com',
+      password: 'user3',
+      role: 'user',
+      token: nanoid(),
+      displayName: 'User3',
+      phoneNumber: '+267●5350810',
+      isWorking: 'active',
+    }, {
     email: 'bahaway@gmail.com',
     password: 'bahaway',
     role: 'carrier',
@@ -282,7 +290,7 @@ const run = async () => {
     timeToDel: '11:16',
     pu: 'Shepherd, KY',
     del: 'Pittsburg, PA',
-    status: 'upcoming',
+    status: 'transit',
     BOL: 'fixtures/BOL1.pdf',
     RC: 'fixtures/RC1.pdf',
     brokerId: azamatBroker._id,
@@ -292,7 +300,7 @@ const run = async () => {
     }]
   }, {
     loadCode: 'T-151F5454FEG',
-    driverId: kubaDriver._id,
+    driverId: null,
     dispatchId: user._id,
     price: 800,
     miles: 200,
@@ -425,6 +433,7 @@ const run = async () => {
     brokerId: nurbekBroker._id,
   }, {
     loadCode: 'T-12FEF4E5F',
+    driverId: null,
     dispatchId: user2._id,
     price: 2500,
     miles: 500,
@@ -465,7 +474,6 @@ const run = async () => {
     RC: 'fixtures/RC1.pdf',
   }, {
     loadCode: 'T-D1EF45SD1C',
-    driverId: askhatDriver._id,
     dispatchId: user2._id,
     price: 1500,
     miles: 500,

@@ -28,16 +28,16 @@
       | price     | 775,5        |
       | comment   | some comment |
 
-    Затем нажимаю на поле с надписью "Broker"
-    И нажимаю на элемент списка с текстом "Azamat"
-    Затем нажимаю на поле с надписью "Driver"
-    И нажимаю на элемент списка с текстом "Kuba"
+    Затем нажимаю на выбор компании "Driver"
+    И нажимаю на компанию "1"
 
     Также прикрепляю в поле "RC" файл "images/rc.pdf"
     Также прикрепляю в поле "BOL" файл "images/bol.pdf"
 
     Когда нажимаю на "Save"
     То я вижу "Trip created!"
+
+
 
 
   @registerTripFailed
@@ -51,25 +51,19 @@
     Допустим я открываю страницу "loads/?status=upcoming"
     И я нажимаю на кнопку "add"
     Если я напишу данные:
-      | datePU    | 11/20/2022    |
-      | dateDEL   | 11/18/2022    |
-      | timeToPU  | 22:00         |
-      | timeToDel | 11:05         |
-      | loadCode  | T-12FEF4E5F   |
-      | pu        | Chicago, IL   |
-      | del       | Lafayette, LA |
-      | miles     | 500           |
-      | rpm       | 5             |
-      | price     | 2500          |
-      | comment   | some comment  |
-
-    Затем нажимаю на поле с надписью "Broker"
-    И нажимаю на элемент списка с текстом "Azamat"
-    Затем нажимаю на поле с надписью "Driver"
-    И нажимаю на элемент списка с текстом "Keldibek"
-
-    Также прикрепляю в поле "RC" файл "images/rc.pdf"
-    Также прикрепляю в поле "BOL" файл "images/bol.pdf"
-
+      | datePU    | 11/24/2022   |
+      | dateDEL   | 11/25/2022   |
+      | timeToPU  | 11:20        |
+      | timeToDel | 20:35        |
+      | loadCode  | T-114K1J2M7  |
+      | pu        | Boston, MA   |
+      | del       | New-York, NY |
+      | miles     | 235          |
+      | rpm       | 3,3          |
+      | price     | 775,5        |
+      | comment   | some comment |
     Когда нажимаю на "Save"
     То я вижу "Trip creation failed!"
+
+
+

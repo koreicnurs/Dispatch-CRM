@@ -399,7 +399,7 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
             pu,
             del,
             status,
-            brokerId: brokerId || null,
+            brokerId: roles.includes(req.user.role) ? brokerId : load.brokerId,
             comment: comment.trim() !== '' ? loadComment : load.comment,
         };
 

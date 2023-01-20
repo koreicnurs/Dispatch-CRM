@@ -457,6 +457,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                           array={brokers}
                           required={false}
                           variant="object"
+                          disabled={user?.role !== 'admin'}
                       />
                     </Grid>
                   </Grid>

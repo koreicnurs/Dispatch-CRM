@@ -26,5 +26,8 @@ export const {
   addLearningCommentSuccess,
   addLearningCommentFailure,
   clearLearningCategoryErrors,
-  clearLearningArticleErrors
+  clearLearningArticleErrors,
+  searchArticleRequest,
+  searchArticleSuccess,
+  searchArticleFailure
 } = learningsSlice.actions;

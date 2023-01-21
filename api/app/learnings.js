@@ -8,17 +8,28 @@ const router = express.Router();
 
 router.get('/', auth, async (req, res) => {
   try {
-    if (!req.query.category) {
-      return res.status(400).send('Learning Category should be received!');
-    }
+    if(!req.query.title) {
+      if (!req.query.category) {
+        return res.status(400).send('Learning Category should be received!');
+      }
 
-    const learnings = await Learning
-      .find({learningCategory: req.query.category}, 'title description author date text  learningCategory')
-      .sort({date: -1})
-      .populate('learningCategory')
-      .populate('author', 'displayName');
-    
-    res.send(learnings);
+      const learnings = await Learning
+        .find({learningCategory: req.query.category}, 'title description author date text  learningCategory')
+        .sort({date: -1})
+        .populate('learningCategory')
+        .populate('author', 'displayName');
+
+      res.send(learnings);
+    } else {
+      const learnings = await Learning
+        .find(
+          { $text: { $search: name }, learningCategory: req.query.category})
+        .sort({date: -1})
+        .populate('learningCategory')
+        .populate('author', 'displayName');
+
+      res.send(learnings);
+    }
   } catch (e) {
     res.sendStatus(500);
   }

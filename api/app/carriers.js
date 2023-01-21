@@ -32,7 +32,7 @@ const upload = multer({
 
 router.get('/', auth, async (req, res) => {
   try {
-    const name = req.query.name;
+    const name = req.query.search;
     let carriers;
     if (!name) {
       carriers = await Carrier.find();

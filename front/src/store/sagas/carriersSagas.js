@@ -12,7 +12,7 @@ import {
   fetchCarriersFailure,
   fetchCarriersRequest,
   fetchCarriersSuccess,
-  fetchCarrierSuccess
+  fetchCarrierSuccess, fetchSearchedCarriersFailure, fetchSearchedCarriersRequest, fetchSearchedCarriersSuccess
 } from "../actions/carriersActions";
 import {addNotification} from "../actions/notifierActions";
 
@@ -23,6 +23,16 @@ export function* fetchCarriers() {
   } catch (e) {
     yield put(fetchCarriersFailure(e.response.data));
     yield put(addNotification({message: 'Carriers fetch failed!', variant: 'error'}));
+  }
+}
+
+export function* searchCarriers({payload: name}) {
+  try {
+    const response = yield axiosApi('/carriers/search=' + name);
+    yield put(fetchSearchedCarriersSuccess(response.data));
+  } catch (e) {
+   yield put(fetchSearchedCarriersFailure(e.response.data));
+    yield put(addNotification({message: 'Carriers search failed!', variant: 'error'}));
   }
 }
 
@@ -64,7 +74,8 @@ const carriersSaga = [
   takeEvery(fetchCarriersRequest, fetchCarriers),
   takeEvery(fetchCarrierRequest, fetchCarrier),
   takeEvery(createCarrierRequest, createCarrier),
-  takeEvery(editCarrierRequest, editCarrier)
+  takeEvery(editCarrierRequest, editCarrier),
+  takeEvery(fetchSearchedCarriersRequest, searchCarriers)
 ];
 
 export default carriersSaga;

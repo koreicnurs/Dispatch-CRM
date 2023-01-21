@@ -9,7 +9,6 @@ import InnerTable from "../../components/Table/InnerTable";
 import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import CarrierTableBody from "../../components/Table/TableBody/CarrierTableBody";
 import SearchIcon from '@mui/icons-material/Search';
-import useTableSearch from '../../components/UI/Filter/useTableSearch/useTableSearch';
 
 const SearchStyle = styled('div')(({theme}) => ({
     position: 'relative',
@@ -26,16 +25,6 @@ const SearchStyle = styled('div')(({theme}) => ({
         marginLeft: theme.spacing(3),
         width: 'auto',
     },
-}));
-
-const SearchIconWrapper = styled('div')(({theme}) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
 }));
 
 const StyledInputBase = styled(InputBase)(({theme}) => ({
@@ -72,12 +61,7 @@ const Carriers = () => {
         dispatch(fetchCarriersRequest());
     }, [dispatch]);
 
-    // const {filteredData} = useTableSearch({
-    //     searchVal,
-    //     data: carriers
-    // });
-
-    const searchCarriers = async e => {
+    const searchCarriers = async () => {
         await dispatch(fetchSearchedCarriersRequest(searchVal));
     };
 
@@ -126,7 +110,6 @@ const Carriers = () => {
                     body={
                         <CarrierTableBody
                             columns={columns}
-                            // carriers={filteredData}
                             carriers={carriers}
                         />
                     }

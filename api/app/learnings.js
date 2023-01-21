@@ -23,7 +23,7 @@ router.get('/', auth, async (req, res) => {
     } else {
       const learnings = await Learning
         .find(
-          { $text: { $search: name }, learningCategory: req.query.category})
+          { $text: { $search: req.query.title }, learningCategory: req.query.category})
         .sort({date: -1})
         .populate('learningCategory')
         .populate('author', 'displayName');

@@ -1,14 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Grid, InputBase, styled} from "@mui/material";
+import {Box, Grid, IconButton, InputBase, styled} from "@mui/material";
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
 import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteLearningArticleRequest, fetchLearningByCategoryRequest} from "../../store/actions/learningsActions";
+import {
+  deleteLearningArticleRequest,
+  fetchLearningByCategoryRequest,
+  searchArticleRequest
+} from "../../store/actions/learningsActions";
 import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import InnerTable from "../../components/Table/InnerTable";
 import LearningTableBody from "../../components/Table/TableBody/LearningTableBody";
-import useTableSearch from "../../components/UI/Filter/useTableSearch/useTableSearch";
 import AddLearningArticle from "../../components/Modals/AddLearningArticle";
 
 const SearchStyle = styled('div')(({ theme }) => ({
@@ -28,21 +31,10 @@ const SearchStyle = styled('div')(({ theme }) => ({
   },
 }));
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '50%',
     [theme.breakpoints.up('md')]: {
@@ -72,14 +64,13 @@ const LearningCategory = ({location}) => {
     dispatch(fetchLearningByCategoryRequest(id[0]));
   }, [dispatch, location.search]);
 
-  const { filteredData} = useTableSearch({
-    searchVal,
-    data: category
-  });
-
   const onDelete = async (id) => {
     await dispatch(deleteLearningArticleRequest(id));
     dispatch(fetchLearningByCategoryRequest(categoryID));
+  };
+
+  const searchArticle = async () => {
+    await dispatch(searchArticleRequest({id: categoryID, title: searchVal}));
   };
 
   return (
@@ -105,9 +96,9 @@ const LearningCategory = ({location}) => {
 
         <Grid>
           <SearchStyle>
-            <SearchIconWrapper>
+            <IconButton onClick={searchArticle}>
               <SearchIcon />
-            </SearchIconWrapper>
+            </IconButton>
             <StyledInputBase
               placeholder="Search"
               inputProps={{ 'aria-label': 'search' }}
@@ -131,7 +122,7 @@ const LearningCategory = ({location}) => {
                 body={
                   <LearningTableBody
                     columns={columns}
-                    filteredData={filteredData}
+                    filteredData={category}
                     user={user}
                     onDelete={onDelete}
                   />

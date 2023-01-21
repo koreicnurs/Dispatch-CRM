@@ -73,10 +73,10 @@ const Carriers = () => {
         dispatch(fetchCarriersRequest());
     }, [dispatch]);
 
-    const {filteredData} = useTableSearch({
-        searchVal,
-        data: carriers
-    });
+    // const {filteredData} = useTableSearch({
+    //     searchVal,
+    //     data: carriers
+    // });
 
     return (
         <>
@@ -123,7 +123,8 @@ const Carriers = () => {
                     body={
                         <CarrierTableBody
                             columns={columns}
-                            carriers={filteredData}
+                            // carriers={filteredData}
+                            carriers={carriers}
                         />
                     }
                 />

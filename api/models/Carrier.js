@@ -41,6 +41,7 @@ const CarrierSchema = new Schema({
 });
 
 CarrierSchema.plugin(uniqueValidator, {message: 'Error, expected {PATH} to be unique'});
+CarrierSchema.index({title: "text"});
 const Carrier = mongoose.model('Carrier', CarrierSchema);
 
 module.exports = Carrier;

@@ -34,13 +34,15 @@ router.get('/', auth, async (req, res) => {
   try {
     const name = req.query.search;
     let carriers;
+
     if (!name) {
       carriers = await Carrier.find();
     } else {
-      carriers = await Carrier.find(
+      carriers = await Carrier
+        .find(
         { $text: { $search: name } },
-        { score: { $meta: "textScore" } }
-      ).sort( { score: { $meta: "textScore" } } )
+        { score: { $meta: "textScore" } })
+        .sort( { score: { $meta: "textScore" } } )
     }
 
     res.send(carriers);

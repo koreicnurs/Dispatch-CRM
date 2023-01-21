@@ -28,7 +28,7 @@ export function* fetchCarriers() {
 
 export function* searchCarriers({payload: name}) {
   try {
-    const response = yield axiosApi('/carriers/search=' + name);
+    const response = yield axiosApi('/carriers/?search=' + name);
     yield put(fetchSearchedCarriersSuccess(response.data));
   } catch (e) {
    yield put(fetchSearchedCarriersFailure(e.response.data));

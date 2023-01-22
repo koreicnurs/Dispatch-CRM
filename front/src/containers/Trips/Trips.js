@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import Typography from "@mui/material/Typography";
-import {Box, Grid, Tab, Tabs} from "@mui/material";
+import {Box, Grid, IconButton, InputBase, styled, Tab, Tabs} from "@mui/material";
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
 import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import {useDispatch, useSelector} from "react-redux";
@@ -8,7 +8,7 @@ import {
   cancelTripRequest,
   changeTripStatusRequest, confirmTripsRequest,
   fetchTripRequest,
-  fetchTripsRequest, fetchWeekTripsRequest
+  fetchTripsRequest, fetchWeekTripsRequest, searchTripsRequest
 } from "../../store/actions/tripsActions";
 import TripTableBody from "../../components/Table/TableBody/TripTableBody";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
@@ -22,12 +22,42 @@ import AddTrip from "../../components/Modals/AddTrip";
 import EditTrip from "../../components/Modals/EditTrip";
 import {showedItemCount} from "../../config";
 import {fetchBrokersRequest} from "../../store/actions/brokersActions";
+import SearchIcon from "@mui/icons-material/Search";
 
 const headerTitles = [
   "Load ID", "PU Location", "DEL Location",
   "MILES", "RATE", "Driver",
   "Dispatch Team", "Dispatch"
 ];
+
+const SearchStyle = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: '#fff',
+  '&:hover': {
+    backgroundColor: '#fff',
+  },
+  marginRight: theme.spacing(6),
+  marginLeft: 0,
+  marginTop: '25px',
+  width: '50%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(3),
+    width: 'auto',
+  },
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    transition: theme.transitions.create('width'),
+    width: '50%',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch',
+    },
+  },
+}));
 
 const Trips = ({history}) => {
   const dispatch = useDispatch();
@@ -46,6 +76,8 @@ const Trips = ({history}) => {
     limit: showedItemCount[0],
     skip: 0
   });
+
+  const [searchVal, setSearchVal] = useState(null);
 
   useEffect(() => {
     const today = new Date();
@@ -214,7 +246,11 @@ const Trips = ({history}) => {
   const limitChangeHandler = e => {
     setLimitation({...limitation, limit: e.target.value, skip: 0});
     setCurrentPage(1);
-  }
+  };
+
+  const searchTrips = async () => {
+    await dispatch(searchTripsRequest({value: history.location.search, code: searchVal}));
+  };
 
   return (
     <>
@@ -225,14 +261,33 @@ const Trips = ({history}) => {
 
       <InnerContainer>
         <Box sx={{width: '100%'}}>
-          <Grid item sx={{paddingLeft: "15px"}}>
-            <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
-              Trips
-            </Typography>
+          <Grid container item sx={{paddingLeft: "15px"}} flexDirection="row" justifyContent="space-between" alignItems="center" paddingRight="15px" >
+            <Grid item>
+              <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
+                Trips
+              </Typography>
+            </Grid>
+
+            {history.location.search === '?status=finished' &&
+              <Grid item>
+                <SearchStyle>
+                  <IconButton onClick={searchTrips}>
+                    <SearchIcon />
+                  </IconButton>
+                  <StyledInputBase
+                    placeholder="Search"
+                    inputProps={{ 'aria-label': 'search' }}
+                    onChange={e => setSearchVal(e.target.value)}
+                  />
+                </SearchStyle>
+              </Grid>
+            }
           </Grid>
           <Grid container item flexDirection="row" justifyContent="space-between" alignItems="center" paddingRight="15px">
             <AddTrip value={value}/>
           </Grid>
+
+
 
           <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">

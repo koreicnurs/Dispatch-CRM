@@ -23,13 +23,15 @@ export function* getDrivers(action) {
   try {
     let response;
     const {carrier, filter, status, history} = action.payload;
-    if ( filter) {
+    if (filter) {
       response = yield axiosApi('/drivers/?status=' +  status, {params: {carrier, filter, history}});
-    } else if (!action.payload || ( carrier.length === 0 &&  status === 'Status')) {
+    } else if (history === 'trips' || ( carrier.length === 0 &&  status === 'Status')) {
       response = yield axiosApi('/drivers');
     } else {
       response = yield axiosApi('/drivers/?status=' + status, {params: {carrier:  carrier}});
     }
+
+
     yield put(fetchDriversSuccess(response.data));
   } catch (e) {
     yield put(fetchDriversFailure(e.response && e.response.data));

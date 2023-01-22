@@ -6,13 +6,19 @@ import Typography from "@mui/material/Typography";
 import FormElement from "../UI/Form/FormElement/FormElement";
 import FormSelect from "../UI/Form/FormSelect/FormSelect";
 import ButtonWithProgress from "../UI/Button/ButtonWithProgress/ButtonWithProgress";
-import {clearCreateTripErrorRequest, createTripRequest, editTripRequest} from "../../store/actions/tripsActions";
+import {
+  clearCreateTripErrorRequest,
+  clearEditTripErrorRequest,
+  createTripRequest,
+  editTripRequest
+} from "../../store/actions/tripsActions";
 import FileInput from "../UI/Form/FileInput/FileInput";
 import {DesktopDatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {apiUrl} from "../../config";
 import AddButton from "../UI/Button/AddButton/AddButton";
 import TripsComments from '../TripsComments/TripsComments';
+import {fetchDriversRequest} from "../../store/actions/driversActions";
 
 const style = {
   position: 'absolute',
@@ -39,7 +45,7 @@ const useStyles = makeStyles()(theme => ({
 }));
 
 
-const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
+const TripsModal = ({modalTitle, isAdd, tripID, isButton}) => {
   const {classes} = useStyles();
   const dispatch = useDispatch();
   const trips = useSelector(state => state.trips.trips);
@@ -53,10 +59,22 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
 
   const [newModal, setNewModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
-
+  const [driversArr, setDriversArr] = useState([]);
   const [tripId, setTripId] = useState('');
 
-  useEffect(() => setEditModal(isEdit), [isEdit])
+  // useEffect(() => setEditModal(isEdit), [isEdit]);
+
+
+  useEffect(() => {
+    dispatch(fetchDriversRequest({
+        carrier: null,
+        status: null,
+        filter: null,
+        history: 'trips'
+      }
+    ));
+  }, [dispatch]);
+
 
   const [newData, setNewData] = useState({
     loadCode: "",
@@ -98,6 +116,28 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
   });
 
   const [commentArray, setCommentArray] = useState([]);
+
+  useEffect(() => {
+    let arr = [];
+    if (isAdd) {
+      arr = drivers.filter((driver) => {return driver.status === 'ready' || driver.status === 'in transit'});
+      setDriversArr(arr);
+    } else if (trip){
+      if (trip.driverId) {
+        const driver = drivers.find(driver => driver._id === trip.driverId._id)
+        arr = drivers.filter((driver) => {return driver.status === 'ready' || driver.status === 'in transit'});
+        // if (driver.status === 'upcoming' || driver.status === 'in tr/upc') {
+        //   arr.push(driver)
+        // }
+        arr.push(driver);
+        setDriversArr(arr);
+      } else {
+        arr = drivers.filter((driver) => {return driver.status === 'ready' || driver.status === 'in transit'});
+        setDriversArr(arr);
+      }
+    }
+
+  }, [dispatch, drivers, isAdd, trip])
   
   useEffect(() => {
     if (isAdd) {
@@ -115,7 +155,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
       setEditModal(false);
     }
     // eslint-disable-next-line
-  }, [trips]);
+  }, [trips, newError, editError, trip]);
 
   const openCloseModal = () => {
     if (isAdd) {
@@ -145,8 +185,10 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
     }
   };
 
+
+
   useEffect(() =>{
-  if (isEdit && tripID) {
+  if (tripID) {
     setTripId(trip._id);
     setStartDate(trip.datePU);
     setFinDate(trip.dateDEL);
@@ -170,8 +212,8 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
 
     setCommentArray(trip.comment);
     setEditModal(true);
-    dispatch(clearCreateTripErrorRequest());
-  }}, [dispatch, isEdit, tripID, trips, trip]);
+    dispatch(clearEditTripErrorRequest());
+  }}, [dispatch, tripID, trips, trip]);
 
   const [startDate, setStartDate] = useState(null);
   const [finDate, setFinDate] = useState(null);
@@ -205,7 +247,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
       currentTrip = newData;
       currentTrip.datePU = startDate;
       currentTrip.dateDEL = finDate;
-    } else if(isEdit) {
+    } else if(tripId) {
       currentTrip = editedData;
       currentTrip.datePU = startDate;
       currentTrip.dateDEL = finDate;
@@ -221,10 +263,10 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
 
     if (isAdd) {
       dispatch(createTripRequest(formData));
-    } else {
-
+    } else if (tripId) {
       dispatch(editTripRequest({tripData: formData, id: tripId, path: editedData.status}));
     }
+    setEditModal(false)
   };
 
   const getFieldError = fieldName => {
@@ -235,9 +277,23 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
     }
   };
 
+  useEffect(() => {
+    if (trip === null) {
+      setEditModal(false)
+    }
+  }, [trip])
+
+  const closeModal = () => {
+    setNewModal(false);
+    setEditModal(false);
+    setDriversArr([]);
+    dispatch(clearCreateTripErrorRequest());
+    dispatch(clearEditTripErrorRequest());
+  }
+
   return (
     <>
-      {isAdd
+      {isButton
         ? <AddButton click={openCloseModal}/>
         : null
       }
@@ -469,7 +525,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                     onChange={inputChangeHandler}
                     error={getFieldError('driverId')}
                     driver={true}
-                    array={drivers.filter((driver) => {return driver.status === 'ready' || driver.status === 'in transit'})}
+                    array={driversArr}
                     required={false}
                     variant="object"
                   />
@@ -533,7 +589,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                       fullWidth
                       variant="contained"
                       color="primary"
-                      onClick={() => isAdd ? setNewModal(false) : setEditModal(false)}
+                      onClick={closeModal}
                     >
                       Cancel
                     </ButtonWithProgress>

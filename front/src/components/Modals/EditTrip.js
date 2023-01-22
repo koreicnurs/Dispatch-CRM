@@ -6,7 +6,7 @@ const EditTrip = ({tripID, isEdit}) => {
     <TripsModal
       modalTitle={"Edit trip"}
       tripID={tripID}
-      isEdit={isEdit}
+      // isEdit={true}
     />
   );
 };

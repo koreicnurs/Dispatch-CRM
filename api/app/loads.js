@@ -11,15 +11,15 @@ const Driver = require("../models/Driver");
 const User = require("../models/User");
 const Broker = require("../models/Broker");
 
-const TelegramApi = require('node-telegram-bot-api');
-const token = "936426396:AAEwbo64h7Nf3lEJ56bW1ZoA3plMlyPl9VQ";
-let polling = true;
-
-if (process.env.NODE_ENV === 'test') {
-    polling = false;
-}
-
-const bot = new TelegramApi(token, {polling});
+// const TelegramApi = require('node-telegram-bot-api');
+// const token = "936426396:AAEwbo64h7Nf3lEJ56bW1ZoA3plMlyPl9VQ";
+// let polling = true;
+//
+// if (process.env.NODE_ENV === 'test') {
+//     polling = false;
+// }
+//
+// const bot = new TelegramApi(token, {polling});
 
 const router = express.Router();
 
@@ -419,16 +419,19 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
             }
             loadData.RC = 'public/uploads/' + req.files['RC'][0].filename;
         }
+
         if (driverId) {
             const driver = await Driver.findById({_id: driverId});
-            if(driver.status === statusDriver.ready) {
+            if (driver.status === 'ready') {
                 if (driver.telegramId) {
                     await bot.sendMessage(driver.telegramId, `У вас есть новый груз ${loadCode}\nНапишите команду /load чтобы получить полную информацию по грузу`);
                 }
-            } else {
-                return res.status(400).send({message: 'Driver already have load!'});
             }
-            if (driverId !== load.driverId) {
+        }
+
+        if (driverId) {
+            const driver = await Driver.findById({_id: driverId});
+            if (driverId !== load.driverId && load.driverId !== null) {
                 const prevDriver = await Driver.findById({_id: load.driverId});
                 if (prevDriver.status === 'in tr/upc') {
                     await Driver.findByIdAndUpdate(load.driverId, {status: 'in transit'});

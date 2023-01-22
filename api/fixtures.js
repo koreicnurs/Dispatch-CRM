@@ -145,7 +145,7 @@ const run = async () => {
     phoneNumber: '+3237454492',
     companyId: safewayCargoCarrier._id,
     status: 'upcoming',
-    currentStatus: 'driving',
+    currentStatus: 'n/a',
     license: 'fixtures/license.pdf',
     description: {
       address: 'US, IL, Chicago c., str. 1, h. 4',

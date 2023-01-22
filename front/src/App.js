@@ -14,6 +14,7 @@ import Administrators from "./containers/Administrators/Administrators";
 import UserCarriers from "./containers/UserCarriers/UserCarriers";
 import Learnings from "./containers/Learnings/Learnings";
 import LearningCategory from "./containers/LearningCategory/LearningCategory";
+import LearningArticle from "./containers/LearningArticle/LearningArticle";
 
 const ProtectedRoute = ({isAllowed, redirectTo, ...props}) => {
     return isAllowed ?
@@ -88,6 +89,13 @@ const App = () => {
                   path="/learning"
                   exact
                   component={LearningCategory}
+                />
+                <ProtectedRoute
+                  isAllowed={user}
+                  redirectTo="/login"
+                  path="/article/:id"
+                  exact
+                  component={LearningArticle}
                 />
                 <ProtectedRoute
                   isAllowed={user}

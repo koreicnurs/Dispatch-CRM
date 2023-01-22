@@ -14,6 +14,7 @@ router.get('/', auth, async (req, res) => {
 
     const learnings = await Learning
       .find({learningCategory: req.query.category}, 'title description author date text  learningCategory')
+      .sort({date: -1})
       .populate('learningCategory')
       .populate('author', 'displayName');
     
@@ -25,7 +26,10 @@ router.get('/', auth, async (req, res) => {
 
 router.get('/:id', auth, async (req, res) => {
   try {
-    const learning = await Learning.findById(req.params.id).populate('learningCategory');
+    const learning = await Learning
+      .findById(req.params.id)
+      .populate('learningCategory')
+      .populate('comments.authorId', 'displayName role');
 
     if (!learning) {
       return res.status(404).send('Learning not found');
@@ -37,27 +41,6 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
-router.post('/', auth, permit('admin'), async (req, res) => {
-  try {
-    const {title, description, text, learningCategory} = req.body;
-    
-    const learningData = {
-      title,
-      description,
-      author: req.user._id,
-      text,
-      learningCategory,
-    };
-    
-    const learning = new Learning(learningData);
-    await learning.save();
-    
-    res.send(learning);
-  } catch (e) {
-    res.status(400).send(e);
-  }
-});
-
 router.post('/comment/:id', auth, async (req, res) => {
   try {
     const learning = await Learning.findById(req.params.id);
@@ -66,9 +49,30 @@ router.post('/comment/:id', auth, async (req, res) => {
       return res.status(404).send('Learning not found');
     }
     const {text} = req.body;
+    const newComment = {authorId: req.user._id, text: text, datetime: new Date().toISOString()};
+    learning.comments.unshift(newComment);
 
-    learning.comment.push({authorId: req.user._id, text});
+    await learning.save();
 
+    res.send(learning);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
+router.post('/', auth, permit('admin'), async (req, res) => {
+  try {
+    const {title, description, text, learningCategory} = req.body;
+
+    const learningData = {
+      title,
+      description,
+      author: req.user._id,
+      text,
+      learningCategory,
+    };
+
+    const learning = new Learning(learningData);
     await learning.save();
 
     res.send(learning);

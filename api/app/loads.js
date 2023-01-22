@@ -13,7 +13,13 @@ const Broker = require("../models/Broker");
 
 const TelegramApi = require('node-telegram-bot-api');
 const token = "936426396:AAEwbo64h7Nf3lEJ56bW1ZoA3plMlyPl9VQ";
-const bot = new TelegramApi(token, {polling: true});
+let polling = true;
+
+if (process.env.NODE_ENV === 'test') {
+    polling = false;
+}
+
+const bot = new TelegramApi(token, {polling});
 
 const router = express.Router();
 
@@ -312,9 +318,6 @@ router.post('/', auth, cpUpload, async (req, res) => {
         if (driverId) {
             const driver = await Driver.findById({_id: driverId})
 
-            if(driver.status !== 'ready') {
-
-            }
             if (driver.telegramId) {
                 await bot.sendMessage(driver.telegramId, `У вас есть новый груз ${loadCode}У вас есть новый груз ${loadCode}\nНапишите команду /load чтобы получить полную информацию по грузу`);
             }
@@ -396,7 +399,7 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
             pu,
             del,
             status,
-            brokerId: brokerId || null,
+            brokerId: roles.includes(req.user.role) ? brokerId : load.brokerId,
             comment: comment.trim() !== '' ? loadComment : load.comment,
         };
 

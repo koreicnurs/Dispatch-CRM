@@ -13,9 +13,9 @@
       | password | admin           |
     И нажимаю на кнопку "Sign In"
     То я вижу текст "HELLO, ADMIN"
-    Допустим я открываю страницу водителей "drivers"
-    То я нажимаю на кнопку открытия модального окна для формы регистрации водителя "add"
-    Если я введу данные в форму регистрации водителя:
+    Допустим я открываю страницу "drivers"
+    То я нажимаю на кнопку "add"
+    Если я напишу данные:
       | email       | jhondoe@gmail.com |
       | name        | Jhon Doe          |
       | phoneNumber | 3213213212        |
@@ -24,13 +24,13 @@
       | info        | test info         |
       | reference   | test reference    |
     Затем нажимаю на выбор компании "Carriers"
-    И нажимаю на компанию "BAHAWAY"
+    И нажимаю на компанию "2"
 
     Затем нажму на кнопку выбора лицензии "Browse"
     И выбираю нужный файл для лицензии "images/license.jpg"
 
-    Затем нажимаю на кнопку регистрации водителя "Save"
-    То я вижу текст о успешной регистрации водителя "You have successfully added a driver!"
+    Затем нажимаю на "Save"
+    То я вижу текст "You have successfully added a driver!"
 
 
     @registerDriverFailed
@@ -41,24 +41,24 @@
       | password | admin           |
     И нажимаю на кнопку "Sign In"
     То я вижу текст "HELLO, ADMIN"
-    Допустим я открываю страницу водителей "drivers"
-    То я нажимаю на кнопку открытия модального окна для формы регистрации водителя "add"
-    Если я введу данные в форму регистрации водителя:
+      Допустим я открываю страницу "drivers"
+      То я нажимаю на кнопку "add"
+      Если я напишу данные:
       | email       | umot@gmail.com                   |
       | name        | Umot                             |
       | phoneNumber | +2675350802                      |
-      | address     | US, LA, Avalon c., str. 1, h. 45 |
+      | address     | US, LA, Avalan c., str. 1, h. 45 |
       | DOB         | 15.12.1980                       |
       | info        | Lorem ipsum dolor sit amet       |
       | reference   | Punctual, decent                 |
     Затем нажимаю на выбор компании "Carriers"
-    И нажимаю на компанию "BAHAWAY"
+    И нажимаю на компанию "2"
 
     Затем нажму на кнопку выбора лицензии "Browse"
     И выбираю нужный файл для лицензии "images/license.jpg"
 
-    Затем нажимаю на кнопку регистрации водителя "Save"
-    То я вижу текст о ошибке регистрации водителя "Driver creation failed!"
+    Затем нажимаю на "Save"
+    То я вижу текст "Driver creation failed!"
 
 
   @filterDriver
@@ -72,4 +72,4 @@
     Допустим я открываю страницу "drivers"
     То я ввожу данные в поле поиска
     Если я введу следующие данные "umot@gmail.com"
-    То я вижу сущность с данными "umot@gmail.com"
+    То я вижу "umot@gmail.com"

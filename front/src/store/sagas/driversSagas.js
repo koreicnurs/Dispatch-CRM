@@ -25,7 +25,7 @@ export function* getDrivers(action) {
     const {carrier, filter, status, history} = action.payload;
     if (filter) {
       response = yield axiosApi('/drivers/?status=' +  status, {params: {carrier, filter, history}});
-    } else if (history === 'trips' || ( carrier.length === 0 &&  status === 'Status')) {
+    } else if (history || ( carrier.length === 0 &&  status === 'Status')) {
       response = yield axiosApi('/drivers');
     } else {
       response = yield axiosApi('/drivers/?status=' + status, {params: {carrier:  carrier}});
@@ -97,7 +97,12 @@ export function* updateDriverStatus({payload}) {
     if(payload.user.role === 'carrier') {
       yield put(fetchDriversByCarrierRequest());
     } else {
-      yield put(fetchDriversRequest());
+      yield put(fetchDriversRequest({
+        carrier: [],
+        status: null,
+        filter: null,
+        history: 'status-update'
+      }));
     }
     yield put(addNotification({message: 'You have successfully updated a driver status!', variant: 'success'}));
   } catch (e) {

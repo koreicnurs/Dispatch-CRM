@@ -431,22 +431,39 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
 
         if (driverId) {
             const driver = await Driver.findById({_id: driverId});
-            if (driverId !== load.driverId && load.driverId !== null) {
+            if (load.driverId === null) {
+                console.log(1)
+                if (driver.status === 'off') {
+                    return res.status(403).send({message: 'The driver is not ready!'});
+                } else if (driver.status === 'in tr/upc') {
+                    return res.status(403).send({message: 'The driver is in transit and has upcoming trip!'});
+                } else if (driver.status === 'in transit') {
+                    await Driver.findByIdAndUpdate(driverId, {status: 'in tr/upc'});
+                } else {
+                    await Driver.findByIdAndUpdate(driverId, {status: 'upcoming'});
+                }
+            } else if (driverId === load.driverId.toString()) {
+                console.log(2)
+                await Driver.findByIdAndUpdate(driverId, {status: driver.status});
+                console.log(driver.status)
+            } else if (driverId !== load.driverId.toString()) {
+                console.log(3)
                 const prevDriver = await Driver.findById({_id: load.driverId});
                 if (prevDriver.status === 'in tr/upc') {
                     await Driver.findByIdAndUpdate(load.driverId, {status: 'in transit'});
                 } else if (prevDriver.status === 'upcoming') {
                     await Driver.findByIdAndUpdate(load.driverId, {status: 'ready'});
                 }
-            }
-            if (driver.status === 'off') {
-                return res.status(403).send({message: 'The driver is not ready!'});
-            } else if (driver.status === 'in tr/upc') {
-                return res.status(403).send({message: 'The driver is in transit and has upcoming trip!'});
-            } else if (driver.status === 'in transit') {
-                await Driver.findByIdAndUpdate(driverId, {status: 'in tr/upc'});
-            } else {
-                await Driver.findByIdAndUpdate(driverId, {status: 'upcoming'});
+                if (driver.status === 'off') {
+                    return res.status(403).send({message: 'The driver is not ready!'});
+                } else if (driver.status === 'in tr/upc') {
+                    return res.status(403).send({message: 'The driver is in transit and has upcoming trip!'});
+                } else if (driver.status === 'in transit') {
+                    await Driver.findByIdAndUpdate(driverId, {status: 'in tr/upc'});
+                } else {
+                    await Driver.findByIdAndUpdate(driverId, {status: 'upcoming'});
+                }
+
             }
         }
 

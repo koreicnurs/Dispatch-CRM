@@ -76,7 +76,6 @@ export function* createTrip({payload: tripData}) {
 }
 
 export function* editTrip({payload}) {
-  console.log(payload)
   try {
     yield axiosApi.put('/loads/' + payload.id, payload.tripData);
     yield put(editTripSuccess());

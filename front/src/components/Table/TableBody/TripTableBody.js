@@ -48,6 +48,10 @@ const TripTableBody = (props) => {
             <TableCell sx={{fontSize: "12px", fontWeight: 'bold'}}>
               {trip.driverId?.name || 'n/a'}
             </TableCell>
+            {(trip.status === 'finished' || trip.status === 'cancel') &&
+              <TableCell sx={{fontSize: "12px", fontWeight: 'bold'}}>
+                {trip.brokerId?.name || 'n/a'}
+              </TableCell>}
             {
               user.role !== 'carrier'
               ? <>

@@ -39,7 +39,7 @@ const useStyles = makeStyles()(theme => ({
 }));
 
 
-const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
+const TripsModal = ({modalTitle, isAdd, tripID, isEdit, limitation}) => {
   const {classes} = useStyles();
   const dispatch = useDispatch();
   const trips = useSelector(state => state.trips.trips);
@@ -220,10 +220,10 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
     });
 
     if (isAdd) {
-      dispatch(createTripRequest(formData));
+      dispatch(createTripRequest({tripData: formData, limitation: limitation}));
     } else {
 
-      dispatch(editTripRequest({tripData: formData, id: tripId, path: editedData.status}));
+      dispatch(editTripRequest({tripData: formData, id: tripId, path: editedData.status, limitation: limitation}));
     }
   };
 
@@ -527,7 +527,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isEdit}) => {
                     </ButtonWithProgress>
                   </Grid>
 
-                  <Grid item xsx={{width: {xs: '100%', md: '49.5%'}}}>
+                  <Grid item sx={{width: {xs: '100%', md: '49.5%'}}}>
                     <ButtonWithProgress
                       type="button"
                       fullWidth

@@ -12,10 +12,12 @@ const style = {
   top: '45%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 600,
+  width: {xs: '80%', sm: '60%', md: '50%', lg: '35%'},
   bgcolor: 'background.paper',
   boxShadow: 24,
-  padding: '20px'
+  padding: '20px',
+  overflow: 'auto',
+  maxHeight: '600px',
 };
 
 const LearningCategoryModal = ({modalTitle}) => {
@@ -101,7 +103,7 @@ const LearningCategoryModal = ({modalTitle}) => {
                     </Grid>
                   </Grid>
 
-                  <Grid item xs={6}>
+                  <Grid item width={{xs: '100%', md: '49.5%'}}>
                     <ButtonWithProgress
                       loading={addCategoryLoading}
                       disabled={addCategoryLoading}
@@ -114,7 +116,7 @@ const LearningCategoryModal = ({modalTitle}) => {
                     </ButtonWithProgress>
                   </Grid>
 
-                  <Grid item xs={6}>
+                  <Grid item width={{xs: '100%', md: '49.5%'}}>
                     <ButtonWithProgress
                       type="button"
                       fullWidth

@@ -19,7 +19,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: {xs: '80%', md: '70%'},
+  width: {xs: '80%', md: '70%', lg: '60%'},
   maxHeight: 600,
   overflow: "auto",
   bgcolor: 'background.paper',

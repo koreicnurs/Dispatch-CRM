@@ -18,11 +18,13 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '70%',
+  width: {xs: '80%', md: '60%', lg: '35%'},
   maxWidth: '800px',
   bgcolor: 'background.paper',
   boxShadow: 24,
-  padding: '20px'
+  padding: '20px',
+  overflow: 'auto',
+  maxHeight: '600px',
 };
 
 const LearningArticleModal = ({modalTitle, isAdd, articleID, categoryID}) => {

@@ -79,6 +79,14 @@ const run = async () => {
     phoneNumber: '+267●5350802',
     isWorking: 'disabled',
   }, {
+      email: 'user3@gmail.com',
+      password: 'user3',
+      role: 'user',
+      token: nanoid(),
+      displayName: 'User3',
+      phoneNumber: '+267●5350810',
+      isWorking: 'active',
+    }, {
     email: 'bahaway@gmail.com',
     password: 'bahaway',
     role: 'carrier',
@@ -244,24 +252,24 @@ const run = async () => {
   
   const [azamatBroker, aibekBroker, nurbekBroker, adiletBroker] = await Broker.create(
     {
-      name: 'Azamat',
+      name: 'Azamat Br',
       phoneNumber: ['+9963592261', '+2678480704'],
       mc: '225863',
       description: 'Lorem ipsum dolor sit amet',
       companiesContract: [bahawayCarrier._id, safewayCargoCarrier._id, turanExpressCarrier._id]
     }, {
-      name: 'Aibek',
+      name: 'Aibek Br',
       phoneNumber: ['+3478548314'],
       mc: '238164',
       description: 'Consectetur adipiscing elit',
       companiesContract: [bahawayCarrier._id],
     }, {
-      name: 'Nurbek',
+      name: 'Nurbek Br',
       phoneNumber: ['+1293525578', '+1294884446'],
       mc: '216579',
       companiesContract: [bahawayCarrier._id, tumarExpressCarrier._id],
     }, {
-      name: 'Adilet',
+      name: 'Adilet Br',
       phoneNumber: ['+9965995232', '+7678480704', '+3232523146'],
       mc: '953268',
       description: 'Convallis convallis tellus id interdum velit laoreet id donec ultrices',
@@ -282,7 +290,7 @@ const run = async () => {
     timeToDel: '11:16',
     pu: 'Shepherd, KY',
     del: 'Pittsburg, PA',
-    status: 'upcoming',
+    status: 'transit',
     BOL: 'fixtures/BOL1.pdf',
     RC: 'fixtures/RC1.pdf',
     brokerId: azamatBroker._id,
@@ -292,7 +300,7 @@ const run = async () => {
     }]
   }, {
     loadCode: 'T-151F5454FEG',
-    driverId: kubaDriver._id,
+    driverId: null,
     dispatchId: user._id,
     price: 800,
     miles: 200,
@@ -425,6 +433,7 @@ const run = async () => {
     brokerId: nurbekBroker._id,
   }, {
     loadCode: 'T-12FEF4E5F',
+    driverId: null,
     dispatchId: user2._id,
     price: 2500,
     miles: 500,
@@ -466,14 +475,15 @@ const run = async () => {
   }, {
     loadCode: 'T-D1EF45SD1C',
     driverId: askhatDriver._id,
+    brokerId: azamatBroker._id,
     dispatchId: user2._id,
     price: 1500,
     miles: 500,
     rpm: 3,
-    datePU: '11/1/2022',
-    dateDEL: '11/3/2022',
-    timeToPU: '1:0',
-    timeToDel: '18:0',
+    datePU: '11/10/2022',
+    dateDEL: '11/10/2022',
+    timeToPU: '1:00',
+    timeToDel: '18:00',
     pu: 'New-York, NY',
     del: 'Seattle, WS',
     status: 'finished',
@@ -486,10 +496,10 @@ const run = async () => {
     price: 1500,
     miles: 500,
     rpm: 3,
-    datePU: '11/1/2022',
-    dateDEL: '11/3/2022',
-    timeToPU: '1:0',
-    timeToDel: '25:0',
+    datePU: '11/10/2022',
+    dateDEL: '11/10/2022',
+    timeToPU: '1:00',
+    timeToDel: '25:00',
     pu: 'Bronx, NY',
     del: 'Gulfport, MS',
     status: 'cancel',
@@ -514,12 +524,14 @@ const run = async () => {
       author: admin._id,
       text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non',
       learningCategory: dispatchCategory._id,
-      comment: [{
+      comments: [{
         authorId: user._id,
-        text: 'Lorem ipsum'
+        text: 'Lorem ipsum',
+        datetime: "2022-12-28T06:56:35.310Z"
       }, {
         authorId: user2._id,
-        text: 'consectetur!!'
+        text: 'consectetur!!',
+        datetime: "2022-11-28T06:56:35.310Z"
       },]
     }, {
       title: 'Convallis convallis',
@@ -527,22 +539,27 @@ const run = async () => {
       author: admin._id,
       text: 'Lorem ipsum dolor sit amet, tellus id interdum velit laoreet id donec  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non',
       learningCategory: dispatchCategory._id,
-      comment: [{
-        authorId: user._id,
-        text: 'Convallis convallis'
-      }, {
-        authorId: user2._id,
-        text: 'tellus id?!'
-      },]
+      comments: [
+        {
+          authorId: user._id,
+          text: 'Convallis convallis',
+          datetime: "2022-11-28T06:56:35.310Z"
+        }, {
+          authorId: user2._id,
+          text: 'tellus id?!',
+          datetime: "2022-10-28T06:56:35.310Z"
+        },
+      ]
     }, {
       title: 'Metus',
       description: 'Metus vulputate eu scelerisque felis imperdiet proin fermentum leo.',
       author: admin._id,
       text: 'Metus vulputate eu scelerisqu Lorem ipsum dolor sit amet, tellus id interdum velit laoreet id donec  elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non',
       learningCategory: accountingCategory._id,
-      comment: [{
+      comments: [{
         authorId: user._id,
-        text: 'imperdiet proin'
+        text: 'imperdiet proin',
+        datetime: "2022-11-28T06:56:35.310Z"
       }]
     }, {
       title: 'Melis imperdiet proin',

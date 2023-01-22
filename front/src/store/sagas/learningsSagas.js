@@ -7,11 +7,18 @@ import {
   addLearningArticleSuccess,
   addLearningCategoryFailure,
   addLearningCategoryRequest,
-  addLearningCategorySuccess, deleteLearningArticleFailure, deleteLearningArticleRequest,
+  addLearningCategorySuccess, addLearningCommentFailure,
+  addLearningCommentRequest,
+  addLearningCommentSuccess,
+  deleteLearningArticleFailure,
+  deleteLearningArticleRequest,
   deleteLearningArticleSuccess,
   editLearningArticleFailure,
   editLearningArticleRequest,
   editLearningArticleSuccess,
+  fetchLearningArticleFailure,
+  fetchLearningArticleRequest,
+  fetchLearningArticleSuccess,
   fetchLearningByCategoryFailure,
   fetchLearningByCategoryRequest,
   fetchLearningByCategorySuccess,
@@ -87,6 +94,28 @@ export function* deleteLearningArticle({payload: id}) {
   }
 }
 
+export function* fetchLearningArticle({payload: id}) {
+  try {
+    const response = yield axiosApi('/learnings/' + id);
+    yield put(fetchLearningArticleSuccess(response.data));
+  } catch (e) {
+    yield put(fetchLearningArticleFailure(e.response && e.response.data));
+    yield put(addNotification({message: 'Learning Article fetch failed!', variant: 'error'}));
+  }
+}
+
+export function* addLearningComment({payload}) {
+  try {
+    yield axiosApi.post('/learnings/comment/' + payload.id, {text: payload.data});
+    yield put(addLearningCommentSuccess());
+    yield put(addNotification({message: 'Your comment is added!', variant: 'success'}));
+    yield put(fetchLearningArticleRequest(payload.id));
+  } catch (e) {
+    yield put(addLearningCommentFailure(e.response.data));
+    yield put(addNotification({message: 'Comment creation failed!', variant: 'error'}));
+  }
+}
+
 const learningsSaga = [
   takeEvery(fetchLearningCategoriesRequest, fetchLearningCategories),
   takeEvery(addLearningCategoryRequest, addLearningCategory),
@@ -94,6 +123,8 @@ const learningsSaga = [
   takeEvery(addLearningArticleRequest, addLearningArticle),
   takeEvery(editLearningArticleRequest, editLearningArticle),
   takeEvery(deleteLearningArticleRequest, deleteLearningArticle),
+  takeEvery(fetchLearningArticleRequest, fetchLearningArticle),
+  takeEvery(addLearningCommentRequest, addLearningComment),
 ];
 
 export default learningsSaga;

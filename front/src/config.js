@@ -4,6 +4,10 @@ if(process.env.REACT_APP_ENV === 'test') {
   apiUrl = 'http://localhost:8010';
 }
 
+if(process.env.NODE_ENV === 'production'){
+  apiUrl = 'http://95.85.63.6:8000'
+}
+
 export const statusInterval = 1200000;
 
 const adminMenu = [

@@ -5,7 +5,13 @@ const User = require("./models/User");
 
 const token = "936426396:AAEwbo64h7Nf3lEJ56bW1ZoA3plMlyPl9VQ";
 
-const bot = new TelegramApi(token, {polling: true});
+let polling = true;
+
+if (process.env.NODE_ENV === 'test') {
+    polling = false;
+}
+
+const bot = new TelegramApi(token, {polling});
 
 const tripsStatus = {
     accept: "accept",

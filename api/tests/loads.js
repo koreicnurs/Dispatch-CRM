@@ -2,29 +2,28 @@ const mongoose = require('mongoose');
 const request = require('supertest');
 const app = require("../index");
 
-const TRIPS_STATUSES = ['upcoming', 'transit', 'finished'];
+const TRIPS_STATUSES = ['upcoming', 'transit', 'finished', 'cancel'];
 
 describe('Testing \'loads\' route', () => {
   let randomLoadCode = new Date().valueOf().toString().slice(2) * 1;
   let user = null;
-  let admin = null;
   let drivers;
   let brokers;
   let load = null;
+  let upcomingLoad = null;
 
   const getUser = (email, password) => {
-    it('user should successfully login', async () => {
+    it('should login user', async () => {
       const res = await request(app)
         .post('/users/sessions')
         .send({email, password});
 
       expect(res.statusCode).toBe(200);
-
-      email === 'admin@gmail.com' ? admin = res.body : user = res.body;
+      user = res.body;
     });
   };
 
-  const getDrivers = async () => {
+  const getDrivers = () => {
     it('should get array of all drivers', async () => {
       const res = await request(app)
         .get('/drivers')
@@ -33,14 +32,23 @@ describe('Testing \'loads\' route', () => {
     });
   };
 
-    const getBrokers = async () => {
-        it('should get array of all brokers', async () => {
-            const res = await request(app)
-                .get('/brokers')
-                .set({Authorization: user.token});
-            brokers = res.body;
-        });
-    };
+  const getBrokers = () => {
+      it('should get array of all brokers', async () => {
+          const res = await request(app)
+              .get('/brokers')
+              .set({Authorization: user.token});
+          brokers = res.body;
+      });
+  };
+
+  const getUpcomingLoad = () => {
+    it('should get upcoming load', async () => {
+      const res = await request(app)
+        .get('/loads/?status=upcoming')
+        .set({Authorization: user.token});
+      upcomingLoad = res.body.find(load => load.loadCode === 'T-114K1J2M7');
+    });
+  }
 
   const createLoad = () => {
     if (user === null) getUser('user@gmail.com', 'user');
@@ -69,7 +77,6 @@ describe('Testing \'loads\' route', () => {
         });
       expect(res.statusCode).toBe(200);
       expect(res.body.price).toBe(2400);
-      expect(res.body.status).toBe('upcoming');
       load = res.body;
     });
   };
@@ -99,22 +106,20 @@ describe('Testing \'loads\' route', () => {
   });
 
   describe('create a new load', () => {
-    createLoad();
+    createLoad(0);
   });
 
   describe('change load', () => {
     getUser('admin@gmail.com', 'admin');
-    getUser('user@gmail.com', 'user');
 
     it('load should successfully update', async () => {
       const res = await request(app)
         .put('/loads/' + load._id)
-        .set({Authorization: admin.token})
+        .set({Authorization: user.token})
         .send({
-          loadCode: randomLoadCode,
-          driverId: drivers[1]._id.toString(),
           dispatchId: user._id,
           price: 2800,
+          driverId: load.driverId,
           miles: 1400,
           rpm: 2,
           datePU: "12/15/2022",
@@ -124,12 +129,10 @@ describe('Testing \'loads\' route', () => {
           pu: "Pitsburg, PA",
           del: "Boston, MA",
           comment: "updated test comment",
-          status: "transit",
           brokerId: brokers[1]._id.toString(),
         });
       expect(res.statusCode).toBe(200);
       expect(res.body.price).toBe(2800);
-      expect(res.body.status).toBe('transit');
     });
   });
 
@@ -142,20 +145,23 @@ describe('Testing \'loads\' route', () => {
         .set({Authorization: user.token});
 
       expect(res.statusCode).toBe(200);
-      expect(res.body[0].status).toBe('transit');
+      expect(res.body[0].status).toBe('upcoming');
     });
   });
 
   describe('cancel load', () => {
-    getUser('user@gmail.com', 'user');
-
+    getUser('admin@gmail.com', 'admin');
+    getUpcomingLoad();
     it('load should successfully cancel', async () => {
       const res = await request(app)
-        .put('/loads/cancel/' + load._id)
+        .put('/loads/cancel/' + upcomingLoad._id)
         .set({Authorization: user.token});
 
+      const res1 = await request(app)
+        .get('/loads/' + upcomingLoad._id)
+        .set({Authorization: user.token});
       expect(res.statusCode).toBe(200);
-      expect(res.body.status).toBe('finished');
+      expect(res1.body.status).toBe('cancel');
     });
   });
 
@@ -175,7 +181,7 @@ describe('Testing \'loads\' route', () => {
 
   describe('change load attachment', () => {
     getUser('user@gmail.com', 'user');
-
+    getUpcomingLoad();
     it('load attachment should successfully change', async () => {
       const res = await request(app)
         .put('/loads/attachment/' + load._id)

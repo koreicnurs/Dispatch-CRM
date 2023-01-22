@@ -115,8 +115,16 @@ const Dispatchers = () => {
               title="New Dispatcher"
             />
           </Grid>
-          <Grid>
-            <SearchStyle>
+          <Grid
+              sx={{
+                margin: '8px 20px 20px 40px'
+              }}
+          >
+            <SearchStyle
+                sx={{
+                  width: '100%',
+                }}
+            >
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
@@ -136,7 +144,7 @@ const Dispatchers = () => {
           <TableHeaderRow
             headerCells={headerTitles}
             data={false}
-            sx={{fontSize: "16px", fontWeight: "bold", textTransform: "uppercase"}}
+            sx={{fontSize: "12px", fontWeight: "bold", textTransform: "uppercase"}}
           />
           }
           body={

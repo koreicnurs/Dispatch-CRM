@@ -11,7 +11,7 @@ import FormSelect from "../UI/Form/FormSelect/FormSelect";
 import {showedItemCount} from "../../config";
 
 const TabPanel = (props) => {
-  const { children, value, index, header, body, history, goWeekBack, goWeekForward, week, pageCount, changePage, page, limitItem, changeLimit, ...other } = props;
+  const { children, value, index, header, headerHistory, body, history, goWeekBack, goWeekForward, week, pageCount, changePage, page, limitItem, changeLimit, ...other } = props;
   return (
     <div
       role="tabpanel"
@@ -68,7 +68,7 @@ const TabPanel = (props) => {
             <Table sx={{minWidth: 650}} aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  {header}
+                  {history === "?status=finished" ? headerHistory : header}
                 </TableRow>
               </TableHead>
               <TableBody>

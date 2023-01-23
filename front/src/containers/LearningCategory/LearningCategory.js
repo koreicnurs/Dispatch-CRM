@@ -31,16 +31,6 @@ const SearchStyle = styled('div')(({theme}) => ({
     },
 }));
 
-const SearchIconWrapper = styled('div')(({theme}) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}));
-
 const StyledInputBase = styled(InputBase)(({theme}) => ({
     color: 'inherit',
     '& .MuiInputBase-input': {
@@ -119,25 +109,27 @@ const LearningCategory = ({location}) => {
       </Grid>
 
       <Box>
-        {category.length < 1
-          ? <Typography fontWeight="bold" marginLeft={'20px'}>
-              There are no any articles yet in selected category...
-            </Typography>
-          : <Box>
-            <Typography variant="h6" fontWeight="bold" marginLeft={'20px'} textTransform="uppercase">
-              {category[0].learningCategory.title}
-            </Typography>
-              <InnerTable
-                header={<TableHeaderRow headerCells={columns} data={true} sx={{fontSize: "14px", fontWeight: "bold"}}/>}
-                body={
-                  <LearningTableBody
-                    columns={columns}
-                    filteredData={category}
-                    user={user}
-                    onDelete={onDelete}
-                  />
-                }
-            </Box>
+          {category.length < 1
+              ? <Typography fontWeight="bold" marginLeft={'20px'}>
+                  There are no any articles yet in selected category...
+              </Typography>
+              : <Box>
+                  <Typography variant="h6" fontWeight="bold" marginLeft={'20px'} textTransform="uppercase">
+                      {category[0].learningCategory.title}
+                  </Typography>
+                  <InnerTable
+                      header={<TableHeaderRow headerCells={columns} data={true} sx={{fontSize: "14px", fontWeight: "bold"}}/>}
+                      body={
+                          <LearningTableBody
+                              columns={columns}
+                              filteredData={category}
+                              user={user}
+                              onDelete={onDelete}
+                          />}
+                      />
+              </Box>
+          }
+      </Box>
 
         </InnerContainer>
     );

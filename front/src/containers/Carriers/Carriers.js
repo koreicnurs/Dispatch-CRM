@@ -1,15 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {Grid, InputBase, styled} from "@mui/material";
+import {Grid, IconButton, InputBase, styled} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import {fetchCarriersRequest} from "../../store/actions/carriersActions";
+import {fetchCarriersRequest, fetchSearchedCarriersRequest} from "../../store/actions/carriersActions";
 import AddCarrier from "../../components/Modals/AddCarrier";
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
 import InnerTable from "../../components/Table/InnerTable";
 import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import CarrierTableBody from "../../components/Table/TableBody/CarrierTableBody";
 import SearchIcon from '@mui/icons-material/Search';
-import useTableSearch from '../../components/UI/Filter/useTableSearch/useTableSearch';
 
 const SearchStyle = styled('div')(({theme}) => ({
     position: 'relative',
@@ -28,21 +27,10 @@ const SearchStyle = styled('div')(({theme}) => ({
     },
 }));
 
-const SearchIconWrapper = styled('div')(({theme}) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}));
-
 const StyledInputBase = styled(InputBase)(({theme}) => ({
     color: 'inherit',
     '& .MuiInputBase-input': {
         padding: theme.spacing(1, 1, 1, 0),
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
         transition: theme.transitions.create('width'),
         width: '50%',
         [theme.breakpoints.up('md')]: {
@@ -73,10 +61,9 @@ const Carriers = () => {
         dispatch(fetchCarriersRequest());
     }, [dispatch]);
 
-    const {filteredData} = useTableSearch({
-        searchVal,
-        data: carriers
-    });
+    const searchCarriers = async () => {
+        await dispatch(fetchSearchedCarriersRequest(searchVal));
+    };
 
     return (
         <>
@@ -105,9 +92,9 @@ const Carriers = () => {
                             sx={{
                                 width: '100%',
                             }}>
-                            <SearchIconWrapper>
+                            <IconButton onClick={searchCarriers}>
                                 <SearchIcon/>
-                            </SearchIconWrapper>
+                            </IconButton>
                             <StyledInputBase
                                 placeholder="Search"
                                 inputProps={{'aria-label': 'search'}}
@@ -123,7 +110,7 @@ const Carriers = () => {
                     body={
                         <CarrierTableBody
                             columns={columns}
-                            carriers={filteredData}
+                            carriers={carriers}
                         />
                     }
                 />

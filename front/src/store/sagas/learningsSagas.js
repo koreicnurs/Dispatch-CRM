@@ -24,7 +24,7 @@ import {
   fetchLearningByCategorySuccess,
   fetchLearningCategoriesFailure,
   fetchLearningCategoriesRequest,
-  fetchLearningCategoriesSuccess
+  fetchLearningCategoriesSuccess, searchArticleFailure, searchArticleRequest, searchArticleSuccess
 } from "../actions/learningsActions";
 
 export function* fetchLearningCategories() {
@@ -116,6 +116,17 @@ export function* addLearningComment({payload}) {
   }
 }
 
+export function* searchArticle({payload}) {
+  try {
+    const response = yield axiosApi('/learnings?category=' + payload.id + '&title=' + payload.title);
+    yield put(searchArticleSuccess(response.data));
+    yield put(addNotification({message: 'Search has been successful', variant: 'success'}));
+  } catch (e) {
+    yield put(searchArticleFailure(e.response.data));
+    yield put(addNotification({message: 'Search failed', variant: 'error'}));
+  }
+}
+
 const learningsSaga = [
   takeEvery(fetchLearningCategoriesRequest, fetchLearningCategories),
   takeEvery(addLearningCategoryRequest, addLearningCategory),
@@ -125,6 +136,7 @@ const learningsSaga = [
   takeEvery(deleteLearningArticleRequest, deleteLearningArticle),
   takeEvery(fetchLearningArticleRequest, fetchLearningArticle),
   takeEvery(addLearningCommentRequest, addLearningComment),
+  takeEvery(searchArticleRequest, searchArticle)
 ];
 
 export default learningsSaga;

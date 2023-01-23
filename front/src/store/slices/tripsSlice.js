@@ -166,6 +166,19 @@ const tripsSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+
+    searchTripsRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    searchTripsSuccess(state, {payload: trips}) {
+      state.loading = false;
+      state.trips = trips;
+    },
+    searchTripsFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    }
   }
 });
 

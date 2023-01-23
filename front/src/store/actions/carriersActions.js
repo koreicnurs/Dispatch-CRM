@@ -14,4 +14,7 @@ export const {
   editCarrierSuccess,
   editCarrierFailure,
   clearCarriersErrors,
+  fetchSearchedCarriersSuccess,
+  fetchSearchedCarriersRequest,
+  fetchSearchedCarriersFailure
 } = carriersSlice.actions;

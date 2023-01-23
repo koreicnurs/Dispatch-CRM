@@ -5,7 +5,7 @@ if(process.env.REACT_APP_ENV === 'test') {
 }
 
 if(process.env.NODE_ENV === 'production'){
-  apiUrl = 'http://95.85.63.6:8000'
+  apiUrl = 'https://supreme.dispatch.pashster.com/api'
 }
 
 export const statusInterval = 1200000;

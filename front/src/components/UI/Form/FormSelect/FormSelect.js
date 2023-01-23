@@ -7,7 +7,9 @@ import Select from '@mui/material/Select';
 import {FormHelperText, Grid, ListItemText} from '@mui/material';
 import {Checkbox} from "antd";
 
-const FormSelect = ({array, value, onChange, label, required, name, variant, error, driver, multiple, disabled, height}) => {
+const FormSelect = ({array, value, onChange, label, required, name, variant, error, driver, multiple, disabled, height, isNew, edit}) => {
+
+
   return (
     <Grid item xs={12}>
       <Box sx={{ minWidth: 50 }}>
@@ -36,11 +38,18 @@ const FormSelect = ({array, value, onChange, label, required, name, variant, err
                             <ListItemText primary={item} sx={{paddingLeft: "5px"}}/>
                           </MenuItem>
                 } else {
-                  return <MenuItem key={index} value={item}>{item}</MenuItem>
+                  return <MenuItem key={index} value={item} disabled={name === 'status' && item !== 'ready' && item !== 'off'}>{item}</MenuItem>
                 }
               }
               if (variant === 'object') {
-                return <MenuItem key={item._id} value={item._id}>{driver ? item.name : item.title}</MenuItem>
+                return <MenuItem
+                  key={item._id}
+                  value={item._id}
+                  name={name}
+                  disabled={(isNew !== undefined && edit !== undefined) && ((!edit && !isNew) || ((isNew && item.status !== 'in transit' && item.status !== 'ready') || (item.status === 'off' || item.status === 'in tr/upc' || item.status === 'upcoming')))}
+                >
+                  {driver ? item.name : item.title}
+                </MenuItem>
               }
               return null;
             })}

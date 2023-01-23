@@ -45,7 +45,7 @@ const useStyles = makeStyles()(theme => ({
 }));
 
 
-const TripsModal = ({modalTitle, isAdd, tripID, isButton, limitation}) => {
+const TripsModal = ({modalTitle, isAdd, tripID, isButton, limitation, value}) => {
   const {classes} = useStyles();
   const dispatch = useDispatch();
   const trips = useSelector(state => state.trips.trips);
@@ -59,10 +59,8 @@ const TripsModal = ({modalTitle, isAdd, tripID, isButton, limitation}) => {
 
   const [newModal, setNewModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
-  const [driversArr, setDriversArr] = useState([]);
   const [tripId, setTripId] = useState('');
 
-  // useEffect(() => setEditModal(isEdit), [isEdit]);
 
 
   useEffect(() => {
@@ -117,27 +115,6 @@ const TripsModal = ({modalTitle, isAdd, tripID, isButton, limitation}) => {
 
   const [commentArray, setCommentArray] = useState([]);
 
-  useEffect(() => {
-    let arr = [];
-    if (isAdd) {
-      arr = drivers.filter((driver) => {return driver.status === 'ready' || driver.status === 'in transit'});
-      setDriversArr(arr);
-    } else if (trip){
-      if (trip.driverId) {
-        const driver = drivers.find(driver => driver._id === trip.driverId._id)
-        arr = drivers.filter((driver) => {return driver.status === 'ready' || driver.status === 'in transit'});
-        // if (driver.status === 'upcoming' || driver.status === 'in tr/upc') {
-        //   arr.push(driver)
-        // }
-        arr.push(driver);
-        setDriversArr(arr);
-      } else {
-        arr = drivers.filter((driver) => {return driver.status === 'ready' || driver.status === 'in transit'});
-        setDriversArr(arr);
-      }
-    }
-
-  }, [dispatch, drivers, isAdd, trip])
 
   useEffect(() => {
     if (isAdd) {
@@ -284,7 +261,6 @@ const TripsModal = ({modalTitle, isAdd, tripID, isButton, limitation}) => {
   const closeModal = () => {
     setNewModal(false);
     setEditModal(false);
-    setDriversArr([]);
     dispatch(clearCreateTripErrorRequest());
     dispatch(clearEditTripErrorRequest());
   }
@@ -524,7 +500,9 @@ const TripsModal = ({modalTitle, isAdd, tripID, isButton, limitation}) => {
                     onChange={inputChangeHandler}
                     error={getFieldError('driverId')}
                     driver={true}
-                    array={driversArr}
+                    array={drivers}
+                    isNew={!tripId}
+                    edit={value === 0}
                     required={false}
                     variant="object"
                   />

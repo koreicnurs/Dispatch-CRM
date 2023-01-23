@@ -432,7 +432,6 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
         if (driverId) {
             const driver = await Driver.findById({_id: driverId});
             if (load.driverId === null) {
-                console.log(1)
                 if (driver.status === 'off') {
                     return res.status(403).send({message: 'The driver is not ready!'});
                 } else if (driver.status === 'in tr/upc') {
@@ -443,11 +442,8 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
                     await Driver.findByIdAndUpdate(driverId, {status: 'upcoming'});
                 }
             } else if (driverId === load.driverId.toString()) {
-                console.log(2)
                 await Driver.findByIdAndUpdate(driverId, {status: driver.status});
-                console.log(driver.status)
             } else if (driverId !== load.driverId.toString()) {
-                console.log(3)
                 const prevDriver = await Driver.findById({_id: load.driverId});
                 if (prevDriver.status === 'in tr/upc') {
                     await Driver.findByIdAndUpdate(load.driverId, {status: 'in transit'});

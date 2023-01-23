@@ -74,7 +74,6 @@ const Trips = ({history}) => {
     dispatch(fetchBrokersRequest());
   }, [dispatch, history.location.search, limitation]);
 
-  // const [edit, setEdit] = useState(false);
 
   const [openComment, setComment] = useState(false);
   const handleCloseCommentModal = () => setComment(false);
@@ -128,7 +127,6 @@ const Trips = ({history}) => {
 
   const editTripHandler = id => {
     dispatch(fetchTripRequest(id));
-    // setEdit(true);
   };
 
   const attachFileHandler = id => {
@@ -137,7 +135,6 @@ const Trips = ({history}) => {
   };
 
   const leaveCommentHandler = id => {
-    // setEdit(false);
     setCommentTripId(id);
     dispatch(fetchTripRequest(id));
     setComment(true);
@@ -148,7 +145,6 @@ const Trips = ({history}) => {
   };
 
   const viewAllHandler = id => {
-    // setEdit(false);
     dispatch(fetchTripRequest(id));
     setViewAll(true);
   };
@@ -223,7 +219,7 @@ const Trips = ({history}) => {
 
   return (
     <>
-      <EditTrip tripID={trip?._id} limitation={limitation}/>
+      <EditTrip tripID={trip?._id} limitation={limitation} value={value}/>
       <NewComment handleClose={handleCloseCommentModal} open={openComment} id={commentTripId} user={user}/>
       <ViewAll handleClose={handleCloseViewAllModal} open={viewAll} id={viewAllTripId} trip={trip} user={user}/>
       <NewAttachment handleClose={handleCloseAttachmentModal} open={openAttachment} id={attachTripId}/>

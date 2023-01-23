@@ -104,26 +104,30 @@ const Drivers = () => {
         <Grid padding="15px">
           <AddDriver/>
         </Grid>
-        <Grid
-            sx={{
-              margin: '8px 20px 20px 40px'
-            }}
-        >
-          <SearchStyle
+        {user.role !== 'carrier'
+          ? <Grid
               sx={{
-                width: '100%',
+              margin: '8px 20px 20px 40px'
               }}
-          >
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search"
-              inputProps={{ 'aria-label': 'search' }}
-              onChange={searchValHandler}
-            />
-          </SearchStyle>
-        </Grid>
+            >
+              <SearchStyle
+                sx={{
+                width: '100%',
+                }}
+              >
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                placeholder="Search"
+                inputProps={{ 'aria-label': 'search' }}
+                onChange={searchValHandler}
+                />
+              </SearchStyle>
+            </Grid>
+          : null
+        }
+
       </Grid>
 
       <InnerTable

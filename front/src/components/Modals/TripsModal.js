@@ -10,7 +10,7 @@ import {
   clearCreateTripErrorRequest,
   clearEditTripErrorRequest,
   createTripRequest,
-  editTripRequest
+  editTripRequest, fetchTripRequest
 } from "../../store/actions/tripsActions";
 import FileInput from "../UI/Form/FileInput/FileInput";
 import {DesktopDatePicker, LocalizationProvider} from "@mui/x-date-pickers";
@@ -45,7 +45,7 @@ const useStyles = makeStyles()(theme => ({
 }));
 
 
-const TripsModal = ({modalTitle, isAdd, tripID, isButton, limitation, value}) => {
+const TripsModal = ({modalTitle, isAdd, tripID, isButton, limitation, value, isEdit}) => {
   const {classes} = useStyles();
   const dispatch = useDispatch();
   const trips = useSelector(state => state.trips.trips);
@@ -71,7 +71,11 @@ const TripsModal = ({modalTitle, isAdd, tripID, isButton, limitation, value}) =>
         history: 'trips'
       }
     ));
-  }, [dispatch]);
+    if (tripID) {
+      dispatch(fetchTripRequest(tripID));
+    }
+
+  }, [dispatch, tripID]);
 
 
   const [newData, setNewData] = useState({
@@ -132,7 +136,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isButton, limitation, value}) =>
       setEditModal(false);
     }
     // eslint-disable-next-line
-  }, [trips, newError, editError, trip]);
+  }, [trips]);
 
   const openCloseModal = () => {
     if (isAdd) {
@@ -158,12 +162,11 @@ const TripsModal = ({modalTitle, isAdd, tripID, isButton, limitation, value}) =>
       setStartDate(null);
       setFinDate(null);
       setNewModal(true);
-      dispatch(clearCreateTripErrorRequest());
     }
   };
 
   useEffect(() =>{
-  if (tripID) {
+  if (isEdit && trip) {
     setTripId(trip._id);
     setStartDate(trip.datePU);
     setFinDate(trip.dateDEL);
@@ -241,7 +244,6 @@ const TripsModal = ({modalTitle, isAdd, tripID, isButton, limitation, value}) =>
     } else if (tripId) {
       dispatch(editTripRequest({tripData: formData, id: tripId, path: editedData.status, limitation: limitation}));
     }
-    setEditModal(false)
   };
 
   const getFieldError = fieldName => {
@@ -252,11 +254,6 @@ const TripsModal = ({modalTitle, isAdd, tripID, isButton, limitation, value}) =>
     }
   };
 
-  useEffect(() => {
-    if (trip === null) {
-      setEditModal(false)
-    }
-  }, [trip])
 
   const closeModal = () => {
     setNewModal(false);
@@ -273,7 +270,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isButton, limitation, value}) =>
       }
       <Modal
         open={isAdd ? newModal : editModal}
-        onClose={() => isAdd ? setNewModal(false) : setEditModal(false)}
+        onClose={closeModal}
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
       >

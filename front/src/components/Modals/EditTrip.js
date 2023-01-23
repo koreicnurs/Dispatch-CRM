@@ -8,6 +8,7 @@ const EditTrip = ({tripID, value, limitation}) => {
       tripID={tripID}
       limitation={limitation}
       value={value}
+      isEdit={true}
     />
   );
 };

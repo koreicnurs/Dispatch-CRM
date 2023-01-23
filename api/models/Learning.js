@@ -53,5 +53,7 @@ const LearningSchema = new Schema({
 LearningSchema.plugin(idValidator, {message: 'Bad ID value for {PATH}'});
 LearningSchema.plugin(uniqueValidator, {message: 'This Learning Article already exists'});
 
+LearningSchema.index({title: "text"});
+
 const Learning = mongoose.model('Learning', LearningSchema);
 module.exports = Learning;

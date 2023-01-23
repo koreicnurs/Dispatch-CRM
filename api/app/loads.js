@@ -64,7 +64,9 @@ router.get('/', auth, async (req, res) => {
         if (req.query.status === 'finished' || req.query.status === 'cancel') {
             let loads;
             if (!start && !end) {
-                loads = await Load.find({status: {$in: ['finished', 'cancel']}})
+                loads = await Load
+                  .find(
+                  { loadCode: req.query.code,  status: {$in: ['finished', 'cancel']}})
                   .populate('driverId', ['name', 'status'])
                   .populate('dispatchId', 'displayName')
                   .populate('brokerId', 'name')
@@ -179,8 +181,6 @@ router.get('/', auth, async (req, res) => {
                     }
                 });
             }
-
-
 
             res.send(loads);
         } else {

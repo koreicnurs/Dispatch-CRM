@@ -12,7 +12,8 @@ import {
   changeTripStatusFailure,
   changeTripStatusRequest,
   changeTripStatusSuccess,
-  confirmTripsFailure, confirmTripsRequest,
+  confirmTripsFailure,
+  confirmTripsRequest,
   confirmTripsSuccess,
   createTripFailure,
   createTripRequest,
@@ -28,7 +29,12 @@ import {
   fetchTripsFailure,
   fetchTripsRequest,
   fetchTripsSuccess,
-  fetchTripSuccess, fetchWeekTripsFailure, fetchWeekTripsRequest, fetchWeekTripsSuccess
+  fetchTripSuccess,
+  fetchWeekTripsFailure,
+  fetchWeekTripsRequest,
+  fetchWeekTripsSuccess,
+  searchTripsFailure, searchTripsRequest,
+  searchTripsSuccess
 } from "../actions/tripsActions";
 import {addNotification} from "../actions/notifierActions";
 import axiosApi from "../../axiosApi";
@@ -157,6 +163,16 @@ export function* fetchWeekTrips({payload}) {
   }
 }
 
+export function* searchTrips({payload}) {
+  try {
+    const response = yield axiosApi('/loads/' + payload.value + '&code=' + payload.code);
+    yield put(searchTripsSuccess(response.data));
+  } catch (e) {
+    yield put(searchTripsFailure(e.response.error));
+    yield put(addNotification({message: 'Trips search failed!', variant: 'error'}))
+  }
+}
+
 const tripsSagas = [
   takeEvery(fetchTripsRequest, fetchTrips),
   takeEvery(fetchTripsByCarrierRequest, fetchTripsByCarrier),
@@ -168,7 +184,8 @@ const tripsSagas = [
   takeEvery(addCommentRequest, addComment),
   takeEvery(addAttachmentRequest, addAttachment),
   takeEvery(confirmTripsRequest, confirmTrip),
-  takeEvery(fetchWeekTripsRequest, fetchWeekTrips)
+  takeEvery(fetchWeekTripsRequest, fetchWeekTrips),
+  takeEvery(searchTripsRequest, searchTrips)
 ];
 
 export default tripsSagas;

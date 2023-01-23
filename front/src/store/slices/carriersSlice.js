@@ -30,6 +30,20 @@ const carriersSlice = createSlice({
       state.error = action.payload;
     },
 
+    fetchSearchedCarriersRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    fetchSearchedCarriersSuccess(state, {payload: carriers}) {
+      state.loading = false;
+      state.carriers = carriers;
+    },
+    fetchSearchedCarriersFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
+
     fetchCarrierRequest(state) {
       state.loading = true;
       state.error = null;

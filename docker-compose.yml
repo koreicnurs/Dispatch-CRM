@@ -35,9 +35,7 @@ services:
   mongodb:
     image: mongo
     volumes:
-      - mongo_data:/data/db
+      - /mongodb
 
 volumes:
   public_images:
-  mongo_data:
-

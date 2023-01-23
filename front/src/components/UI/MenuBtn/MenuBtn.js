@@ -35,7 +35,7 @@ const MenuBtn = ({trip, sendTrip, cancelTripHandler, editTripHandler, attachFile
         }}
       >
         {(trip.status === 'finished' || trip.status === 'cancel') && user.role === 'user' ? null : <MenuItem onClick={() => [editTripHandler(trip._id), handleClose()]}>Edit</MenuItem>}
-        {trip.status === 'upcoming' && <MenuItem onClick={() => [sendTrip(trip._id), handleClose()]}>Send</MenuItem>}
+        {trip.status === 'upcoming' && <MenuItem onClick={() => [sendTrip(trip._id), handleClose()]}>Done</MenuItem>}
         {trip.status === 'transit' && <MenuItem onClick={() => [sendTrip(trip._id), handleClose()]}>Close</MenuItem>}
         {trip.status !== 'finished' && trip.status !== 'cancel'
           ? <MenuItem onClick={() => [cancelTripHandler(trip._id), handleClose()]}>Cancel</MenuItem>

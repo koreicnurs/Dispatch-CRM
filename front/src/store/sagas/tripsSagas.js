@@ -68,12 +68,12 @@ export function* fetchTrip({payload: value}) {
   }
 }
 
-export function* createTrip({payload: tripData}) {
+export function* createTrip({payload}) {
   try {
-    yield axiosApi.post('/loads', tripData);
+    yield axiosApi.post('/loads', payload.tripData);
     yield put(createTripSuccess());
     yield put(addNotification({message: 'Trip created!', variant: 'success'}));
-    const response = yield axiosApi('/loads?status=upcoming');
+    const response = yield axiosApi('/loads?status=upcoming', {params: {...payload.limitation}});
     yield put(fetchTripsSuccess(response.data));
   } catch (e) {
     yield put(createTripFailure(e.response && e.response.data));
@@ -86,7 +86,7 @@ export function* editTrip({payload}) {
     yield axiosApi.put('/loads/' + payload.id, payload.tripData);
     yield put(editTripSuccess());
     yield put(addNotification({message: 'Trip edited!', variant: 'success'}));
-    const response = yield axiosApi('/loads?status=' + payload.path);
+    const response = yield axiosApi('/loads?status=' + payload.path, {params: {...payload.limitation}});
     yield put(fetchTripsSuccess(response.data));
   } catch (e) {
     yield put(editTripFailure(e.response && e.response.data));
@@ -120,7 +120,7 @@ export function* changeTripStatus({payload}) {
   try {
     yield axiosApi.put('/loads/status/' + payload.id);
     yield put(changeTripStatusSuccess());
-    const response = yield axiosApi('/loads' + payload.path);
+    const response = yield axiosApi('/loads' + payload.path, {params: {...payload.limitation}});
     yield put(fetchTripsSuccess(response.data));
   } catch (e) {
     yield put(changeTripStatusFailure(e));

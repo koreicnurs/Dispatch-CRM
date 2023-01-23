@@ -155,7 +155,7 @@ router.get('/', auth, async (req, res) => {
                 });
 
                 await User.populate(loads, {
-                    path: "dispatcherId",
+                    path: "dispatchId",
                     select: {
                         _id: 1,
                         displayName: 1
@@ -399,7 +399,7 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
             pu,
             del,
             status,
-            brokerId: brokerId || null,
+            brokerId: roles.includes(req.user.role) ? brokerId : load.brokerId,
             comment: comment.trim() !== '' ? loadComment : load.comment,
         };
 
@@ -421,12 +421,14 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
         }
         if (driverId) {
             const driver = await Driver.findById({_id: driverId});
-            if(driver.status === statusDriver.ready) {
-                if (driver.telegramId) {
-                    await bot.sendMessage(driver.telegramId, `У вас есть новый груз ${loadCode}\nНапишите команду /load чтобы получить полную информацию по грузу`);
+            if (!driver._id.equals(load.driverId)) {
+                if(driver.status === statusDriver.ready) {
+                    if (driver.telegramId) {
+                        await bot.sendMessage(driver.telegramId, `У вас есть новый груз ${loadCode}\nНапишите команду /load чтобы получить полную информацию по грузу`);
+                    }
+                } else {
+                    return res.status(400).send({message: 'Driver already have load!'});
                 }
-            } else {
-                return res.status(400).send({message: 'Driver already have load!'});
             }
             if (driverId !== load.driverId) {
                 const prevDriver = await Driver.findById({_id: load.driverId});

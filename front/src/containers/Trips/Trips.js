@@ -29,6 +29,11 @@ const headerTitles = [
   "MILES", "RATE", "Driver",
   "Dispatch Team", "Dispatch"
 ];
+const headerTitlesHistory = [
+  "Load ID", "PU Location", "DEL Location",
+  "MILES", "RATE", "Driver", "Broker",
+  "Dispatch Team", "Dispatch"
+];
 
 const SearchStyle = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -146,7 +151,7 @@ const Trips = ({history}) => {
   }
 
   const sendTrip = id => {
-    dispatch(changeTripStatusRequest({id, path: history.location.search}));
+    dispatch(changeTripStatusRequest({id, path: history.location.search, limitation: limitation}));
   };
 
   const cancelTripHandler = id => {
@@ -254,7 +259,7 @@ const Trips = ({history}) => {
 
   return (
     <>
-      <EditTrip tripID={trip?._id} isEdit={edit}/>
+      <EditTrip tripID={trip?._id} isEdit={edit} limitation={limitation}/>
       <NewComment handleClose={handleCloseCommentModal} open={openComment} id={commentTripId} user={user}/>
       <ViewAll handleClose={handleCloseViewAllModal} open={viewAll} id={viewAllTripId} trip={trip} user={user}/>
       <NewAttachment handleClose={handleCloseAttachmentModal} open={openAttachment} id={attachTripId}/>
@@ -284,7 +289,7 @@ const Trips = ({history}) => {
             }
           </Grid>
           <Grid container item flexDirection="row" justifyContent="space-between" alignItems="center" paddingRight="15px">
-            <AddTrip value={value}/>
+            <AddTrip value={value} limitation={limitation}/>
           </Grid>
 
 
@@ -308,7 +313,12 @@ const Trips = ({history}) => {
             history={history.location.search}
             value={value}
             index={value}
-            header={<TableHeaderRow headerCells={headerTitles}/>}
+            header={<TableHeaderRow
+              headerCells={headerTitles}
+            />}
+            headerHistory={<TableHeaderRow
+              headerCells={headerTitlesHistory}
+            />}
             body={
               <TripTableBody
                 user={user}

@@ -14,7 +14,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: {xs: '80%', md: '70%'},
+    width: {xs: '80%', md: '65%', lg: '45%'},
     backgroundColor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -207,36 +207,36 @@ const StatusUpdateModal = ({driverEmail}) => {
                                         />
                                     </Grid>
 
-                                        <Grid
-                                            item
-                                            sx={{width: {xs: '100%', md: '49.5%'}}}
+                                    <Grid
+                                        item
+                                        sx={{width: {xs: '100%', md: '49.5%'}}}
+                                    >
+                                        <ButtonWithProgress
+                                            loading={editLoading}
+                                            disabled={editLoading}
+                                            type="submit"
+                                            fullWidth
+                                            variant="contained"
+                                            color="primary"
                                         >
-                                            <ButtonWithProgress
-                                                loading={editLoading}
-                                                disabled={editLoading}
-                                                type="submit"
-                                                fullWidth
-                                                variant="contained"
-                                                color="primary"
-                                            >
-                                                Save
-                                            </ButtonWithProgress>
-                                        </Grid>
+                                            Save
+                                        </ButtonWithProgress>
+                                    </Grid>
 
-                                        <Grid
-                                            item
-                                            sx={{width: {xs: '100%', md: '49.5%'}}}
+                                    <Grid
+                                        item
+                                        sx={{width: {xs: '100%', md: '49.5%'}}}
+                                    >
+                                        <ButtonWithProgress
+                                            type="button"
+                                            fullWidth
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={() => setEditModal(false)}
                                         >
-                                            <ButtonWithProgress
-                                                type="button"
-                                                fullWidth
-                                                variant="contained"
-                                                color="primary"
-                                                onClick={() => setEditModal(false)}
-                                            >
-                                                Cancel
-                                            </ButtonWithProgress>
-                                        </Grid>
+                                            Cancel
+                                        </ButtonWithProgress>
+                                    </Grid>
 
                                 </Grid>
                             </Grid>

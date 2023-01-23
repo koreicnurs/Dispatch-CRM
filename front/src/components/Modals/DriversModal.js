@@ -22,7 +22,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: {xs: '80%', md: '70%'},
+    width: {xs: '80%', md: '60%', lg: '45%'},
     backgroundColor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
@@ -188,7 +188,7 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
         const formData = new FormData();
 
         if (user.role === 'carrier') {
-            newData.companyId = user.companyId
+            newData.companyId = user.companyId._id
         }
 
         Object.keys(isAdd ? newData : editedData).forEach(key => {
@@ -302,8 +302,9 @@ const DriversModal = ({modalTitle, isAdd, driverEmail}) => {
                                             ? <TextField
                                                 name={"carrier"}
                                                 label={"Carriers"}
-                                                value={carriers.find(item => item._id === user.companyId)?.title}
+                                                value={carriers.find(item => item._id === user.companyId._id)?.title}
                                                 className={classes.field}
+                                                disabled
                                                 InputProps={{
                                                     readOnly: true,
                                                 }}

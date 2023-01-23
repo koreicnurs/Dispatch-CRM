@@ -11,141 +11,152 @@ import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import DispatcherTableBody from "../../components/Table/TableBody/DispatcherTableBody";
 import InnerTable from "../../components/Table/InnerTable";
 
-const SearchStyle = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: '#fff',
-  '&:hover': {
+const SearchStyle = styled('div')(({theme}) => ({
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
     backgroundColor: '#fff',
-  },
-  marginRight: theme.spacing(6),
-  marginLeft: 0,
-  marginTop: '25px',
-  width: '50%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
-  },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '50%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
+    '&:hover': {
+        backgroundColor: '#fff',
     },
-  },
+    marginRight: theme.spacing(6),
+    marginLeft: 0,
+    marginTop: '25px',
+    width: '50%',
+    [theme.breakpoints.up('sm')]: {
+        marginLeft: theme.spacing(3),
+        width: 'auto',
+    },
+}));
+
+const SearchIconWrapper = styled('div')(({theme}) => ({
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+}));
+
+const StyledInputBase = styled(InputBase)(({theme}) => ({
+    color: 'inherit',
+    '& .MuiInputBase-input': {
+        padding: theme.spacing(1, 1, 1, 0),
+        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+        transition: theme.transitions.create('width'),
+        width: '50%',
+        [theme.breakpoints.up('md')]: {
+            width: '20ch',
+        },
+    },
 }));
 
 const headerTitles = ["avatar", "email", "name", "phone", "status"];
 
 const UserCarriers = () => {
-  const dispatch = useDispatch();
-  const users = useSelector(state => state.users.users);
-  const [userCarriers, setUserCarriers] = useState([]);
-  const [searchVal, setSearchVal] = useState(null);
+    const dispatch = useDispatch();
+    const users = useSelector(state => state.users.users);
+    const [userCarriers, setUserCarriers] = useState([]);
+    const [searchVal, setSearchVal] = useState(null);
 
-  useEffect(() => {
-    dispatch(fetchUsersRequest());
-  }, [dispatch]);
+    useEffect(() => {
+        dispatch(fetchUsersRequest());
+    }, [dispatch]);
 
-  const { filteredData } = useTableSearch({
-    searchVal,
-    data: userCarriers
-  });
-
-  useEffect(() => {
-    if (users.length !== null) {
-
-      setUserCarriers(() => (
-        users.filter(user => user.role === "carrier")
-      ));
-    }
-  }, [users, filteredData]);
-
-  const activeSwitcherHandler = async (e) => {
-
-    const copyUserCarrier = userCarriers.map(dispatcher => {
-      if (dispatcher._id === e.target.id) {
-        return {
-          ...dispatcher,
-          isWorking: e.target.checked
-        }
-      } else {
-        return dispatcher;
-      }
+    const {filteredData} = useTableSearch({
+        searchVal,
+        data: userCarriers
     });
 
-    const userCarrier = copyUserCarrier.find(carrier => carrier._id === e.target.id);
-    await dispatch(changeStatusRequest(userCarrier));
-  };
+    useEffect(() => {
+        if (users.length !== null) {
+
+            setUserCarriers(() => (
+                users.filter(user => user.role === "carrier")
+            ));
+        }
+    }, [users, filteredData]);
+
+    const activeSwitcherHandler = async (e) => {
+
+        const copyUserCarrier = userCarriers.map(dispatcher => {
+            if (dispatcher._id === e.target.id) {
+                return {
+                    ...dispatcher,
+                    isWorking: e.target.checked
+                }
+            } else {
+                return dispatcher;
+            }
+        });
+
+        const userCarrier = copyUserCarrier.find(carrier => carrier._id === e.target.id);
+        await dispatch(changeStatusRequest(userCarrier));
+    };
 
 
+    return (
+        <InnerContainer>
+            <Grid item sx={{paddingLeft: "15px"}}>
+                <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
+                    Carriers
+                </Typography>
+            </Grid>
 
-  return (
-    <InnerContainer>
-      <Grid item sx={{paddingLeft: "15px"}}>
-        <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
-          Carriers
-        </Typography>
-      </Grid>
+            <Grid
+                item
+                container
+                spacing={2}
+                justifyContent="space-between"
+            >
+                <Grid
+                    item
+                    padding="15px"
+                >
+                    <NewDispatcher dispatcherRole="carrier" title="New Carrier User"/>
+                </Grid>
 
-      <Grid
-        item
-        container
-        spacing={2}
-        justifyContent="space-between"
-      >
-        <Grid
-          item
-          padding="15px"
-        >
-          <NewDispatcher dispatcherRole="carrier" title="New Carrier User"/>
-        </Grid>
+                <Grid
+                    item
+                    sx={{
+                        margin: '8px 20px 20px 30px'
+                    }}
+                >
+                    <SearchStyle
+                        sx={{
+                            width: '100%',
+                        }}
+                    >
+                        <SearchIconWrapper>
+                            <SearchIcon/>
+                        </SearchIconWrapper>
+                        <StyledInputBase
+                            placeholder="Search"
+                            inputProps={{'aria-label': 'search'}}
+                            onChange={e => setSearchVal(e.target.value)}
+                        />
+                    </SearchStyle>
+                </Grid>
+            </Grid>
 
-        <Grid item>
-          <SearchStyle>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search"
-              inputProps={{ 'aria-label': 'search' }}
-              onChange={e => setSearchVal(e.target.value)}
+            <InnerTable
+                header={
+                    <TableHeaderRow
+                        headerCells={headerTitles}
+                        data={false}
+                        sx={{fontSize: "12px", fontWeight: "bold", textTransform: "uppercase"}}
+                    />
+                }
+                body={
+                    <DispatcherTableBody
+                        dispatchers={filteredData}
+                        switchHandler={activeSwitcherHandler}
+                    />
+                }
             />
-          </SearchStyle>
-        </Grid>
-      </Grid>
 
-      <InnerTable
-        header={
-          <TableHeaderRow
-            headerCells={headerTitles}
-            data={false}
-            sx={{fontSize: "16px", fontWeight: "bold", textTransform: "uppercase"}}
-          />
-        }
-        body={
-          <DispatcherTableBody dispatchers={filteredData} switchHandler={activeSwitcherHandler}/>
-        }
-      />
-      
-    </InnerContainer>
-  );
+        </InnerContainer>
+    );
 };
 
 export default UserCarriers;

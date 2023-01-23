@@ -119,7 +119,7 @@ const Trips = ({history}) => {
   }
 
   const sendTrip = id => {
-    dispatch(changeTripStatusRequest({id, path: history.location.search}));
+    dispatch(changeTripStatusRequest({id, path: history.location.search, limitation: limitation}));
   };
 
   const cancelTripHandler = id => {
@@ -223,7 +223,7 @@ const Trips = ({history}) => {
 
   return (
     <>
-      <EditTrip tripID={trip?._id}/>
+      <EditTrip tripID={trip?._id} limitation={limitation}/>
       <NewComment handleClose={handleCloseCommentModal} open={openComment} id={commentTripId} user={user}/>
       <ViewAll handleClose={handleCloseViewAllModal} open={viewAll} id={viewAllTripId} trip={trip} user={user}/>
       <NewAttachment handleClose={handleCloseAttachmentModal} open={openAttachment} id={attachTripId}/>
@@ -236,7 +236,7 @@ const Trips = ({history}) => {
             </Typography>
           </Grid>
           <Grid container item flexDirection="row" justifyContent="space-between" alignItems="center" paddingRight="15px">
-            <AddTrip value={value}/>
+            <AddTrip value={value} limitation={limitation}/>
           </Grid>
 
           <Box sx={{borderBottom: 1, borderColor: 'divider'}}>

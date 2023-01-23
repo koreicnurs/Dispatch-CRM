@@ -25,7 +25,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: {xs: '80%', md: '70%'},
+  width: {xs: '80%', md: '70%', lg: '60%'},
   maxHeight: 600,
   overflow: "auto",
   bgcolor: 'background.paper',
@@ -45,7 +45,7 @@ const useStyles = makeStyles()(theme => ({
 }));
 
 
-const TripsModal = ({modalTitle, isAdd, tripID, isButton}) => {
+const TripsModal = ({modalTitle, isAdd, tripID, isButton, limitation}) => {
   const {classes} = useStyles();
   const dispatch = useDispatch();
   const trips = useSelector(state => state.trips.trips);
@@ -138,7 +138,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isButton}) => {
     }
 
   }, [dispatch, drivers, isAdd, trip])
-  
+
   useEffect(() => {
     if (isAdd) {
       setNewData(prev => ({...prev, rpm: (newData.price / newData.miles).toFixed(2)}));
@@ -184,8 +184,6 @@ const TripsModal = ({modalTitle, isAdd, tripID, isButton}) => {
       dispatch(clearCreateTripErrorRequest());
     }
   };
-
-
 
   useEffect(() =>{
   if (tripID) {
@@ -262,9 +260,9 @@ const TripsModal = ({modalTitle, isAdd, tripID, isButton}) => {
     });
 
     if (isAdd) {
-      dispatch(createTripRequest(formData));
+      dispatch(createTripRequest({tripData: formData, limitation: limitation}));
     } else if (tripId) {
-      dispatch(editTripRequest({tripData: formData, id: tripId, path: editedData.status}));
+      dispatch(editTripRequest({tripData: formData, id: tripId, path: editedData.status, limitation: limitation}));
     }
     setEditModal(false)
   };
@@ -584,7 +582,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isButton}) => {
                     </ButtonWithProgress>
                   </Grid>
 
-                  <Grid item xsx={{width: {xs: '100%', md: '49.5%'}}}>
+                  <Grid item sx={{width: {xs: '100%', md: '49.5%'}}}>
                     <ButtonWithProgress
                       type="button"
                       fullWidth

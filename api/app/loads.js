@@ -153,7 +153,7 @@ router.get('/', auth, async (req, res) => {
                 });
 
                 await User.populate(loads, {
-                    path: "dispatcherId",
+                    path: "dispatchId",
                     select: {
                         _id: 1,
                         displayName: 1

@@ -191,7 +191,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isButton, limitation, value, isE
     setCommentArray(trip.comment);
     setEditModal(true);
     dispatch(clearEditTripErrorRequest());
-  }}, [dispatch, tripID, trips, trip]);
+  }}, [dispatch, tripID, trips, trip, isEdit]);
 
   const [startDate, setStartDate] = useState(null);
   const [finDate, setFinDate] = useState(null);

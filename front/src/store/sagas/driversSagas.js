@@ -65,7 +65,13 @@ export function* addDriver({payload}) {
     if(payload.user.role === 'carrier') {
       yield put(fetchDriversByCarrierRequest());
     } else {
-      yield put(fetchDriversRequest());
+      yield put(fetchDriversRequest({
+          carrier: null,
+          status: null,
+          filter: null,
+          history: true
+        }
+      ));
     }
     yield put(addNotification({message: 'You have successfully added a driver!', variant: 'success'}));
   } catch (e) {
@@ -81,7 +87,13 @@ export function* updateDriver({payload}) {
     if(payload.user.role === 'carrier') {
       yield put(fetchDriversByCarrierRequest());
     } else {
-      yield put(fetchDriversRequest());
+      yield put(fetchDriversRequest({
+          carrier: null,
+          status: null,
+          filter: null,
+          history: true
+        }
+      ));
     }
     yield put(addNotification({message: 'You have successfully updated a driver!', variant: 'success'}));
   } catch (e) {

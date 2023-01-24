@@ -218,6 +218,7 @@ const TripsModal = ({modalTitle, isAdd, tripID, isButton, limitation, value, isE
   const submitFormHandler = async e => {
     e.preventDefault();
 
+
     const formData = new FormData();
 
     let currentTrip;

@@ -32,6 +32,7 @@ export const {
   confirmTripsSuccess,
   confirmTripsFailure,
   clearCreateTripErrorRequest,
+  clearEditTripErrorRequest,
   fetchWeekTripsRequest,
   fetchWeekTripsSuccess,
   fetchWeekTripsFailure,

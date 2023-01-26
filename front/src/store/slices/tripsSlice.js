@@ -50,6 +50,7 @@ const tripsSlice = createSlice({
     },
     createTripSuccess(state) {
       state.loading = false;
+      state.createTripError = null;
     },
     createTripFailure(state, action) {
       state.loading = false;
@@ -84,9 +85,9 @@ const tripsSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    fetchTripSuccess(state, {payload: trip}) {
+    fetchTripSuccess(state, action) {
       state.loading = false;
-      state.trip = trip;
+      state.trip = action.payload;
     },
     fetchTripFailure(state, action) {
       state.loading = false;
@@ -99,6 +100,8 @@ const tripsSlice = createSlice({
     },
     editTripSuccess(state) {
       state.loading = false;
+      state.editTripError = null;
+      state.trip = null;
     },
     editTripFailure(state, action) {
       state.loading = false;
@@ -143,8 +146,12 @@ const tripsSlice = createSlice({
 
     clearCreateTripErrorRequest(state) {
       state.createTripError = null;
-      state.editTripError = null;
+      // state.editTripError = null;
       state.trip = null;
+    },
+
+    clearEditTripErrorRequest(state) {
+      state.editTripError = null;
     },
 
     fetchWeekTripsRequest(state) {

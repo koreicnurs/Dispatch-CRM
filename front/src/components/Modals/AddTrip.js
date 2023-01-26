@@ -5,8 +5,9 @@ const AddTrip = ({value, limitation}) => {
   return (
     <TripsModal
       modalTitle={"Add trip"}
-      isAdd={value === 0}
       limitation={limitation}
+      isAdd={true}
+      isButton={value === 0}
     />
   );
 };

@@ -11,15 +11,15 @@ const Driver = require("../models/Driver");
 const User = require("../models/User");
 const Broker = require("../models/Broker");
 
-// const TelegramApi = require('node-telegram-bot-api');
-// const token = "936426396:AAEwbo64h7Nf3lEJ56bW1ZoA3plMlyPl9VQ";
-// let polling = true;
-//
-// if (process.env.NODE_ENV === 'test') {
-//     polling = false;
-// }
-//
-// const bot = new TelegramApi(token, {polling});
+const TelegramApi = require('node-telegram-bot-api');
+const token = "936426396:AAEwbo64h7Nf3lEJ56bW1ZoA3plMlyPl9VQ";
+let polling = true;
+
+if (process.env.NODE_ENV === 'test') {
+    polling = false;
+}
+
+const bot = new TelegramApi(token, {polling});
 
 const router = express.Router();
 
@@ -44,14 +44,6 @@ const upload = multer({
 });
 
 const cpUpload = upload.fields([{name: 'BOL', maxCount: 1}, {name: 'RC', maxCount: 1}])
-
-const statusDriver = {
-    ready: 'ready',
-    transit: 'in transit',
-    upcoming: 'upcoming',
-    trUpc: 'in tr/upc',
-    off: 'off',
-};
 
 router.get('/', auth, async (req, res) => {
     try {

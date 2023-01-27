@@ -31,6 +31,8 @@ services:
       - LETSENCRYPT=true
       - LE_EMAIL=kimtimur01@gmail.com
       - LE_FQDN=supreme.dispatch.pashster.com
+    volumes:
+      - /etc/ssl:/etc/nginx/ssl
 
   mongodb:
     image: mongo

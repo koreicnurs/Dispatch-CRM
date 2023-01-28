@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {fetchDriversRequest} from "../../store/actions/driversActions";
-import {Grid, InputBase, styled, TableCell} from "@mui/material";
+import {Box, Grid, InputBase, LinearProgress, styled, TableCell} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
@@ -75,6 +75,8 @@ const StatusUpdate = () => {
   const dispatch = useDispatch();
   const drivers = useSelector(state => state.drivers.drivers);
   const carriers = useSelector(state => state.carriers.carriers);
+  const loading = useSelector(state => state.drivers.driversLoading);
+
   const [carrierSelector, setCarrierSelector] = useState(["Carriers"]);
   const [selectedCarrier, setSelectedCarrier] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("Status");
@@ -157,6 +159,8 @@ const StatusUpdate = () => {
     );
 
     return (
+    <>
+      {loading ? <Box sx={{width: '100%'}}><LinearProgress sx={{position: "absolute", left: 0, right: 0}}/></Box> : null}
       <InnerContainer>
         <Grid item sx={{paddingLeft: "15px"}}>
           <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
@@ -190,6 +194,7 @@ const StatusUpdate = () => {
           }
         />
       </InnerContainer>
+    </>
     );
 };
 

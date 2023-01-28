@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import Typography from "@mui/material/Typography";
-import {Box, Grid, IconButton, InputBase, styled, Tab, Tabs} from "@mui/material";
+import {Box, Grid, IconButton, InputBase, LinearProgress, styled, Tab, Tabs} from "@mui/material";
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
 import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import {useDispatch, useSelector} from "react-redux";
@@ -69,7 +69,7 @@ const Trips = ({history}) => {
   const trips = useSelector(state => state.trips.trips);
   const trip = useSelector(state => state.trips.trip);
   const tripsCount = useSelector(state => state.trips.tripsCount);
-
+  const loading = useSelector(state => state.trips.loading);
   const drivers = useSelector(state => state.drivers.drivers);
   const users = useSelector(state => state.users.users);
   const user = useSelector(state => state.users.user);
@@ -255,6 +255,7 @@ const Trips = ({history}) => {
 
   return (
     <>
+      {loading ? <Box sx={{width: '100%'}}><LinearProgress sx={{position: "absolute", left: 0, right: 0}}/></Box> : null}
       <EditTrip tripID={trip?._id} limitation={limitation} value={value}/>
       <NewComment handleClose={handleCloseCommentModal} open={openComment} id={commentTripId} user={user}/>
       <ViewAll handleClose={handleCloseViewAllModal} open={viewAll} id={viewAllTripId} trip={trip} user={user}/>

@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import Typography from "@mui/material/Typography";
-import {Box, Grid} from "@mui/material";
+import {Box, Grid, LinearProgress} from "@mui/material";
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
 import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import {useDispatch, useSelector} from "react-redux";
@@ -17,7 +17,7 @@ const headerTitles = [
 const CarrierTrips = () => {
   const dispatch = useDispatch();
   const trips = useSelector(state => state.trips.tripsByCarrier);
-
+  const loading = useSelector(state => state.trips.loading);
   const drivers = useSelector(state => state.drivers.drivers);
   const users = useSelector(state => state.users.users);
   const user = useSelector(state => state.users.user);
@@ -31,6 +31,7 @@ const CarrierTrips = () => {
 
   return (
     <>
+      {loading ? <Box sx={{width: '100%'}}><LinearProgress sx={{position: "absolute", left: 0, right: 0}}/></Box> : null}
       <InnerContainer>
         <Box sx={{width: '100%'}}>
           <Grid item sx={{paddingLeft: "15px"}}>

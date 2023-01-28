@@ -59,7 +59,6 @@ export function* createCarrier({payload: carrierData}) {
 }
 
 export function* editCarrier({payload}) {
-  console.log(payload)
   try {
     yield axiosApi.put('/carriers/' + payload.id, payload.data);
     yield put(editCarrierSuccess());

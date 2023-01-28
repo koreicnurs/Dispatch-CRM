@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Grid, IconButton, InputBase, styled} from "@mui/material";
+import {Box, Grid, IconButton, InputBase, LinearProgress, styled} from "@mui/material";
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
 import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
@@ -57,6 +57,7 @@ const LearningCategory = ({location}) => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.users.user);
     const category = useSelector(state => state.learnings.category);
+    const loading = useSelector(state => state.learnings.loading);
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
@@ -75,6 +76,8 @@ const LearningCategory = ({location}) => {
   };
 
   return (
+  <>
+    {loading ? <Box sx={{width: '100%'}}><LinearProgress sx={{position: "absolute", left: 0, right: 0}}/></Box> : null}
     <InnerContainer>
             <Grid item sx={{paddingLeft: "15px"}}>
                 <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
@@ -132,6 +135,7 @@ const LearningCategory = ({location}) => {
       </Box>
 
         </InnerContainer>
+    </>
     );
 };
 

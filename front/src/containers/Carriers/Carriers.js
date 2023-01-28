@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {Grid, IconButton, InputBase, styled} from "@mui/material";
+import {Box, Grid, IconButton, InputBase, LinearProgress, styled} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {fetchCarriersRequest, fetchSearchedCarriersRequest} from "../../store/actions/carriersActions";
 import AddCarrier from "../../components/Modals/AddCarrier";
@@ -56,6 +56,7 @@ const Carriers = () => {
 
     const dispatch = useDispatch();
     const carriers = useSelector(state => state.carriers.carriers);
+    const loading = useSelector(state => state.carriers.loading);
 
     useEffect(() => {
         dispatch(fetchCarriersRequest());
@@ -67,6 +68,7 @@ const Carriers = () => {
 
     return (
         <>
+            {loading ? <Box sx={{width: '100%'}}><LinearProgress sx={{position: "absolute", left: 0, right: 0}}/></Box> : null}
             <InnerContainer>
 
                 <Grid item sx={{paddingLeft: "15px"}}>

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {Box, Grid, InputBase, styled} from "@mui/material";
+import {Box, Grid, InputBase, LinearProgress, styled} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import SearchIcon from '@mui/icons-material/Search';
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
@@ -67,6 +67,7 @@ const Learnings = () => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.users.user);
     const categories = useSelector(state => state.learnings.categories);
+    const loading = useSelector(state => state.learnings.loading);
 
     useEffect(() => {
         dispatch(fetchLearningCategoriesRequest());
@@ -79,6 +80,7 @@ const Learnings = () => {
 
     return (
         <>
+            {loading ? <Box sx={{width: '100%'}}><LinearProgress sx={{position: "absolute", left: 0, right: 0}}/></Box> : null}
             <InnerContainer>
 
                 <Grid item sx={{paddingLeft: "15px"}}>

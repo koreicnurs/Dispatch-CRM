@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test-prod": "npm install supertest && npm install -g jest && jest --verbose && NODE_ENV=test node fixtures.js && NODE_ENV=test jest --testTimeout=5000 --detectOpenHandles",
+    "test-prod": "npm install supertest && npm install -g jest && jest --verbose && NODE_ENV=test-prod node fixtures.js && NODE_ENV=test jest --testTimeout=5000 --detectOpenHandles",
     "test-front": "NODE_ENV=test-front npm run dev",
     "test-api": "NODE_ENV=test node fixtures.js && NODE_ENV=test jest --testTimeout=5000 --detectOpenHandles",
     "pretest": "NODE_ENV=test node fixtures.js",

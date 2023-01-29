@@ -5,8 +5,12 @@ const rootPath = __dirname;
 let dbURL = 'mongodb://localhost/dispatchers';
 let port = 8000;
 
-if(process.env.NODE_ENV === 'test') {
+if(process.env.NODE_ENV === 'test-prod') {
     dbURL = 'mongodb://mongodb:27017/dispatchers-test';
+}
+
+if(process.env.NODE_ENV === 'test') {
+    dbURL = 'mongodb://localhost/dispatchers-test';
 }
 
 if(process.env.NODE_ENV === 'test-front') {

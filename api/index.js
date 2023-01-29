@@ -31,7 +31,7 @@ app.use('/brokers', brokers);
 const run = async () => {
     await mongoose.connect(config.mongo.db, config.mongo.options);
 
-    if(process.env.NODE_ENV !== 'test') {
+    if(process.env.NODE_ENV !== 'test' && process.env.NODE_ENV !== 'test-local') {
         app.listen(config.port, () => {
             console.log(`Server started on ${config.port} port!`);
         });

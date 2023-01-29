@@ -9,9 +9,9 @@ if(process.env.NODE_ENV === 'test-prod') {
     dbURL = 'mongodb://mongodb:27017/dispatchers-test';
 }
 
-if(process.env.NODE_ENV === 'test') {
-    dbURL = 'mongodb://localhost/dispatchers-test';
-}
+// if(process.env.NODE_ENV === 'test') {
+//     dbURL = 'mongodb://localhost/dispatchers-test';
+// }
 
 if(process.env.NODE_ENV === 'test-front') {
     dbURL = 'mongodb://localhost/dispatchers-test';

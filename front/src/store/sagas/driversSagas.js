@@ -22,15 +22,18 @@ import {addNotification} from "../actions/notifierActions";
 export function* getDrivers(action) {
   try {
     let response;
-    const {carrier, filter, status, history} = action.payload;
-    if (filter) {
-      response = yield axiosApi('/drivers/?status=' +  status, {params: {carrier, filter, history}});
-    } else if (history || ( carrier.length === 0 &&  status === 'Status')) {
+    if (!Boolean(action.payload)) {
       response = yield axiosApi('/drivers');
     } else {
-      response = yield axiosApi('/drivers/?status=' + status, {params: {carrier:  carrier}});
+      const {carrier, filter, status, history} = action.payload;
+      if (filter) {
+        response = yield axiosApi('/drivers/?status=' +  status, {params: {carrier, filter, history}});
+      } else if (!action.payload || ( carrier.length === 0 &&  status === 'Status')) {
+        response = yield axiosApi('/drivers');
+      } else {
+        response = yield axiosApi('/drivers/?status=' + status, {params: {carrier:  carrier}});
+      }
     }
-
 
     yield put(fetchDriversSuccess(response.data));
   } catch (e) {

@@ -3,7 +3,7 @@ const Load = require("./models/Load");
 const Driver = require("./models/Driver");
 const User = require("./models/User");
 
-const token = "936426396:AAEwbo64h7Nf3lEJ56bW1ZoA3plMlyPl9VQ";
+const token = "5488385805:AAGNvotjoClkC-YtvW92CfmeWTjVlvByvdc";
 
 let polling = true;
 

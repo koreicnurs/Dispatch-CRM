@@ -12,7 +12,7 @@ const User = require("../models/User");
 const Broker = require("../models/Broker");
 
 const TelegramApi = require('node-telegram-bot-api');
-const token = "936426396:AAEwbo64h7Nf3lEJ56bW1ZoA3plMlyPl9VQ";
+const token = "5488385805:AAGNvotjoClkC-YtvW92CfmeWTjVlvByvdc";
 let polling = true;
 
 if (process.env.NODE_ENV === 'test') {

@@ -13,7 +13,7 @@ import {
 import TripTableBody from "../../components/Table/TableBody/TripTableBody";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
 import TabPanel from "../../components/TabPanel/TabPanel";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {fetchDriversRequest} from "../../store/actions/driversActions";
 import NewComment from "../../components/Modals/NewComment";
 import NewAttachment from "../../components/Modals/NewAttachment";
@@ -83,6 +83,14 @@ const Trips = ({history}) => {
   });
 
   const [searchVal, setSearchVal] = useState(null);
+
+  const historyPath = useHistory();
+
+  useEffect(() => {
+    if (!history.location.search) {
+      historyPath.push("/loads?status=upcoming")
+    }
+  }, []);
 
   useEffect(() => {
     const today = new Date();

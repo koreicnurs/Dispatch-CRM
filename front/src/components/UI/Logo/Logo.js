@@ -7,7 +7,7 @@ const Logo = () => {
     const user = useSelector(state => state.users.user);
 
     return (
-        <Link to={user?.role === 'carrier' ? '/carrier-loads' : '/loads/?status=upcoming'}>
+        <Link to={user?.role === 'carrier' ? '/carrier-loads' : '/loads?status=upcoming'}>
             <img src={logo} className="Supreme Dispatch" alt="logo"/>
         </Link>
     );

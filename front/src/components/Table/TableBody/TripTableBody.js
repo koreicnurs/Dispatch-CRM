@@ -53,7 +53,7 @@ const TripTableBody = (props) => {
                 {trip.brokerId?.name || 'n/a'}
               </TableCell>}
             {
-              user.role !== 'carrier'
+              user?.role !== 'carrier'
               ? <>
                   <TableCell sx={{fontSize: "12px"}}>test</TableCell>
 

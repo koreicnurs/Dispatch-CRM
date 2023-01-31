@@ -11,7 +11,7 @@ import InnerTable from "../../components/Table/InnerTable";
 
 const headerTitles = [
   "Load ID", "PU Location", "DEL Location",
-  "MILES", "RATE", "Driver",
+  "MILES", "RATE", "Driver", "Broker",
 ];
 
 const CarrierTrips = () => {

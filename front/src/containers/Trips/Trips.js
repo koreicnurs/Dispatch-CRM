@@ -94,16 +94,16 @@ const Trips = ({history}) => {
 
   useEffect(() => {
     const today = new Date();
-    const firstDay = today.getDate() - today.getDay() + 1;
+    const firstDay = today.getDate() - today.getDay() + (today.getDay() === 0 ? -6: 1);
     const lastDay = firstDay + 6;
-    setStartWeek(new Date(today.setDate(firstDay)));
-    setEndWeek(new Date(today.setDate(lastDay)));
+    const week = {
+      start: new Date(new Date().setDate(firstDay)),
+      end: new Date(new Date().setDate(lastDay))
+    };
+    setStartWeek(week.start);
+    setEndWeek(week.end);
 
     if(history.location.search === '?status=finished') {
-      const week = {
-        start: new Date(today.setDate(firstDay)),
-        end: new Date(today.setDate(lastDay))
-      }
       dispatch(fetchWeekTripsRequest({value: history.location.search, week: week}))
     } else {
       dispatch(fetchTripsRequest({value: history.location.search, limitation: limitation}));

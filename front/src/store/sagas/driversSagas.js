@@ -22,14 +22,19 @@ import {addNotification} from "../actions/notifierActions";
 export function* getDrivers(action) {
   try {
     let response;
-    const {carrier, filter, status, history} = action.payload;
-    if ( filter) {
-      response = yield axiosApi('/drivers/?status=' +  status, {params: {carrier, filter, history}});
-    } else if (!action.payload || ( carrier.length === 0 &&  status === 'Status')) {
+    if (!Boolean(action.payload)) {
       response = yield axiosApi('/drivers');
     } else {
-      response = yield axiosApi('/drivers/?status=' + status, {params: {carrier:  carrier}});
+      const {carrier, filter, status, history} = action.payload;
+      if (filter) {
+        response = yield axiosApi('/drivers/?status=' +  status, {params: {carrier, filter, history}});
+      } else if (!action.payload || ( carrier.length === 0 &&  status === 'Status')) {
+        response = yield axiosApi('/drivers');
+      } else {
+        response = yield axiosApi('/drivers/?status=' + status, {params: {carrier:  carrier}});
+      }
     }
+
     yield put(fetchDriversSuccess(response.data));
   } catch (e) {
     yield put(fetchDriversFailure(e.response && e.response.data));
@@ -63,7 +68,13 @@ export function* addDriver({payload}) {
     if(payload.user.role === 'carrier') {
       yield put(fetchDriversByCarrierRequest());
     } else {
-      yield put(fetchDriversRequest());
+      yield put(fetchDriversRequest({
+          carrier: null,
+          status: null,
+          filter: null,
+          history: true
+        }
+      ));
     }
     yield put(addNotification({message: 'You have successfully added a driver!', variant: 'success'}));
   } catch (e) {
@@ -79,7 +90,13 @@ export function* updateDriver({payload}) {
     if(payload.user.role === 'carrier') {
       yield put(fetchDriversByCarrierRequest());
     } else {
-      yield put(fetchDriversRequest());
+      yield put(fetchDriversRequest({
+          carrier: null,
+          status: null,
+          filter: null,
+          history: true
+        }
+      ));
     }
     yield put(addNotification({message: 'You have successfully updated a driver!', variant: 'success'}));
   } catch (e) {
@@ -95,7 +112,12 @@ export function* updateDriverStatus({payload}) {
     if(payload.user.role === 'carrier') {
       yield put(fetchDriversByCarrierRequest());
     } else {
-      yield put(fetchDriversRequest());
+      yield put(fetchDriversRequest({
+        carrier: [],
+        status: null,
+        filter: null,
+        history: 'status-update'
+      }));
     }
     yield put(addNotification({message: 'You have successfully updated a driver status!', variant: 'success'}));
   } catch (e) {

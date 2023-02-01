@@ -6,7 +6,7 @@ import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import UserTableBody from "../../components/Table/TableBody/UserTableBody";
 import InnerTable from "../../components/Table/InnerTable";
 import Typography from "@mui/material/Typography";
-import {Grid} from "@mui/material";
+import {Box, Grid, LinearProgress} from "@mui/material";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
 
 const headerTitles = ["email", "name"];
@@ -15,12 +15,15 @@ const Administrators = () => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.users.user);
   const users = useSelector(state => state.users.users);
+  const loading = useSelector(state => state.users.fetchLoading);
 
   useEffect(() => {
     dispatch(fetchUsersRequest());
   }, [dispatch]);
 
   return (
+  <>
+    {loading ? <Box sx={{width: '100%'}}><LinearProgress sx={{position: "absolute", left: 0, right: 0}}/></Box> : null}
     <InnerContainer>
       {user.role === "admin" &&
         <>
@@ -44,6 +47,7 @@ const Administrators = () => {
         </>
       }
     </InnerContainer>
+  </>
   );
 };
 

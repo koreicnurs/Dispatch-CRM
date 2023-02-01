@@ -1,0 +1,43 @@
+version: '3'
+services:
+
+  esdp-api:
+    build: ./api
+    image: whiteduke/esdp:api
+    depends_on:
+      - mongodb
+    restart: always
+    ports:
+      - "8001:8001"
+    volumes:
+      - public_images:/src/app/public
+    environment:
+      DB_HOST: mongodb
+
+  esdp-front:
+    build:
+      context: ./front
+      args:
+        api_url: "http://localhost:8000"
+    image: whiteduke/esdp:front
+    depends_on:
+      - esdp-api
+    restart: always
+    ports:
+      - "81:81"
+      - "443:443"
+    environment:
+      - TZ=Asia/Bishkek
+      - LETSENCRYPT=true
+      - LE_EMAIL=kimtimur01@gmail.com
+      - LE_FQDN=supreme.dispatch.pashster.com
+    volumes:
+      - /etc/ssl:/etc/nginx/ssl
+
+  mongodb:
+    image: mongo
+    volumes:
+      - /mongodb
+
+volumes:
+  public_images:

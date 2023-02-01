@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import Typography from "@mui/material/Typography";
-import {Box, Grid, Tab, Tabs} from "@mui/material";
+import {Box, Grid, IconButton, InputBase, LinearProgress, styled, Tab, Tabs} from "@mui/material";
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
 import TableHeaderRow from "../../components/Table/TableHeader/TableHeaderRow";
 import {useDispatch, useSelector} from "react-redux";
@@ -8,12 +8,12 @@ import {
   cancelTripRequest,
   changeTripStatusRequest, confirmTripsRequest,
   fetchTripRequest,
-  fetchTripsRequest, fetchWeekTripsRequest
+  fetchTripsRequest, fetchWeekTripsRequest, searchTripsRequest
 } from "../../store/actions/tripsActions";
 import TripTableBody from "../../components/Table/TableBody/TripTableBody";
 import {fetchUsersRequest} from "../../store/actions/usersActions";
 import TabPanel from "../../components/TabPanel/TabPanel";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {fetchDriversRequest} from "../../store/actions/driversActions";
 import NewComment from "../../components/Modals/NewComment";
 import NewAttachment from "../../components/Modals/NewAttachment";
@@ -22,6 +22,7 @@ import AddTrip from "../../components/Modals/AddTrip";
 import EditTrip from "../../components/Modals/EditTrip";
 import {showedItemCount} from "../../config";
 import {fetchBrokersRequest} from "../../store/actions/brokersActions";
+import SearchIcon from "@mui/icons-material/Search";
 
 const headerTitles = [
   "Load ID", "PU Location", "DEL Location",
@@ -34,12 +35,41 @@ const headerTitlesHistory = [
   "Dispatch Team", "Dispatch"
 ];
 
+const SearchStyle = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: '#fff',
+  '&:hover': {
+    backgroundColor: '#fff',
+  },
+  marginRight: theme.spacing(6),
+  marginLeft: 0,
+  marginTop: '25px',
+  width: '50%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(3),
+    width: 'auto',
+  },
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    transition: theme.transitions.create('width'),
+    width: '50%',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch',
+    },
+  },
+}));
+
 const Trips = ({history}) => {
   const dispatch = useDispatch();
   const trips = useSelector(state => state.trips.trips);
   const trip = useSelector(state => state.trips.trip);
   const tripsCount = useSelector(state => state.trips.tripsCount);
-
+  const loading = useSelector(state => state.trips.loading);
   const drivers = useSelector(state => state.drivers.drivers);
   const users = useSelector(state => state.users.users);
   const user = useSelector(state => state.users.user);
@@ -52,18 +82,28 @@ const Trips = ({history}) => {
     skip: 0
   });
 
+  const [searchVal, setSearchVal] = useState(null);
+
+  const historyPath = useHistory();
+
+  useEffect(() => {
+    if (!history.location.search) {
+      historyPath.push("/loads?status=upcoming")
+    }
+  }, []);
+
   useEffect(() => {
     const today = new Date();
-    const firstDay = today.getDate() - today.getDay() + 1;
+    const firstDay = today.getDate() - today.getDay() + (today.getDay() === 0 ? -6: 1);
     const lastDay = firstDay + 6;
-    setStartWeek(new Date(today.setDate(firstDay)));
-    setEndWeek(new Date(today.setDate(lastDay)));
+    const week = {
+      start: new Date(new Date().setDate(firstDay)),
+      end: new Date(new Date().setDate(lastDay))
+    };
+    setStartWeek(week.start);
+    setEndWeek(week.end);
 
     if(history.location.search === '?status=finished') {
-      const week = {
-        start: new Date(today.setDate(firstDay)),
-        end: new Date(today.setDate(lastDay))
-      }
       dispatch(fetchWeekTripsRequest({value: history.location.search, week: week}))
     } else {
       dispatch(fetchTripsRequest({value: history.location.search, limitation: limitation}));
@@ -74,7 +114,6 @@ const Trips = ({history}) => {
     dispatch(fetchBrokersRequest());
   }, [dispatch, history.location.search, limitation]);
 
-  const [edit, setEdit] = useState(false);
 
   const [openComment, setComment] = useState(false);
   const handleCloseCommentModal = () => setComment(false);
@@ -128,7 +167,6 @@ const Trips = ({history}) => {
 
   const editTripHandler = id => {
     dispatch(fetchTripRequest(id));
-    setEdit(true);
   };
 
   const attachFileHandler = id => {
@@ -137,7 +175,6 @@ const Trips = ({history}) => {
   };
 
   const leaveCommentHandler = id => {
-    setEdit(false);
     setCommentTripId(id);
     dispatch(fetchTripRequest(id));
     setComment(true);
@@ -148,7 +185,6 @@ const Trips = ({history}) => {
   };
 
   const viewAllHandler = id => {
-    setEdit(false);
     dispatch(fetchTripRequest(id));
     setViewAll(true);
   };
@@ -219,25 +255,49 @@ const Trips = ({history}) => {
   const limitChangeHandler = e => {
     setLimitation({...limitation, limit: e.target.value, skip: 0});
     setCurrentPage(1);
-  }
+  };
+
+  const searchTrips = async () => {
+    await dispatch(searchTripsRequest({value: history.location.search, code: searchVal}));
+  };
 
   return (
     <>
-      <EditTrip tripID={trip?._id} isEdit={edit} limitation={limitation}/>
+      {loading ? <Box sx={{width: '100%'}}><LinearProgress sx={{position: "absolute", left: 0, right: 0}}/></Box> : null}
+      <EditTrip tripID={trip?._id} limitation={limitation} value={value}/>
       <NewComment handleClose={handleCloseCommentModal} open={openComment} id={commentTripId} user={user}/>
       <ViewAll handleClose={handleCloseViewAllModal} open={viewAll} id={viewAllTripId} trip={trip} user={user}/>
       <NewAttachment handleClose={handleCloseAttachmentModal} open={openAttachment} id={attachTripId}/>
 
       <InnerContainer>
         <Box sx={{width: '100%'}}>
-          <Grid item sx={{paddingLeft: "15px"}}>
-            <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
-              Trips
-            </Typography>
+          <Grid container item sx={{paddingLeft: "15px"}} flexDirection="row" justifyContent="space-between" alignItems="center" paddingRight="15px" >
+            <Grid item>
+              <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
+                Trips
+              </Typography>
+            </Grid>
+
+            {history.location.search === '?status=finished' &&
+              <Grid item>
+                <SearchStyle>
+                  <IconButton onClick={searchTrips}>
+                    <SearchIcon />
+                  </IconButton>
+                  <StyledInputBase
+                    placeholder="Search"
+                    inputProps={{ 'aria-label': 'search' }}
+                    onChange={e => setSearchVal(e.target.value)}
+                  />
+                </SearchStyle>
+              </Grid>
+            }
           </Grid>
           <Grid container item flexDirection="row" justifyContent="space-between" alignItems="center" paddingRight="15px">
             <AddTrip value={value} limitation={limitation}/>
           </Grid>
+
+
 
           <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">

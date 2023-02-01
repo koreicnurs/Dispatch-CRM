@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import InnerContainer from "../../components/InnerContainer/InnerContainer";
 import Typography from "@mui/material/Typography";
-import {Grid, InputBase, styled} from "@mui/material";
+import {Box, Grid, InputBase, LinearProgress, styled} from "@mui/material";
 import NewDispatcher from "../../components/Modals/DispatcherModal/NewDispatcher";
 import useTableSearch from "../../components/UI/Filter/useTableSearch/useTableSearch";
 import {useDispatch, useSelector} from "react-redux";
@@ -56,6 +56,8 @@ const headerTitles = ["avatar", "email", "name", "phone", "status"];
 const UserCarriers = () => {
     const dispatch = useDispatch();
     const users = useSelector(state => state.users.users);
+    const loading = useSelector(state => state.users.fetchLoading);
+
     const [userCarriers, setUserCarriers] = useState([]);
     const [searchVal, setSearchVal] = useState(null);
 
@@ -96,6 +98,8 @@ const UserCarriers = () => {
 
 
     return (
+      <>
+        {loading ? <Box sx={{width: '100%'}}><LinearProgress sx={{position: "absolute", left: 0, right: 0}}/></Box> : null}
         <InnerContainer>
             <Grid item sx={{paddingLeft: "15px"}}>
                 <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
@@ -156,6 +160,7 @@ const UserCarriers = () => {
             />
 
         </InnerContainer>
+      </>
     );
 };
 

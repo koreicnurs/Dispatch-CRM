@@ -3,7 +3,7 @@ const Load = require("./models/Load");
 const Driver = require("./models/Driver");
 const User = require("./models/User");
 
-const token = "936426396:AAEwbo64h7Nf3lEJ56bW1ZoA3plMlyPl9VQ";
+const token = "6014597379:AAFgK0ZCAEJkrsK1OMZu7ILC34RWb9MXKoI";
 
 let polling = true;
 
@@ -128,12 +128,17 @@ module.exports = driversBot = () => {
         if (text === '/load') {
             try {
                 const driver = await Driver.findOne({telegramId: msg.from.id});
-
+                let newLoad = null;
                 if (!driver) {
                     return await bot.sendMessage(chatId, 'У вас нету заказов по грузам');
                 }
                 const load = await Load.find({driverId: driver.id});
-                const upcomingLoad = load[0];
+                load.map((l) => {
+                    if(l.status === tripsStatus.upcoming) {
+                        newLoad = l
+                    }
+                })
+                const upcomingLoad = newLoad;
 
                 if (upcomingLoad && upcomingLoad.status === tripsStatus.upcoming) {
                     const htmlLoad =
@@ -161,8 +166,8 @@ module.exports = driversBot = () => {
             try {
                 const driver = await Driver.findOne({telegramId: msg.from.id});
                 if (driver) {
-                    const load = await Load.find({driverId: driver.id});
-                    await Load.findByIdAndUpdate({_id: load[0].id}, {timeToPU: text});
+                    const load = await Load.findOne({driverId: driver.id} && {status: 'upcoming'});
+                    await Load.findByIdAndUpdate({_id: load.id}, {timeToPU: text});
                     await bot.sendMessage(driver.telegramId, 'Пожалуйста нажмите на кнопку "In Transit" как начнете ехать до места доставки', keyboardTripTransit);
                 }
             } catch (e) {
@@ -183,7 +188,7 @@ module.exports = driversBot = () => {
     bot.on('callback_query', async (msg) => {
         try {
             const driver = await Driver.findOne({telegramId: msg.from.id});
-            const load = await Load.findOne({driverId: driver.id});
+            const load = await Load.findOne({driverId: driver.id} && {status: 'upcoming'});
             const dispatcherId = await User.findById({_id: load.dispatchId});
 
             if (msg.data === tripsStatus.accept) {
@@ -192,6 +197,7 @@ module.exports = driversBot = () => {
 
             if (msg.data === tripsStatus.cancel) {
                 if (dispatcherId && dispatcherId.telegramId) {
+                    const load = await Load.findOne({driverId: driver.id} && {status: 'upcoming'});
                     await bot.sendMessage(dispatcherId.telegramId, `Водитель отклонил груз - ${load.loadCode}`);
                     await bot.sendMessage(driver.telegramId, `Вы отказались от груза - ${load.loadCode}\nОповещение диспетчеру было отправлено`);
                 } else {
@@ -202,7 +208,7 @@ module.exports = driversBot = () => {
             if (msg.data === tripsStatus.transit) {
                 if (load.status === tripsStatus.upcoming) {
                     try {
-                        await Load.findByIdAndUpdate({_id: load.id}, {status: 'transit'});
+                        await Load.findOneAndUpdate({driverId: driver.id}, {status: 'transit'});
                         await bot.sendMessage(driver.telegramId, `Пожалуйста нажмите на кнопку FINISH тока, когда как вы доставите груз - ${load.loadCode}`, keyboardTripDelivered);
                     } catch (e) {
                         console.log(e);
@@ -213,9 +219,14 @@ module.exports = driversBot = () => {
             }
 
             if (msg.data === tripsStatus.finish) {
-                if (dispatcherId && dispatcherId.telegramId) {
-                    await bot.sendMessage(dispatcherId.telegramId, `Водитель - ${driver.name}, доставил груз - ${load.loadCode}`);
-                    await bot.sendMessage(driver.telegramId, `Спасибо за доставленый груз - ${load.loadCode}.\nОповещение о доставке выслана диспетчеру - ${dispatcherId.displayName}`);
+                if (dispatcherId) {
+                    let transitLoad = await Load.findOne({driverId: driver.id} && {status: 'transit'})
+
+                    if(dispatcherId&& dispatcherId.telegramId) {
+                        await bot.sendMessage(dispatcherId.telegramId, `Водитель - ${driver.name}, доставил груз - ${transitLoad.loadCode}`);
+                    }
+
+                    await bot.sendMessage(driver.telegramId, `Спасибо за доставленый груз - ${transitLoad.loadCode}.\nОповещение о доставке выслана диспетчеру - ${dispatcherId.displayName}`);
                 } else {
                     await bot.sendMessage(driver.telegramId, `Что то пошло не так =( обратитесь в компанию`);
                 }

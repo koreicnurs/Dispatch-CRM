@@ -54,6 +54,19 @@ const learningsSlice = createSlice({
       state.error = action.payload;
     },
 
+    searchArticleRequest(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    searchArticleSuccess(state, action) {
+      state.loading = false;
+      state.category = action.payload;
+    },
+    searchArticleFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+
     addLearningArticleRequest(state) {
       state.articleLoading = true;
       state.articleError = null;

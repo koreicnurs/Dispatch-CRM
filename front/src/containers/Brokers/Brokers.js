@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {Grid} from "@mui/material";
+import {Box, Grid, LinearProgress} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {fetchBrokersRequest} from "../../store/actions/brokersActions";
 import {fetchCarriersRequest} from "../../store/actions/carriersActions";
@@ -22,6 +22,7 @@ const columns = [
 const Brokers = () => {
     const dispatch = useDispatch();
     const brokers = useSelector(state => state.brokers.brokers);
+    const loading = useSelector(state => state.brokers.loading);
 
     useEffect(() => {
         dispatch(fetchBrokersRequest());
@@ -30,6 +31,7 @@ const Brokers = () => {
 
     return (
         <>
+            {loading ? <Box sx={{width: '100%'}}><LinearProgress sx={{position: "absolute", left: 0, right: 0}}/></Box> : null}
             {brokers &&
                 <InnerContainer>
                     <Grid item sx={{paddingLeft: "15px"}}>

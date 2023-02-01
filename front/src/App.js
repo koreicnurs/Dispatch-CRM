@@ -41,26 +41,26 @@ const App = () => {
         <Layout>
             <Switch>
                 <ProtectedRoute
-                    isAllowed={user}
+                    isAllowed={user?.role !== 'carrier' && user}
                     redirectTo="/login"
                     path="/"
                     exact
                     component={Trips}
                 />
                 <ProtectedRoute
-                    isAllowed={user?.role !== 'carrier'}
+                    isAllowed={user?.role !== 'carrier' && user}
                     redirectTo="/login"
                     path="/status-update"
                     component={StatusUpdate}
                 />
                 <ProtectedRoute
-                    isAllowed={user?.role !== 'carrier'}
+                    isAllowed={user?.role !== 'carrier' && user}
                     redirectTo="/login"
                     path="/loads"
                     component={Trips}
                 />
                 <ProtectedRoute
-                  isAllowed={user?.role !== 'carrier'}
+                  isAllowed={user?.role !== 'carrier' && user}
                   redirectTo="/login"
                   path="/carriers"
                   component={Carriers}
@@ -72,26 +72,26 @@ const App = () => {
                   component={Drivers}
                 />
                 <ProtectedRoute
-                    isAllowed={user}
+                    isAllowed={user?.role !== 'carrier' && user}
                     redirectTo="/login"
                     path="/brokers"
                     component={Brokers}
                 />
                 <ProtectedRoute
-                  isAllowed={user}
+                  isAllowed={user?.role !== 'carrier' && user}
                   redirectTo="/login"
                   path="/learnings"
                   component={Learnings}
                 />
                 <ProtectedRoute
-                  isAllowed={user}
+                  isAllowed={user?.role !== 'carrier' && user}
                   redirectTo="/login"
                   path="/learning"
                   exact
                   component={LearningCategory}
                 />
                 <ProtectedRoute
-                  isAllowed={user}
+                  isAllowed={user?.role !== 'carrier' && user}
                   redirectTo="/login"
                   path="/article/:id"
                   exact
@@ -127,7 +127,13 @@ const App = () => {
                   path="/carrier-loads"
                   component={CarrierTrips}
                 />
-                <Route path="/login" component={Login}/>
+                <ProtectedRoute
+                    isAllowed={!user}
+                    redirectTo={user?.role === 'carrier' ? "/carrier-loads" : "/"}
+                    path="/login"
+                    component={Login}
+                />
+                <Route render={() => <h1 style={{textAlign: 'center'}}>Error 404 Not found!</h1>}/>
             </Switch>
         </Layout>
     );

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Grid, InputBase, styled, Typography} from '@mui/material';
+import {Box, Grid, InputBase, LinearProgress, styled, Typography} from '@mui/material';
 import {fetchDriversByCarrierRequest, fetchDriversRequest} from '../../store/actions/driversActions';
 import {fetchCarriersRequest} from "../../store/actions/carriersActions";
 import AddDriver from "../../components/Modals/AddDriver";
@@ -69,6 +69,7 @@ const Drivers = () => {
   const dispatch = useDispatch();
   const drivers = useSelector(state => state.drivers.drivers);
   const user = useSelector(state => state.users.user);
+  const loading = useSelector(state => state.drivers.driversLoading);
 
   useEffect(() => {
     if (user.role !== 'carrier') {
@@ -89,6 +90,8 @@ const Drivers = () => {
   };
 
   return (
+  <>
+    {loading ? <Box sx={{width: '100%'}}><LinearProgress sx={{position: "absolute", left: 0, right: 0}}/></Box> : null}
     <InnerContainer>
       <Grid item sx={{paddingLeft: "15px"}}>
         <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
@@ -104,26 +107,30 @@ const Drivers = () => {
         <Grid padding="15px">
           <AddDriver/>
         </Grid>
-        <Grid
-            sx={{
-              margin: '8px 20px 20px 40px'
-            }}
-        >
-          <SearchStyle
+        {user.role !== 'carrier'
+          ? <Grid
               sx={{
-                width: '100%',
+              margin: '8px 20px 20px 40px'
               }}
-          >
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search"
-              inputProps={{ 'aria-label': 'search' }}
-              onChange={searchValHandler}
-            />
-          </SearchStyle>
-        </Grid>
+            >
+              <SearchStyle
+                sx={{
+                width: '100%',
+                }}
+              >
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                placeholder="Search"
+                inputProps={{ 'aria-label': 'search' }}
+                onChange={searchValHandler}
+                />
+              </SearchStyle>
+            </Grid>
+          : null
+        }
+
       </Grid>
 
       <InnerTable
@@ -136,6 +143,7 @@ const Drivers = () => {
         }
       />
     </InnerContainer>
+  </>
   );
 };
 

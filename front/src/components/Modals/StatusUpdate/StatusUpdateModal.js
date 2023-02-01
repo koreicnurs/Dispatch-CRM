@@ -6,7 +6,7 @@ import EditButton from '../../UI/Button/EditButton/EditButton';
 import FormElement from '../../UI/Form/FormElement/FormElement';
 import FormSelect from '../../UI/Form/FormSelect/FormSelect';
 import ButtonWithProgress from '../../UI/Button/ButtonWithProgress/ButtonWithProgress';
-import {clearDriverErrors, updateDriverStatusRequest} from '../../../store/actions/driversActions';
+import {clearDriverErrors, fetchDriversRequest, updateDriverStatusRequest} from '../../../store/actions/driversActions';
 import {DRIVER_CURRENT_STATUS, DRIVER_STATUS} from '../../../constants';
 
 const style = {
@@ -74,6 +74,13 @@ const StatusUpdateModal = ({driverEmail}) => {
         e.preventDefault();
 
         dispatch(updateDriverStatusRequest({id: driverId, data: editedData, user}));
+        dispatch(fetchDriversRequest({
+              carrier: [],
+              status: null,
+              filter: null,
+              history: 'status-update'
+          }
+        ));
     };
 
     const getFieldError = fieldName => {

@@ -11,15 +11,15 @@ const Driver = require("../models/Driver");
 const User = require("../models/User");
 const Broker = require("../models/Broker");
 
-const TelegramApi = require('node-telegram-bot-api');
-const token = "936426396:AAEwbo64h7Nf3lEJ56bW1ZoA3plMlyPl9VQ";
-let polling = true;
-
-if (process.env.NODE_ENV === 'test') {
-    polling = false;
-}
-
-const bot = new TelegramApi(token, {polling});
+// const TelegramApi = require('node-telegram-bot-api');
+// const token = "5488385805:AAGNvotjoClkC-YtvW92CfmeWTjVlvByvdc";
+// let polling = true;
+//
+// if (process.env.NODE_ENV === 'test') {
+//     polling = false;
+// }
+//
+// const bot = new TelegramApi(token, {polling});
 
 const router = express.Router();
 
@@ -45,14 +45,6 @@ const upload = multer({
 
 const cpUpload = upload.fields([{name: 'BOL', maxCount: 1}, {name: 'RC', maxCount: 1}])
 
-const statusDriver = {
-    ready: 'ready',
-    transit: 'in transit',
-    upcoming: 'upcoming',
-    trUpc: 'in tr/upc',
-    off: 'off',
-};
-
 router.get('/', auth, async (req, res) => {
     try {
         const start = req.query.start;
@@ -64,7 +56,9 @@ router.get('/', auth, async (req, res) => {
         if (req.query.status === 'finished' || req.query.status === 'cancel') {
             let loads;
             if (!start && !end) {
-                loads = await Load.find({status: {$in: ['finished', 'cancel']}})
+                loads = await Load
+                  .find(
+                  { loadCode: req.query.code,  status: {$in: ['finished', 'cancel']}})
                   .populate('driverId', ['name', 'status'])
                   .populate('dispatchId', 'displayName')
                   .populate('brokerId', 'name')
@@ -179,8 +173,6 @@ router.get('/', auth, async (req, res) => {
                     }
                 });
             }
-
-
 
             res.send(loads);
         } else {
@@ -318,9 +310,9 @@ router.post('/', auth, cpUpload, async (req, res) => {
         if (driverId) {
             const driver = await Driver.findById({_id: driverId})
 
-            if (driver.telegramId) {
-                await bot.sendMessage(driver.telegramId, `У вас есть новый груз ${loadCode}У вас есть новый груз ${loadCode}\nНапишите команду /load чтобы получить полную информацию по грузу`);
-            }
+            // if (driver.telegramId) {
+            //     await bot.sendMessage(driver.telegramId, `У вас есть новый груз ${loadCode}У вас есть новый груз ${loadCode}\nНапишите команду /load чтобы получить полную информацию по грузу`);
+            // }
             if (driver.status === 'off') {
                 return res.status(403).send({message: 'The driver is not ready!'});
             } else if (driver.status === 'in tr/upc') {
@@ -419,33 +411,47 @@ router.put('/:id', auth, cpUpload, async (req, res) => {
             }
             loadData.RC = 'public/uploads/' + req.files['RC'][0].filename;
         }
+
+        // if (driverId) {
+        //     const driver = await Driver.findById({_id: driverId});
+        //     if (driver.status === 'ready') {
+        //         if (driver.telegramId) {
+        //             await bot.sendMessage(driver.telegramId, `У вас есть новый груз ${loadCode}\nНапишите команду /load чтобы получить полную информацию по грузу`);
+        //         }
+        //     }
+        // }
+
         if (driverId) {
             const driver = await Driver.findById({_id: driverId});
-            if (!driver._id.equals(load.driverId)) {
-                if(driver.status === statusDriver.ready) {
-                    if (driver.telegramId) {
-                        await bot.sendMessage(driver.telegramId, `У вас есть новый груз ${loadCode}\nНапишите команду /load чтобы получить полную информацию по грузу`);
-                    }
+            if (load.driverId === null) {
+                if (driver.status === 'off') {
+                    return res.status(403).send({message: 'The driver is not ready!'});
+                } else if (driver.status === 'in tr/upc') {
+                    return res.status(403).send({message: 'The driver is in transit and has upcoming trip!'});
+                } else if (driver.status === 'in transit') {
+                    await Driver.findByIdAndUpdate(driverId, {status: 'in tr/upc'});
                 } else {
-                    return res.status(400).send({message: 'Driver already have load!'});
+                    await Driver.findByIdAndUpdate(driverId, {status: 'upcoming'});
                 }
-            }
-            if (driverId !== load.driverId) {
+            } else if (driverId === load.driverId.toString()) {
+                await Driver.findByIdAndUpdate(driverId, {status: driver.status});
+            } else if (driverId !== load.driverId.toString()) {
                 const prevDriver = await Driver.findById({_id: load.driverId});
                 if (prevDriver.status === 'in tr/upc') {
                     await Driver.findByIdAndUpdate(load.driverId, {status: 'in transit'});
                 } else if (prevDriver.status === 'upcoming') {
                     await Driver.findByIdAndUpdate(load.driverId, {status: 'ready'});
                 }
-            }
-            if (driver.status === 'off') {
-                return res.status(403).send({message: 'The driver is not ready!'});
-            } else if (driver.status === 'in tr/upc') {
-                return res.status(403).send({message: 'The driver is in transit and has upcoming trip!'});
-            } else if (driver.status === 'in transit') {
-                await Driver.findByIdAndUpdate(driverId, {status: 'in tr/upc'});
-            } else {
-                await Driver.findByIdAndUpdate(driverId, {status: 'upcoming'});
+                if (driver.status === 'off') {
+                    return res.status(403).send({message: 'The driver is not ready!'});
+                } else if (driver.status === 'in tr/upc') {
+                    return res.status(403).send({message: 'The driver is in transit and has upcoming trip!'});
+                } else if (driver.status === 'in transit') {
+                    await Driver.findByIdAndUpdate(driverId, {status: 'in tr/upc'});
+                } else {
+                    await Driver.findByIdAndUpdate(driverId, {status: 'upcoming'});
+                }
+
             }
         }
 
@@ -514,9 +520,9 @@ router.put('/cancel/:id', auth, async (req, res) => {
 
         if (load.driverId) {
             const driver = await Driver.findById({_id: load.driverId})
-            if (driver.telegramId) {
-                await bot.sendMessage(driver.telegramId, `Ваш груз был отменен ${load.loadCode}`);
-            }
+            // if (driver.telegramId) {
+            //     await bot.sendMessage(driver.telegramId, `Ваш груз был отменен ${load.loadCode}`);
+            // }
             if (driver.status === 'in tr/upc' && load.status === 'upcoming') {
                 await Driver.findByIdAndUpdate(load.driverId, {status: 'in transit'});
             } else if (driver.status === 'in tr/upc' && load.status === 'transit') {

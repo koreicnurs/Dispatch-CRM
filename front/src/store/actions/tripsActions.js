@@ -32,7 +32,11 @@ export const {
   confirmTripsSuccess,
   confirmTripsFailure,
   clearCreateTripErrorRequest,
+  clearEditTripErrorRequest,
   fetchWeekTripsRequest,
   fetchWeekTripsSuccess,
-  fetchWeekTripsFailure
+  fetchWeekTripsFailure,
+  searchTripsRequest,
+  searchTripsSuccess,
+  searchTripsFailure
 } = tripsSlice.actions;

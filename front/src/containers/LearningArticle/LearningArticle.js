@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {addLearningCommentRequest, fetchLearningArticleRequest} from "../../store/actions/learningsActions";
-import {Box, Grid} from "@mui/material";
+import {Box, Grid, LinearProgress} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import ShowLearningComments from "../../components/ShowLearningComments/ShowLearningComments";
 import FormElement from "../../components/UI/Form/FormElement/FormElement";
@@ -28,7 +28,10 @@ const LearningArticle = ({match}) => {
     setComment('');
   };
 
-  return article && (
+  return (
+  <>
+    {loading ? <Box sx={{width: '100%'}}><LinearProgress sx={{position: "absolute", left: 0, right: 0}}/></Box> : null}
+    {article &&
     <Box sx={{background: '#f0f2fe', paddingY: '15px'}}>
       <Box paddingX='30px' paddingTop='20px' maxWidth='80%' minWidth='300px'>
         <Typography variant="h5" fontWeight="bold" textTransform="uppercase">
@@ -91,6 +94,8 @@ const LearningArticle = ({match}) => {
         </Box>
       </Box>
     </Box>
+    }
+  </>
   );
 };
 
